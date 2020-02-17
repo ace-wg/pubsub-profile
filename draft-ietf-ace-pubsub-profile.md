@@ -47,6 +47,7 @@ entity:
 
 This specification defines an application profile for authentication and authorization for publishers and subscribers in a pub-sub setting scenario in a constrained environment, using the ACE framework. This profile relies on transport layer or application layer security to authorize the publisher to the broker. Moreover, it relies on application layer security for publisher-broker and subscriber-broker communication.
 
+
 --- middle
 
 # Introduction
@@ -259,13 +260,13 @@ Examples for the response payload are detailed in {{fig-resp-as2}} and {{fig-res
 
 In case CoAP PubSub is used as communication protocol: 
 
-  * 'profile' set to "coap_pubsub_app", as specified in {{iana-coap-profile}}
+  * 'profile' set to "coap_pubsub_app", as specified in iana-coap-profile
 
 ## mqtt_pubsub_app Application Profile {#mqtt}
 
 In case mQTT PubSub is used as communication protocol: 
 
-  * 'profile' set to "mqtt_pubsub_app", as specified in {{iana-mqtt-profile}}
+  * 'profile' set to "mqtt_pubsub_app", as specified in iana-mqtt-profile
 
 # Publisher
 
