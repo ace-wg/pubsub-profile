@@ -84,10 +84,10 @@ The architecture of the scenario is shown in {{archi}}.
      |   +--------------------(B)--------+                 |
      v   v                                                 v
 +------------+             +------------+              +------------+
-|   CoAP     | ----(C)---> |   CoAP     |              |    CoAP    |
-|  Client -  | ----(E)---> |  Server -  |              |  Client -  |
+|            |             |            |              |            |
+| Publisher  | ----(E)---> |   Broker   |              | Subscriber |
 |            |             |            | <----(F)---- |            |
-| Publisher  |             |   Broker   | -----(G)---> | Subscriber |
+|            |             |            | -----(G)---> |            |
 +------------+             +------------+              +------------+
 ~~~~~~~~~~~~~
 {: #archi title="Architecture CoAP pubsub with Authorization Servers"}
@@ -126,10 +126,10 @@ FP: A second publisher would need to talk to both AS1 and AS2. As I intended, AS
 
 ~~~~~~~~~~~~
 +------------+             +------------+              +------------+
-|   CoAP     |             |   CoAP     |              |    CoAP    |
-|  Client -  |             |  Server -  |              |  Client -  |
 |            |             |            |              |            |
 | Publisher  |             |   Broker   |              | Subscriber |
+|            |             |            |              |            |
+|            |             |            |              |            |
 +------------+             +------------+              +------------+
       :   :                       :                           :
       :   '------ Security -------'                           :
@@ -288,10 +288,10 @@ In this section, it is specified how the Publisher requests, obtains and communi
      |   +--------------------(B)--------+
      v   v
 +------------+             +------------+
-|   CoAP     | ----(C)---> |   CoAP     |
-|  Client -  |             |  Server -  |
-|            |             |            |
+|            | ----(C)---> |            |
 | Publisher  |             |   Broker   |
+|            |             |            |
+|            |             |            |
 +------------+             +------------+
 ~~~~~~~~~~~
 {: #pubsub-1 title="Phase 1: Publisher side"}
@@ -307,7 +307,7 @@ In detail:
 (A) corresponds to the Access Token Request and Response between Publisher and Authorization Server to retrieve the Access Token and RS (Broker) Information.
 As specified, the Publisher has the role of a CoAP client, the Broker has the role of the CoAP server.
 
-(C) corresponds to the exchange between Publisher and Broker, where the Publisher sends its access token to the Broker and establishes a secure connection with the Broker. Depending on the Information received in (A), this can be for example DTLS handshake, or other protocols. Depending on the application, there may not be the need for this set up phase: for example, if OSCORE is used directly.
+(C) corresponds to the exchange between Publisher and Broker, where the Publisher sends its access token to the Broker and establishes a secure connection with the Broker. Depending on the Information received in (A), this can be for example DTLS handshake, or other protocols. Depending on the application, there may not be the need for this set up phase: for example, if OSCORE is used directly. Note that, in line with what defined in the ACE transport profile used, the access token includes the scope (i.e. pubsub topics on the Broker) the Publisher is allowed to publish to. For implementation semplicity, it is RECOMMENDED that the ACE transport profile used and this specification use the same format of "scope".
 
 (A) and (C) details are specified in the profile used.
 
@@ -371,10 +371,9 @@ In this section, it is specified how the Subscriber retrieves the keying materia
                                                            |
                                                            v
                                                        +------------+
-                                                       |    CoAP    |
-                                                       |  Client -  |
                                                        |            |
                                                        | Subscriber |
+                                                       |            |
                                                        |            |
                                                        +------------+
 ~~~~~~~~~~~~~
@@ -449,10 +448,9 @@ This section specifies the communication Publisher-Broker and Subscriber-Broker,
 
 ~~~~~~~~~~~~
 +------------+             +------------+              +------------+
-|   CoAP     |             |   CoAP     |              |    CoAP    |
-|  Client -  |             |  Server -  |              |  Client -  |
-|            | ----(E)---> |            |              |            |
-| Publisher  |             |   Broker   | <----(F)---- | Subscriber |
+|            |             |            |              |            |
+| Publisher  | ----(E)---> |   Broker   |              | Subscriber |
+|            |             |            | <----(F)---- |            |
 |            |             |            | -----(G)---> |            |
 +------------+             +------------+              +------------+
 ~~~~~~~~~~~~~
@@ -637,7 +635,7 @@ This section lists the specifications on this profile based on the requirements 
 # Acknowledgments
 {: numbered="no"}
 
-The author wishes to thank Ari Keränen, John Mattsson, Ludwig Seitz, Göran Selander, Jim Schaad and Marco Tiloca for the useful discussion and reviews that helped shape this document.
+The author wishes to thank Ari Keränen, John Mattsson, Ludwig Seitz, Göran Selander, Cigdem Sengul, Jim Schaad and Marco Tiloca for the useful discussion and reviews that helped shape this document.
 
 --- fluff
 
