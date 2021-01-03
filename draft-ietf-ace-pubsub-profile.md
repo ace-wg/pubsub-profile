@@ -1,11 +1,11 @@
 ---
-coding: utf-8
-
 title: Pub-Sub Profile for Authentication and Authorization for Constrained Environments (ACE)
 abbrev: pubsub-profile
 docname: draft-ietf-ace-pubsub-profile-latest
 #date: 2017-03-13
 category: std
+
+coding: utf-8
 
 ipr: trust200902
 area: Security
@@ -16,12 +16,12 @@ stand_alone: yes
 pi: [toc, sortrefs, symrefs]
 
 author:
- -
+  -
     ins: F. Palombini
     name: Francesca Palombini
     org: Ericsson
     email: francesca.palombini@ericsson.com
--
+  -
     ins: C. Sengul
     name: Cigdem Sengul
     org: Brunel University
