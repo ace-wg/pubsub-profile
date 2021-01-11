@@ -36,6 +36,19 @@ normative:
   I-D.ietf-ace-oauth-authz:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-ace-key-groupcomm:
+  MQTT-OASIS-Standard-v5:
+    title: "OASIS Standard MQTT Version 5.0"
+    date: "2017"
+    target: http://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html
+    author:
+      -
+        ins: A. Banks
+      -
+        ins: E. Briggs
+      -
+        ins: K. Borgendale
+      -
+        ins: R. Gupta
 
 informative:
 
@@ -43,20 +56,21 @@ informative:
   I-D.ietf-ace-actors:
   I-D.ietf-ace-dtls-authorize:
   I-D.ietf-ace-oscore-profile:
+  I-D.ietf-ace-mqtt-tls-profile:
 
 entity:
         SELF: "[RFC-XXXX]"
 
 --- abstract
 
-This specification defines an application profile for authentication and authorization for publishers and subscribers in a pub-sub setting scenario in a constrained environment, using the ACE framework. This profile relies on transport layer or application layer security to authorize the publisher to the broker. Moreover, it relies on application layer security for publisher-broker and subscriber-broker communication.
+This specification defines an application profile for authentication and authorization for publish-subscribe scenario in a constrained environment, where the publishers, subscribers, and the broker use the ACE framework to secure communications. This profile relies on transport layer or application layer security to authorize the publisher to the broker. It describes on application layer security for publisher-broker and subscriber-broker communication.
 
 
 --- middle
 
 # Introduction
 
-The publisher-subscriber setting allows for devices with limited reachability to communicate via a broker that enables store-and-forward messaging between the devices. The pub-sub scenario using the Constrained Application Protocol (CoAP) is specified in {{I-D.ietf-core-coap-pubsub}}, while the one using MQTT is specified in REF MQTT. This document defines a way to authorize nodes in a CoAP pub-sub type of setting, using the ACE framework {{I-D.ietf-ace-oauth-authz}}, and to provide the keys for protecting the communication between these nodes. This document gives detailed specifications for MQTT and CoAP pub-sub, but can easily be adapted for other transport protocol as well.
+In the publish-subscribe (pub-sub) scenario, devices with limited reachability  communicate via a broker,  which enables store-and-forward messaging between the devices.  This document defines a way to authorize nodes in a pub-sub type of setting, using the ACE framework {{I-D.ietf-ace-oauth-authz}}, and to provide the keys for protecting the communication between these nodes. The pub-sub scenario using the Constrained Application Protocol (CoAP) is specified in {{I-D.ietf-core-coap-pubsub}}, while the MQTT pub-sub protocol is specified in {{MQTT-OASIS-Standard-v5}}. This document gives detailed specifications for both MQTT and CoAP pub-sub, but can easily be adapted for other transport protocol as well.
 
 ## Terminology
 
@@ -67,11 +81,12 @@ document are to be interpreted as described in RFC 2119 {{RFC2119}}.
 Readers are expected to be familiar with the terms and concepts
 described in {{I-D.ietf-ace-oauth-authz}}, {{I-D.ietf-ace-key-groupcomm}}. In particular, analogously to {{I-D.ietf-ace-oauth-authz}}, terminology for entities in the architecture such as Client (C), Resource Server (RS), and Authorization Server (AS) is defined in OAuth 2.0 {{RFC6749}} and {{I-D.ietf-ace-actors}}, and terminology for entities such as the Key Distribution Center (KDC) and Dispatcher in {{I-D.ietf-ace-key-groupcomm}}.
 
-Readers are expected to be familiar with terms and concepts of pub-sub group communication, as described in {{I-D.ietf-core-coap-pubsub}}, or MQTT (REF MQTT pubsub).
+Readers are expected to be familiar with terms and concepts of pub-sub group communication, as described in {{I-D.ietf-core-coap-pubsub}}, or MQTT {{MQTT-OASIS-Standard-v5}}.
 
 # Application Profile Overview {#overview}
 
-The objective of this document is to specify how to authorize nodes, provide keys, and protect a pub-sub communication, using {{I-D.ietf-ace-key-groupcomm}}, which itself expands the Ace framework ({{I-D.ietf-ace-oauth-authz}}), and transport profiles ({{I-D.ietf-ace-dtls-authorize}}, {{I-D.ietf-ace-oscore-profile}}, REF MQTT profile). The pub-sub communication protocol can be based on CoAP, as described in {{I-D.ietf-core-coap-pubsub}}, MQTT (see REF MQTT comm), or other transport.
+The objective of this document is to specify how to authorize nodes, provide keys, and protect pub-sub communication, using {{I-D.ietf-ace-key-groupcomm}}, which expands
+from the ACE framework ({{I-D.ietf-ace-oauth-authz}}), and transport profiles ({{I-D.ietf-ace-dtls-authorize}}, {{I-D.ietf-ace-oscore-profile}}, {{I-D.ietf-ace-mqtt-tls-profile}}). The pub-sub communication protocol can be based on CoAP, as described in {{I-D.ietf-core-coap-pubsub}}, MQTT {{MQTT-OASIS-Standard-v5}}, or other transport.
 
 The architecture of the scenario is shown in {{archi}}.
 
@@ -97,24 +112,25 @@ The architecture of the scenario is shown in {{archi}}.
 {: #archi title="Architecture CoAP pubsub with Authorization Servers"}
 {: artwork-align="center"}
 
-The RS is the broker, which contains the topic. This node corresponds to the Dispatcher, in {{I-D.ietf-ace-key-groupcomm}}.
-The AS1 hosts the policies about the Broker: what endpoints are allowed to Publish on the Broker. The Clients access this node to get write access to the Broker.
-The AS2 hosts the policies about the topic: what endpoints are allowed to access what topic. This node represents both the AS and Key Distribution Center roles from {{I-D.ietf-ace-key-groupcomm}}.
+The RS is the broker and contains the topics that clients can publish or subscribe to. Thefefore, the RS corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}.
+The AS1 hosts the access policies for the Broker, i.e. who is allowed to write to the Broker. Hence, the Publisher clients access to AS1 to get write access to the Broker.
+The AS2 hosts the policies about the topics: who is allowed to access which topic. This node represents both the AS and Key Distribution Center roles from {{I-D.ietf-ace-key-groupcomm}}.
 
 There are four phases, the first three can be done in parallel.
 
 <!-- Jim
  One of the things that I am not currently happy with is that you are looking at AS1 and AS2 as being independent appliers of access control logic without any communication between them.  I think that AS1 needs the ability to give policy to AS2 on a topic after it has been created and before any subscribers get keys.  In the case they are co-resident this is trivial, in other cases it may not be.
-
  FP: AS1 and AS2 have in my mind clearly separated functions. There is some coordination involved of course (to gain knowledge of the policies), but I think that how this is dealt with is application specific. For example, there could be some node distributing those (they do not need to talk to each other directly). Added some generic considerations at the end of the section.
+ CS: Agree with Jim that this can be dealt better.
 -->
 
 1. The Publisher requests publishing access to the Broker at the AS1, and communicates with the Broker to set up security.
-2. The Publisher requests access to a specific topic at the AS2
+2. The Publisher requests access to a specific topic at the AS2.
 3. The Subscriber requests access to a specific topic at the AS2.
-4. The Publisher and the Subscriber securely post to and get publications from the Broker.
+4. The Publisher and the Subscriber securely post and get published messages for their
+authorised topics from the Broker.
 
-This exchange aims at setting up 2 different security associations: on the one hand, the Publisher has a security association with the Broker, to protect the communication and securely authorize the Publisher to publish on a topic (Security Association 1). On the other hand, the Publisher has a security association with the Subscriber, to protect the publication content itself (Security Association 2).
+This exchange aims at setting up two different security associations: on the one hand, the Publisher has a security association with the Broker, to protect the communication and securely authorize the Publisher to publish to a topic (Security Association 1). On the other hand, the Publisher has a security association with the Subscriber, to protect the publication content (Security Association 2).
 The Security Association 1 is set up using AS1 and a transport profile of {{I-D.ietf-ace-oauth-authz}}, the Security Association 2 is set up using AS2 and {{I-D.ietf-ace-key-groupcomm}}.
 
 Note that, analogously to the Publisher, the Subscriber can also set up an additional security association with the Broker, using an AS, in the same way the Publisher does with AS1. In this case, only authorized Subscribers would be able to get notifications from the Broker. The overhead would be that each Subscriber should access the AS and get all the information to start a secure exchange with the Broker.
@@ -126,6 +142,9 @@ AS1 and AS2 or just to AS2?  Is this really an AS1 controls creation of topics a
 
 FP: A second publisher would need to talk to both AS1 and AS2. As I intended, AS1 controls who can publish to (or create) a topic on a broker, AS2 more generally controls who can decrypt the content of the publication.
 "Losing the membership" can mean "not being able to access (read or write) the content of the publication", in which case AS2 should revoke the node's rights or it can mean "not allowed to publish on the broker" (maybe it is still allowed to subscribe to the topic), in which case AS1 should revoke the node's right. Both revocations are not specified for now.
+
+CS: I think AS controls who can encrypt as well as decrypt. So, if pub1 got revoked, is 
+it revoked in AS1 or in AS2? Who needs to send which information to whom? 
 -->
 
 ~~~~~~~~~~~~
@@ -154,19 +173,25 @@ on a "revocation" of a publisher's right to publish?  (As opposed to the right j
 FP: Yes, the broker should be notified of revocation. This is not specified here, and I think this is a general topic that the framework should address: no profile deals with revocations so far, as far as I can tell. Some additional content on revocation is in the ace-key-groupcomm doc.
 -->
 
-Note that AS1 and AS2 might either be co-resident or be 2 separate physical entities, in which case access control policies must be exchanged between AS1 and AS2, so that they agree on rights for joining nodes about specific topics. How the policies are exchanged is out of scope for this specification.
+Note that AS1 and AS2 might either be co-resident or be two separate physical entities, in which case access control policies must be exchanged between AS1 and AS2, so that they agree on rights for joining nodes about specific topics. How the policies are exchanged is out of scope for this specification.
+
+<!-- Cigdem: I think this should be handled differently. 
+-->
 
 # PubSub Application Profiles {#profile}
 
-Each profile defined in this document uses {{I-D.ietf-ace-key-groupcomm}}, which expands the ACE framework. This section defines which exact parameters from {{I-D.ietf-ace-key-groupcomm}} have to be used, and the values for each parameter. Since {{I-D.ietf-ace-oauth-authz}} recommends the use of CoAP anc CBOR, this document describes the exchanges assuming CoAP and CBOR are used. However, using HTTP instead of CoAP is possible, using the corresponding parameters and methods. Analogously, JSON {{RFC8259}} can be used instead of CBOR, using the conversion method specified in Sections 4.1 and 4.2 of {{RFC7049}}. In case JSON is used, the Content Format or Media Type of the message has to be changed accordingly.
+Each profile defined in this document uses {{I-D.ietf-ace-key-groupcomm}}, which expands the ACE framework. This section defines which exact parameters from {{I-D.ietf-ace-key-groupcomm}} have to be used, and the values for each parameter. Since {{I-D.ietf-ace-oauth-authz}} recommends the use of CoAP and CBOR, this document describes the exchanges assuming CoAP and CBOR are used. However, using HTTP instead of CoAP is possible using the corresponding parameters and methods. Analogously, JSON {{RFC8259}} can be used instead of CBOR, using the conversion method specified in Sections 4.1 and 4.2 of {{RFC7049}}. In case JSON is used, the Content Format or Media Type of the message has to be changed accordingly.
 
 The Publisher and the Subscriber map to the Client in {{I-D.ietf-ace-key-groupcomm}}, the AS2 maps to the AS and to the KDC, the Broker maps to the Dispatcher.
+<!--
+Cigdem: what I am suggesting is that AS1 maps to the AS, and AS2 maps to KDC.
+-->
 
-Note that both publishers and subscribers use the same profile. <!--, called "coap_pubsub_app". -->
+Note that both the Publisher and Subscriber clients use the same profile. <!--, called "coap_pubsub_app". -->
 
 ## Retrieval of COSE Key for protection of content {#retr-cosekey}
 
-This phase is common to both Publisher and Subscriber. To maintain the generality, the Publisher or Subscriber is referred as Client in this section.
+This phase is common to both the Publisher and Subscriber. To maintain generality, the Publisher or Subscriber is referred as the Client in this section.
 
 ~~~~~~~~~~~
    Client                            Broker             AS2
@@ -174,9 +199,9 @@ This phase is common to both Publisher and Subscriber. To maintain the generalit
       |                                |                 |
       | [<-- AS1, AS2 Information ---] |                 |
       |                                                  |
-      | [------ Pub Key Format Negociation Request --->] |
+      | [------ Pub Key Format Negotiation Request --->] |
       |                                                  |
-      | [<---- Pub Key Format Negociation Response ----] |
+      | [<---- Pub Key Format Negotiation Response ----] |
       |                                                  |
       | -- Authorization + Key Distribution Request ---> |
       |                                                  |
@@ -186,7 +211,8 @@ This phase is common to both Publisher and Subscriber. To maintain the generalit
 {: #B title="B: Access request - response"}
 {: artwork-align="center"}
 
-Complementary to what is defined in {{I-D.ietf-ace-oauth-authz}} (Section 5.1.1), to determine the AS2 in charge of a topic hosted at the Broker, the Broker MAY send the address of both the AS in charge of the topic back to the Client in the 'AS' parameter in the AS Information, as a response to an Unauthorized Resource Request (Section 5.1.2). The uri of AS2 is concatenated to the uri of AS1, and separated by a comma. An example using CBOR diagnostic notation and CoAP is given below:
+Complementary to what is defined in {{I-D.ietf-ace-oauth-authz}} (Section 5.1.1), the Broker MAY send the address of both the AS1 and AS2 in the 'AS' parameter in the AS Information, as a response to an Unauthorized Resource Request (Section 5.1.2). 
+For CoAP, the uri of AS2 is concatenated to the uri of AS1, and separated by a comma. An example using CBOR diagnostic notation and CoAP is given below:
 
 ~~~~~~~~~~~
     4.01 Unauthorized
@@ -197,13 +223,20 @@ Complementary to what is defined in {{I-D.ietf-ace-oauth-authz}} (Section 5.1.1)
 {: #AS-info-ex title="AS1, AS2 Information example"}
 {: artwork-align="center"}
 
+Authorisation Server (AS) Discovery is also possible for MQTT v5 clients (and not supported for MQTT v3 clients).  AS Discovery defined in {{I-D.ietf-ace-mqtt-tls-profile}} (Section 2.2.6.1) and is implemented by including a User Property to the CONNACK (Connection Acknowledgement) message returned by the Broker. The User Property can be used multiple times to represent multiple name, value pairs. The same name is allowed to appear more than once. So, the Broker returns two "ace_as_hint" fields corresponding to two ASes.  
+
 <!-- Jim
  I don't' think that the returned info on the first request is going to be the same for publishers and subscribers.  Not sure what this should really look like.
 
  The broker _may_ send this info to both pub and sub, and then the subscriber could just discard the AS it does not need (AS1). Or the sub could know what AS to contact from a different exchange.
 -->
 
-After retrieving the AS2 address, the Client MAY send a request to the AS, in order to retrieve necessary information concerning the public keys in the group, as well as concerning the algorithm and related parameters for computing signatures in the group. This request is a subset of the Token POST request defined in Section 3.3 of {{I-D.ietf-ace-key-groupcomm}}, specifically a CoAP POST request to a specific resource at the AS, including only the parameters 'sign_info' and 'pub_key_enc' in the CBOR map in the payload. The default url-path for this resource is /ace-group/gid/cs-info, where "gid" is the topic identifier, but implementations are not required to use this name, and can use their own instead. The AS MUST respond with the response defined in Section 3.3 of {{I-D.ietf-ace-key-groupcomm}}, specifically including the parameters 'sign_info', 'pub_key_enc', and 'rsnonce' (8 bytes pseudo-random nonce generated by the AS).
+After retrieving the AS2 address, the Client MAY send a request to the AS2, to retrieve the necessary information concerning the public keys in the group, as well as the algorithm and related parameters for computing signatures in the group. This request is a subset of the Token POST request defined in Section 3.3 of {{I-D.ietf-ace-key-groupcomm}}, specifically a CoAP POST request to a specific resource at the AS2, including only the parameters 'sign_info' and 'pub_key_enc' in the CBOR map in the payload. The default url-path for this resource is /ace-group/gid/cs-info, where "gid" is the topic identifier, but implementations are not required to use this name, and can use their own instead. The AS MUST respond with the response defined in Section 3.3 of {{I-D.ietf-ace-key-groupcomm}}, specifically including the parameters 'sign_info', 'pub_key_enc', and 'rsnonce' (8 bytes pseudo-random nonce generated by the AS).
+
+<!-- Cigdem
+Where does the token come from? They need to first authorise to AS2? Why don't everybody
+just authorise to AS1, and POST token to AS2 with the tokens got from AS1?
+-->
 
 After that, the Client sends an Authorization + Joining Request, which is an Authorization Request merged with a Joining Request, as described in {{I-D.ietf-ace-key-groupcomm}}, Sections 3.1 and 4.2. The reason for merging these two messages is that the AS2 is both the AS and the KDC, in this setting, so the Authorization Response and the Post Token message are not necessary.
 
@@ -218,6 +251,10 @@ More specifically, the Client sends a POST request to the /ace-group/gid endpoin
   * 'cnonce', set to a 8 bytes long pseudo-random nonce, if 'client\_cred' is present,
   * 'client\_cred\_verify', set to a singature computed over the rsnonce concatenated with cnonce, if 'client\_cred' is present,
   * OPTIONALLY, if needed, the 'pub_keys_repos' parameter
+<!-- Cigdem
+This needs to be changed as scope is now using the AIF and is defined differently MQTT.
+Scope parameter itself can be an array. 
+-->
 
 - the following fields from the Authorization Request (Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}):
   * OPTIONALLY, if needed, additional parameters such as 'client_id'
@@ -261,6 +298,10 @@ The AS2 response is an Authorization + Joining Response, with Content-Format = "
     - the broker's topic as first element, and
     - the string "publisher" if the client is an authorized publisher, "subscriber" if the client is an authorized subscriber, or a CBOR array containing both, if the client is authorized to be both.
 
+<!-- Cigdem 
+This needs to reflect changes to the scope format.
+-->
+
 Examples for the response payload are detailed in {{fig-resp-as2}} and {{fig-resp2-as2}}.
 
 ## coap_pubsub_app Application Profile {#coap}
@@ -271,9 +312,12 @@ In case CoAP PubSub is used as communication protocol:
 
 ## mqtt_pubsub_app Application Profile {#mqtt}
 
-In case mQTT PubSub is used as communication protocol:
+In case MQTT PubSub is used as communication protocol:
 
   * 'profile' set to "mqtt_pubsub_app", as specified in {{iana-mqtt-profile}}.
+<!-- Cigdem
+  Do you need a response figure for as2?
+-->
 
 # Publisher
 
@@ -303,15 +347,15 @@ In this section, it is specified how the Publisher requests, obtains and communi
 
 This is a combination of two independent phases:
 
-* one is the establishment of a secure connection between Publisher and Broker, using an ACE transport profile such as DTLS {{I-D.ietf-ace-dtls-authorize}},  OSCORE {{I-D.ietf-ace-oscore-profile}} or REF MQTT Profile. (A)(C)
-* the other is the Publisher's retrieval of keying material to protect the publication. (B)
+* The first is the establishment of a secure connection between Publisher and Broker, using an ACE transport profile such as DTLS {{I-D.ietf-ace-dtls-authorize}},  OSCORE {{I-D.ietf-ace-oscore-profile}} or MQTT Profile {{I-D.ietf-ace-mqtt-tls-profile}}. (A)(C)
+* The second is the Publisher's retrieval of keying material to protect the publication. (B)
 
 In detail:
 
 (A) corresponds to the Access Token Request and Response between Publisher and Authorization Server to retrieve the Access Token and RS (Broker) Information.
-As specified, the Publisher has the role of a CoAP client, the Broker has the role of the CoAP server.
+As specified, the Publisher has the role of a CoAP or MQTT client, the Broker has the role of the CoAP or MQTT server.
 
-(C) corresponds to the exchange between Publisher and Broker, where the Publisher sends its access token to the Broker and establishes a secure connection with the Broker. Depending on the Information received in (A), this can be for example DTLS handshake, or other protocols. Depending on the application, there may not be the need for this set up phase: for example, if OSCORE is used directly. Note that, in line with what defined in the ACE transport profile used, the access token includes the scope (i.e. pubsub topics on the Broker) the Publisher is allowed to publish to. For implementation semplicity, it is RECOMMENDED that the ACE transport profile used and this specification use the same format of "scope".
+(C) corresponds to the exchange between Publisher and Broker, where the Publisher sends its access token to the Broker and establishes a secure connection with the Broker. Depending on the Information received in (A), this can be for example DTLS handshake, or other protocols. Depending on the application, there may not be the need for this set up phase: for example, if OSCORE is used directly. Note that, in line with what defined in the ACE transport profile used, the access token includes the scope (i.e. pub-sub topics on the Broker) the Publisher is allowed to publish to. For implementation simplicity, it is RECOMMENDED that the ACE transport profile use and this specification use the same format of "scope".
 
 (A) and (C) details are specified in the profile used.
 
@@ -356,7 +400,11 @@ An example of the payload of an Authorization + Joining Request and correspondin
 
 ## MQTT Publisher {#mqtt-pub}
 
-TODO
+<!--  Cigdem
+I am not sure if this merits another section; If AS2 is only defined using CoAP, 
+the MQTT client would need to support that. The differences are profile name, and
+the use of AIF in the scope and the scope format shown in this example.
+-->
 
 # Subscriber {#subs-profile}
 
@@ -389,6 +437,13 @@ Step (D) between Subscriber and AS2 corresponds to the retrieval of the keying m
 This step is the same as (B) between Publisher and AS2 ({{retr-cosekey}}), with the following differences:
 
 * The Authorization + Joining Request MUST NOT contain the 'client\_cred parameter', the role element in the 'scope' parameter MUST be set to "subscriber". The Subscriber MUST have access to the public keys of all the Publishers; this MAY be achieved in the Authorization + Joining Request by using the parameter 'get_pub_keys' set to empty array.
+
+<!-- Cigdem 
+It looks like a client cannot be both a publisher and a subscriber. I think 
+the joining request should just have the scope (in MQTT this has permissions for
+topics for both pub and sub), and use that to decide which information to send
+to the clients.) 
+-->
 
 * The Authorization + Key Distribution Response MUST contain the 'pub_keys' parameter.
 
@@ -431,7 +486,10 @@ An example of the payload of an Authorization + Joining Request and correspondin
 
 ## MQTT Subscriber {#mqtt-sub}
 
-TODO
+<!-- Cigdem: Similar comment as above. If AS2 supports CoAP only, then MQTT client (or its helper) would need to support that. In the MQTT case, I would not treat pub/sub clients differently - so there could be one section MQTT Publisher/Subscriber client Key Exchange. 
+profile: mqtt_pubsub_app; scope as defined in AIF-MQTT. Going though the scopes, AS2 discloses
+the necessary level of keys.
+-->
 
 # Pub-Sub Protected Communication
 
@@ -467,6 +525,9 @@ The (F) message is the subscription of the Subscriber, which is unprotected, unl
 The (G) message is the response from the Broker, where the publication is protected with COSE.
 
 The flow graph is presented below.
+<!-- Cigdem 
+The flow graph is not very generic. Should one be created for MQTT?
+-->
 
 ~~~~~~~~~~~
   Publisher                Broker               Subscriber
@@ -482,7 +543,7 @@ The flow graph is presented below.
 
 ## Using COSE Objects To Protect The Resource Representation {#oscon}
 
-The Publisher uses the symmetric COSE Key received from AS2 in exchange B ({{retr-cosekey}}) to protect the payload of the PUBLISH operation (Section 4.3 of {{I-D.ietf-core-coap-pubsub}} and REF MQTT). Specifically, the COSE Key is used to create a COSE\_Encrypt0 with algorithm specified by AS2. The Publisher uses the private key corresponding to the public key sent to the AS2 in exchange B ({{retr-cosekey}}) to countersign the COSE Object as specified in Section 4.5 of {{RFC8152}}. The CoAP payload is replaced by the COSE object before the publication is sent to the Broker.
+The Publisher uses the symmetric COSE Key received from AS2 in exchange B ({{retr-cosekey}}) to protect the payload of the PUBLISH operation (Section 4.3 of {{I-D.ietf-core-coap-pubsub}} and {{I-D.ietf-ace-mqtt-tls-profile}}). Specifically, the COSE Key is used to create a COSE\_Encrypt0 with algorithm specified by AS2. The Publisher uses the private key corresponding to the public key sent to the AS2 in exchange B ({{retr-cosekey}}) to countersign the COSE Object as specified in Section 4.5 of {{RFC8152}}. The CoAP payload is replaced by the COSE object before the publication is sent to the Broker.
 
 The Subscriber uses the kid in the countersignature field in the COSE object to retrieve the right public key to verify the countersignature. It then uses the symmetric key received from AS2 to verify and decrypt the publication received in the payload of the CoAP Notification from the Broker.
 
