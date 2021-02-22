@@ -275,7 +275,9 @@ In case mQTT PubSub is used as communication protocol:
 
   * 'profile' set to "mqtt_pubsub_app", as specified in {{iana-mqtt-profile}}.
 
-# Publisher
+# CoAP PubSub Application Profile
+
+## Publisher
 
 In this section, it is specified how the Publisher requests, obtains and communicates to the Broker the access token, as well as the retrieval of the keying material to protect the publication.
 
@@ -317,8 +319,6 @@ As specified, the Publisher has the role of a CoAP client, the Broker has the ro
 
 (B) corresponds to the retrieval of the keying material to protect the publication end-to-end with the subscribers (see {{oscon}}), and uses {{I-D.ietf-ace-key-groupcomm}}. The details are defined in {{retr-cosekey}}.
 
-## CoAP Publisher {#coap-pub}
-
 An example of the payload of an Authorization + Joining Request and corresponding Response for a CoAP Publisher using CoAP and CBOR is specified in {{fig-post-as2}} and {{fig-resp-as2}}, where SIG is a signature computed using the private key associated to the public key and the algorithm in "client_cred".
 
 ~~~~~~~~~~~~
@@ -354,11 +354,7 @@ An example of the payload of an Authorization + Joining Request and correspondin
 {: #fig-resp-as2 title="Authorization + Joining Response payload for a Publisher"}
 {: artwork-align="center"}
 
-## MQTT Publisher {#mqtt-pub}
-
-TODO
-
-# Subscriber {#subs-profile}
+## Subscriber {#subs-profile}
 
 In this section, it is specified how the Subscriber retrieves the keying material to protect the publication.
 
@@ -391,8 +387,6 @@ This step is the same as (B) between Publisher and AS2 ({{retr-cosekey}}), with 
 * The Authorization + Joining Request MUST NOT contain the 'client\_cred parameter', the role element in the 'scope' parameter MUST be set to "subscriber". The Subscriber MUST have access to the public keys of all the Publishers; this MAY be achieved in the Authorization + Joining Request by using the parameter 'get_pub_keys' set to empty array.
 
 * The Authorization + Key Distribution Response MUST contain the 'pub_keys' parameter.
-
-## CoAP Subscriber {#coap-sub}
 
 An example of the payload of an Authorization + Joining Request and corresponding Response for a CoAP Subscriber using CoAP and CBOR is specified in {{fig-post2-as2}} and {{fig-resp2-as2}}.
 
@@ -429,7 +423,7 @@ An example of the payload of an Authorization + Joining Request and correspondin
 {: #fig-resp2-as2 title="Authorization + Joining Response payload for a Subscriber"}
 {: artwork-align="center"}
 
-## MQTT Subscriber {#mqtt-sub}
+# MQTT PubSub Application Profile {#mqtt-pubsub}
 
 TODO
 
