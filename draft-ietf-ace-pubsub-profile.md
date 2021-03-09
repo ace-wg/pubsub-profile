@@ -36,6 +36,19 @@ normative:
   I-D.ietf-ace-oauth-authz:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-ace-key-groupcomm:
+  MQTT-OASIS-Standard-v5:
+    title: "OASIS Standard MQTT Version 5.0"
+    date: "2017"
+    target: http://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html
+    author:
+      -
+        ins: A. Banks
+      -
+        ins: E. Briggs
+      -
+        ins: K. Borgendale
+      -
+        ins: R. Gupta
 
 informative:
 
@@ -49,14 +62,14 @@ entity:
 
 --- abstract
 
-This specification defines an application profile for authentication and authorization for publishers and subscribers in a pub-sub setting scenario in a constrained environment, using the ACE framework. This profile relies on transport layer or application layer security to authorize the publisher to the broker. Moreover, it relies on application layer security for publisher-broker and subscriber-broker communication.
+This specification defines an application profile for authentication and authorization for publishers and subscribers in a constrained pub-sub scenario, using the ACE framework. This profile relies on transport layer or application layer security to authorize the publisher to the broker. Moreover, it describes application layer security for publisher-broker and subscriber-broker communication.
 
 
 --- middle
 
 # Introduction
 
-The publisher-subscriber setting allows for devices with limited reachability to communicate via a broker that enables store-and-forward messaging between the devices. The pub-sub scenario using the Constrained Application Protocol (CoAP) is specified in {{I-D.ietf-core-coap-pubsub}}, while the one using MQTT is specified in REF MQTT. This document defines a way to authorize nodes in a CoAP pub-sub type of setting, using the ACE framework {{I-D.ietf-ace-oauth-authz}}, and to provide the keys for protecting the communication between these nodes. This document gives detailed specifications for MQTT and CoAP pub-sub, but can easily be adapted for other transport protocol as well.
+In the publish-subscribe (pub-sub) scenario, devices with limited reachability communicate via a broker, which enables store-and-forward messaging between the devices. This document defines a way to authorize pub-sub nodes using the ACE framework {{I-D.ietf-ace-oauth-authz}}, and to provide the keys for protecting the communication between them. The pub-sub communication using the Constrained Application Protocol (CoAP) is specified in {{I-D.ietf-core-coap-pubsub}}, while the one using MQTT is specified in {{MQTT-OASIS-Standard-v5}}.  This document gives detailed specifications for MQTT and CoAP pub-sub, but can easily be adapted for other transport protocols as well.
 
 ## Terminology
 
