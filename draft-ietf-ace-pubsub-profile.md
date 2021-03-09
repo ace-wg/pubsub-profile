@@ -466,7 +466,7 @@ An example of the payload of an Authorization + Joining Request and correspondin
 
 # MQTT PubSub Application Profile {#mqtt-pubsub}
 
-The steps MQTT clients go through are similar to the CoAP clients as described in {{#coap_profile}}.
+The steps MQTT clients go through are similar to the CoAP clients as described in {{coap_profile}}.
 
 ~~~~~~~~~~~
              +----------------+   +----------------+
@@ -492,8 +492,8 @@ The steps MQTT clients go through are similar to the CoAP clients as described i
 
 The main difference is that the clients go through the two phases regardless of whether they act only as a Publisher or a Subscriber:
 
-*The establishment of a secure connection between the Client and Broker, using the ACE transport profile for MQTT {{I-D.ietf-ace-mqtt-tls-profile}} ((A)(C) in {{#pubsub-mqtt-1}})
-* The Client's retrieval of keying material to protect the publication ((B) in {{#pubsub-mqtt-1}}).
+*The establishment of a secure connection between the Client and Broker, using the ACE transport profile for MQTT {{I-D.ietf-ace-mqtt-tls-profile}} ((A)(C) in {{pubsub-mqtt-1}})
+* The Client's retrieval of keying material to protect the publication ((B) in {{pubsub-mqtt-1}}).
 
 This document describes the exchanges between the Client and AS2 using CoAP and CBOR. However, 
 the same exchanges can be implemented in HTTP using the corresponding parameters and methods. 
@@ -501,7 +501,7 @@ However, the payload that is carried in MQTT messages will be protected using CO
 
 To retrieve the keying material, the Client sends an Authorization + Joining Request. 
 If the client will also act as a Subscriber, it MUST have access to the public keys of all the Publishers; 
-this MAY be achieved in the Authorization + Joining Request by using the parameter 'get_pub_keys' set to empty array.  An example of the payload of an Authorization + Joining Request is specified in {{fig-post-mqtt2-as2}}.
+this MAY be achieved in the Authorization + Joining Request by using the parameter 'get_pub_keys' set to empty array.  An example of the payload of an Authorization + Joining Request is specified in {{fig-post-mqtt-as2}}.
 
 <!-- Multiple topics support???-->
 ~~~~~~~~~~~~
@@ -589,7 +589,7 @@ This section specifies the communication Publisher-Broker and Subscriber-Broker,
 The (E) message corresponds to the publication of a topic on the Broker.
 The publication (the resource representation) is protected with COSE ({{RFC8152}}).
 The (F) message is the subscription of the Subscriber. The subscription MAY be unprotected in the case of CoAP, unless a profile of ACE {{I-D.ietf-ace-oauth-authz}} is used between Subscriber and Broker. The subscription is 
-protected in the case of MQTT ({{#mqtt-pubsub}})
+protected in the case of MQTT ({{mqtt-pubsub}})
 The (G) message is the response from the Broker, where the publication is protected with COSE.
 
 The flow graph is presented below for CoAP. 
