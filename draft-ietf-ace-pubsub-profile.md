@@ -117,13 +117,6 @@ The AS2 hosts the policies about the topic: what endpoints are allowed to access
 
 There are four phases, the first three can be done in parallel.
 
-<!-- Jim
- One of the things that I am not currently happy with is that you are looking at AS1 and AS2 as being independent appliers of access control logic without any communication between them.  I think that AS1 needs the ability to give policy to AS2 on a topic after it has been created and before any subscribers get keys.  In the case they are co-resident this is trivial, in other cases it may not be.
-
- FP: AS1 and AS2 have in my mind clearly separated functions. There is some coordination involved of course (to gain knowledge of the policies), but I think that how this is dealt with is application specific. For example, there could be some node distributing those (they do not need to talk to each other directly). Added some generic considerations at the end of the section.
- CS: Agree with Jim that this can be dealt better. Will present a different architecture in the IETF 110 meeting.
--->
-
 1. The Publisher requests publishing access to the Broker at the AS1, and communicates with the Broker to set up security.
 2. The Publisher requests access to a specific topic at the AS2.
 3. The Subscriber requests access to a specific topic at the AS2.
@@ -133,19 +126,6 @@ This exchange aims at setting up two different security associations: on the one
 The Security Association 1 set up using AS1 and a transport profile of {{I-D.ietf-ace-oauth-authz}}, the Security Association 2 is set up using AS2 and {{I-D.ietf-ace-key-groupcomm}}.
 
 Note that, analogously to the Publisher, the Subscriber can also set up an additional security association with the Broker, using an AS, in the same way the Publisher does with AS1. In this case, only authorized Subscribers would be able to get notifications from the Broker. The overhead would be that each Subscriber should access the AS and get all the information to start a secure exchange with the Broker.
-
-<!-- Jim
- It is not clear to me that your allocation of roles to AS1 and
-AS2 I correct.  If you have a second publisher, does it need to talk to both
-AS1 and AS2 or just to AS2?  Is this really an AS1 controls creation of topics and AS2 controls publishing and subscribing to topics?  If the publisher loses its membership in the group for any reason, should it be able to publish willy-nilly anyway?  I.e. should AS2 be able to "revoke" the publishers right to publish?
-
-FP: A second publisher would need to talk to both AS1 and AS2. As I intended, AS1 controls who can publish to (or create) a topic on a broker, AS2 more generally controls who can decrypt the content of the publication.
-"Losing the membership" can mean "not being able to access (read or write) the content of the publication", in which case AS2 should revoke the node's rights or it can mean "not allowed to publish on the broker" (maybe it is still allowed to subscribe to the topic), in which case AS1 should revoke the node's right. Both revocations are not specified for now.
-
-CS: I think AS controls who can encrypt as well as decrypt. So, if pub1 got revoked, is 
-it revoked in AS1 or in AS2? Who needs to send which information to whom? 
-
--->
 
 ~~~~~~~~~~~~
 +------------+             +------------+              +------------+
@@ -161,21 +141,7 @@ it revoked in AS1 or in AS2? Who needs to send which information to whom?
                                      Association 2
 ~~~~~~~~~~~~~
 
-<!-- Jim
-  I don't think the picture is correct at the bottom of the section.  You have a Publisher-Subscriber client/client association
-
-  FP: Both publisher and subscriber are CoAP client, as specified in the pub-sub doc. The association is done via the sec context that is shared between pubs and subs.
--->
-<!-- Jim
-Is there any expectation that the broker should be notified
-on a "revocation" of a publisher's right to publish?  (As opposed to the right just expiring.)  There is no need to enforce subscribers right to subscribe since a key roll over means that they are getting gibberish.
-
-FP: Yes, the broker should be notified of revocation. This is not specified here, and I think this is a general topic that the framework should address: no profile deals with revocations so far, as far as I can tell. Some additional content on revocation is in the ace-key-groupcomm doc.
--->
-
 Note that AS1 and AS2 might either be co-resident or be 2 separate physical entities, in which case access control policies must be exchanged between AS1 and AS2, so that they agree on rights for joining nodes about specific topics. How the policies are exchanged is out of scope for this specification.
-<!-- Cigdem: I think this should be handled differently. 
--->
 
 # PubSub Application Profiles {#profile}
 
@@ -207,8 +173,6 @@ This phase is common to both Publisher and Subscriber. To maintain generality, t
 {: #B title="B: Access request - response"}
 {: artwork-align="center"}
 
-<!-- CS: Removed "in charge of the topic back" from the paragraph below, as in MQTT, in a connection request, the Broker won't know which topics the client will request access to.
--->
 Complementary to what is defined in {{I-D.ietf-ace-oauth-authz}} (Section 5.1.1), for AS discovery, the Broker MAY send the address of both ASes to the Client in the 'AS' parameter in the AS Information as a response to an Unauthorized Resource Request (Section 5.1.2). The uri of AS2 is concatenated to the uri of AS1, and separated by a comma. An example using CBOR diagnostic notation and CoAP is given below:
 
 ~~~~~~~~~~~
@@ -221,12 +185,6 @@ Complementary to what is defined in {{I-D.ietf-ace-oauth-authz}} (Section 5.1.1)
 {: artwork-align="center"}
 
 Authorisation Server (AS) Discovery is also possible for MQTT v5 clients (and not supported for MQTT v3 clients).  AS Discovery defined in {{I-D.ietf-ace-mqtt-tls-profile}} (Section 2.2.6.1) and is implemented by including a User Property to the CONNACK (Connection Acknowledgement) message returned by the Broker. The User Property can be used multiple times to represent multiple name, value pairs. The same name is allowed to appear more than once. So, the Broker returns two "ace_as_hint" fields corresponding to two ASes.  
-
-<!-- Jim
- I don't' think that the returned info on the first request is going to be the same for publishers and subscribers.  Not sure what this should really look like.
-
- The broker _may_ send this info to both pub and sub, and then the subscriber could just discard the AS it does not need (AS1). Or the sub could know what AS to contact from a different exchange.
--->
 
 After retrieving the AS2 address, the Client MAY send a request to the AS2, to retrieve necessary information concerning the public keys in the group, as well as the algorithm and related parameters for computing signatures in the group. This request is a subset of the Token POST request defined in Section 3.3 of {{I-D.ietf-ace-key-groupcomm}}, specifically a CoAP POST request to a specific resource at the AS2, including only the parameters 'sign_info' and 'pub_key_enc' in the CBOR map in the payload. The default url-path for this resource is /ace-group/gid/cs-info, where "gid" is the topic identifier, but implementations are not required to use this name, and can use their own instead. The AS MUST respond with the response defined in Section 3.3 of {{I-D.ietf-ace-key-groupcomm}}, specifically including the parameters 'sign_info', 'pub_key_enc', and 'rsnonce' (8 bytes pseudo-random nonce generated by the AS).
 
@@ -243,17 +201,13 @@ More specifically, the Client sends a POST request to the /ace-group/gid endpoin
   * 'cnonce', set to a 8 bytes long pseudo-random nonce, if 'client\_cred' is present,
   * 'client\_cred\_verify', set to a singature computed over the rsnonce concatenated with cnonce, if 'client\_cred' is present,
   * OPTIONALLY, if needed, the 'pub_keys_repos' parameter
-<!-- Cigdem
-Should scope explanation be changed as scope is now using the AIF and is defined differently MQTT.
--->
+
 
 - the following fields from the Authorization Request (Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}):
   * OPTIONALLY, if needed, additional parameters such as 'client_id'
 
 TODO: 'cnonce' might change name.
 TODO: register media type ace+json for HTTP?
-<!-- I think this needs to be registered with MQTT-TLS Profile?
--->
 
 Note that the alg parameter in the 'client_cred' COSE_Key MUST be a signing algorithm, as defined in section 8 of {{RFC8152}}, and that it is the same algorithm used to compute the signature sent in 'client\_cred\_verify'.
 
@@ -263,17 +217,6 @@ The AS2 verifies that the Client is authorized to access the topic and, if the '
 
 The AS2 response is an Authorization + Joining Response, with Content-Format = "application/ace+cbor". The payload (formatted as a CBOR map) MUST contain:
 
-<!-- Jim
- why not use the cnf return value for the key?  Also there is no reason to make it a bstr rather than a map.
-
- I did not use the cnf because of the following reasoning: the key is not used to authenticate the client (pub or sub) to the rs (broker), it is not a pop-key related to a token (no token). For subs, there are both cnf and key parameter (see {{fig-resp2-as2}}). Also, see the example on https://tools.ietf.org/html/draft-seitz-ace-oauth-authz-00#section-6.5 (token-less exchange).
- OK, Changed to map.
--->
-<!-- Jim
-  need to define a signers_keys element which returns all of the signing keys.  Defined as an array of keys.  Return other signers for multiple publishers
-
-  Are you sure this comment should be in this section? To a subscriber, yes, the set of all signers keys are returned (see {{subs-profile}} section: "The AS2 response contains a "cnf" parameter whose value is set to a COSE Key Set, (Section 7 of {{RFC8152}}) i.e. an array of COSE Keys, which contains the public keys of all authorized Publishers..."). If you did mean it for publishers, I don't see why.
--->
 - the following fields from the Joining Response (Section 4.2 of {{I-D.ietf-ace-key-groupcomm}}):
   * 'kty' identifies a key type "COSE_Key", as defined in {{iana-ace-groupcomm-key}}.
   * 'key', which contains a "COSE_Key" object (defined in {{RFC8152}}, containing:
@@ -290,10 +233,6 @@ The AS2 response is an Authorization + Joining Response, with Content-Format = "
   * OPTIONALLY 'scope', set to a CBOR array containing:
     - the broker's topic as first element, and
     - the string "publisher" if the client is an authorized publisher, "subscriber" if the client is an authorized subscriber, or a CBOR array containing both, if the client is authorized to be both.
-<!-- Cigdem
-Scope should be changed to use AIF and is defined differently MQTT.
-Scope parameter itself can be an array. 
--->
 
 Examples for the response payload are detailed in {{fig-resp-as2}} and {{fig-resp2-as2}}.
 
@@ -419,13 +358,6 @@ Step (D) between Subscriber and AS2 corresponds to the retrieval of the keying m
 This step is the same as (B) between Publisher and AS2 ({{retr-cosekey}}), with the following differences:
 
 * The Authorization + Joining Request MUST NOT contain the 'client\_cred parameter', the role element in the 'scope' parameter MUST be set to "subscriber". The Subscriber MUST have access to the public keys of all the Publishers; this MAY be achieved in the Authorization + Joining Request by using the parameter 'get_pub_keys' set to empty array.
-
-<!-- CS: This looks like a client cannot join both a publisher and subscriber -->
-<!--  I think 
-the joining request should just have the scope (in MQTT this has permissions for
-topics for both pub and sub), and use that to decide which information to send
-to the clients.) 
--->
 
 * The Authorization + Key Distribution Response MUST contain the 'pub_keys' parameter.
 
@@ -559,19 +491,6 @@ An example of the payload of an Authorization + Joining Response is presented in
 As seen in the above examples, in MQTT, topics are organised as a tree, and subscription requests may include wildcards spanning several levels of the topic tree. Therefore, depending on how topics are grouped, the KDC may have different sections of the tree keyed differently. In this case, an MQTT node may be returned keys for a wider set of topics that their token permits them. However, since the Broker authorises all Clients (regardless of their role is only Publisher or Subscriber), the Clients cannot access any messages sent for a topic beyond their token's scope. 
 
 # Pub-Sub Protected Communication
-
-<!-- Jim
- Need to talk about how to deal with multiple publishers - are you assigning different keys or are you using different IV sections?
-Need to ensure that you don't have an error from using the same key/iv pair.
-
-Right, the key is the same ("key" in previous sections), but the IV is different. Added Base IV in the COSE_Key in previous section, and partial IV in the COSE_Key. Added TODO for sending Partial IV range for each publisher.
--->
-
-<!-- Jim
- Do you want to talk about coordination of the observer number and the iv of a message?
-
- What do you mean by "observer number"?
--->
 
 This section specifies the communication Publisher-Broker and Subscriber-Broker, after the previous phases have taken place. The operations of publishing and subscribing are defined in {{I-D.ietf-core-coap-pubsub}}.
 
