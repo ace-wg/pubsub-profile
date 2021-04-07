@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Pub-Sub Profile for Authentication and Authorization for Constrained Environments (ACE)</title>
+<meta content="Francesca Palombini" name="author">
+<meta content="Cigdem Sengul" name="author">
+<meta content="
+       This specification defines an application profile for authentication and authorization for publishers and subscribers in a constrained pub-sub scenario, using the ACE framework. This profile relies on transport layer or application layer security to authorize the publisher to the broker. Moreover, it describes application layer security for publisher-broker and subscriber-broker communication. 
+    " name="description">
+<meta content="xml2rfc 3.6.0" name="generator">
+<meta content="Internet-Draft" name="keyword">
+<meta content="draft-ietf-ace-pubsub-profile-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.6.0
+    Python 3.8.8
+    appdirs 1.4.4
+    ConfigArgParse 1.2.3
+    google-i18n-address 2.4.0
+    html5lib 1.1
+    intervaltree 3.1.0
+    Jinja2 2.11.2
+    kitchen 1.2.6
+    lxml 4.6.3
+    pycountry 20.7.3
+    pyflakes 2.2.0
+    PyYAML 5.4.1
+    requests 2.25.1
+    setuptools 51.3.3
+    six 1.15.0
+-->
+<link href="draft-ietf-ace-pubsub-profile.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@import url('https://martinthomson.github.io/i-d-template/fonts.css');
+
+html {
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --small-font-size: 14.5px;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+#title, h1, h2, h3, h4, h5, h6 {
+  font-family: "Cabin Condensed", sans-serif;
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+#title {
+  padding: 1em 0 0.2em;
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 26px;
+}
+h4, h5, h6 {
+  font-size: 18px;
+  line-height: 22px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+}
+#abstract+p, #abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 18px;
+  line-height: 24px;
+}
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 1em 2em;
+}
+ol ol, ul ul, ol ul, ul ol {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+ul.compact, .ulCompact,
+ol.compact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl > dd {
+  margin-bottom: .8em;
+  min-height: 1.3em;
+}
+dl.compact > dd, .dlCompact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+dd.break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href].selfRef {
+  color: var(--text-color);
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px 'Oxygen Mono', monospace;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+}
+@media screen {
+  pre {
+    display: inline-block;
+    overflow-x: auto;
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  pre + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+  table {
+    display: inline-block;
+    overflow-x: auto;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+tr:nth-child(2n) > td {
+  background-color: var(--background-color);
+}
+tr:nth-child(2n+1) > td {
+  background-color: var(--highlight-color);
+}
+thead+tbody > tr:nth-child(2n) > td {
+  background-color: var(--highlight-color);
+}
+thead+tbody > tr:nth-child(2n+1) > td {
+  background-color: var(--background-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  visibility: hidden;
+  user-select: none;
+}
+a.pilcrow[href] { color: #ddd; }
+a.pilcrow[href]:hover { text-decoration: none; }
+@media screen {
+  :hover > a.pilcrow {
+    visibility: visible;
+  }
+  a.pilcrow:hover {
+    background-color: transparent;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+}
+
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 8em;
+}
+#identifiers dt {
+  width: var(--identifier-width);
+  margin: 0;
+  clear: left;
+  float: left;
+  text-align: right;
+}
+#identifiers dd {
+  margin: 0 0 0 calc(1em + var(--identifier-width));
+  min-width: 5em;
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+#toc nav ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+#toc nav li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+#toc a.xref {
+  white-space: normal;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dd {
+  margin-left: 8em;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+.index ul {
+  margin: 0 0 0 1em;
+  padding: 0;
+  list-style: none;
+}
+.index ul ul {
+  margin: 0;
+}
+.index li {
+  margin: 0;
+  text-indent: -2em;
+  padding-left: 2em;
+  padding-bottom: 5px;
+}
+.indexIndex {
+  margin: 0.5em 0 1em;
+}
+.index a {
+  font-weight: 700;
+}
+/* make the index two-column on all but the smallest screens */
+@media (min-width: 500px) {
+  .index ul {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  .index ul ul {
+    column-count: 1;
+    column-gap: 0;
+  }
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc.active {
+      opacity: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 8px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active nav {
+    display: block;
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin-top: 2px;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  #toc nav > ul  {
+    margin-bottom: 2em;
+  }
+  #toc ul {
+    margin: 0 0 0 4px;
+    font-size: var(--small-font-size);
+  }
+  #toc ul p, #toc ul li {
+    margin: 2px 0;
+    line-height: 22px;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Changes introduced to fix issues found during implementation */
+
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin: 8px 0.5em 0;
+}
+
+/* Fix the dl styling to match the RFC 7992 attributes */
+dl > dt,
+dl.dlParallel > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+
+/* Provide styling for table cell text alignment */
+table .text-left, table .text-left {
+  text-align: left;
+}
+table .text-center, table .text-center {
+  text-align: center;
+}
+table .text-right, table .text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 20em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+
+@media print {
+  .toplink {
+    display: none;
+  }
+
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
+
+  /* Avoid page breaks inside dl and author address entries */
+  dd {
+    page-break-before: avoid;
+  }
+  .vcard {
+    page-break-inside: avoid;
+  }
+
+}
+/* Tweak the bcp14 keyword presentation */
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+</style>
+<link href="rfc-local.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">pubsub-profile</td>
+<td class="right">April 2021</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Palombini &amp; Sengul</td>
+<td class="center">Expires 9 October 2021</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">ACE Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-ietf-ace-pubsub-profile-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2021-04-07" class="published">7 April 2021</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2021-10-09">9 October 2021</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">F. Palombini</div>
+<div class="org">Ericsson</div>
+</div>
+<div class="author">
+      <div class="author-name">C. Sengul</div>
+<div class="org">Brunel University</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Pub-Sub Profile for Authentication and Authorization for Constrained Environments (ACE)</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">This specification defines an application profile for authentication and authorization for publishers and subscribers in a constrained pub-sub scenario, using the ACE framework. This profile relies on transport layer or application layer security to authorize the publisher to the broker. Moreover, it describes application layer security for publisher-broker and subscriber-broker communication.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note" id="section-note.1">
+      <h2 id="name-note-to-readers">
+<a href="#name-note-to-readers" class="section-name selfRef">Note to Readers</a>
+      </h2>
+<p id="section-note.1-1">Source for this draft and an issue tracker can be found at
+  <a href="https://github.com/ace-wg/pubsub-profile">https://github.com/ace-wg/pubsub-profile</a>.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 9 October 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2021 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Simplified BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Simplified BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a></p>
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-terminology" class="xref">Terminology</a></p>
+</li>
+            </ul>
+</li>
+          <li class="toc ulEmpty compact" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-application-profile-overvie" class="xref">Application Profile Overview</a></p>
+</li>
+          <li class="toc ulEmpty compact" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-pubsub-application-profiles" class="xref">PubSub Application Profiles</a></p>
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-retrieval-of-cose-key-for-p" class="xref">Retrieval of COSE Key for protection of content</a></p>
+</li>
+              <li class="toc ulEmpty compact" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-coap_pubsub_app-application" class="xref">coap_pubsub_app Application Profile</a></p>
+</li>
+              <li class="toc ulEmpty compact" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-mqtt_pubsub_app-application" class="xref">mqtt_pubsub_app Application Profile</a></p>
+</li>
+            </ul>
+</li>
+          <li class="toc ulEmpty compact" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-coap-pubsub-application-pro" class="xref">CoAP PubSub Application Profile</a></p>
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-publisher" class="xref">Publisher</a></p>
+</li>
+              <li class="toc ulEmpty compact" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-subscriber" class="xref">Subscriber</a></p>
+</li>
+            </ul>
+</li>
+          <li class="toc ulEmpty compact" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-mqtt-pubsub-application-pro" class="xref">MQTT PubSub Application Profile</a></p>
+</li>
+          <li class="toc ulEmpty compact" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-pub-sub-protected-communica" class="xref">Pub-Sub Protected Communication</a></p>
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-using-cose-objects-to-prote" class="xref">Using COSE Objects To Protect The Resource Representation</a></p>
+</li>
+            </ul>
+</li>
+          <li class="toc ulEmpty compact" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
+</li>
+          <li class="toc ulEmpty compact" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a></p>
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="xref">8.1</a>.  <a href="#name-ace-groupcomm-profile-regis" class="xref">ACE Groupcomm Profile Registry</a></p>
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.8.2.1.2.1">
+                    <p id="section-toc.1-1.8.2.1.2.1.1"><a href="#section-8.1.1" class="xref">8.1.1</a>.  <a href="#name-coap-profile-registration" class="xref">CoAP Profile Registration</a></p>
+</li>
+                  <li class="toc ulEmpty compact" id="section-toc.1-1.8.2.1.2.2">
+                    <p id="section-toc.1-1.8.2.1.2.2.1"><a href="#section-8.1.2" class="xref">8.1.2</a>.  <a href="#name-coap-profile-registration-2" class="xref">CoAP Profile Registration</a></p>
+</li>
+                </ul>
+</li>
+              <li class="toc ulEmpty compact" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="xref">8.2</a>.  <a href="#name-ace-groupcomm-key-registry" class="xref">ACE Groupcomm Key Registry</a></p>
+</li>
+            </ul>
+</li>
+          <li class="toc ulEmpty compact" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-references" class="xref">References</a></p>
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="xref">9.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
+</li>
+              <li class="toc ulEmpty compact" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="xref">9.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="toc ulEmpty compact" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#section-appendix.a" class="xref">Appendix A</a>.  <a href="#name-requirements-on-application" class="xref">Requirements on Application Profiles</a></p>
+</li>
+          <li class="toc ulEmpty compact" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#section-appendix.b" class="xref"></a><a href="#name-acknowledgments" class="xref">Acknowledgments</a></p>
+</li>
+          <li class="toc ulEmpty compact" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#section-appendix.c" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">In the publish-subscribe (pub-sub) scenario, devices with limited reachability communicate via a broker, which enables store-and-forward messaging between the devices. This document defines a way to authorize pub-sub nodes using the ACE framework <span>[<a href="#I-D.ietf-ace-oauth-authz" class="xref">I-D.ietf-ace-oauth-authz</a>]</span>, and to provide the keys for protecting the communication between them. The pub-sub communication using the Constrained Application Protocol (CoAP) is specified in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="xref">I-D.ietf-core-coap-pubsub</a>]</span>, while the one using MQTT is specified in <span>[<a href="#MQTT-OASIS-Standard-v5" class="xref">MQTT-OASIS-Standard-v5</a>]</span>.  This document gives detailed specifications for MQTT and CoAP pub-sub, but can easily be adapted for other transport protocols as well.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<div id="terminology">
+<section id="section-1.1">
+        <h3 id="name-terminology">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
+        </h3>
+<p id="section-1.1-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in RFC 2119 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span>.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">Readers are expected to be familiar with the terms and concepts
+described in <span>[<a href="#I-D.ietf-ace-oauth-authz" class="xref">I-D.ietf-ace-oauth-authz</a>]</span>, <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>. In particular, analogously to <span>[<a href="#I-D.ietf-ace-oauth-authz" class="xref">I-D.ietf-ace-oauth-authz</a>]</span>, terminology for entities in the architecture such as Client (C), Resource Server (RS), and Authorization Server (AS) is defined in OAuth 2.0 <span>[<a href="#RFC6749" class="xref">RFC6749</a>]</span> and <span>[<a href="#I-D.ietf-ace-actors" class="xref">I-D.ietf-ace-actors</a>]</span>, and terminology for entities such as the Key Distribution Center (KDC) and Dispatcher in <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.1-3">Readers are expected to be familiar with terms and concepts of pub-sub group communication, as described in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="xref">I-D.ietf-core-coap-pubsub</a>]</span>, or MQTT <span>[<a href="#MQTT-OASIS-Standard-v5" class="xref">MQTT-OASIS-Standard-v5</a>]</span>.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="overview">
+<section id="section-2">
+      <h2 id="name-application-profile-overvie">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-application-profile-overvie" class="section-name selfRef">Application Profile Overview</a>
+      </h2>
+<p id="section-2-1">The objective of this document is to specify how to authorize nodes, provide keys, and protect a pub-sub communication, using <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>, which expands from the ACE framework (<span>[<a href="#I-D.ietf-ace-oauth-authz" class="xref">I-D.ietf-ace-oauth-authz</a>]</span>), and transport profiles (<span>[<a href="#I-D.ietf-ace-dtls-authorize" class="xref">I-D.ietf-ace-dtls-authorize</a>]</span>, <span>[<a href="#I-D.ietf-ace-oscore-profile" class="xref">I-D.ietf-ace-oscore-profile</a>]</span>, <span>[<a href="#I-D.ietf-ace-mqtt-tls-profile" class="xref">I-D.ietf-ace-mqtt-tls-profile</a>]</span>). The pub-sub communication protocol can be based on CoAP, as described in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="xref">I-D.ietf-core-coap-pubsub</a>]</span>, MQTT <span>[<a href="#MQTT-OASIS-Standard-v5" class="xref">MQTT-OASIS-Standard-v5</a>]</span> , or other transport.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">The architecture of the scenario is shown in <a href="#archi" class="xref">Figure 1</a>.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<span id="name-architecture-for-pub-sub-wi"></span><div id="archi">
+<figure id="figure-1">
+        <div class="artwork art-text alignCenter" id="section-2-3.1">
+<pre>
+             +----------------+   +----------------+
+             |                |   |                |
+             | Authorization  |   | Authorization  |
+             |    Server 1    |   |    Server 2    |
+             |                |   |                |
+             +----------------+   +----------------+
+                      ^                  ^  ^
+                      |                  |  |
+     +---------(A)----+                  |  +-----(D)------+
+     |   +--------------------(B)--------+                 |
+     v   v                                                 v
++------------+             +------------+              +------------+
+|            |             |            |              |            |
+| Publisher  | ----(E)---&gt; |   Broker   |              | Subscriber |
+|            |             |            | &lt;----(F)---- |            |
+|            |             |            | -----(G)---&gt; |            |
++------------+             +------------+              +------------+
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-architecture-for-pub-sub-wi" class="selfRef">Architecture for Pub-Sub with Authorization Servers</a>
+        </figcaption></figure>
+</div>
+<p id="section-2-4">The RS is the broker and contains the topics that clients can publish or subscribe to. Therefore, RS corresponds to the Dispatcher in <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>.
+The AS1 hosts the policies about the Broker: what endpoints are allowed to Publish on the Broker. The Clients access AS1 to get write access to the Broker.
+The AS2 hosts the policies about the topic: what endpoints are allowed to access what topic. This node represents both the AS and Key Distribution Center roles from <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-5">There are four phases, the first three can be done in parallel.<a href="#section-2-5" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2-6">
+<li id="section-2-6.1">The Publisher requests publishing access to the Broker at the AS1, and communicates with the Broker to set up security.<a href="#section-2-6.1" class="pilcrow">¶</a>
+</li>
+        <li id="section-2-6.2">The Publisher requests access to a specific topic at the AS2.<a href="#section-2-6.2" class="pilcrow">¶</a>
+</li>
+        <li id="section-2-6.3">The Subscriber requests access to a specific topic at the AS2.<a href="#section-2-6.3" class="pilcrow">¶</a>
+</li>
+        <li id="section-2-6.4">The Publisher and the Subscriber securely post and get publications from the Broker.<a href="#section-2-6.4" class="pilcrow">¶</a>
+</li>
+      </ol>
+<p id="section-2-7">This exchange aims at setting up two different security associations: on the one hand, the Publisher has a security association with the Broker, to protect the communication and securely authorize the Publisher to publish on a topic (Security Association 1). On the other hand, the Publisher has a security association with the Subscriber, to protect the publication content itself (Security Association 2).
+The Security Association 1 set up using AS1 and a transport profile of <span>[<a href="#I-D.ietf-ace-oauth-authz" class="xref">I-D.ietf-ace-oauth-authz</a>]</span>, the Security Association 2 is set up using AS2 and <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-2-7" class="pilcrow">¶</a></p>
+<p id="section-2-8">Note that, analogously to the Publisher, the Subscriber can also set up an additional security association with the Broker, using an AS, in the same way the Publisher does with AS1. In this case, only authorized Subscribers would be able to get notifications from the Broker. The overhead would be that each Subscriber should access the AS and get all the information to start a secure exchange with the Broker.<a href="#section-2-8" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2-9">
+<pre>
++------------+             +------------+              +------------+
+|            |             |            |              |            |
+| Publisher  |             |   Broker   |              | Subscriber |
+|            |             |            |              |            |
+|            |             |            |              |            |
++------------+             +------------+              +------------+
+      :   :                       :                           :
+      :   '------ Security -------'                           :
+      :         Association 1                                 :
+      '------------------------------- Security --------------'
+                                     Association 2
+</pre><a href="#section-2-9" class="pilcrow">¶</a>
+</div>
+<p id="section-2-10">Note that AS1 and AS2 might either be co-resident or be 2 separate physical entities, in which case access control policies must be exchanged between AS1 and AS2, so that they agree on rights for joining nodes about specific topics. How the policies are exchanged is out of scope for this specification.<a href="#section-2-10" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="profile">
+<section id="section-3">
+      <h2 id="name-pubsub-application-profiles">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-pubsub-application-profiles" class="section-name selfRef">PubSub Application Profiles</a>
+      </h2>
+<p id="section-3-1">Each profile defined in this document uses <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>, which expands from the ACE framework. This section defines which exact parameters from <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span> have to be used, and the values for each parameter. Since <span>[<a href="#I-D.ietf-ace-oauth-authz" class="xref">I-D.ietf-ace-oauth-authz</a>]</span> recommends the use of CoAP anc CBOR, this document describes the exchanges assuming CoAP and CBOR are used. However, using HTTP instead of CoAP is possible, using the corresponding parameters and methods. Analogously, JSON <span>[<a href="#RFC8259" class="xref">RFC8259</a>]</span> can be used instead of CBOR, using the conversion method specified in Sections 4.1 and 4.2 of <span>[<a href="#RFC7049" class="xref">RFC7049</a>]</span>. In case JSON is used, the Content Format or Media Type of the message has to be changed accordingly.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">The Publisher and the Subscriber map to the Client in <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>, the AS2 maps to the AS and to the KDC, the Broker maps to the Dispatcher.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">Note that both publishers and subscribers use the same profile.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<div id="retr-cosekey">
+<section id="section-3.1">
+        <h3 id="name-retrieval-of-cose-key-for-p">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-retrieval-of-cose-key-for-p" class="section-name selfRef">Retrieval of COSE Key for protection of content</a>
+        </h3>
+<p id="section-3.1-1">This phase is common to both Publisher and Subscriber. To maintain generality, the Publisher or Subscriber is referred to as Client in this section.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<span id="name-b-access-request-response"></span><div id="B">
+<figure id="figure-2">
+          <div class="artwork art-text alignCenter" id="section-3.1-2.1">
+<pre>
+   Client                            Broker             AS2
+      | [----- Resource Request ----&gt;] |                 |
+      |                                |                 |
+      | [&lt;-- AS1, AS2 Information ---] |                 |
+      |                                                  |
+      | [------ Pub Key Format Negotiation Request ---&gt;] |
+      |                                                  |
+      | [&lt;---- Pub Key Format Negotiation Response ----] |
+      |                                                  |
+      | -- Authorization + Key Distribution Request ---&gt; |
+      |                                                  |
+      | &lt;-- Authorization + Key Distribution Response -- |
+      |                                                  |
+</pre>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-b-access-request-response" class="selfRef">B: Access request - response</a>
+          </figcaption></figure>
+</div>
+<p id="section-3.1-3">Complementary to what is defined in <span>[<a href="#I-D.ietf-ace-oauth-authz" class="xref">I-D.ietf-ace-oauth-authz</a>]</span> (Section 5.1.1), for AS discovery, the Broker MAY send the address of both ASes to the Client in the 'AS' parameter in the AS Information as a response to an Unauthorized Resource Request (Section 5.1.2). The uri of AS2 is concatenated to the uri of AS1, and separated by a comma. An example using CBOR diagnostic notation and CoAP is given below:<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<span id="name-as1-as2-information-example"></span><div id="AS-info-ex">
+<figure id="figure-3">
+          <div class="artwork art-text alignCenter" id="section-3.1-4.1">
+<pre>
+    4.01 Unauthorized
+    Content-Format: application/ace+cbor
+    {"AS": "coaps://as1.example.com/token,
+    coaps://as2.example.com/pubsubkey"}
+</pre>
+</div>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-as1-as2-information-example" class="selfRef">AS1, AS2 Information example</a>
+          </figcaption></figure>
+</div>
+<p id="section-3.1-5">Authorisation Server (AS) Discovery is also possible for MQTT v5 clients (and not supported for MQTT v3 clients).  AS Discovery defined in <span>[<a href="#I-D.ietf-ace-mqtt-tls-profile" class="xref">I-D.ietf-ace-mqtt-tls-profile</a>]</span> (Section 2.2.6.1) and is implemented by including a User Property to the CONNACK (Connection Acknowledgement) message returned by the Broker. The User Property can be used multiple times to represent multiple name, value pairs. The same name is allowed to appear more than once. So, the Broker returns two "ace_as_hint" fields corresponding to two ASes.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.1-6">After retrieving the AS2 address, the Client MAY send a request to the AS2, to retrieve necessary information concerning the public keys in the group, as well as the algorithm and related parameters for computing signatures in the group. This request is a subset of the Token POST request defined in Section 3.3 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>, specifically a CoAP POST request to a specific resource at the AS2, including only the parameters 'sign_info' and 'pub_key_enc' in the CBOR map in the payload. The default url-path for this resource is /ace-group/gid/cs-info, where "gid" is the topic identifier, but implementations are not required to use this name, and can use their own instead. The AS MUST respond with the response defined in Section 3.3 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>, specifically including the parameters 'sign_info', 'pub_key_enc', and 'rsnonce' (8 bytes pseudo-random nonce generated by the AS).<a href="#section-3.1-6" class="pilcrow">¶</a></p>
+<p id="section-3.1-7">After that, the Client sends an Authorization + Joining Request, which is an Authorization Request merged with a Joining Request, as described in <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>, Sections 3.1 and 4.2. The reason for merging these two messages is that the AS2 is both the AS and the KDC, in this setting, so the Authorization Response and the Post Token message are not necessary.<a href="#section-3.1-7" class="pilcrow">¶</a></p>
+<p id="section-3.1-8">More specifically, the Client sends a POST request to the /ace-group/gid endpoint on AS2, with Content-Format = "application/ace+cbor" that MUST contain in the payload (formatted as a CBOR map):<a href="#section-3.1-8" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-9.1">
+            <p id="section-3.1-9.1.1">the following fields from the Joining Request (Section 4.2 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>):<a href="#section-3.1-9.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-9.1.2.1">
+                <p id="section-3.1-9.1.2.1.1">'scope' parameter set to a CBOR array containing:<a href="#section-3.1-9.1.2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-9.1.2.1.2.1">the broker's topic as first element, and<a href="#section-3.1-9.1.2.1.2.1" class="pilcrow">¶</a>
+</li>
+                  <li class="normal" id="section-3.1-9.1.2.1.2.2">the text string "publisher" if the client request to be a publisher, "subscriber" if the client request to be a subscriber, or a CBOR array containing both, if the client request to be both.<a href="#section-3.1-9.1.2.1.2.2" class="pilcrow">¶</a>
+</li>
+                </ul>
+</li>
+              <li class="normal" id="section-3.1-9.1.2.2">'get_pub_keys' parameter set to the empty array if the Client needs to retrieve the public keys of the other pubsub members,<a href="#section-3.1-9.1.2.2" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-3.1-9.1.2.3">'client_cred' parameter containing the Client's public key formatted as a COSE_Key, if the Client needs to directly send that to the AS2,<a href="#section-3.1-9.1.2.3" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-3.1-9.1.2.4">'cnonce', set to a 8 bytes long pseudo-random nonce, if 'client_cred' is present,<a href="#section-3.1-9.1.2.4" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-3.1-9.1.2.5">'client_cred_verify', set to a singature computed over the rsnonce concatenated with cnonce, if 'client_cred' is present,<a href="#section-3.1-9.1.2.5" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-3.1-9.1.2.6">OPTIONALLY, if needed, the 'pub_keys_repos' parameter<a href="#section-3.1-9.1.2.6" class="pilcrow">¶</a>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-3.1-9.2">
+            <p id="section-3.1-9.2.1">the following fields from the Authorization Request (Section 3.1 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>):<a href="#section-3.1-9.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-9.2.2.1">OPTIONALLY, if needed, additional parameters such as 'client_id'<a href="#section-3.1-9.2.2.1" class="pilcrow">¶</a>
+</li>
+            </ul>
+</li>
+        </ul>
+<p id="section-3.1-10">TODO: 'cnonce' might change name.
+TODO: register media type ace+json for HTTP?<a href="#section-3.1-10" class="pilcrow">¶</a></p>
+<p id="section-3.1-11">Note that the alg parameter in the 'client_cred' COSE_Key MUST be a signing algorithm, as defined in section 8 of <span>[<a href="#RFC8152" class="xref">RFC8152</a>]</span>, and that it is the same algorithm used to compute the signature sent in 'client_cred_verify'.<a href="#section-3.1-11" class="pilcrow">¶</a></p>
+<p id="section-3.1-12">Examples of the payload of a Authorization + Joining Request are specified in <a href="#fig-post-as2" class="xref">Figure 5</a> and <a href="#fig-post2-as2" class="xref">Figure 8</a>.<a href="#section-3.1-12" class="pilcrow">¶</a></p>
+<p id="section-3.1-13">The AS2 verifies that the Client is authorized to access the topic and, if the 'client_cred' parameter is present, stores the public key of the Client.<a href="#section-3.1-13" class="pilcrow">¶</a></p>
+<p id="section-3.1-14">The AS2 response is an Authorization + Joining Response, with Content-Format = "application/ace+cbor". The payload (formatted as a CBOR map) MUST contain:<a href="#section-3.1-14" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-15.1">
+            <p id="section-3.1-15.1.1">the following fields from the Joining Response (Section 4.2 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>):<a href="#section-3.1-15.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-15.1.2.1">'kty' identifies a key type "COSE_Key", as defined in <a href="#iana-ace-groupcomm-key" class="xref">Section 8.2</a>.<a href="#section-3.1-15.1.2.1" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-3.1-15.1.2.2">
+                <p id="section-3.1-15.1.2.2.1">'key', which contains a "COSE_Key" object (defined in <span>[<a href="#RFC8152" class="xref">RFC8152</a>]</span>, containing:<a href="#section-3.1-15.1.2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-15.1.2.2.2.1">'kty' with value 4 (symmetric)<a href="#section-3.1-15.1.2.2.2.1" class="pilcrow">¶</a>
+</li>
+                  <li class="normal" id="section-3.1-15.1.2.2.2.2">'alg' with value defined by the AS2 (Content Encryption Algorithm)<a href="#section-3.1-15.1.2.2.2.2" class="pilcrow">¶</a>
+</li>
+                  <li class="normal" id="section-3.1-15.1.2.2.2.3">'Base IV' with value defined by the AS2<a href="#section-3.1-15.1.2.2.2.3" class="pilcrow">¶</a>
+</li>
+                  <li class="normal" id="section-3.1-15.1.2.2.2.4">'k' with value the symmetric key value<a href="#section-3.1-15.1.2.2.2.4" class="pilcrow">¶</a>
+</li>
+                  <li class="normal" id="section-3.1-15.1.2.2.2.5">OPTIONALLY, 'kid' with an identifier for the key value<a href="#section-3.1-15.1.2.2.2.5" class="pilcrow">¶</a>
+</li>
+                </ul>
+</li>
+              <li class="normal" id="section-3.1-15.1.2.3">OPTIONALLY, 'exp' with the expiration time of the key<a href="#section-3.1-15.1.2.3" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-3.1-15.1.2.4">'pub_keys', containing the public keys of all authorized signing members formatted as COSE_Keys, if the 'get_pub_keys' parameter was present and set to the empty array in the Authorization + Key Distribution Request<a href="#section-3.1-15.1.2.4" class="pilcrow">¶</a>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-3.1-15.2">
+            <p id="section-3.1-15.2.1">the following fields from the Authorization Response (Section 3.2 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>):<a href="#section-3.1-15.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-15.2.2.1">'profile' set to the corresponding value, see <a href="#coap" class="xref">Section 3.2</a> or <a href="#mqtt" class="xref">Section 3.3</a><a href="#section-3.1-15.2.2.1" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-3.1-15.2.2.2">
+                <p id="section-3.1-15.2.2.2.1">OPTIONALLY 'scope', set to a CBOR array containing:<a href="#section-3.1-15.2.2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-15.2.2.2.2.1">the broker's topic as first element, and<a href="#section-3.1-15.2.2.2.2.1" class="pilcrow">¶</a>
+</li>
+                  <li class="normal" id="section-3.1-15.2.2.2.2.2">the string "publisher" if the client is an authorized publisher, "subscriber" if the client is an authorized subscriber, or a CBOR array containing both, if the client is authorized to be both.<a href="#section-3.1-15.2.2.2.2.2" class="pilcrow">¶</a>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+        </ul>
+<p id="section-3.1-16">Examples for the response payload are detailed in <a href="#fig-resp-as2" class="xref">Figure 6</a> and <a href="#fig-resp2-as2" class="xref">Figure 9</a>.<a href="#section-3.1-16" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="coap">
+<section id="section-3.2">
+        <h3 id="name-coap_pubsub_app-application">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-coap_pubsub_app-application" class="section-name selfRef">coap_pubsub_app Application Profile</a>
+        </h3>
+<p id="section-3.2-1">In case CoAP PubSub is used as communication protocol:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2-2.1">'profile' set to "coap_pubsub_app", as specified in <a href="#iana-coap-profile" class="xref">Section 8.1.1</a>.<a href="#section-3.2-2.1" class="pilcrow">¶</a>
+</li>
+        </ul>
+</section>
+</div>
+<div id="mqtt">
+<section id="section-3.3">
+        <h3 id="name-mqtt_pubsub_app-application">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-mqtt_pubsub_app-application" class="section-name selfRef">mqtt_pubsub_app Application Profile</a>
+        </h3>
+<p id="section-3.3-1">In case mQTT PubSub is used as communication protocol:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3-2.1">'profile' set to "mqtt_pubsub_app", as specified in <a href="#iana-mqtt-profile" class="xref">Section 8.1.2</a>.<a href="#section-3.3-2.1" class="pilcrow">¶</a>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="coap_profile">
+<section id="section-4">
+      <h2 id="name-coap-pubsub-application-pro">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-coap-pubsub-application-pro" class="section-name selfRef">CoAP PubSub Application Profile</a>
+      </h2>
+<div id="publisher">
+<section id="section-4.1">
+        <h3 id="name-publisher">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-publisher" class="section-name selfRef">Publisher</a>
+        </h3>
+<p id="section-4.1-1">In this section, it is specified how the Publisher requests, obtains and communicates to the Broker the access token, as well as the retrieval of the keying material to protect the publication.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<span id="name-phase-1-publisher-side"></span><div id="pubsub-1">
+<figure id="figure-4">
+          <div class="artwork art-text alignCenter" id="section-4.1-2.1">
+<pre>
+             +----------------+   +----------------+
+             |                |   |                |
+             | Authorization  |   | Authorization  |
+             |    Server 1    |   |    Server 2    |
+             |                |   |                |
+             +----------------+   +----------------+
+                      ^                  ^
+                      |                  |
+     +---------(A)----+                  |
+     |   +--------------------(B)--------+
+     v   v
++------------+             +------------+
+|            | ----(C)---&gt; |            |
+| Publisher  |             |   Broker   |
+|            |             |            |
+|            |             |            |
++------------+             +------------+
+</pre>
+</div>
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<a href="#name-phase-1-publisher-side" class="selfRef">Phase 1: Publisher side</a>
+          </figcaption></figure>
+</div>
+<p id="section-4.1-3">This is a combination of two independent phases:<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.1-4.1">one is the establishment of a secure connection between Publisher and Broker, using an ACE transport profile such as DTLS <span>[<a href="#I-D.ietf-ace-dtls-authorize" class="xref">I-D.ietf-ace-dtls-authorize</a>]</span>,  OSCORE <span>[<a href="#I-D.ietf-ace-oscore-profile" class="xref">I-D.ietf-ace-oscore-profile</a>]</span>. (A)(C)<a href="#section-4.1-4.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-4.1-4.2">the other is the Publisher's retrieval of keying material to protect the publication. (B)<a href="#section-4.1-4.2" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-4.1-5">In detail:<a href="#section-4.1-5" class="pilcrow">¶</a></p>
+<p id="section-4.1-6">(A) corresponds to the Access Token Request and Response between Publisher and Authorization Server to retrieve the Access Token and RS (Broker) Information.
+As specified, the Publisher has the role of a CoAP client, the Broker has the role of the CoAP server.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1-7">(C) corresponds to the exchange between Publisher and Broker, where the Publisher sends its access token to the Broker and establishes a secure connection with the Broker. Depending on the Information received in (A), this can be for example DTLS handshake, or other protocols. Depending on the application, there may not be the need for this set up phase: for example, if OSCORE is used directly. Note that, in line with what defined in the ACE transport profile used, the access token includes the scope (i.e. pubsub topics on the Broker) the Publisher is allowed to publish to. For implementation semplicity, it is RECOMMENDED that the ACE transport profile used and this specification use the same format of "scope".<a href="#section-4.1-7" class="pilcrow">¶</a></p>
+<p id="section-4.1-8">(A) and (C) details are specified in the profile used.<a href="#section-4.1-8" class="pilcrow">¶</a></p>
+<p id="section-4.1-9">(B) corresponds to the retrieval of the keying material to protect the publication end-to-end with the subscribers (see <a href="#oscon" class="xref">Section 6.1</a>), and uses <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>. The details are defined in <a href="#retr-cosekey" class="xref">Section 3.1</a>.<a href="#section-4.1-9" class="pilcrow">¶</a></p>
+<p id="section-4.1-10">An example of the payload of an Authorization + Joining Request and corresponding Response for a CoAP Publisher using CoAP and CBOR is specified in <a href="#fig-post-as2" class="xref">Figure 5</a> and <a href="#fig-resp-as2" class="xref">Figure 6</a>, where SIG is a signature computed using the private key associated to the public key and the algorithm in "client_cred".<a href="#section-4.1-10" class="pilcrow">¶</a></p>
+<span id="name-authorization-joining-reque"></span><div id="fig-post-as2">
+<figure id="figure-5">
+          <div class="artwork art-text alignCenter" id="section-4.1-11.1">
+<pre>
+{
+  "scope" : ["Broker1/Temp", "publisher"],
+  "client_id" : "publisher1",
+  "client_cred" :
+    { / COSE_Key /
+      / type / 1 : 2, / EC2 /
+      / kid / 2 : h'11',
+      / alg / 3 : -7, / ECDSA with SHA-256 /
+      / crv / -1 : 1 , / P-256 /
+      / x / -2 : h'65eda5a12577c2bae829437fe338701a10aaa375e1bb5b5de1
+      08de439c08551d',
+      / y /-3 : h'1e52ed75701163f7f9e40ddf9f341b3dc9ba860af7e0ca7ca7e
+      9eecd0084d19c',
+  "cnonce" : h'd36b581d1eef9c7c,
+  "client_cred_verify" : SIG
+    }
+}
+</pre>
+</div>
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<a href="#name-authorization-joining-reque" class="selfRef">Authorization + Joining Request payload for a Publisher</a>
+          </figcaption></figure>
+</div>
+<span id="name-authorization-joining-respo"></span><div id="fig-resp-as2">
+<figure id="figure-6">
+          <div class="artwork art-text alignCenter" id="section-4.1-12.1">
+<pre>
+{
+  "profile" : "coap_pubsub_app",
+  "kty" : "COSE_Key",
+  "key" : {1: 4, 2: h'1234', 3: 12, 5: h'1f389d14d17dc7',
+          -1: h'02e2cc3a9b92855220f255fff1c615bc'}
+}
+</pre>
+</div>
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<a href="#name-authorization-joining-respo" class="selfRef">Authorization + Joining Response payload for a Publisher</a>
+          </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="subs-profile">
+<section id="section-4.2">
+        <h3 id="name-subscriber">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-subscriber" class="section-name selfRef">Subscriber</a>
+        </h3>
+<p id="section-4.2-1">In this section, it is specified how the Subscriber retrieves the keying material to protect the publication.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<span id="name-phase-2-subscriber-side"></span><div id="pubsub-2">
+<figure id="figure-7">
+          <div class="artwork art-text alignCenter" id="section-4.2-2.1">
+<pre>
+                                  +----------------+
+                                  |                |
+                                  | Authorization  |
+                                  |    Server 2    |
+                                  |                |
+                                  +----------------+
+                                            ^
+                                            |
+                                            +-----(D)------+
+                                                           |
+                                                           v
+                                                       +------------+
+                                                       |            |
+                                                       | Subscriber |
+                                                       |            |
+                                                       |            |
+                                                       +------------+
+</pre>
+</div>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-phase-2-subscriber-side" class="selfRef">Phase 2: Subscriber side</a>
+          </figcaption></figure>
+</div>
+<p id="section-4.2-3">Step (D) between Subscriber and AS2 corresponds to the retrieval of the keying material to verify the publication end-to-end with the publishers (see <a href="#oscon" class="xref">Section 6.1</a>).  The details are defined in <a href="#retr-cosekey" class="xref">Section 3.1</a><a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-4">This step is the same as (B) between Publisher and AS2 (<a href="#retr-cosekey" class="xref">Section 3.1</a>), with the following differences:<a href="#section-4.2-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.2-5.1">The Authorization + Joining Request MUST NOT contain the 'client_cred parameter', the role element in the 'scope' parameter MUST be set to "subscriber". The Subscriber MUST have access to the public keys of all the Publishers; this MAY be achieved in the Authorization + Joining Request by using the parameter 'get_pub_keys' set to empty array.<a href="#section-4.2-5.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-4.2-5.2">The Authorization + Key Distribution Response MUST contain the 'pub_keys' parameter.<a href="#section-4.2-5.2" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-4.2-6">An example of the payload of an Authorization + Joining Request and corresponding Response for a CoAP Subscriber using CoAP and CBOR is specified in <a href="#fig-post2-as2" class="xref">Figure 8</a> and <a href="#fig-resp2-as2" class="xref">Figure 9</a>.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
+<span id="name-authorization-joining-reques"></span><div id="fig-post2-as2">
+<figure id="figure-8">
+          <div class="artwork art-text alignCenter" id="section-4.2-7.1">
+<pre>
+{
+  "scope" : ["Broker1/Temp", "subscriber"],
+  "get_pub_keys" : [ ]
+}
+</pre>
+</div>
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<a href="#name-authorization-joining-reques" class="selfRef">Authorization + Joining Request payload for a Subscriber</a>
+          </figcaption></figure>
+</div>
+<span id="name-authorization-joining-respon"></span><div id="fig-resp2-as2">
+<figure id="figure-9">
+          <div class="artwork art-text alignCenter" id="section-4.2-8.1">
+<pre>
+{
+  "profile" : "coap_pubsub_app",
+  "scope" : ["Broker1/Temp", "subscriber"],
+  "kty" : "COSE_Key"
+  "key" : {1: 4, 2: h'1234', 3: 12, 5: h'1f389d14d17dc7',
+          -1: h'02e2cc3a9b92855220f255fff1c615bc'},
+  "pub_keys" : [
+   {
+      1 : 2, / type EC2 /
+      2 : h'11', / kid /
+      3 : -7, / alg ECDSA with SHA-256 /
+      -1 : 1 , / crv P-256 /
+      -2 : h'65eda5a12577c2bae829437fe338701a10aaa375e1bb5b5de108de43
+      9c08551d', / x /
+      -3 : h'1e52ed75701163f7f9e40ddf9f341b3dc9ba860af7e0ca7ca7e9eecd
+      0084d19c' / y /
+    }
+  ]
+}
+</pre>
+</div>
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
+<a href="#name-authorization-joining-respon" class="selfRef">Authorization + Joining Response payload for a Subscriber</a>
+          </figcaption></figure>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="mqtt-pubsub">
+<section id="section-5">
+      <h2 id="name-mqtt-pubsub-application-pro">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-mqtt-pubsub-application-pro" class="section-name selfRef">MQTT PubSub Application Profile</a>
+      </h2>
+<p id="section-5-1">The steps MQTT clients go through are similar to the CoAP clients as described in <a href="#coap_profile" class="xref">Section 4</a>.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<span id="name-phase-1-publisher-side-2"></span><div id="pubsub-mqtt-1">
+<figure id="figure-10">
+        <div class="artwork art-text alignCenter" id="section-5-2.1">
+<pre>
+             +----------------+   +----------------+
+             |                |   |                |
+             | Authorization  |   | Authorization  |
+             |    Server 1    |   |    Server 2    |
+             |                |   |                |
+             +----------------+   +----------------+
+                      ^                  ^
+                      |                  |
+     +---------(A)----+                  |
+     |   +--------------------(B)--------+
+     v   v
++------------+             +------------+
+|            | ----(C)---&gt; |            |
+| Publisher/ |             |   Broker   |
+| Subscriber |             |            |
+|            |             |            |
++------------+             +------------+
+</pre>
+</div>
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
+<a href="#name-phase-1-publisher-side-2" class="selfRef">Phase 1: Publisher side</a>
+        </figcaption></figure>
+</div>
+<p id="section-5-3">The main difference is that the clients go through the two phases regardless of whether they act only as a Publisher or a Subscriber:<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">*The establishment of a secure connection between the Client and Broker, using the ACE transport profile for MQTT <span>[<a href="#I-D.ietf-ace-mqtt-tls-profile" class="xref">I-D.ietf-ace-mqtt-tls-profile</a>]</span> ((A)(C) in <a href="#pubsub-mqtt-1" class="xref">Figure 10</a>)
+* The Client's retrieval of keying material to protect the publication ((B) in <a href="#pubsub-mqtt-1" class="xref">Figure 10</a>).<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">This document describes the exchanges between the Client and AS2 using CoAP and CBOR. However, 
+the same exchanges can be implemented in HTTP using the corresponding parameters and methods. 
+However, the payload that is carried in MQTT messages will be protected using COSE.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<p id="section-5-6">To retrieve the keying material, the Client sends an Authorization + Joining Request. 
+If the client will also act as a Subscriber, it MUST have access to the public keys of all the Publishers; 
+this MAY be achieved in the Authorization + Joining Request by using the parameter 'get_pub_keys' set to empty array.  An example of the payload of an Authorization + Joining Request is specified in <a href="#fig-post-mqtt-as2" class="xref">Figure 11</a>.<a href="#section-5-6" class="pilcrow">¶</a></p>
+<span id="name-authorization-joining-request"></span><div id="fig-post-mqtt-as2">
+<figure id="figure-11">
+        <div class="artwork art-text alignCenter" id="section-5-7.1">
+<pre>
+{
+  "scope" : [["topic1", ["pub","sub"]]],
+  "client_id" : "client1",
+  "get_pub_keys" : [ ]
+  "client_cred" :
+    { / COSE_Key /
+      / type / 1 : 2, / EC2 /
+      / kid / 2 : h'11',
+      / alg / 3 : -7, / ECDSA with SHA-256 /
+      / crv / -1 : 1 , / P-256 /
+      / x / -2 : h'65eda5a12577c2bae829437fe338701a10aaa375e1bb5b5de1
+      08de439c08551d',
+      / y /-3 : h'1e52ed75701163f7f9e40ddf9f341b3dc9ba860af7e0ca7ca7e
+      9eecd0084d19c',
+  "cnonce" : h'd36b581d1eef9c7c,
+  "client_cred_verify" : SIG
+    }
+}
+</pre>
+</div>
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
+<a href="#name-authorization-joining-request" class="selfRef">Authorization + Joining Request payload for a Client</a>
+        </figcaption></figure>
+</div>
+<p id="section-5-8">If the client does not have any Publisher role (e.g., scope does not contain "pub" keyword for any topic), 
+the request MAY not contain the 'client_cred parameter'. If the Client request includes Subscriber role (e.g.,
+scope contains the "sub" keyword for at least one topic), The Authorization + Key Distribution Response MUST contain the 'pub_keys' parameter corresponding to the Publishers of the requested topics.
+An example of the payload of an Authorization + Joining Response is presented in <a href="#fig-resp-mqtt-as2" class="xref">Figure 12</a>.<a href="#section-5-8" class="pilcrow">¶</a></p>
+<span id="name-authorization-joining-respons"></span><div id="fig-resp-mqtt-as2">
+<figure id="figure-12">
+        <div class="artwork art-text alignCenter" id="section-5-9.1">
+<pre>
+{
+  "profile" : "mqtt_pubsub_app",
+  "scope": [["topic1", ["pub","sub"]]],
+  "kty" : "COSE_Key",
+  "key" : {1: 4, 2: h'1234', 3: 12, 5: h'1f389d14d17dc7',
+          -1: h'02e2cc3a9b92855220f255fff1c615bc'},
+  "pub_keys" : [
+   {
+      1 : 2, / type EC2 /
+      2 : h'11', / kid /
+      3 : -7, / alg ECDSA with SHA-256 /
+      -1 : 1 , / crv P-256 /
+      -2 : h'65eda5a12577c2bae829437fe338701a10aaa375e1bb5b5de108de43
+      9c08551d', / x /
+      -3 : h'1e52ed75701163f7f9e40ddf9f341b3dc9ba860af7e0ca7ca7e9eecd
+      0084d19c' / y /
+    }
+  ]
+}
+</pre>
+</div>
+<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
+<a href="#name-authorization-joining-respons" class="selfRef">Authorization + Joining Response payload for a Client</a>
+        </figcaption></figure>
+</div>
+<p id="section-5-10">As seen in the above examples, in MQTT, topics are organised as a tree, and subscription requests may include wildcards spanning several levels of the topic tree. Therefore, depending on how topics are grouped, the KDC may have different sections of the tree keyed differently. In this case, an MQTT node may be returned keys for a wider set of topics that their token permits them. However, since the Broker authorises all Clients (regardless of their role is only Publisher or Subscriber), the Clients cannot access any messages sent for a topic beyond their token's scope.<a href="#section-5-10" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="pub-sub-protected-communication">
+<section id="section-6">
+      <h2 id="name-pub-sub-protected-communica">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-pub-sub-protected-communica" class="section-name selfRef">Pub-Sub Protected Communication</a>
+      </h2>
+<p id="section-6-1">This section specifies the communication Publisher-Broker and Subscriber-Broker, after the previous phases have taken place. The operations of publishing and subscribing are defined in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="xref">I-D.ietf-core-coap-pubsub</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<span id="name-phase-3-secure-communicatio"></span><div id="pubsub-3">
+<figure id="figure-13">
+        <div class="artwork art-text alignCenter" id="section-6-2.1">
+<pre>
++------------+             +------------+              +------------+
+|            |             |            |              |            |
+| Publisher  | ----(E)---&gt; |   Broker   |              | Subscriber |
+|            |             |            | &lt;----(F)---- |            |
+|            |             |            | -----(G)---&gt; |            |
++------------+             +------------+              +------------+
+</pre>
+</div>
+<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
+<a href="#name-phase-3-secure-communicatio" class="selfRef">Phase 3: Secure communication between Publisher and Subscriber</a>
+        </figcaption></figure>
+</div>
+<p id="section-6-3">The (E) message corresponds to the publication of a topic on the Broker.
+The publication (the resource representation) is protected with COSE (<span>[<a href="#RFC8152" class="xref">RFC8152</a>]</span>).
+The (F) message is the subscription of the Subscriber. The subscription MAY be unprotected in the case of CoAP, unless a profile of ACE <span>[<a href="#I-D.ietf-ace-oauth-authz" class="xref">I-D.ietf-ace-oauth-authz</a>]</span> is used between Subscriber and Broker. The subscription is 
+protected in the case of MQTT (<a href="#mqtt-pubsub" class="xref">Section 5</a>)
+The (G) message is the response from the Broker, where the publication is protected with COSE.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-4">The flow graph is presented below for CoAP. 
+The message flow is similar for MQTT, where PUT corresponds to
+a PUBLISH message, and GET corresponds to a SUBSCRIBE message. 
+Whenever a Client publishes a new message, the Broker sends this message to all valid subscribers.<a href="#section-6-4" class="pilcrow">¶</a></p>
+<span id="name-e-f-g-example-of-protected-"></span><div id="E-F-G-ex">
+<figure id="figure-14">
+        <div class="artwork art-text alignCenter" id="section-6-5.1">
+<pre>
+  Publisher                Broker               Subscriber
+      | --- PUT /topic ----&gt; |                       |
+      |  protected with COSE |                       |
+      |                      | &lt;--- GET /topic ----- |
+      |                      |                       |
+      |                      | ---- response ------&gt; |
+      |                      |  protected with COSE  |
+</pre>
+</div>
+<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
+<a href="#name-e-f-g-example-of-protected-" class="selfRef">(E), (F), (G): Example of protected communication for CoAP</a>
+        </figcaption></figure>
+</div>
+<div id="oscon">
+<section id="section-6.1">
+        <h3 id="name-using-cose-objects-to-prote">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-using-cose-objects-to-prote" class="section-name selfRef">Using COSE Objects To Protect The Resource Representation</a>
+        </h3>
+<p id="section-6.1-1">The Publisher uses the symmetric COSE Key received from AS2 in exchange B (<a href="#retr-cosekey" class="xref">Section 3.1</a>) to protect the payload of the PUBLISH operation (Section 4.3 of <span>[<a href="#I-D.ietf-core-coap-pubsub" class="xref">I-D.ietf-core-coap-pubsub</a>]</span> and <span>[<a href="#MQTT-OASIS-Standard-v5" class="xref">MQTT-OASIS-Standard-v5</a>]</span>). Specifically, the COSE Key is used to create a COSE_Encrypt0 with algorithm specified by AS2. The Publisher uses the private key corresponding to the public key sent to the AS2 in exchange B (<a href="#retr-cosekey" class="xref">Section 3.1</a>) to countersign the COSE Object as specified in Section 4.5 of <span>[<a href="#RFC8152" class="xref">RFC8152</a>]</span>. The payload is replaced by the COSE object before the publication is sent to the Broker.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-2">The Subscriber uses the kid in the countersignature field in the COSE object to retrieve the right public key to verify the countersignature. It then uses the symmetric key received from AS2 to verify and decrypt the publication received in the payload from the Broker (in the case of CoAP the publication is received by the CoAP Notification and for MQTT, it is received as a PUBLISH message from the Broker to the subscribing client).<a href="#section-6.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.1-3">The COSE object is constructed in the following way:<a href="#section-6.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.1-4.1">The protected Headers (as described in Section 3 of <span>[<a href="#RFC8152" class="xref">RFC8152</a>]</span>) MAY contain the kid parameter, with value the kid of the symmetric COSE Key received in <a href="#retr-cosekey" class="xref">Section 3.1</a> and MUST contain the content encryption algorithm.<a href="#section-6.1-4.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-6.1-4.2">
+            <p id="section-6.1-4.2.1">The unprotected Headers MUST contain the Partial IV, with value a sequence number that is incremented for every message sent, and the counter signature that includes:<a href="#section-6.1-4.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.1-4.2.2.1">the algorithm (same value as in the asymmetric COSE Key received in (B)) in the protected header;<a href="#section-6.1-4.2.2.1" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-6.1-4.2.2.2">the kid (same value as the kid of the asymmetric COSE Key received in (B)) in the unprotected header;<a href="#section-6.1-4.2.2.2" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-6.1-4.2.2.3">the signature computed as specified in Section 4.5 of <span>[<a href="#RFC8152" class="xref">RFC8152</a>]</span>.<a href="#section-6.1-4.2.2.3" class="pilcrow">¶</a>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-6.1-4.3">The ciphertext, computed over the plaintext that MUST contain the message payload.<a href="#section-6.1-4.3" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-6.1-5">The external_aad is an empty string.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
+<p id="section-6.1-6">An example is given in <a href="#fig-cose-ex" class="xref">Figure 15</a><a href="#section-6.1-6" class="pilcrow">¶</a></p>
+<span id="name-example-of-cose-object-sent"></span><div id="fig-cose-ex">
+<figure id="figure-15">
+          <div class="artwork art-text alignCenter" id="section-6.1-7.1">
+<pre>
+16(
+  [
+    / protected / h'a2010c04421234' / {
+        \ alg \ 1:12, \ AES-CCM-64-64-128 \
+        \ kid \ 4: h'1234'
+      } / ,
+    / unprotected / {
+      / iv / 5:h'89f52f65a1c580',
+      / countersign / 7:[
+        / protected / h'a10126' / {
+          \ alg \ 1:-7
+        } / ,
+        / unprotected / {
+          / kid / 4:h'11'
+        },
+        / signature / SIG / 64 bytes signature /
+      ]
+    },
+    / ciphertext / h'8df0a3b62fccff37aa313c8020e971f8aC8d'
+  ]
+)
+</pre>
+</div>
+<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
+<a href="#name-example-of-cose-object-sent" class="selfRef">Example of COSE Object sent in the payload of a PUBLISH operation</a>
+          </figcaption></figure>
+</div>
+<p id="section-6.1-8">The encryption and decryption operations are described in sections 5.3 and 5.4 of <span>[<a href="#RFC8152" class="xref">RFC8152</a>]</span>.<a href="#section-6.1-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-7">
+      <h2 id="name-security-considerations">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-7-1">In the profile described above, the Publisher and Subscriber use asymmetric crypto, which would make the message exchange quite heavy for small constrained devices. Moreover, all Subscribers must be able to access the public keys of all the Publishers to a specific topic to be able to verify the publications. Such a database could be set up and managed by the same entity having control of the topic, i.e. AS2.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">An application where it is not critical that only authorized Publishers can publish on a topic may decide not to make use of the asymmetric crypto and only use symmetric encryption/MAC to confidentiality and integrity protection of the publication.
+However, this is not recommended since, as a result, any authorized Subscribers with access to the Broker may forge unauthorized publications without being detected. In this symmetric case the Subscribers would only need one symmetric key per topic, and would not need to know any information about the Publishers, that can be anonymous to it and the Broker.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-3">Subscribers can be excluded from future publications through re-keying for a certain topic. This could be set up to happen on a regular basis, for certain applications. How this could be done is out of scope for this work.<a href="#section-7-3" class="pilcrow">¶</a></p>
+<p id="section-7-4">The Broker is only trusted with verifying that the Publisher is authorized to publish, but is not trusted with the publications itself, which it cannot read nor modify. In this setting, caching of publications on the Broker is still allowed.<a href="#section-7-4" class="pilcrow">¶</a></p>
+<p id="section-7-5">TODO: expand on security and privacy considerations<a href="#section-7-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-8">
+      <h2 id="name-iana-considerations">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<div id="iana-profile">
+<section id="section-8.1">
+        <h3 id="name-ace-groupcomm-profile-regis">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-ace-groupcomm-profile-regis" class="section-name selfRef">ACE Groupcomm Profile Registry</a>
+        </h3>
+<p id="section-8.1-1">The following registrations are done for the "ACE Groupcomm Profile" Registry following the procedure specified in <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.1-2">Note to RFC Editor: Please replace all occurrences of "[[This document]]"
+with the RFC number of this specification and delete this paragraph.<a href="#section-8.1-2" class="pilcrow">¶</a></p>
+<div id="iana-coap-profile">
+<section id="section-8.1.1">
+          <h4 id="name-coap-profile-registration">
+<a href="#section-8.1.1" class="section-number selfRef">8.1.1. </a><a href="#name-coap-profile-registration" class="section-name selfRef">CoAP Profile Registration</a>
+          </h4>
+<p id="section-8.1.1-1">Name: coap_pubsub_app<a href="#section-8.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.1.1-2">Description: Profile for delegating client authentication and authorization for publishers and subscribers in a CoAP pub-sub setting scenario in a constrained environment.<a href="#section-8.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-8.1.1-3">CBOR Key: TBD<a href="#section-8.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-8.1.1-4">Reference: [[This document]]<a href="#section-8.1.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-mqtt-profile">
+<section id="section-8.1.2">
+          <h4 id="name-coap-profile-registration-2">
+<a href="#section-8.1.2" class="section-number selfRef">8.1.2. </a><a href="#name-coap-profile-registration-2" class="section-name selfRef">CoAP Profile Registration</a>
+          </h4>
+<p id="section-8.1.2-1">Name: mqtt_pubsub_app<a href="#section-8.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-8.1.2-2">Description: Profile for delegating client authentication and authorization for publishers and subscribers in a MQTT pub-sub setting scenario in a constrained environment.<a href="#section-8.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-8.1.2-3">CBOR Key: TBD<a href="#section-8.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-8.1.2-4">Reference: [[This document]]<a href="#section-8.1.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="iana-ace-groupcomm-key">
+<section id="section-8.2">
+        <h3 id="name-ace-groupcomm-key-registry">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-ace-groupcomm-key-registry" class="section-name selfRef">ACE Groupcomm Key Registry</a>
+        </h3>
+<p id="section-8.2-1">The following registrations are done for the ACE Groupcomm Key Registry following the procedure specified in <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<p id="section-8.2-2">Note to RFC Editor: Please replace all occurrences of "[[This document]]"
+with the RFC number of this specification and delete this paragraph.<a href="#section-8.2-2" class="pilcrow">¶</a></p>
+<p id="section-8.2-3">Name: COSE_Key<a href="#section-8.2-3" class="pilcrow">¶</a></p>
+<p id="section-8.2-4">Key Type Value: TBD<a href="#section-8.2-4" class="pilcrow">¶</a></p>
+<p id="section-8.2-5">Profile: coap_pubsub_app<a href="#section-8.2-5" class="pilcrow">¶</a></p>
+<p id="section-8.2-6">Description: COSE_Key object<a href="#section-8.2-6" class="pilcrow">¶</a></p>
+<p id="section-8.2-7">References: <span>[<a href="#RFC8152" class="xref">RFC8152</a>]</span>, [[This document]]<a href="#section-8.2-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<section id="section-9">
+      <h2 id="name-references">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<section id="section-9.1">
+        <h3 id="name-normative-references">
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.ietf-ace-key-groupcomm">[I-D.ietf-ace-key-groupcomm]</dt>
+        <dd>
+<span class="refAuthor">Palombini, F.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Provisioning for Group Communication using ACE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-key-groupcomm-11</span>, <time datetime="2021-02-22" class="refDate">22 February 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-ace-key-groupcomm-11.txt">https://www.ietf.org/archive/id/draft-ietf-ace-key-groupcomm-11.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-ace-oauth-authz">[I-D.ietf-ace-oauth-authz]</dt>
+        <dd>
+<span class="refAuthor">Seitz, L.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Wahlstroem, E.</span>, <span class="refAuthor">Erdtman, S.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"Authentication and Authorization for Constrained Environments (ACE) using the OAuth 2.0 Framework (ACE-OAuth)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-oauth-authz-38</span>, <time datetime="2021-03-08" class="refDate">8 March 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-ace-oauth-authz-38.txt">https://www.ietf.org/archive/id/draft-ietf-ace-oauth-authz-38.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-core-coap-pubsub">[I-D.ietf-core-coap-pubsub]</dt>
+        <dd>
+<span class="refAuthor">Koster, M.</span>, <span class="refAuthor">Keranen, A.</span>, and <span class="refAuthor">J. Jimenez</span>, <span class="refTitle">"Publish-Subscribe Broker for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-09</span>, <time datetime="2019-09-30" class="refDate">30 September 2019</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-core-coap-pubsub-09.txt">https://www.ietf.org/archive/id/draft-ietf-core-coap-pubsub-09.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="MQTT-OASIS-Standard-v5">[MQTT-OASIS-Standard-v5]</dt>
+        <dd>
+<span class="refAuthor">Banks, A.</span>, <span class="refAuthor">Briggs, E.</span>, <span class="refAuthor">Borgendale, K.</span>, and <span class="refAuthor">R. Gupta</span>, <span class="refTitle">"OASIS Standard MQTT Version 5.0"</span>, <time datetime="2017" class="refDate">2017</time>, <span>&lt;<a href="http://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html">http://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6749">[RFC6749]</dt>
+        <dd>
+<span class="refAuthor">Hardt, D., Ed.</span>, <span class="refTitle">"The OAuth 2.0 Authorization Framework"</span>, <span class="seriesInfo">RFC 6749</span>, <span class="seriesInfo">DOI 10.17487/RFC6749</span>, <time datetime="2012-10" class="refDate">October 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6749">https://www.rfc-editor.org/info/rfc6749</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7049">[RFC7049]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">RFC 7049</span>, <span class="seriesInfo">DOI 10.17487/RFC7049</span>, <time datetime="2013-10" class="refDate">October 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7049">https://www.rfc-editor.org/info/rfc7049</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8152">[RFC8152]</dt>
+      <dd>
+<span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE)"</span>, <span class="seriesInfo">RFC 8152</span>, <span class="seriesInfo">DOI 10.17487/RFC8152</span>, <time datetime="2017-07" class="refDate">July 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8152">https://www.rfc-editor.org/info/rfc8152</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+<section id="section-9.2">
+        <h3 id="name-informative-references">
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.ietf-ace-actors">[I-D.ietf-ace-actors]</dt>
+        <dd>
+<span class="refAuthor">Gerdes, S.</span>, <span class="refAuthor">Seitz, L.</span>, <span class="refAuthor">Selander, G.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"An architecture for authorization in constrained environments"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-actors-07</span>, <time datetime="2018-10-22" class="refDate">22 October 2018</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-ace-actors-07.txt">https://www.ietf.org/archive/id/draft-ietf-ace-actors-07.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-ace-dtls-authorize">[I-D.ietf-ace-dtls-authorize]</dt>
+        <dd>
+<span class="refAuthor">Gerdes, S.</span>, <span class="refAuthor">Bergmann, O.</span>, <span class="refAuthor">Bormann, C.</span>, <span class="refAuthor">Selander, G.</span>, and <span class="refAuthor">L. Seitz</span>, <span class="refTitle">"Datagram Transport Layer Security (DTLS) Profile for Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-dtls-authorize-16</span>, <time datetime="2021-03-08" class="refDate">8 March 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-ace-dtls-authorize-16.txt">https://www.ietf.org/archive/id/draft-ietf-ace-dtls-authorize-16.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-ace-mqtt-tls-profile">[I-D.ietf-ace-mqtt-tls-profile]</dt>
+        <dd>
+<span class="refAuthor">Sengul, C.</span> and <span class="refAuthor">A. Kirby</span>, <span class="refTitle">"Message Queuing Telemetry Transport (MQTT)-TLS profile of Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-mqtt-tls-profile-10</span>, <time datetime="2020-12-18" class="refDate">18 December 2020</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-ace-mqtt-tls-profile-10.txt">https://www.ietf.org/archive/id/draft-ietf-ace-mqtt-tls-profile-10.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-ace-oscore-profile">[I-D.ietf-ace-oscore-profile]</dt>
+        <dd>
+<span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Seitz, L.</span>, <span class="refAuthor">Selander, G.</span>, and <span class="refAuthor">M. Gunnarsson</span>, <span class="refTitle">"OSCORE Profile of the Authentication and Authorization for Constrained Environments Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-oscore-profile-17</span>, <time datetime="2021-03-08" class="refDate">8 March 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-ace-oscore-profile-17.txt">https://www.ietf.org/archive/id/draft-ietf-ace-oscore-profile-17.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8259">[RFC8259]</dt>
+      <dd>
+<span class="refAuthor">Bray, T., Ed.</span>, <span class="refTitle">"The JavaScript Object Notation (JSON) Data Interchange Format"</span>, <span class="seriesInfo">STD 90</span>, <span class="seriesInfo">RFC 8259</span>, <span class="seriesInfo">DOI 10.17487/RFC8259</span>, <time datetime="2017-12" class="refDate">December 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8259">https://www.rfc-editor.org/info/rfc8259</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</section>
+<div id="requirements-on-application-profiles">
+<section id="section-appendix.a">
+      <h2 id="name-requirements-on-application">
+<a href="#section-appendix.a" class="section-number selfRef">Appendix A. </a><a href="#name-requirements-on-application" class="section-name selfRef">Requirements on Application Profiles</a>
+      </h2>
+<p id="section-appendix.a-1">This section lists the specifications on this profile based on the requirements defined in Appendix A of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="xref">I-D.ietf-ace-key-groupcomm</a>]</span><a href="#section-appendix.a-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-appendix.a-2.1">REQ1: Specify the encoding and value of the identifier of group or topic of 'scope': see <a href="#retr-cosekey" class="xref">Section 3.1</a>).<a href="#section-appendix.a-2.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.2">REQ2: Specify the encoding and value of roles of 'scope': see <a href="#retr-cosekey" class="xref">Section 3.1</a>).<a href="#section-appendix.a-2.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.3">REQ3: Optionally, specify the acceptable values for 'sign_alg': TODO<a href="#section-appendix.a-2.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.4">REQ4: Optionally, specify the acceptable values for 'sign_parameters': TODO<a href="#section-appendix.a-2.4" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.5">REQ5: Optionally, specify the acceptable values for 'sign_key_parameters': TODO<a href="#section-appendix.a-2.5" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.6">REQ6: Optionally, specify the acceptable values for 'pub_key_enc': TODO<a href="#section-appendix.a-2.6" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.7">REQ7: Specify the exact format of the 'key' value: COSE_Key, see <a href="#retr-cosekey" class="xref">Section 3.1</a>.<a href="#section-appendix.a-2.7" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.8">REQ8: Specify the acceptable values of 'kty' : "COSE_Key", see <a href="#retr-cosekey" class="xref">Section 3.1</a>.<a href="#section-appendix.a-2.8" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.9">REQ9: Specity the format of the identifiers of group members: TODO<a href="#section-appendix.a-2.9" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.10">REQ10: Optionally, specify the format and content of 'group_policies' entries: not defined<a href="#section-appendix.a-2.10" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.11">REQ11: Specify the communication protocol the members of the group must use: CoAP pub/sub.<a href="#section-appendix.a-2.11" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.12">REQ12: Specify the security protocol the group members must use to protect their communication. This must provide encryption, integrity and replay protection: Object Security of Content using COSE, see <a href="#oscon" class="xref">Section 6.1</a>.<a href="#section-appendix.a-2.12" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.13">REQ13: Specify and register the application profile identifier : "coap_pubsub_app", see <a href="#iana-profile" class="xref">Section 8.1</a>.<a href="#section-appendix.a-2.13" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.14">REQ14: Optionally, specify the encoding of public keys, of 'client_cred', and of 'pub_keys' if COSE_Keys are not used: NA.<a href="#section-appendix.a-2.14" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.15">REQ15: Specify policies at the KDC to handle id that are not included in get_pub_keys: TODO<a href="#section-appendix.a-2.15" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.16">REQ16: Specify the format and content of 'group_policies': TODO<a href="#section-appendix.a-2.16" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.17">REQ17: Specify the format of newly-generated individual keying material for group members, or of the information to derive it, and corresponding CBOR label : not defined<a href="#section-appendix.a-2.17" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.18">REQ18: Specify how the communication is secured between Client and KDC. Optionally, specify tranport profile of ACE <span>[<a href="#I-D.ietf-ace-oauth-authz" class="xref">I-D.ietf-ace-oauth-authz</a>]</span> to use between Client and KDC: pre-set, as KDC is AS.<a href="#section-appendix.a-2.18" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.19">OPT1: Optionally, specify the encoding of public keys, of 'client_cred', and of 'pub_keys' if COSE_Keys are not used: NA<a href="#section-appendix.a-2.19" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.20">OPT2: Optionally, specify the negotiation of parameter values for signature algorithm and signature keys, if 'sign_info' and 'pub_key_enc' are not used: NA<a href="#section-appendix.a-2.20" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.21">OPT3: Optionally, specify the format and content of 'mgt_key_material': not defined<a href="#section-appendix.a-2.21" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-appendix.a-2.22">OPT4: Optionally, specify policies that instruct clients to retain unsuccessfully decrypted messages and for how long, so that they can be decrypted after getting updated keying material: not defined<a href="#section-appendix.a-2.22" class="pilcrow">¶</a>
+</li>
+      </ul>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="section-appendix.b">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="section-appendix.b-1">The author wishes to thank Ari Keraenen, John Mattsson, Ludwig Seitz, Goeran Selander, Jim Schaad and Marco Tiloca for the useful discussion and reviews that helped shape this document.<a href="#section-appendix.b-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="section-appendix.c">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Francesca Palombini</span></div>
+<div dir="auto" class="left"><span class="org">Ericsson</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:francesca.palombini@ericsson.com" class="email">francesca.palombini@ericsson.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Cigdem Sengul</span></div>
+<div dir="auto" class="left"><span class="org">Brunel University</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:csengul@acm.org" class="email">csengul@acm.org</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
