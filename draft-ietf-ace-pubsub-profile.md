@@ -35,6 +35,7 @@ normative:
   I-D.ietf-ace-oauth-authz:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-ace-key-groupcomm:
+  I-D.ietf-core-groupcomm-bis:
   MQTT-OASIS-Standard-v5:
     title: "OASIS Standard MQTT Version 5.0"
     date: "2017"
@@ -434,8 +435,7 @@ and JSON-based encoding, it is considered out of scope for this document.
 
 In MQTT, topics are organised as a tree, and in the {{I-D.ietf-ace-mqtt-tls-profile}} 
 'scope' captures permissions for not a single topic but a topic filter. Therefore, topic names (i.e., group names) may include wildcards spanning several levels of the topic tree.
-Hence, it is important to distinguish application groups and security groups as in {{I.D.ietf.core-groupcomm-bis}}, and understand that the {{I-D.ietf-ace-key-groupcomm}} refers to
-security groups. 
+Hence, it is important to distinguish application groups and security groups defined in {{I-D.ietf-core-groupcomm-bis}}. An application group has relevance at the application level - for example, in MQTT an application group could denote all topics stored under "“home/lights/". On the other hand, a security group is a group of endpoints that each store group security material to exchange secure communication within the group. The group communication in {{I-D.ietf-ace-key-groupcomm}} refers to security groups. 
 
 To be able join the right security group associated with requested topics (application groups), the client needs to discover the (application group, security group) association.
 In MQTT, $SYS/ has been widely adopted as a prefix to topics that contain broker-specific information, and hence, can be used by the broker for this purpose. In typical implementations, Clients that subscribe to one or more SYS-Topics receive the current value on the SYS topics as soon as they subscribe, and then after periodically. 
