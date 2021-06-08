@@ -428,10 +428,27 @@ After the previous phases have taken place, the pub-sub communication can commen
 
 ## MQTT PubSub Application Profile {#mqtt-pubsub}
 
-The steps MQTT clients go through are similar to the CoAP clients as described in {{coap_profile}}. This document describes the exchanges between the Clients and KDC using CoAP and CBOR. The payload that is carried in MQTT messages will be protected using COSE. 
+The steps MQTT clients go through are similar to the CoAP clients as described in {{coap_profile}}. Note that the exchanges between the Clients and KDC use CoAP and CBOR. The payload that is carried in MQTT messages will be protected using COSE.
+While these exchanges may be carried out using their corresponding equivalents in HTTP
+and JSON-based encoding, it is considered out of scope for this document.
 
 In MQTT, topics are organised as a tree, and in the {{I-D.ietf-ace-mqtt-tls-profile}} 
 'scope' captures permissions for not a single topic but a topic filter. Therefore, topic names (i.e., group names) may include wildcards spanning several levels of the topic tree.
+Hence, it is important to distinguish application groups and security groups as in {{I.D.ietf.core-groupcomm-bis}}, and understand that the {{I-D.ietf-ace-key-groupcomm}} refers to
+security groups. 
+
+To be able join the right security group associated with requested topics (application groups), the client needs to discover the (application group, security group) association.
+In MQTT, $SYS/ has been widely adopted as a prefix to topics that contain broker-specific information, and hence, can be used by the broker for this purpose. In typical implementations, Clients that subscribe to one or more SYS-Topics receive the current value on the SYS topics as soon as they subscribe, and then after periodically. 
+
+For an MQTT client we envision the following steps to take place:
+
+1. Client learns the (application group, security group) associations from the $SYS topic (this topic is RECOMMENDED to be a protected topic). These associations MAY be published under another topic.
+2. Client computes the corresponding security groups for its application groups, and sends token requests for the security groups to AS. 
+3. Client sends join requests to KDC to gets the keys for these security groups.
+4. Client authorises to the Broker with the token (described in {{I-D.ietf-ace-mqtt-tls-profile}}). 
+5. A Publisher Client sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. RS validates the PUBLISH message by checking the topic's security group association and the stored token.
+6. A Subscriber Client may send SUBSCRIBE messages with one or multiple topic filters. 
+A topic filter may correspond to multiple topics but MUST belong to a single security group. If requested topics are in multiple security groups, then these topics SHOULD be separated into the corresponding topic filters in the SUBSCRIBE message. 
 
 # Security Considerations
 
