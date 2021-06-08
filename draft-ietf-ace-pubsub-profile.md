@@ -117,7 +117,8 @@ This profile specifies:
 2. The Clients retrieval of keying material for the Publisher Client to publish protected publications to the Broker, and for the Subscriber Client to read protected publications (B).
 
 These exchanges aims at setting up two different security associations. 
-On the one hand, the Publisher and the Subscriber clients have a security association with the Broker (i.e., RS), so that RS can authorize the Clients (Security Association 1). On the other hand, the Publisher has a security association with the Subscriber, to protect the publication content (Security Association 2) while sending it through the broker (i.e.here, the broker corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}). The Security Association 1 set up using AS and a transport profile of {{I-D.ietf-ace-oauth-authz}}, the Security Association 2 is set up using AS, KDC and {{I-D.ietf-ace-key-groupcomm}}. Note that, given that the publication content is protected, the Broker MAY accept unauthorised Subscribers. In this case, the Subscriber client can skip setting up Security Association 1 with the Broker.
+On the one hand, the Publisher and the Subscriber clients have a security association with the Broker (i.e. RS), so that RS can authorize the Clients (Security Association 1). On the other hand, the Publisher has a security association with the Subscriber, to protect the publication content (Security Association 2) while sending it through the broker 
+(i.e. here, the broker corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}). The Security Association 1 set up using AS and a transport profile of {{I-D.ietf-ace-oauth-authz}}, the Security Association 2 is set up using AS, KDC and {{I-D.ietf-ace-key-groupcomm}}. Note that, given that the publication content is protected, the Broker MAY accept unauthorised Subscribers. In this case, the Subscriber client can skip setting up Security Association 1 with the Broker.
 
 ~~~~~~~~~~~~
 +------------+             +------------+              +------------+
@@ -138,7 +139,7 @@ On the one hand, the Publisher and the Subscriber clients have a security associ
 # PubSub Authorisation {#authorisation}
 
  Since {{I-D.ietf-ace-oauth-authz}} recommends the use of CoAP and CBOR, this document describes the exchanges assuming CoAP and CBOR are used. However, using HTTP instead of CoAP is possible, using the corresponding parameters and methods. Analogously, JSON
- {RFC8259}} can be used instead of CBOR, using the conversion method specified in Sections 4.1 and 4.2 of {{RFC7049}}. In case JSON is used, the Content Format or Media Type of the message has to be changed accordingly.
+ {RFC8259}} can be used instead of CBOR, using the conversion method specified in Sections 4.1 and 4.2 of {{RFC7049}}. In case JSON is used, the Content Format or Media Type of the message has to be changed accordingly. Exact definition of these exchanges are considered out of scope for this document.
 
  {{authorisation-flow}} shows the message flow for authorisation purposes.
 
@@ -429,9 +430,8 @@ After the previous phases have taken place, the pub-sub communication can commen
 
 ## MQTT PubSub Application Profile {#mqtt-pubsub}
 
-The steps MQTT clients go through are similar to the CoAP clients as described in {{coap_profile}}. Note that the exchanges between the Clients and KDC use CoAP and CBOR. The payload that is carried in MQTT messages will be protected using COSE.
-While these exchanges may be carried out using their corresponding equivalents in HTTP
-and JSON-based encoding, it is considered out of scope for this document.
+The steps MQTT clients go through are similar to the CoAP clients as described in {{coap_profile}}. 
+ The payload that is carried in MQTT messages will be protected using COSE.
 
 In MQTT, topics are organised as a tree, and in the {{I-D.ietf-ace-mqtt-tls-profile}} 
 'scope' captures permissions for not a single topic but a topic filter. Therefore, topic names (i.e., group names) may include wildcards spanning several levels of the topic tree.
