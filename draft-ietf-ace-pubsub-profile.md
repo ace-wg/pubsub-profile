@@ -31,7 +31,7 @@ normative:
   RFC8152:
   RFC2119:
   RFC6749:
-  RFC7049:
+  RFC8949:
   I-D.ietf-ace-oauth-authz:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-ace-key-groupcomm:
@@ -90,10 +90,10 @@ The architecture of the scenario is shown in {{archi}}.
 
 ~~~~~~~~~~~~
              +----------------+   +----------------+
-             |                |   |                |
-             | Authorization  |   |      KDC       |
-             |    Server      |   |                |
-             |                |   |                |
+             |                |   |      Key       |
+             | Authorization  |   |  Distribution  |
+             |    Server      |   |     Center     |
+             |      (AS)      |   |     (KDC)      |
              +----------------+   +----------------+
                       ^                  ^
                       |                  |
@@ -116,9 +116,9 @@ This profile specifies:
 1. The establishment of a secure connection between a Client and Broker, using an ACE transport profile such as DTLS {{I-D.ietf-ace-dtls-authorize}}, OSCORE {{I-D.ietf-ace-oscore-profile}}, or MQTT-TLS {{I-D.ietf-ace-mqtt-tls-profile}} (A and C).
 2. The Clients retrieval of keying material for the Publisher Client to publish protected publications to the Broker, and for the Subscriber Client to read protected publications (B).
 
-These exchanges aims at setting up two different security associations. 
+These exchanges aim at setting up two different security associations. 
 On the one hand, the Publisher and the Subscriber clients have a security association with the Broker (i.e. RS), so that RS can authorize the Clients (Security Association 1). On the other hand, the Publisher has a security association with the Subscriber, to protect the publication content (Security Association 2) while sending it through the broker 
-(i.e. here, the broker corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}). The Security Association 1 set up using AS and a transport profile of {{I-D.ietf-ace-oauth-authz}}, the Security Association 2 is set up using AS, KDC and {{I-D.ietf-ace-key-groupcomm}}. Note that, given that the publication content is protected, the Broker MAY accept unauthorised Subscribers. In this case, the Subscriber client can skip setting up Security Association 1 with the Broker.
+(i.e. here, the broker corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}). The Security Association 1 is set up using AS and a transport profile of {{I-D.ietf-ace-oauth-authz}}, the Security Association 2 is set up using AS, KDC and {{I-D.ietf-ace-key-groupcomm}}. Note that, given that the publication content is protected, the Broker MAY accept unauthorised Subscribers. In this case, the Subscriber client can skip setting up Security Association 1 with the Broker.
 
 ~~~~~~~~~~~~
 +------------+             +------------+              +------------+
@@ -139,7 +139,7 @@ On the one hand, the Publisher and the Subscriber clients have a security associ
 # PubSub Authorisation {#authorisation}
 
  Since {{I-D.ietf-ace-oauth-authz}} recommends the use of CoAP and CBOR, this document describes the exchanges assuming CoAP and CBOR are used. However, using HTTP instead of CoAP is possible, using the corresponding parameters and methods. Analogously, JSON
- {RFC8259}} can be used instead of CBOR, using the conversion method specified in Sections 4.1 and 4.2 of {{RFC7049}}. In case JSON is used, the Content Format or Media Type of the message has to be changed accordingly. Exact definition of these exchanges are considered out of scope for this document.
+ {{RFC8259}} can be used instead of CBOR, using the conversion method specified in Sections 6.1 and 6.2 of {{RFC8949}}. In case JSON is used, the Content Format or Media Type of the message has to be changed accordingly. Exact definition of these exchanges are considered out of scope for this document.
 
  {{authorisation-flow}} shows the message flow for authorisation purposes.
 
@@ -147,17 +147,17 @@ On the one hand, the Publisher and the Subscriber clients have a security associ
    Client                                       Broker   AS      KDC
       | [--Resource Request (CoAP/MQTT/other)-->] |       |       |
       |                                           |       |       |
-      | [<----AS Information (CoAP/MQTT/other)]-- |       |       |
+      | [<----AS Information (CoAP/MQTT/other)--] |       |       |
       |                                                   |       |
-      | ----- Authorization Request (CoAP/HTTP/other)---->|       |
+      | ----- Authorisation Request (CoAP/HTTP/other)---->|       |
       |                                                   |       |
-      | <------Authorization Response (CoAP/HTTP/other) --|       |
+      | <------Authorisation Response (CoAP/HTTP/other) --|       |
       |                                                           |
       |----------------------Token Post (CoAP)------------------->|
       |                                                           |
-      |--------------- Key Distribution Request (CoAP) ---------->|
+      |------------------- Joining Request (CoAP) --------------->|
       |                                                           |
-      |<--------------Key Distribution Response (CoAP)------------|
+      |------------------ Joining Response (CoAP) --------------->|
 
 ~~~~~~~~~~~
 {: #authorisation-flow title="Authorisation Flow"}
@@ -304,7 +304,7 @@ An example of the payload of a Joining Request and corresponding Response for a 
   "get_pub_keys" : [true, ["pub"], []]
 }
 ~~~~~~~~~~~~
-{: #fig-req-sub-kdc title="Authorization + Joining Request payload for a Subscriber"}
+{: #fig-req-sub-kdc title="Joining Request payload for a Subscriber"}
 {: artwork-align="center"}
 
 ~~~~~~~~~~~~
