@@ -179,7 +179,7 @@ Authorisation Server (AS) Discovery is also defined in Section 2.2.6.1 of
 
 ##  Authorising to the Broker {#auth-request} 
 
-After retrieving the AS address, the Client sends an Authorisation Request to the AS.
+After retrieving the AS address, the Client sends an Authorisation Request to the AS for the KDC and the Broker.
 Note that the AS authorises:
 
 1. What endpoints are allowed to Publish or Subscribe to the Broker.
@@ -211,7 +211,8 @@ The 'scope' parameter is encoded as follows, where 'gname' is treated as topic i
 Other scope representations are also possible and are described in (Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}). Note that in the AIF-MQTT data model is described in Section 3 of the {{I-D.ietf-ace-mqtt-tls-profile}}, the role values have been further constrained
 to "pub" and "sub".
 
-The AS responds with an Authorization Response as defined in Section 5.8.2 of {{I-D.ietf-ace-oauth-authz}} and Section 3.2 of {{I-D.ietf-ace-key-groupcomm}}. 
+The AS responds with an Authorization Response as defined in Section 5.8.2 of {{I-D.ietf-ace-oauth-authz}} and Section 3.2 of {{I-D.ietf-ace-key-groupcomm}}. If a token is returned, then the audience of this token are the KDC and the Broker, and the client
+uses the same token for both. 
 In case CoAP PubSub is used as communication protocol, 'profile' is set to "coap_pubsub_app" as defined in {{iana-coap-profile}}. In case MQTT PubSub is used as communication protocol, 'profile' is set to "mqtt_pubsub_app" as defined in {{iana-mqtt-profile}}.
 
 # Key Distribution for PubSub Content Protection {#retr-cosekey}
