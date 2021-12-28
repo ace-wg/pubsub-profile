@@ -352,9 +352,9 @@ An example of the payload of a Joining Request and corresponding Response for a 
 
 
 (D) corresponds to the publication of a topic on the Broker.
-The publication (the resource representation) is protected with COSE ({{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}).
+The publication (the resource representation) is protected with COSE  ({{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}) by the publisher.
 The (E) message is the subscription of the Subscriber. The subscription MAY be unprotected.
-The (F) message is the response from the Broker, where the publication is protected with COSE.
+The (F) message is the response from the Broker, where the publication is protected with COSE by the publisher.
 
 
 ~~~~~~~~~~~
@@ -374,13 +374,14 @@ Whenever a Client publishes a new message, the Broker sends this message to all 
 
 ## Using COSE Objects To Protect The Resource Representation {#oscon}
 
-The Publisher uses the symmetric COSE Key received from the KDC ({{retr-cosekey}}) to protect the payload of the PUBLISH operation (Section 4.3 of {{I-D.ietf-core-coap-pubsub}} and {{MQTT-OASIS-Standard-v5}}). Specifically, the COSE Key is used to create a COSE\_Encrypt0 with algorithm specified by KDC. The Publisher uses the private key corresponding to the public key sent to the KDC in exchange B ({{retr-cosekey}}) to countersign the COSE Object as specified in {{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}. The payload is replaced by the COSE object before the publication is sent to the Broker.
+The Publisher uses the symmetric COSE Key received from the KDC ({{retr-cosekey}}) to protect the payload of the PUBLISH operation (Section 4.3 of {{I-D.ietf-core-coap-pubsub}} and {{MQTT-OASIS-Standard-v5}}). Specifically, the COSE Key is used to create a COSE\_Encrypt0 object with algorithm specified by KDC. The Publisher uses the private key corresponding to the public key sent to the KDC in exchange B ({{retr-cosekey}}) to countersign the COSE Object as specified in {{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}. The payload is replaced by the COSE object before the publication is sent to the Broker.
 
 The Subscriber uses the 'kid' in the 'countersignature' field in the COSE object to retrieve the right public key to verify the countersignature. It then uses the symmetric key received from KDC to verify and decrypt the publication received in the payload from the Broker (in the case of CoAP the publication is received by the CoAP Notification and for MQTT, it is received as a PUBLISH message from the Broker to the subscribing client).
 
 The COSE object is constructed in the following way:
 
-* The protected Headers (as described in {{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}) MAY contain the kid parameter, with value the kid of the symmetric COSE Key received in {{retr-cosekey}} and MUST contain the content encryption algorithm.
+* The protected Headers (as described in {{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}) MUST contain the kid parameter if it was provided in the
+Joining Response, with value the kid of the symmetric COSE Key received in {{retr-cosekey}} and MUST contain the content encryption algorithm.
 * The unprotected Headers MUST contain the Partial IV, with value a sequence number that is incremented for every message sent, and the counter signature that includes:
   - the algorithm (same value as in the asymmetric COSE Key received in (B)) in the protected header;
   - the kid (same value as the kid of the asymmetric COSE Key received in (B)) in the unprotected header;
