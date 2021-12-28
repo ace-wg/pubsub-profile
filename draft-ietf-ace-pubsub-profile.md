@@ -226,10 +226,10 @@ In case CoAP PubSub is used as communication protocol, 'profile' claim is set to
 ## Token POST {#token-post}
 After receiving a token from the AS, the Client posts the token to the KDC 
 (Section 3.3 {{I-D.ietf-ace-key-groupcomm}}).  In addition to the token post, 
-a Subscriber Client MAY ask for the public keys in the group, used for source authentication, as well as any other group parameters. In this case, the message MUST have Content-Format set to "application/ace+cbor" defined in Section 8.16 of {{I-D.ietf-ace-oauth-authz}}.  The message payload MUST be formatted as a CBOR map, which MUST include the access token and
+a Subscriber Client MAY ask for the format of the public keys in the group, used for source authentication, as well as any other group parameters. In this case, the message MUST have Content-Format set to "application/ace+cbor" defined in Section 8.16 of {{I-D.ietf-ace-oauth-authz}}.  The message payload MUST be formatted as a CBOR map, which MUST include the access token and
 the 'sign_info' parameter. The details for the 'sign_info' parameter can be found in Section 3.3 of {{I-D.ietf-ace-key-groupcomm}}. Alternatively, the joining node may retrieve this information by other means as described in {{I-D.ietf-ace-key-groupcomm}}.
 
-The KDC verifies that the Client is authorized to access the topic with the requested role. After successful verification, the Client is authorized to receive the group keying material from the KDC and join the group. The KDC replies to the Client with a 2.01 (Created) response, using Content-Format "application/ace+cbor". The payload of the 2.01 response is a CBOR map.  
+The KDC verifies the token to check of the Client is authorized to access the topic with the requested role. After successful verification, the Client is authorized to receive the group keying material from the KDC and join the group. The KDC replies to the Client with a 2.01 (Created) response, using Content-Format "application/ace+cbor". The payload of the 2.01 response is a CBOR map.  
 
 A Publisher Client MUST send its own public key to the KDC when joining the group.
 Since the access token from a Publisher Client will have "pub" role, the KDC MUST include
