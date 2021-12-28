@@ -513,7 +513,7 @@ Name: COSE_Key
 
 Key Type Value: TBD
 
-Profile: coap_pubsub_app
+Profile: coap_pubsub_app, mqtt_pubsub_app
 
 Description: COSE_Key object
 
