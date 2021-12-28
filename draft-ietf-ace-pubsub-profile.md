@@ -182,19 +182,20 @@ Complementary to what is defined in {{I-D.ietf-ace-oauth-authz}} (Section 5.1) f
 Authorisation Server (AS) Discovery is also defined in Section 2.2.6.1 of 
 {{I-D.ietf-ace-mqtt-tls-profile}} for MQTT v5 clients (and not supported for MQTT v3 clients).  
 
-##  Authorising to the Broker {#auth-request} 
+##  Authorising to the KDC and the Broker {#auth-request} 
 
-After retrieving the AS address, the Client sends an Authorisation Request to the AS for the KDC and the Broker.
+After retrieving the AS address, the Client sends two Authorisation Requests to the AS for the KDC and the Broker, respectively.
+
 Note that the AS authorises:
 
 1. What endpoints are allowed to Publish or Subscribe to the Broker.
 2. What endpoints are allowed to access to which topic(s).
 
-The request includes the following fields from the Authorization Request 
+Both requests include the following fields from the Authorization Request
 (Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}):
 
-* 'scope', containing the topic identifier, that the Client wishes to access
-* 'audience', an array with identifiers of the KDC and the Broker.
+* 'scope', containing the topic identifiers, that the Client wishes to access
+* 'audience', an identifier, corresponding to either the KDC or the Broker.
 
 Other additional parameters can be included if necessary, as defined in
 {{I-D.ietf-ace-oauth-authz}}.
@@ -213,12 +214,12 @@ The 'scope' parameter is encoded as follows, where 'gname' is treated as topic i
 {: #scope-aif title="CDLL definition of scope, using as example group name encoded as tstr and role as tstr."}
 {: artwork-align="center"}
 
-Other scope representations are also possible and are described in (Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}). Note that in the AIF-MQTT data model is described in Section 3 of the {{I-D.ietf-ace-mqtt-tls-profile}}, the role values have been further constrained
-to "pub" and "sub".
+Other scope representations are also possible and are described in (Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}). Note that in the AIF-MQTT data model is described in Section 3 of the {{I-D.ietf-ace-mqtt-tls-profile}}, the role values have been further constrained to "pub" and "sub".
 
-The AS responds with an Authorization Response as defined in Section 5.8.2 of {{I-D.ietf-ace-oauth-authz}} and Section 3.2 of {{I-D.ietf-ace-key-groupcomm}}. If a token is returned, then the audience of this token are the KDC and the Broker, and the client
-uses the same token for both. 
-In case CoAP PubSub is used as communication protocol, 'profile' is set to "coap_pubsub_app" as defined in {{iana-coap-profile}}. In case MQTT PubSub is used as communication protocol, 'profile' is set to "mqtt_pubsub_app" as defined in {{iana-mqtt-profile}}.
+The AS responds with an Authorization Response to each request as defined in Section 5.8.2 of {{I-D.ietf-ace-oauth-authz}} and Section 3.2 of {{I-D.ietf-ace-key-groupcomm}}. 
+The client needs to keep track of which response corresponds to which entity to
+use the right token for the right audience, i.e., the KDC or the Broker.
+In case CoAP PubSub is used as communication protocol, 'profile' claim is set to "coap_pubsub_app" as defined in {{iana-coap-profile}}. In case MQTT PubSub is used as communication protocol, 'profile' claim is set to "mqtt_pubsub_app" as defined in {{iana-mqtt-profile}}.
 
 # Key Distribution for PubSub Content Protection {#retr-cosekey}
 
