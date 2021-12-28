@@ -88,7 +88,7 @@ Readers are expected to be familiar with terms and concepts of pub-sub group com
 
 # Application Profile Overview {#overview}
 
-The objective of this document is to specify how to authorize nodes, provide keys, and protect a pub-sub communication, using {{I-D.ietf-ace-key-groupcomm}}, which expands from the ACE framework ({{I-D.ietf-ace-oauth-authz}}), and transport profiles ({{I-D.ietf-ace-dtls-authorize}}, {{I-D.ietf-ace-oscore-profile}}, {{I-D.ietf-ace-mqtt-tls-profile}}). The pub-sub communication protocol can be based on CoAP, as described in {{I-D.ietf-core-coap-pubsub}}, MQTT {{MQTT-OASIS-Standard-v5}} , or other transport. Note that both publishers and subscribers use the same profiles.
+The objective of this document is to specify how to authorize nodes, provide keys, and protect a pub-sub communication, using {{I-D.ietf-ace-key-groupcomm}}, which expands from the ACE framework ({{I-D.ietf-ace-oauth-authz}}), and transport profiles ({{I-D.ietf-ace-dtls-authorize}}, {{I-D.ietf-ace-oscore-profile}}, {{I-D.ietf-ace-mqtt-tls-profile}}). The pub-sub communication protocol can be based on CoAP, as described in {{I-D.ietf-core-coap-pubsub}}, MQTT {{MQTT-OASIS-Standard-v5}} , or other transport. Note that both publishers and subscribers use the same pub-sub communication protocol and the same transport profile of ACE in their interaction with the broker. However, all clients need to use CoAP when communicating to the KDC.
 
 The architecture of the scenario is shown in {{archi}}.
 
@@ -111,18 +111,19 @@ The architecture of the scenario is shown in {{archi}}.
 |            |             |            |
 +------------+             +------------+
 ~~~~~~~~~~~~~
-{: #archi title="Architecture for Pub-Sub with Authorization Servers"}
+{: #archi title="Architecture for Pub-Sub with Authorization Server and Key Distribution Center"}
 {: artwork-align="center"}
 
-Publisher or Subscriber Clients is referred to as Client in short.
+Publisher or Subscriber Clients is referred to as Client in short. 
+The Broker acts as the ACE RS, and also corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}).
+
 This profile specifies:
 
 1. The establishment of a secure connection between a Client and Broker, using an ACE transport profile such as DTLS {{I-D.ietf-ace-dtls-authorize}}, OSCORE {{I-D.ietf-ace-oscore-profile}}, or MQTT-TLS {{I-D.ietf-ace-mqtt-tls-profile}} (A and C).
 2. The Clients retrieval of keying material for the Publisher Client to publish protected publications to the Broker, and for the Subscriber Client to read protected publications (B).
 
 These exchanges aim at setting up two different security associations. 
-On the one hand, the Publisher and the Subscriber clients have a security association with the Broker (i.e. RS), so that RS can authorize the Clients (Security Association 1). On the other hand, the Publisher has a security association with the Subscriber, to protect the publication content (Security Association 2) while sending it through the broker 
-(i.e. here, the broker corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}). The Security Association 1 is set up using AS and a transport profile of {{I-D.ietf-ace-oauth-authz}}, the Security Association 2 is set up using AS, KDC and {{I-D.ietf-ace-key-groupcomm}}. Note that, given that the publication content is protected, the Broker MAY accept unauthorised Subscribers. In this case, the Subscriber client can skip setting up Security Association 1 with the Broker.
+On the one hand, the Publisher and the Subscriber clients have a security association with the Broker, so that, as the ACE RS, it can verify that the Clients are authorized (Security Association 1). On the other hand, the Publisher has a security association with the Subscriber, to protect the publication content (Security Association 2) while sending it through the broker. The Security Association 1 is set up using AS and a transport profile of {{I-D.ietf-ace-oauth-authz}}, the Security Association 2 is set up using AS, KDC and {{I-D.ietf-ace-key-groupcomm}}. Note that, given that the publication content is protected, the Broker MAY accept unauthorised Subscribers. In this case, the Subscriber client can skip setting up Security Association 1 with the Broker and connect to it as an anonymous client to subscribe to topics of interest at the Broker.
 
 ~~~~~~~~~~~~
 +------------+             +------------+              +------------+
