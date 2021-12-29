@@ -216,6 +216,14 @@ The 'scope' parameter is encoded as follows, where 'gname' is treated as topic i
 
 Other scope representations are also possible and are described in (Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}). Note that in the AIF-MQTT data model described in Section 3 of the {{I-D.ietf-ace-mqtt-tls-profile}}, the role values have been further constrained to "pub" and "sub".
 
+It must be noted that for pub-sub brokers, the scope represents pub-sub topics i.e., the application group. On the other hand, for the KDC, the scope represents
+the security group. If there is a one-to-one mapping between the application group
+and the security group, the client uses the same scope for both requests.
+If there is not a one-to-one mapping, the correct policies regarding both
+sets of scopes MUST be available to the AS.   
+To be able to join the right security group associated with requested application groups (i.e., pub-sub topics), the client The client MUST ask for the correct
+scopes in its Authorization Requests. How the client discovers the (application group, security group) association is out of scope of this document.
+
 The AS responds with an Authorization Response to each request as defined in Section 5.8.2 of {{I-D.ietf-ace-oauth-authz}} and Section 3.2 of {{I-D.ietf-ace-key-groupcomm}}. 
 The client needs to keep track of which response corresponds to which entity to
 use the right token for the right audience, i.e., the KDC or the Broker.
@@ -443,17 +451,15 @@ The steps MQTT clients go through are similar to the CoAP clients as described i
 
 In MQTT, topics are organised as a tree, and in the {{I-D.ietf-ace-mqtt-tls-profile}} 
 'scope' captures permissions for not a single topic but a topic filter. Therefore, topic names (i.e., group names) may include wildcards spanning several levels of the topic tree.
-Hence, it is important to distinguish application groups and security groups defined in {{I-D.ietf-core-groupcomm-bis}}. An application group has relevance at the application level - for example, in MQTT an application group could denote all topics stored under "“home/lights/". On the other hand, a security group is a group of endpoints that each store group security material to exchange secure communication within the group. The group communication in {{I-D.ietf-ace-key-groupcomm}} refers to security groups. 
-
-To be able to join the right security group associated with requested topics (application groups), the client needs to discover the (application group, security group) association.
-In MQTT, $SYS/ has been widely adopted as a prefix to topics that contain broker-specific information, and hence, can be used by the broker for this purpose. In typical implementations, Clients that subscribe to one or more SYS-Topics receive the current value on the SYS topics as soon as they subscribe, and then after periodically. 
+Hence, it is important to distinguish application groups and security groups defined in {{I-D.ietf-core-groupcomm-bis}}. An application group has relevance at the application level - for example, in MQTT an application group could denote all topics stored under "“home/lights/". On the other hand, a security group is a group of endpoints that each store group security material to exchange secure communication within the group. The group communication in {{I-D.ietf-ace-key-groupcomm}} refers to security groups.
+ToDo: Give a more complete example
 
 For an MQTT client we envision the following steps to take place:
 
-1. Client learns the (application group, security group) associations from the $SYS topic (this topic is RECOMMENDED to be a protected topic). These associations MAY be published under another topic.
-2. Client computes the corresponding security groups for its application groups, and sends token requests for the security groups to AS. 
+1. Client sends a token request to AS for the requested topics (application groups) using the broker as the audience.
+2. Client sends a token request to AS for the corresponding security groups for its application groups using the KDC as the audience.
 3. Client sends join requests to KDC to gets the keys for these security groups.
-4. Client authorises to the Broker with the token (described in {{I-D.ietf-ace-mqtt-tls-profile}}). 
+4. Client authorises to the Broker with the token (described in {{I-D.ietf-ace-mqtt-tls-profile}}).
 5. A Publisher Client sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. RS validates the PUBLISH message by checking the topic's security group association and the stored token.
 6. A Subscriber Client may send SUBSCRIBE messages with one or multiple topic filters. 
 A topic filter may correspond to multiple topics but MUST belong to a single security group. If requested topics are in multiple security groups, then these topics SHOULD be separated into the corresponding topic filters in the SUBSCRIBE message. 
