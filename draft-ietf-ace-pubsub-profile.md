@@ -33,6 +33,7 @@ normative:
   RFC7925:
   RFC8392:
   RFC8949:
+  I-D.draft-ietf-rats-uccs-01:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-cose-rfc8152bis-algs:
   I-D.ietf-cose-rfc8152bis-struct:
@@ -279,8 +280,9 @@ The KDC responds with a Joining Response, which has the Content-Format "applicat
   * 'k' with value the symmetric key value
   * OPTIONALLY, 'kid' with an identifier for the key value
 - OPTIONALLY, 'exp' with the expiration time of the key
-- 'pub\_keys', containing the public keys of all Publisher Clients, formatted according to the public key encoding for the group, if the 'get\_pub\_keys' parameter was present and set to the empty array in the Key Distribution Request. For Subscriber Clients, the Joining Response MUST contain the 'pub\_keys' parameter.
-If CBOR Web Tokens (CWTs) or CWT Claims Sets (CCSs) {{RFC8392}} are used as public key format, the public key algorithm is fully described by a COSE key type and its "kty" and "crv" parameters. If X.509 certificates {{RFC7925}} or C509 certificates
+- 'pub\_keys', containing the public keys of all Publisher Clients, formatted according to the public key encoding for the group, if the 'get\_pub\_keys' parameter was present and set to the empty array in the Key Distribution Request. For Subscriber Clients, the Joining Response MUST contain the 'pub\_keys' parameter. The encoding accepted for this 
+document is UCCS (Unprotectec CWT Claims Set) {{I-D.draft-ietf-rats-uccs-01}}.
+ToDo: Consider allowing other public key formats with the following text. If CBOR Web Tokens (CWTs) or CWT Claims Sets (CCSs) {{RFC8392}} are used as public key format, the public key algorithm is fully described by a COSE key type and its "kty" and "crv" parameters. If X.509 certificates {{RFC7925}} or C509 certificates
 {{I-D.ietf-cose-cbor-encoded-cert}} are used as public key format, the public key algorithm is fully described by the "algorithm" field of the "SubjectPublicKeyInfo" structure, and by the "subjectPublicKeyAlgorithm" element, respectively.
 
 
@@ -336,16 +338,18 @@ An example of the payload of a Joining Request and corresponding Response for a 
   "key" : {1: 4, 2: h'1234', 3: 12, 5: h'1f389d14d17dc7',
           -1: h'02e2cc3a9b92855220f255fff1c615bc'},
   "pub_keys" : [
-   {
-      1 : 2, / type EC2 /
-      2 : h'11', / kid /
-      3 : -7, / alg ECDSA with SHA-256 /
-      -1 : 1 , / crv P-256 /
-      -2 : h'65eda5a12577c2bae829437fe338701a10aaa375e1bb5b5de108de43
-      9c08551d', / x /
-      -3 : h'1e52ed75701163f7f9e40ddf9f341b3dc9ba860af7e0ca7ca7e9eecd
-      0084d19c' / y /
+   {/UCCS/
+      2:  "42-50-31-FF-EF-37-32-39", /sub/
+      8: {/cnf/
+      1: {/COSE_Key/
+      1 : 1, /alg/
+      3 : -8 /kty/
+      -1 : 6 , /crv/
+      -2 : h'C6EC665E817BD064340E7C24BB93A11E /x/
+8EC0735CE48790F9C458F7FA340B8CA3', / x /
     }
+    }
+   }
   ]
 }
 ~~~~~~~~~~~~
