@@ -62,6 +62,7 @@ informative:
   I-D.ietf-ace-dtls-authorize:
   I-D.ietf-ace-oscore-profile:
   I-D.ietf-ace-mqtt-tls-profile:
+  I-D.draft-ietf-ace-revoked-token-notification-02:
 
 entity:
         SELF: "[RFC-XXXX]"
@@ -119,9 +120,7 @@ The architecture of the scenario is shown in {{archi}}.
 {: artwork-align="center"}
 
 Publisher or Subscriber Clients is referred to as Client in short.
-A Client can act both as a publisher and a subscriber, publishing to some topics, 
-and subscribing to others. However, for the simplicity of presentation, this profile
-describes Publisher and Subscriber clients separately.
+A Client can act both as a publisher and a subscriber, publishing to some topics, and subscribing to others. However, for the simplicity of presentation, this profile describes Publisher and Subscriber clients separately.
 The Broker acts as the ACE RS, and also corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}).
 
 This profile specifies:
@@ -147,6 +146,8 @@ On the one hand, the Publisher and the Subscriber clients have a security associ
 ~~~~~~~~~~~~~
 {: #associations title="Security Associations between Publisher, Broker, Subscriber pairs."}
 {: artwork-align="center"}
+
+
 
 # PubSub Authorisation {#authorisation}
 
@@ -193,8 +194,7 @@ Authorisation Server (AS) Discovery is also defined in Section 2.2.6.1 of
 
 After retrieving the AS address, the Client sends two Authorisation Requests to the AS for the KDC and the Broker, respectively.
 
-Note that the AS authorises what topics a Client is allowed to Publish or Subscribe to the Broker, which means authorising which application and security groups a Client can join. This is because being able to publish or subscribe to a topic at the Broker is considered as being part of an application group. As this profile secures the message contents, an application group may be a part of a security group, or can be associated to multiple security groups. Therefore, a Client MUST send Authorization Requests for 
-both.
+Note that the AS authorises what topics a Client is allowed to Publish or Subscribe to the Broker, which means authorising which application and security groups a Client can join. This is because being able to publish or subscribe to a topic at the Broker is considered as being part of an application group. As this profile secures the message contents, an application group may be a part of a security group, or can be associated to multiple security groups. Therefore, a Client MUST send Authorization Requests for both.
 
 Both requests include the following fields from the Authorization Request
 (Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}):
@@ -204,11 +204,7 @@ Both requests include the following fields from the Authorization Request
 Other additional parameters can be included if necessary, as defined in
 {{I-D.ietf-ace-oauth-authz}}.
 
-It must be noted that for pub-sub brokers, the scope represents pub-sub topics i.e., the application group. On the other hand, for the KDC, the scope represents
-the security group. If there is a one-to-one mapping between the application group
-and the security group, the client uses the same scope for both requests.
-If there is not a one-to-one mapping, the correct policies regarding both
-sets of scopes MUST be available to the AS. To be able to join the right security group associated with requested application groups (i.e., pub-sub topics), the client The client MUST ask for the correct scopes in its Authorization Requests. How the client discovers the (application group, security group) association is out of scope of this document.
+It must be noted that for pub-sub brokers, the scope represents pub-sub topics i.e., the application group. On the other hand, for the KDC, the scope represents the security group. If there is a one-to-one mapping between the application group and the security group, the client uses the same scope for both requests. If there is not a one-to-one mapping, the correct policies regarding both sets of scopes MUST be available to the AS. To be able to join the right security group associated with requested application groups (i.e., pub-sub topics), the client The client MUST ask for the correct scopes in its Authorization Requests. How the client discovers the (application group, security group) association is out of scope of this document.
 ToDo: Check OSCORE Groups with the CoRE Resource Directory to see if it applies.
 
 The 'scope' parameter is encoded as follows, where 'gname' is treated as topic identifier or filter.
@@ -227,7 +223,6 @@ The 'scope' parameter is encoded as follows, where 'gname' is treated as topic i
 
 Other scope representations are also possible and are described in (Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}). Note that in the AIF-MQTT data model described in Section 3 of the {{I-D.ietf-ace-mqtt-tls-profile}}, the role values have been further constrained to "pub" and "sub".
 
-
 The AS responds with an Authorization Response to each request as defined in Section 5.8.2 of {{I-D.ietf-ace-oauth-authz}} and Section 3.2 of {{I-D.ietf-ace-key-groupcomm}}. 
 The client needs to keep track of which response corresponds to which entity to
 use the right token for the right audience, i.e., the KDC or the Broker.
@@ -243,14 +238,11 @@ the 'sign_info' parameter. The details for the 'sign_info' parameter can be foun
 
 The KDC verifies the token to check of the Client is authorized to access the topic with the requested role. After successful verification, the Client is authorized to receive the group keying material from the KDC and join the group. The KDC replies to the Client with a 2.01 (Created) response, using Content-Format "application/ace+cbor". The payload of the 2.01 response is a CBOR map.  
 
-A Publisher Client MUST send its own public key to the KDC when joining the group.
-Since the access token from a Publisher Client will have "pub" role, the KDC MUST include
-'kdcchallenge' in the CBOR map, specifying a dedicated challenge N_S generated by the KDC.  The Client uses this challenge to prove possession of its own private key (see {{I-D.ietf-ace-key-groupcomm}} for details).
+A Publisher Client MUST send its own public key to the KDC when joining the group. Since the access token from a Publisher Client will have "pub" role, the KDC MUST include 'kdcchallenge' in the CBOR map, specifying a dedicated challenge N_S generated by the KDC.  The Client uses this challenge to prove possession of its own private key (see {{I-D.ietf-ace-key-groupcomm}} for details).
 
 ## Join Request and Join Response {#join-request}
 In the next step, a joining node MUST have a secure communication association
-established with the KDC, before starting to join a group under that KDC.  Possible ways to provide a secure communication association are described in the DTLS transport profile
-{{I-D.ietf-ace-dtls-authorize}} and OSCORE transport profile {{I-D.ietf-ace-oscore-profile}} of ACE. 
+established with the KDC, before starting to join a group under that KDC.  Possible ways to provide a secure communication association are described in the DTLS transport profile {{I-D.ietf-ace-dtls-authorize}} and OSCORE transport profile {{I-D.ietf-ace-oscore-profile}} of ACE. 
 
 After establishing a secure communication, the Client sends a Joining Request to the KDC as described in Section 4.3 of {{I-D.ietf-ace-key-groupcomm}}. More specifically, the Client sends a POST request to the /ace-group/GROUPNAME endpoint on KDC, with Content-Format "application/ace-groupcomm+cbor" that MUST contain in the payload (formatted as a CBOR map, Section 4.1.2.1 of {{I-D.ietf-ace-key-groupcomm}}):
 
@@ -285,7 +277,6 @@ document is UCCS (Unprotectec CWT Claims Set) {{I-D.draft-ietf-rats-uccs-01}}.
 ToDo: Consider allowing other public key formats with the following text. If CBOR Web Tokens (CWTs) or CWT Claims Sets (CCSs) {{RFC8392}} are used as public key format, the public key algorithm is fully described by a COSE key type and its "kty" and "crv" parameters. If X.509 certificates {{RFC7925}} or C509 certificates
 {{I-D.ietf-cose-cbor-encoded-cert}} are used as public key format, the public key algorithm is fully described by the "algorithm" field of the "SubjectPublicKeyInfo" structure, and by the "subjectPublicKeyAlgorithm" element, respectively.
 
-
 An example of the Joining Request and corresponding Response for a CoAP Publisher using CoAP and CBOR is specified in {{fig-req-pub-kdc}} and {{fig-resp-pub-kdc}}, where SIG is a signature computed using the private key associated to the public key and the algorithm in 'client\_cred'.
 
 ~~~~~~~~~~~~
@@ -318,7 +309,6 @@ An example of the Joining Request and corresponding Response for a CoAP Publishe
 ~~~~~~~~~~~~
 {: #fig-resp-pub-kdc title="Joining Response payload for a Publisher"}
 {: artwork-align="center"}
-
 
 An example of the payload of a Joining Request and corresponding Response for a Subscriber using CoAP and CBOR is specified in {{fig-req-sub-kdc}} and {{fig-resp-sub-kdc}}.
 
@@ -370,7 +360,6 @@ ToDO: Fix Example for COSE_Key for public key
 {: #pubsub-3 title="Secure communication between Publisher and Subscriber"}
 {: artwork-align="center"}
 
-
 (D) corresponds to the publication of a topic on the Broker.
 The publication (the resource representation) is protected with COSE  ({{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}) by the Publisher.
 The (E) message is the subscription of the Subscriber. The subscription MAY be unprotected.
@@ -389,8 +378,7 @@ The (F) message is the response from the Broker, where the publication is protec
 {: #flow title="(E), (F), (G): Example of protected communication for CoAP"}
 {: artwork-align="center"}
 
-The flow graph is presented below for CoAP. The message flow is similar for MQTT, where PUT corresponds to a PUBLISH message, and GET corresponds to a SUBSCRIBE message. 
-Whenever a Client publishes a new message, the Broker sends this message to all valid subscribers. 
+The flow graph is presented below for CoAP. The message flow is similar for MQTT, where PUT corresponds to a PUBLISH message, and GET corresponds to a SUBSCRIBE message. Whenever a Client publishes a new message, the Broker sends this message to all valid subscribers. 
 
 ## Using COSE Objects To Protect The Resource Representation {#oscon}
 
@@ -458,10 +446,9 @@ After the previous phases have taken place, the pub-sub communication can commen
 
 ## MQTT PubSub Application Profile {#mqtt-pubsub}
 
-The steps MQTT clients go through are similar to the CoAP clients as described in {{coap_profile}}. 
- The payload that is carried in MQTT messages will be protected using COSE.
+The steps MQTT clients go through are similar to the CoAP clients as described in {{coap_profile}}. The payload that is carried in MQTT messages will be protected using COSE.
 
-In MQTT, topics are organised as a tree, and in the {{I-D.ietf-ace-mqtt-tls-profile}} 
+In MQTT, topics are organised as a tree, and in the {{I-D.ietf-ace-mqtt-tls-profile}},
 'scope' captures permissions for not a single topic but a topic filter. Therefore, topic names (i.e., group names) may include wildcards spanning several levels of the topic tree.
 Hence, it is important to distinguish application groups and security groups defined in {{I-D.ietf-core-groupcomm-bis}}. An application group has relevance at the application level - for example, in MQTT an application group could denote all topics stored under "“home/lights/". On the other hand, a security group is a group of endpoints that each store group security material to exchange secure communication within the group. The group communication in {{I-D.ietf-ace-key-groupcomm}} refers to security groups.
 ToDo: Give a more complete example
@@ -473,21 +460,21 @@ For an MQTT client we envision the following steps to take place:
 3. Client sends join requests to KDC to gets the keys for these security groups.
 4. Client authorises to the Broker with the token (described in {{I-D.ietf-ace-mqtt-tls-profile}}).
 5. A Publisher Client sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. RS validates the PUBLISH message by checking the topic stored token.
-6. A Subscriber Client may send SUBSCRIBE messages with one or multiple topic filters. 
+6. A Subscriber Client may send SUBSCRIBE messages with one or multiple topic filters.
 A topic filter may correspond to multiple topics. RS validates the SUBSCRIBE message by checking the stored token for the Client.
 
 # Security Considerations
 
-In the profile described above, the Publisher and Subscriber use asymmetric crypto, which would make the message exchange quite heavy for small constrained devices. Moreover, all Subscribers must be able to access the public keys of all the Publishers to a specific topic to be able to verify the publications. Such a database could be set up and managed by the same entity having control of the
-key material for that topic, i.e. KDC.
+In the profile described above, the Publisher and Subscriber use asymmetric crypto, which would make the message exchange quite heavy for small constrained devices. Moreover, all Subscribers must be able to access the public keys of all the Publishers to a specific topic to be able to verify the publications. Such a database could be set up and managed by the same entity having control of the key material for that topic, i.e. KDC.
 
-An application where it is not critical that only authorized Publishers can publish on a topic may decide not to make use of the asymmetric crypto and only use symmetric encryption/MAC to confidentiality and integrity protection of the publication.
-However, this is not recommended since, as a result, any authorized Subscribers with access to the Broker may forge unauthorized publications without being detected. In this symmetric case the Subscribers would only need one symmetric key per topic, and would not need to know any information about the Publishers, that can be anonymous to it and the Broker.
+<!-- Cigdem: This discussion is no more applicable as we expect all Publishers to be authorised in the draft -->
+<!--An application where it is not critical that only authorized Publishers can publish on a topic may decide not to make use of the asymmetric crypto and only use symmetric encryption/MAC to confidentiality and integrity protection of the publication.
+However, this is not recommended since, as a result, any authorized Subscribers with access to the Broker may forge unauthorized publications without being detected. In this symmetric case the Subscribers would only need one symmetric key per topic, and would not need to know any information about the Publishers, that can be anonymous to it and the Broker.-->
 
-Subscribers can be excluded from future publications through re-keying for a certain topic. This could be set up to happen on a regular basis, for certain applications. How this could be done is out of scope for this work.
+ Even though Access Tokens have expiration times, an Access Token may need to be revoked before its expiration time (see 
+ {{I-D.draft-ietf-ace-revoked-token-notification-02}} for a list of possible circumstances). Subscribers can be excluded from future publications through re-keying for a certain topic. This could be set up to happen on a regular basis, for certain applications. How this could be done is out of scope for this work. In the case when publishers, for CoAP-supporting brokers and clients, the method described in {{I-D.draft-ietf-ace-revoked-token-notification-02}} MAY be used to allow an Authorization Server to notify Clients and Resource Servers (i.e., registered devices) about revoked Access Tokens.
 
 The Broker is only trusted with verifying that the Publisher is authorized to publish, but is not trusted with the publications itself, which it cannot read nor modify. In this setting, caching of publications on the Broker is still allowed.
-
 
 TODO: expand on security and privacy considerations
 
