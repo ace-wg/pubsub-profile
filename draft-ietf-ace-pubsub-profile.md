@@ -150,7 +150,7 @@ This profile builds on the mechanisms defined in {{I-D.ietf-ace-key-groupcomm}} 
 
 1. Authorizing a Client to join a topic's security group(s), and providing it with the group keying material to communicate with other group members.
 2. Allowing a Client to retrieve group keying material for the Publisher Client to publish protected publications to the Broker, and for the Subscriber Client to read protected publications.
-3. Allowing a group member to retrieve authentication credentails of other group members and to provide and updated authentication credential.
+3. Allowing a group member to retrieve authentication credentials of other group members and to provide and updated authentication credential.
 4. Allowing a group member to leave the group.
 5. Evicting a group member from the group.
 6. Renewing and redistributing the group keying (rekeying) material due to membership change in the group.
@@ -277,7 +277,7 @@ established before attempting to join a group.  Possible ways to provide a secur
 
 After establishing a secure communication, the Client sends a Join Request to the KDC as described in Section 4.3 of {{I-D.ietf-ace-key-groupcomm}}. More specifically, the Client sends a POST request to the /ace-group/GROUPNAME endpoint on KDC, with Content-Format "application/ace-groupcomm+cbor" that MUST contain in the payload (formatted as a CBOR map), and MUST be encoded as defined in Section 4.3.1 of {{I-D.ietf-ace-key-groupcomm}}:
 * 'scope' parameter set to the specific group that the Client is attempting to join, i.e., the group name, and the roles it wishes to have in the group. This value corresponds to one scope entry, as defined in {{auth-request}}.
-* 'get_creds' parameter, if the Client needs to retrieve the public keys of the other members. The Subscribers MUST have access to the public keys of all the Publishers. When requesting the public keys of all the Publishers, this parameter MUST encode a non-empty CBOR array, with three elements: '\["true", "Pub", \[\]\]'.
+* 'get_creds' parameter, if the Client needs to retrieve the public keys of the other members. The Subscribers MUST have access to the public keys of all the Publishers, and th . This may be achieved by requesting the public keys of all the Publishers, this parameter MUST encode a non-empty CBOR array, with three elements: '\["true", "Pub", \[\]\]'.
 * 'client\_cred' parameter MUST be included if the Client is a Publisher and contains the Client's public key formatted according to the encoding of the public keys used in the group. For a Subscriber-only Client,  the Joining Request MUST NOT contain the 'client\_cred parameter'. The alg parameter in the 'client\_cred' COSE\_Key MUST be a signing algorithm, as defined in {{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}, and that it is the same algorithm used to compute the signature sent in 'client\_cred\_verify'.
 TODO: Check the specific format for authentication credentials (REQ6)
 ToDo: We say MUST for publishers, but the key-groupcomm allows this field to be empty, and KDC to have stored a public key through another method.
@@ -288,8 +288,45 @@ Do we allow this or not?
 ToDo: Do we define this option, do we accept 'client_cred" as a certificate?
 ToDo: Do we need a 'control_uri'?
 
-## Join Response
+An example of the Join Request for a CoAP Publisher using CoAP and CBOR is specified in {{fig-req-pub-kdc}}, where SIG is a signature computed using the private key associated to the public key and the algorithm in 'client\_cred'.
 
+~~~~~~~~~~~~
+{
+  "scope" : ["Broker1/Temp", "pub"],
+  "client_cred" :
+    { / COSE_Key /
+      / type / 1 : 2, / EC2 /
+      / kid / 2 : h'11',
+      / alg / 3 : -7, / ECDSA with SHA-256 /
+      / crv / -1 : 1 , / P-256 /
+      / x / -2 : h'65eda5a12577c2bae829437fe338701a10aaa375e1bb5b5de1
+      08de439c08551d',
+      / y /-3 : h'1e52ed75701163f7f9e40ddf9f341b3dc9ba860af7e0ca7ca7e
+      9eecd0084d19c',
+  "cnonce" : h'd36b581d1eef9c7c,
+  "client_cred_verify" : SIG
+    }
+}
+~~~~~~~~~~~~
+{: #fig-req-pub-kdc title="Joining Request payload for a Publisher"}
+{: artwork-align="center"}
+
+ToDo: Correct scope in artwork
+
+An example of the payload of a Join Request for a Subscriber using CoAP and CBOR is specified in {{fig-req-sub-kdc}}.
+
+~~~~~~~~~~~~
+{
+  "scope" : ["Broker1/Temp", "sub"],
+  "get_creds" : null
+}
+~~~~~~~~~~~~
+{: #fig-req-sub-kdc title="Joining Request payload for a Subscriber"}
+{: artwork-align="center"}
+
+ToDo: Correct scope in artwork
+
+## Join Response
 On receiving the Join Request, the KDC processes
 the request as defined in Section 4.3.1 of {{I-D.ietf-ace-key-groupcomm}}, and may return a success or
 error response.
@@ -315,29 +352,8 @@ Then, the KDC responds with a Join Response with response code 2.01 (Created) if
 - 'peer\_roles' MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present.  ToDo: This MUST is a bit tricky as the only peer role is Publisher?
 - 'peer\_identifiers' MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present.
 
-An example of the Joining Request and corresponding Response for a CoAP Publisher using CoAP and CBOR is specified in {{fig-req-pub-kdc}} and {{fig-resp-pub-kdc}}, where SIG is a signature computed using the private key associated to the public key and the algorithm in 'client\_cred'.
-
-
-~~~~~~~~~~~~
-{
-  "scope" : ["Broker1/Temp", "pub"],
-  "client_cred" :
-    { / COSE_Key /
-      / type / 1 : 2, / EC2 /
-      / kid / 2 : h'11',
-      / alg / 3 : -7, / ECDSA with SHA-256 /
-      / crv / -1 : 1 , / P-256 /
-      / x / -2 : h'65eda5a12577c2bae829437fe338701a10aaa375e1bb5b5de1
-      08de439c08551d',
-      / y /-3 : h'1e52ed75701163f7f9e40ddf9f341b3dc9ba860af7e0ca7ca7e
-      9eecd0084d19c',
-  "cnonce" : h'd36b581d1eef9c7c,
-  "client_cred_verify" : SIG
-    }
-}
-~~~~~~~~~~~~
-{: #fig-req-pub-kdc title="Joining Request payload for a Publisher"}
-{: artwork-align="center"}
+An example of the Join Response for a CoAP Publisher using CoAP and CBOR 
+(corresponding to Join Request in {{fig-req-pub-kdc}}) is shown in.  {{fig-resp-pub-kdc}}.
 
 ~~~~~~~~~~~~
 {
@@ -346,19 +362,12 @@ An example of the Joining Request and corresponding Response for a CoAP Publishe
           -1: h'02e2cc3a9b92855220f255fff1c615bc'}
 }
 ~~~~~~~~~~~~
-{: #fig-resp-pub-kdc title="Joining Response payload for a Publisher"}
+{: #fig-resp-pub-kdc title="Join Response payload for a Publisher"}
 {: artwork-align="center"}
 
-An example of the payload of a Joining Request and corresponding Response for a Subscriber using CoAP and CBOR is specified in {{fig-req-sub-kdc}} and {{fig-resp-sub-kdc}}.
+ToDo: Add "num"
 
-~~~~~~~~~~~~
-{
-  "scope" : ["Broker1/Temp", "sub"],
-  "get_pub_keys" : null
-}
-~~~~~~~~~~~~
-{: #fig-req-sub-kdc title="Joining Request payload for a Subscriber"}
-{: artwork-align="center"}
+An example of the payload of a Join Response for a Subscriber using CoAP and CBOR (corresponding to the request in {{fig-req-sub-kdc}}) is shown in {{fig-resp-sub-kdc}}.
 
 ~~~~~~~~~~~~
 {
@@ -366,8 +375,8 @@ An example of the payload of a Joining Request and corresponding Response for a 
   "gkty" : "COSE_Key"
   "key" : {1: 4, 2: h'1234', 3: 12, 5: h'1f389d14d17dc7',
           -1: h'02e2cc3a9b92855220f255fff1c615bc'},
-  "pub_keys" : [
-   { /UCCS/
+  "creds" : [
+   {/UCCS/
       2:  "42-50-31-FF-EF-37-32-39", /sub/
       8: {/cnf/
       1: {/COSE_Key/
@@ -384,7 +393,8 @@ An example of the payload of a Joining Request and corresponding Response for a 
 ~~~~~~~~~~~~
 {: #fig-resp-sub-kdc title="Joining Response payload for a Subscriber"}
 {: artwork-align="center"}
-ToDO: Fix Example for COSE_Key for public key
+ToDo: Fix Example for COSE_Key for public key
+ToDo: Add peer roles and peer ids.
 
 
 # PubSub Protected Communication {#protected_communication}
