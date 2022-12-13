@@ -41,6 +41,15 @@ normative:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-ace-key-groupcomm:
   I-D.ietf-core-groupcomm-bis:
+
+informative:
+
+  RFC8259:
+  I-D.ietf-ace-actors:
+  I-D.ietf-ace-dtls-authorize:
+  I-D.ietf-ace-oscore-profile:
+  I-D.ietf-ace-mqtt-tls-profile:
+  I-D.draft-ietf-ace-revoked-token-notification-02:
   MQTT-OASIS-Standard-v5:
     title: "OASIS Standard MQTT Version 5.0"
     date: "2017"
@@ -55,30 +64,25 @@ normative:
       -
         ins: R. Gupta
 
-informative:
-
-  RFC8259:
-  I-D.ietf-ace-actors:
-  I-D.ietf-ace-dtls-authorize:
-  I-D.ietf-ace-oscore-profile:
-  I-D.ietf-ace-mqtt-tls-profile:
-  I-D.draft-ietf-ace-revoked-token-notification-02:
-
 entity:
         SELF: "[RFC-XXXX]"
 
 --- abstract
 
-This specification defines an application profile for authentication and authorization for Publishers and Subscribers in a constrained pub-sub scenario, using the ACE framework. This profile relies on transport layer or application layer security to authorize the pub-sub clients to the broker. Moreover, it describes the use of application layer security to protect the content of the pub-sub client message exchange through the broker. The profile covers pub-sub scenarios using
-either the Constrained Application Protocol (CoAP) {{I-D.ietf-core-coap-pubsub}} or the
-Message Queue Telemetry Transport (MQTT) {{MQTT-OASIS-Standard-v5}} protocol.
+This specification defines an application profile for authentication and authorization for Publishers and Subscribers in a constrained pub-sub scenario, using the ACE framework. This profile relies on transport layer or application layer security to authorize the pub-sub clients to the broker. Moreover, it describes the use of application layer security to protect the content of the pub-sub client message exchange through the broker. The profile mainly focuses on the pub-sub scenarios using
+the Constrained Application Protocol (CoAP) {{I-D.ietf-core-coap-pubsub}}.
+<!---, and  the Message Queue Telemetry Transport (MQTT) {{MQTT-OASIS-Standard-v5}} protocol.--->
 
 --- middle
 
 # Introduction
 
 In the publish-subscribe (pub-sub) scenario, devices with limited reachability communicate via a broker, which enables store-and-forward messaging between the devices. This document defines a way to authorize pub-sub clients using the ACE framework {{I-D.ietf-ace-oauth-authz}} to obtain the keys for protecting the content
-of their pub-sub messages when communicating through the broker. The pub-sub communication using the Constrained Application Protocol (CoAP) {{RFC7252}} is specified in {{I-D.ietf-core-coap-pubsub}}, while the one using MQTT is specified in {{MQTT-OASIS-Standard-v5}}.  This document gives detailed specifications for MQTT and CoAP pub-sub, but can easily be adapted for other transport protocols as well.
+of their pub-sub messages when communicating through the broker. The pub-sub communication using the Constrained Application Protocol (CoAP) {{RFC7252}} is specified in {{I-D.ietf-core-coap-pubsub}}.
+<!--- while the one using MQTT is specified in {{MQTT-OASIS-Standard-v5}}. --->
+This document gives detailed specifications for CoAP pub-sub, but describes how
+it can be adapted for MQTT {{MQTT-OASIS-Standard-v5}}; similar adaptations can extend
+to other transport protocols as well.
 
 ## Terminology
 
@@ -89,13 +93,13 @@ document are to be interpreted as described in RFC 2119 {{RFC2119}}.
 Readers are expected to be familiar with the terms and concepts
 described in {{I-D.ietf-ace-oauth-authz}}, {{I-D.ietf-ace-key-groupcomm}}. In particular, analogously to {{I-D.ietf-ace-oauth-authz}}, terminology for entities in the architecture such as Client (C), Resource Server (RS), and Authorization Server (AS) is defined in OAuth 2.0 {{RFC6749}} and {{I-D.ietf-ace-actors}}, and terminology for entities such as the Key Distribution Center (KDC) and Dispatcher in {{I-D.ietf-ace-key-groupcomm}}.
 
-Readers are expected to be familiar with terms and concepts of pub-sub group communication, as described in {{I-D.ietf-core-coap-pubsub}}, or MQTT {{MQTT-OASIS-Standard-v5}}.
+Readers are expected to be familiar with terms and concepts of pub-sub group communication, as described in {{I-D.ietf-core-coap-pubsub}} or MQTT {{MQTT-OASIS-Standard-v5}}.
 
 # Application Profile Overview {#overview}
 
 The objective of this document is to specify
 how to request, distribute and renew keying material and configuration parameters to protect message exchanges for pub-sub communication, using {{I-D.ietf-ace-key-groupcomm}}, which expands from the ACE framework ({{I-D.ietf-ace-oauth-authz}}). The pub-sub communication protocol can be based on CoAP, as described in {{I-D.ietf-core-coap-pubsub}}, MQTT {{MQTT-OASIS-Standard-v5}} , or other transport.
-This document expans on the transport profiles ({{I-D.ietf-ace-dtls-authorize}}, {{I-D.ietf-ace-oscore-profile}}, {{I-D.ietf-ace-mqtt-tls-profile}}).
+This document expands on the transport profiles ({{I-D.ietf-ace-dtls-authorize}}, {{I-D.ietf-ace-oscore-profile}}. <!---{{I-D.ietf-ace-mqtt-tls-profile}}).--->
 
 The architecture of the scenario is shown in {{archi}}.
 Publisher or Subscriber Clients is referred to as Client in short.
@@ -125,10 +129,15 @@ Both Publishers and Subscribers use the same pub-sub communication protocol and 
 {: #archi title="Architecture for Pub-Sub with Authorization Server and Key Distribution Center"}
 {: artwork-align="center"}
 
-This profile expects the establishment of a secure connection between a Client and Broker, using an ACE transport profile such as DTLS {{I-D.ietf-ace-dtls-authorize}}, OSCORE {{I-D.ietf-ace-oscore-profile}}, or MQTT-TLS {{I-D.ietf-ace-mqtt-tls-profile}} (A and C). Once the client establishes a
-a secure association with KDC with the help of AS, it can request to join the security groups of the pub-sub topics (A and B), and  can communicate securely with the other group members, using the keying material provided by the KDC (C).
+This profile expects the establishment of a secure connection between a Client and Broker, using an ACE transport profile such as DTLS {{I-D.ietf-ace-dtls-authorize}} or OSCORE {{I-D.ietf-ace-oscore-profile}} (A and C). Once the client establishes a secure association with KDC with the help of AS, it can request to join the security groups of the pub-sub topics (A and B), and  can communicate securely with the other group members, using the keying material provided by the KDC (C).
 
-Clients maintain two different security associations. On the one hand, the Publisher and the Subscriber clients have a security association with the Broker, so that, as the ACE RS, it can verify that the Clients are authorized (Security Association 1). On the other hand, the Publisher has a security association with the Subscriber, to protect the publication content (Security Association 2) while sending it through the broker. The Security Association 1 is set up using AS and a transport profile of {{I-D.ietf-ace-oauth-authz}}, the Security Association 2 is set up using AS, KDC and {{I-D.ietf-ace-key-groupcomm}}. Note that, given that the publication content is protected, the Broker MAY accept unauthorised Subscribers. In this case, the Subscriber client can skip setting up Security Association 1 with the Broker and connect to it as an anonymous client to subscribe to topics of interest at the Broker.
+As shown in {{archi}}, (A) is an Access Token Request and Response exchange between Publisher and Authorization Server to retrieve the Access Token and RS (Broker) Information. As specified, the Client has the role of a CoAP client, the Broker has the role of the CoAP server. (B) corresponds to the retrieval of the keying material to protect the publication end-to-end (see {{oscon}}), and uses {{I-D.ietf-ace-key-groupcomm}}. 
+
+(C) corresponds to the exchange between the Client and  the Broker, where the Client sends its access token to the Broker and establishes a secure connection with the Broker. Depending on the Information received in (A), this can be for example DTLS handshake, or other protocols. Depending on the application, there may not be the need for this set up phase: for example, if OSCORE is used directly. Note that, in line with what defined in the ACE transport profile used, the access token includes the scope (i.e. pubsub topics on the Broker) the Publisher is allowed to publish to. For implementation simplicity, it is RECOMMENDED that the ACE transport profile used.
+
+After the previous phases have taken place, the pub-sub communication can commence. The operations of publishing and subscribing are defined in {{I-D.ietf-core-coap-pubsub}}.
+
+It must be noted that Clients maintain two different security associations. On the one hand, the Publisher and the Subscriber clients have a security association with the Broker, so that, as the ACE RS, it can verify that the Clients are authorized (Security Association 1). On the other hand, the Publisher has a security association with the Subscriber, to protect the publication content (Security Association 2) while sending it through the broker. The Security Association 1 is set up using AS and a transport profile of {{I-D.ietf-ace-oauth-authz}}, the Security Association 2 is set up using AS, KDC and {{I-D.ietf-ace-key-groupcomm}}. Note that, given that the publication content is protected, the Broker MAY accept unauthorised Subscribers. In this case, the Subscriber client can skip setting up Security Association 1 with the Broker and connect to it as an anonymous client to subscribe to topics of interest at the Broker.
 
 ~~~~~~~~~~~~
 +------------+             +------------+              +------------+
@@ -163,13 +172,13 @@ This profile builds on the mechanisms defined in {{I-D.ietf-ace-key-groupcomm}} 
 
 ~~~~~~~~~~~
    Client                                       Broker   AS      KDC
-      | [--Resource Request (CoAP/MQTT/other)-->] |       |       |
+      | [--Resource Request (CoAP/MQTT or other)-->] |       |       |
       |                                           |       |       |
-      | [<----AS Information (CoAP/MQTT/other)--] |       |       |
+      | [<----AS Information (CoAP/MQTT or other)--] |       |       |
       |                                                   |       |
-      | ----- Authorisation Request (CoAP/HTTP/other)---->|       |
+      | ----- Authorisation Request (CoAP/HTTP or other)---->|       |
       |                                                   |       |
-      | <------Authorisation Response (CoAP/HTTP/other) --|       |
+      | <------Authorisation Response (CoAP/HTTP or other) --|       |
       |                                                           |
       |----------------------Token Post (CoAP)------------------->|
       |                                                           |
@@ -192,7 +201,6 @@ Complementary to what is defined in {{I-D.ietf-ace-oauth-authz}} (Section 5.1) f
 {: #AS-info-ex title="AS Information example"}
 {: artwork-align="center"}
 
-Authorisation Server (AS) Discovery is also defined in Section 2.2.6.1 of {{I-D.ietf-ace-mqtt-tls-profile}} for MQTT v5 clients (and not supported for MQTT v3 clients).
 
 ## Authorisation Request/Response for the KDC and the Broker {#auth-request}
 
@@ -206,12 +214,9 @@ Both requests include the following fields from the Authorization Request
 Other additional parameters can be included if necessary, as defined in
 {{I-D.ietf-ace-oauth-authz}}.
 
-It must be noted that for pub-sub brokers, the scope represents pub-sub topics i.e., the application group.  For Broker authorisation, the AIF-MQTT data model described in Section 3 of the {{I-D.ietf-ace-mqtt-tls-profile}}.
-
-On the other hand, for the KDC, the scope represents the security group. If there is a one-to-one mapping between the application group and the security group, the client uses the same scope for both requests. If there is not a one-to-one mapping, the correct policies regarding both sets of scopes MUST be available to the AS.
+It must be noted that for pub-sub brokers, the scope represents pub-sub topics i.e., the application group.  On the other hand, for the KDC, the scope represents the security group. If there is a one-to-one mapping between the application group and the security group, the client uses the same scope for both requests. If there is not a one-to-one mapping, the correct policies regarding both sets of scopes MUST be available to the AS.
 
 The 'scope' parameter used for the KDC follows the AIF format, and is encoded as follows, where 'gname' is treated as topic identifier or filter.
-
 
 ~~~~~~~~~~~
    gname = tstr
@@ -239,7 +244,7 @@ ToDo: Should the Client ask with the topic names, and KDC does the security grou
 The AS responds with an Authorization Response to each request as defined in Section 5.8.2 of {{I-D.ietf-ace-oauth-authz}} and Section 3.2 of {{I-D.ietf-ace-key-groupcomm}}.
 The client needs to keep track of which response corresponds to which entity to
 use the right token for the right audience, i.e., the KDC or the Broker.
-In case CoAP PubSub is used as communication protocol, 'profile' claim is set to "coap_pubsub_app" as defined in {{iana-coap-profile}}. In case MQTT PubSub is used as communication protocol, 'profile' claim is set to "mqtt_pubsub_app" as defined in {{iana-mqtt-profile}}.
+The 'profile' claim is set to "coap_pubsub_app" as defined in {{iana-coap-profile}}. 
 
 # Interfacing the KDC {#kdc-interface}
 ## KDC resources
@@ -277,7 +282,7 @@ established before attempting to join a group.  Possible ways to provide a secur
 
 After establishing a secure communication, the Client sends a Join Request to the KDC as described in Section 4.3 of {{I-D.ietf-ace-key-groupcomm}}. More specifically, the Client sends a POST request to the /ace-group/GROUPNAME endpoint on KDC, with Content-Format "application/ace-groupcomm+cbor" that MUST contain in the payload (formatted as a CBOR map), and MUST be encoded as defined in Section 4.3.1 of {{I-D.ietf-ace-key-groupcomm}}:
 * 'scope' parameter set to the specific group that the Client is attempting to join, i.e., the group name, and the roles it wishes to have in the group. This value corresponds to one scope entry, as defined in {{auth-request}}.
-* 'get_creds' parameter, if the Client needs to retrieve the public keys of the other members. The Subscribers MUST have access to the public keys of all the Publishers, and th . This may be achieved by requesting the public keys of all the Publishers, this parameter MUST encode a non-empty CBOR array, with three elements: '\["true", "Pub", \[\]\]'.
+* 'get_creds' parameter, if the Client needs to retrieve the public keys of the other members. The Subscribers MUST have access to the public keys of all the Publishers. This may be achieved by requesting the public keys of all the Publishers, this parameter MUST encode a non-empty CBOR array, with three elements: '\["true", "Pub", \[\]\]'.
 * 'client\_cred' parameter MUST be included if the Client is a Publisher and contains the Client's public key formatted according to the encoding of the public keys used in the group. For a Subscriber-only Client,  the Joining Request MUST NOT contain the 'client\_cred parameter'. The alg parameter in the 'client\_cred' COSE\_Key MUST be a signing algorithm, as defined in {{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}, and that it is the same algorithm used to compute the signature sent in 'client\_cred\_verify'.
 TODO: Check the specific format for authentication credentials (REQ6)
 ToDo: We say MUST for publishers, but the key-groupcomm allows this field to be empty, and KDC to have stored a public key through another method.
@@ -327,14 +332,13 @@ An example of the payload of a Join Request for a Subscriber using CoAP and CBOR
 ToDo: Correct scope in artwork
 
 ## Join Response
-On receiving the Join Request, the KDC processes
-the request as defined in Section 4.3.1 of {{I-D.ietf-ace-key-groupcomm}}, and may return a success or
+On receiving the Join Request, the KDC processes the request as defined in Section 4.3.1 of {{I-D.ietf-ace-key-groupcomm}}, and may return a success or
 error response.
 
 If 'client_cred' field is present, the KDC verifies signature in the the 'client_cred_verify'.
 
 In the case of success,the Client is added to the list
-of current members, if not already a member. The Client is assigned a NODENAME and assigned a sub-resource /ace-group/GROUPNAME/nodes/NODENAME. NODENAME is associated to the access token and secure session of the Client. For Publishers, their public key is also associated with tuple contaiing NODENAME, GROUPNAME and access token. The public key of the Publisher is stored.
+of current members, if not already a member. The Client is assigned a NODENAME and assigned a sub-resource /ace-group/GROUPNAME/nodes/NODENAME. NODENAME is associated to the access token and secure session of the Client. For Publishers, their public key is also associated with tuple containing NODENAME, GROUPNAME and access token. The public key of the Publisher is stored.
 
 ToDo: Do we require a backward security; MUST KDC generate new group keying material.
 
@@ -352,7 +356,7 @@ Then, the KDC responds with a Join Response with response code 2.01 (Created) if
 - 'peer\_roles' MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present.  ToDo: This MUST is a bit tricky as the only peer role is Publisher?
 - 'peer\_identifiers' MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present.
 
-An example of the Join Response for a CoAP Publisher using CoAP and CBOR 
+An example of the Join Response for a CoAP Publisher using CoAP and CBOR
 (corresponding to Join Request in {{fig-req-pub-kdc}}) is shown in.  {{fig-resp-pub-kdc}}.
 
 ~~~~~~~~~~~~
@@ -410,6 +414,7 @@ ToDo: Add peer roles and peer ids.
 {: #pubsub-3 title="Secure communication between Publisher and Subscriber"}
 {: artwork-align="center"}
 
+
 (D) corresponds to the publication of a topic on the Broker.
 The publication (the resource representation) is protected with COSE  ({{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}) by the Publisher.
 The (E) message is the subscription of the Subscriber. The subscription MAY be unprotected.
@@ -424,16 +429,15 @@ The (F) message is the response from the Broker, where the publication is protec
       |                      | ---- response ------> |
       |                      |  protected with COSE  |
 ~~~~~~~~~~~
-{: #flow title="(E), (F), (G): Example of protected communication for CoAP"}
+{: #flow title="Example of protected communication for CoAP"}
 {: artwork-align="center"}
 
-The flow graph is presented below for CoAP. The message flow is similar for MQTT, where PUT corresponds to a PUBLISH message, and GET corresponds to a SUBSCRIBE message. Whenever a Client publishes a new message, the Broker sends this message to all valid subscribers.
 
 ## Using COSE Objects To Protect The Resource Representation {#oscon}
 
-The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the PUBLISH operation (Section 4.3 of {{I-D.ietf-core-coap-pubsub}} and {{MQTT-OASIS-Standard-v5}}). Specifically, the COSE Key is used to create a COSE\_Encrypt0 object with algorithm specified by the KDC. The Publisher uses the private key corresponding to the public key sent to the KDC in exchange B  to countersign the COSE Object as specified in {{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}. The payload is replaced by the COSE object before the publication is sent to the Broker.
+The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the PUBLISH operation (Section 4.3 of {{I-D.ietf-core-coap-pubsub}}). Specifically, the COSE Key is used to create a COSE\_Encrypt0 object with algorithm specified by the KDC. The Publisher uses the private key corresponding to the public key sent to the KDC in exchange B  to countersign the COSE Object as specified in {{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}. The payload is replaced by the COSE object before the publication is sent to the Broker.
 
-The Subscriber uses the 'kid' in the 'countersignature' field in the COSE object to retrieve the right public key to verify the countersignature. It then uses the symmetric key received from KDC to verify and decrypt the publication received in the payload from the Broker (in the case of CoAP the publication is received by the CoAP Notification and for MQTT, it is received as a PUBLISH message from the Broker to the subscribing client).
+The Subscriber uses the 'kid' in the 'countersignature' field in the COSE object to retrieve the right public key to verify the countersignature. It then uses the symmetric key received from KDC to verify and decrypt the publication received in the payload from the Broker (in the case of CoAP the publication is received by the CoAP Notification).
 
 The COSE object is constructed in the following way:
 * The protected Headers (as described in {{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}) MUST contain the kid parameter if it was provided in the Joining Response, with value the kid of the symmetric COSE Key received and MUST contain the content encryption algorithm.
@@ -475,24 +479,9 @@ An example is given in {{fig-cose-ex}}:
 
 The encryption and decryption operations are described in  {{I-D.ietf-cose-rfc8152bis-algs}} {{I-D.ietf-cose-rfc8152bis-struct}}.
 
-# Profile-specific Considerations
-This section summarises the CoAP and MQTT specific pub-sub communications, and considerations respectively.
+# Considerations for Supporting MQTT PubSub Application Profile {#mqtt-pubsub}
 
-## CoAP PubSub Application Profile {#coap_profile}
-
-A CoAP Pub-Sub Client and Broker use an ACE transport profile such as DTLS {{I-D.ietf-ace-dtls-authorize}}, OSCORE {{I-D.ietf-ace-oscore-profile}}.
-
-As shown in {{archi}}, (A) is an Access Token Request and Response exchange between Publisher and Authorization Server to retrieve the Access Token and RS (Broker) Information. As specified, the Client has the role of a CoAP client, the Broker has the role of the CoAP server.
-
-(B) corresponds to the retrieval of the keying material to protect the publication end-to-end (see {{oscon}}), and uses {{I-D.ietf-ace-key-groupcomm}}. The details are defined in ToDo:Section name.
-
-(C) corresponds to the exchange between the Client and  the Broker, where the Client sends its access token to the Broker and establishes a secure connection with the Broker. Depending on the Information received in (A), this can be for example DTLS handshake, or other protocols. Depending on the application, there may not be the need for this set up phase: for example, if OSCORE is used directly. Note that, in line with what defined in the ACE transport profile used, the access token includes the scope (i.e. pubsub topics on the Broker) the Publisher is allowed to publish to. For implementation simplicity, it is RECOMMENDED that the ACE transport profile used.
-
-After the previous phases have taken place, the pub-sub communication can commence. The operations of publishing and subscribing are defined in {{I-D.ietf-core-coap-pubsub}}.
-
-## MQTT PubSub Application Profile {#mqtt-pubsub}
-
-The steps MQTT clients go through are similar to the CoAP clients as described in {{coap_profile}}. The payload that is carried in MQTT messages will be protected using COSE.
+The steps MQTT clients go through would be similar to the CoAP clients, where PUT corresponds to a PUBLISH message, and GET corresponds to a SUBSCRIBE message. Whenever a Client publishes a new message, the Broker sends this message to all valid subscribers. The payload that is carried in MQTT messages will be protected using COSE.
 
 In MQTT, topics are organised as a tree, and in the {{I-D.ietf-ace-mqtt-tls-profile}},
 'scope' captures permissions for not a single topic but a topic filter. Therefore, topic names (i.e., group names) may include wildcards spanning several levels of the topic tree.
@@ -500,15 +489,17 @@ Hence, it is important to distinguish application groups and security groups def
 ToDo: Give a more complete example;
 ToDo: How does a client figure out the mapping?
 
-For an MQTT client we envision the following steps to take place:
-
-1. Client sends a token request to AS for the requested topics (application groups) using the broker as the audience.
+In summary, for an MQTT client we envision the following steps to take place:
+1. Client sends a token request to AS for the requested topics (application groups) using the broker as the audience. AIF-MQTT data model for representing the requested scopes is described in Section 3 of the {{I-D.ietf-ace-mqtt-tls-profile}}.
 2. Client sends a token request to AS for the corresponding security groups for its application groups using the KDC as the audience.
-3. Client sends join requests to KDC to gets the keys for these security groups.
-4. Client authorises to the Broker with the token (described in {{I-D.ietf-ace-mqtt-tls-profile}}).
-5. A Publisher Client sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. RS validates the PUBLISH message by checking the topic stored token.
-6. A Subscriber Client may send SUBSCRIBE messages with one or multiple topic filters.
+3. Client received Authorisation responses for its requests. In the authorisation response, the 'profile' claim is set to "mqtt_pubsub_app" as defined in {{iana-mqtt-profile}}.
+4. Client sends join requests to KDC to gets the keys for these security groups.
+5. Client authorises to the Broker with the token (described in {{I-D.ietf-ace-mqtt-tls-profile}}).
+6. A Publisher Client sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. RS validates the PUBLISH message by checking the topic stored token.
+7. A Subscriber Client may send SUBSCRIBE messages with one or multiple topic filters.
 A topic filter may correspond to multiple topics. RS validates the SUBSCRIBE message by checking the stored token for the Client.
+
+Authorisation Server (AS) Discovery is defined in Section 2.2.6.1 of {{I-D.ietf-ace-mqtt-tls-profile}} for MQTT v5 clients (and not supported for MQTT v3 clients).
 
 # Security Considerations
 
