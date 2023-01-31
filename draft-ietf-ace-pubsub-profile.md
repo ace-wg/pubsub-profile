@@ -186,7 +186,7 @@ name GROUPNAME. | GET (All) |
 Note that the use of these resources follows what is defined in {{I-D.ietf-ace-key-groupcomm}} applies, and only additions or modifications to that specification are defined in this document.
 
 The Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in {{core_rt}} (REQ10), and can be used to describe group-membership resources and its sub-resources at Broker, e.g., by using a link-format document {{RFC6690}}}.
-Applications can use this common resource type to discover links to group-membership resources for joining pub-sub groups. 
+Applications can use this common resource type to discover links to group-membership resources for joining pub-sub groups.
 (ToDo: Check this discovery is feasible in core pub-sub)
 
 # Joining a pub-sub security group (A-B) {#authorisation}
@@ -195,13 +195,13 @@ Figure {{message-flow}} provides a high level overview of the message flow for a
 
 ~~~~~~~~~~~
    Client                                       Broker   AS      KDC
-      | [--Resource Request (CoAP/MQTT or other)-->] |       |       |
-      |                                           |       |       |
-      | [<----AS Information (CoAP/MQTT or other)--] |       |       |
+      | [--Resource Request (CoAP/MQTT or other)-->] |    |       |
+      |                                              |    |       |
+      | [<----AS Information (CoAP/MQTT or other)--] |    |       |
       |                                                   |       |
-      | ----- Authorisation Request (CoAP/HTTP or other)---->|       |
+      | ---Authorisation Request (CoAP/HTTP or other)---->|       |
       |                                                   |       |
-      | <------Authorisation Response (CoAP/HTTP or other) --|       |
+      | <---Authorisation Response (CoAP/HTTP or other) --|       |
       |                                                           |
       |----------------------Token Post (CoAP)------------------->|
       |                                                           |
@@ -216,6 +216,7 @@ Figure {{message-flow}} provides a high level overview of the message flow for a
  Since {{RFC9200}} recommends the use of CoAP and CBOR, this document describes the exchanges assuming CoAP and CBOR are used. However, using HTTP instead of CoAP is possible, using the corresponding parameters and methods. Analogously, JSON {{RFC8259}} can be used instead of CBOR, using the conversion method specified in Sections 6.1 and 6.2 of {{RFC8949}}. In case JSON is used, the Content Format or Media Type of the message has to be changed accordingly. Exact definition of these exchanges are considered out of scope for this document.
 
 ## AS Discovery (Optional) {#AS-discovery}
+
 Complementary to what is defined in {{RFC9200}} (Section 5.1) for AS discovery, the Broker MAY send the address of the AS to the Client in the 'AS' parameter in the AS Information as a response to an Unauthorized Resource Request (Section 5.2).  An example using CBOR diagnostic notation and CoAP is given below:
 
 ~~~~~~~~~~~
@@ -228,11 +229,9 @@ Complementary to what is defined in {{RFC9200}} (Section 5.1) for AS discovery, 
 
 ## Authorisation Request/Response for the KDC and the Broker {#auth-request}
 
-After retrieving the AS address, the Client sends two Authorisation Requests to the AS for the KDC and the Broker, respectively. Note that the AS authorises what topics a Client is allowed to Publish or Subscribe to the Broker, which means authorising which application and security groups a Client can join. This is because being able to publish or subscribe to a topic at the Broker requires authorisation to join an application group. To secure the message contents, the client needs to request to be part of the security group(s) for the selected application groups.
+After retrieving the AS address, the Client sends two Authorisation Requests to the AS for two audiences: the Broker and the KDC, respectively. AS handles authorisation requests for topics a Client is allowed to Publish or Subscribe to the Broker, corresponding to an application group.  To protect the message content, the client needs to request to be part of the security group(s) for those application groups.
 
-Communications between the Client and the AS MUST be secured,
-   according to what is defined by the used transport profile of ACE. Both Authorisation Requests include the following fields
-(Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}):
+Communications between the Client and the AS MUST be secured, according to what is defined by the used transport profile of ACE. Both Authorisation Requests include the following fields(Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}):
 
 * 'scope', specifying the name of the groups, that the Client requests to access. This parameter is a CBOR byte string that encodes a CBOR array, whose format MUST follow the data model AIF-PUBSUB-GROUPCOMM defined below.
 * 'audience', an identifier, corresponding to either the KDC or the Broker.
@@ -242,8 +241,9 @@ Other additional parameters can be included if necessary, as defined in {{RFC920
 For the Broker, the scope represents pub-sub topics i.e., the application group, and for the KDC, the scope represents the security group. If there is a one-to-one mapping between the application group and the security group, the client uses the same scope for both requests. If there is not a one-to-one mapping, the correct policies regarding both sets of scopes MUST be available to the AS.
 
 The client MUST ask for the correct scopes in its Authorization Requests. How the client discovers the (application group, security group) association is out of scope of this document.
-ToDo: Should the Client ask with the topic names, and KDC does the security group mapping?
-Look into something like OSCORE group discovery draft-tiloca-core-oscore-discovery-12?
+(ToDo: Can pub-sub discovery handle this?) 
+
+### Format of Scope 
 
 The 'scope' parameter used for the KDC follows the AIF format. Based on the generic AIF model
 
