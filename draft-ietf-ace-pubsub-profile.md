@@ -31,6 +31,7 @@ normative:
   IANA.cose_key-type:
   IANA.cose_header-parameters:
   RFC2119:
+  RFC6690:
   RFC6749:
   RFC7252:
   RFC7925:
@@ -160,7 +161,7 @@ To this end, this profile describes how:
 2. A Client retrieves group keying material to publish protected publications to the Broker or read protected publications.
 3. A Client retrieves authentication credentials of other group members, and provides and updates own authentication credentials.
 4. A Client leaves a group.
-5. A ? evicts a Client from the group. [ToDo: Who - the KDC?]
+5. A ? evicts a Client from the group. (ToDo: Who - the KDC?)
 6. The KDC renews and redistributes the group keying (rekeying) material due to membership change in the group.
 
 Appendix {{groupcomm_requirements}} lists the specifications on this application
@@ -170,21 +171,23 @@ profile of ACE, based on the requirements defined in Appendix A of {{I-D.ietf-ac
 
 The Clients uses the following KDC resources:
 
-* '/ace-group':  A Client can access this resource in order to retrieve a set of
-group names, each corresponding to one of the specified group identifiers.
-* '/ace-group/GROUPNAME': Corresponds to the resource associated
-with group GROUPNAME, and contains its symmetric group keying material.
-* '/ace-group/GROUPNAME/creds':  Contains the authentication credentials of all the Publisher members of the group with name GROUPNAME.
-* '/ace-group/GROUPNAME/num': Contains the current version number for the symmetric group keying material of the group with name GROUPNAME.
-* '/ace-group/GROUPNAME/nodes/NODENAME': Contains the group keying material and the individual keying material for that group member NODENAME in GROUPNAME. All Clients can send a DELETE request to leave the group with name GROUPNAME. GET operation is supported for all Clients. PUT is not supported.
-* '/ace-group/GROUPNAME/nodes/NODENAME/cred':  A Publisher Client can POST to this resource to upload at the KDC a new authentication credential to use in the group GROUPNAME. The KDC returns 4.01 (Unauthorized) error response for requests from the Subscriber Clients.
-* 'ace-group/GROUPNAME/kdc-cred': MUST be hosted if a group re-keying mechanism is used. Contains the authentication credential of the KDC for the group with name GROUPNAME.
+| KDC resource | Description | Operations  |
+| ------------ | ----------- | ------------|
+| /ace-group  | Required. Contains a set of group names, each corresponding to one of the specified group identifiers | FETCH (All Clients) |
+| /ace-group/GROUPNAME | Required. Contains symmetric group keying material associated with GROUPNAME | GET, POST (All) |
+| /ace-group/GROUPNAME/creds | Required. Contains the authentication credentials of all the Publisher members of the group with name GROUPNAME | GET, FETCH (All) |
+| /ace-group/GROUPNAME/num | Required. Contains the current version number for the symmetric group keying material of the group with name GROUPNAME | GET (All) |
+| /ace-group/GROUPNAME/nodes/NODENAME | Required. Contains the group keying material and the individual keying material for that group member NODENAME in GROUPNAME. | GET, DELETE (All). PUT not supported. |
+| /ace-group/GROUPNAME/nodes/NODENAME/cred | Required. Authentication credential for NODENAME in the group GROUPNAME |  POST (Publisher) |
+| /ace-group/GROUPNAME/kdc-cred | MUST be hosted if a group re-keying mechanism is used. Contains the authentication credential of the KDC for the group with name GROUPNAME. | GET (All) |
+| /ace-group/GROUPNAME/policies | Optional. Contains the group policies of the group with
+name GROUPNAME. | GET (All) |
 
-The following resource may be optionally hosted: '/ace-group/GROUPNAME/policies' (KDC doesn't host policies for GROUPNAME).
-ToDo:  REQUIRED of the application profiles of this specification to register a Resource Type for the root url-path (REQ10)
+Note that the use of these resources follows what is defined in {{I-D.ietf-ace-key-groupcomm}} applies, and only additions or modifications to that specification are defined in this document.
 
-Note that the use of these resources follows what is defined in {{I-D.ietf-ace-key-groupcomm}} applies, and only additions or
-modifications to that specification are defined in this document.
+The Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in {{core_rt}} (REQ10), and can be used to describe group-membership resources and its sub-resources at Broker, e.g., by using a link-format document {{RFC6690}}}.
+Applications can use this common resource type to discover links to group-membership resources for joining pub-sub groups. 
+(ToDo: Check this discovery is feasible in core pub-sub)
 
 # Joining a pub-sub security group (A-B) {#authorisation}
 
@@ -616,6 +619,18 @@ Name:
 Description/Specification: 
 Reference: [[This document]]
 
+## CoRE Resource Type {#core_rt}
+
+IANA is asked to register the following entry in the "Resource Type (rt=) Link Target Attribute Values" registry within the "Constrained Restful Environments (CoRE) Parameters" registry group.
+
+   *  Value: "core.ps.gm"
+
+   *  Description: Group-membership resource for Pub-Sub communication.
+
+   *  Reference: [RFC-XXXX]
+
+Clients can use this resource type to discover a group membership resource at a Broker. 
+
 --- back
 
 # Requirements on Application Profiles {#groupcomm_requirements}
@@ -644,7 +659,9 @@ URI to the group name: TODO
 * REQ9: Specify if any part of the KDC interface as defined in {{I-D.ietf-ace-key-groupcomm}} is not supported by the KDC: TODO
 
 * REQ10: Register a Resource Type for the root url-path, which is
-used to discover the correct url to access at the KDC : TODO
+used to discover the correct url to access at the KDC : the Resource Type
+(rt=) Link Target Attribute value "core.ps.gm" is registered in
+Section {{core_rt}}.
 
 * REQ11: Define what specific actions (e.g., CoAP methods) are
 allowed on each resource provided by the KDC interface, depending
