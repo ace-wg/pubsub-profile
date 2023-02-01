@@ -131,7 +131,7 @@ Both Publishers and Subscribers use the same pub-sub communication protocol and 
 All communications between the involved entities MUST be secured. This profile expects the establishment of a secure connection between a Client and Broker, using an ACE transport profile such as DTLS {{I-D.ietf-ace-dtls-authorize}} or OSCORE {{I-D.ietf-ace-oscore-profile}} (A and C). Once the client establishes a secure association with KDC with the help of AS, it can request to join the security groups of its pub-sub topics (A and B), and  can communicate securely with the other group members, using the keying material provided by the KDC.
 
 (C) corresponds to the exchange between the Client and  the Broker, where the Client sends its access token to the Broker and establishes a secure connection with the Broker.
-Depending on the Information received in (A), the connection set-up may involve, for example, a DTLS handshake, or other protocols. Depending on the application, the set up phase may be skipped: for example, if OSCORE is used directly. 
+Depending on the Information received in (A), the connection set-up may involve, for example, a DTLS handshake, or other protocols. Depending on the application, the set up phase may be skipped: for example, if OSCORE is used directly.
 
 It must be noted that Clients maintain two different security associations. On the one hand, the Publisher and the Subscriber clients have a security association with the Broker,which, as the ACE RS, verifies that the Clients are authorized (Security Association 1). On the other hand, the Publisher has a security association with the Subscriber, to protect the publication content (Security Association 2) while sending it through the broker. The Security Association 1 is set up using AS and a transport profile of {{RFC9200}}, the Security Association 2 is set up using AS, KDC and {{I-D.ietf-ace-key-groupcomm}}.
 
@@ -199,11 +199,14 @@ Figure {{message-flow}} provides a high level overview of the message flow for a
       |                                              |    |       |
       | [<----AS Information (CoAP/MQTT or other)--] |    |       |
       |                                                   |       |
-      | ---Authorisation Request (CoAP/HTTP or other)---->|       |
+      | --Broker Authorisation Req (CoAP/HTTP or other)-->|       |
       |                                                   |       |
       | <---Authorisation Response (CoAP/HTTP or other) --|       |
-      |                                                           |
-      |----------------------Token Post (CoAP)------------------->|
+      |                                                   |       |
+      | --KDC Authorisation Req (CoAP/HTTP or other)----->|
+      |                                                   |
+      | <---Authorisation Response (CoAP/HTTP or other) --|
+      ----------------------Token Post (CoAP)------------------->|
       |                                                           |
       |------------------- Joining Request (CoAP) --------------->|
       |                                                           |
@@ -215,7 +218,7 @@ Figure {{message-flow}} provides a high level overview of the message flow for a
 
  Since {{RFC9200}} recommends the use of CoAP and CBOR, this document describes the exchanges assuming CoAP and CBOR are used. However, using HTTP instead of CoAP is possible, using the corresponding parameters and methods. Analogously, JSON {{RFC8259}} can be used instead of CBOR, using the conversion method specified in Sections 6.1 and 6.2 of {{RFC8949}}. In case JSON is used, the Content Format or Media Type of the message has to be changed accordingly. Exact definition of these exchanges are considered out of scope for this document.
 
-## AS Discovery (Optional) {#AS-discovery}
+## AS Discovery at the Broker (Optional) {#AS-discovery}
 
 Complementary to what is defined in {{RFC9200}} (Section 5.1) for AS discovery, the Broker MAY send the address of the AS to the Client in the 'AS' parameter in the AS Information as a response to an Unauthorized Resource Request (Section 5.2).  An example using CBOR diagnostic notation and CoAP is given below:
 
@@ -245,7 +248,10 @@ The client MUST ask for the correct scopes in its Authorization Requests. How th
 
 ### Format of Scope 
 
-The 'scope' parameter used for the KDC follows the AIF format. Based on the generic AIF model
+The 'scope' parameter SHOULD follow the AIF format. However, if the ACE transport profile,
+supports another 'scope' format, then implementations MAY use this format.
+
+Based on the generic AIF model
 
 ~~~~~~~~~~~
       AIF-Generic<Toid, Tperm> = [* [Toid, Tperm]]
@@ -253,12 +259,15 @@ The 'scope' parameter used for the KDC follows the AIF format. Based on the gene
 
 the value of the CBOR byte string used as scope encodes the CBOR array [* [Toid, Tperm]], where each [Toid, Tperm] element corresponds to one scope entry.
 
-This document defines the new AIF specific data model
-AIF-PUBSUB-GROUPCOMM, that this profile MUST use to format and encode scope entries. In particular, the object identifier ("Toid") is a CBOR text string, specifying the topic name for the scope entry. The permission set ("Tperm") is a CBOR unsigned integer with value, specifying the role(s) that the Client wishes to take in the group. The set of numbers representing the role is converted into a single number by taking two to the power of each method number and computing the inclusive OR of the binary representations of all the power values.
+This document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM, that this profile SHOULD use to format and encode scope entries. 
+
+* The object identifier ("Toid") is a CBOR text string, specifying the topic name for the scope entry.
+* The permission set ("Tperm") is a CBOR unsigned integer with value, specifying the role(s) that the Client wishes to take in the group. The set of numbers representing the role is converted into a single number by taking two to the power of each method number and computing the inclusive OR of the binary representations of all the power values. The roles a Client
+may take are Pub (0) and Sub (1).
 
 ~~~~~~~~~~~
-  AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-topic pubsub-permissions>
-   pubsub-topic = tstr
+  AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-topic, pubsub-permissions>
+   pubsub-topic = tstr ; Topic name or filter
 
    pubsub-permissions = uint . bits pubsub-roles
 
