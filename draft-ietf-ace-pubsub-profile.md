@@ -189,9 +189,9 @@ The Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered i
 Applications can use this common resource type to discover links to group-membership resources for joining pub-sub groups.
 (ToDo: Check this discovery is feasible in core pub-sub)
 
-# Joining a pub-sub security group (A-B) {#authorisation}
+# Getting Authorisation to Join a pub-sub security group (A-B) {#authorisation}
 
-Figure {{message-flow}} provides a high level overview of the message flow for a node joining a group. This message flow is expanded in the subsequent sections.
+Figure {{message-flow}} provides a high level overview of the message flow for a node getting authorisation to join a group. This message flow is expanded in the subsequent sections.
 
 ~~~~~~~~~~~
    Client                                       Broker   AS      KDC
@@ -210,7 +210,7 @@ Figure {{message-flow}} provides a high level overview of the message flow for a
       |                                                           |
       |------------------- Joining Request (CoAP) --------------->|
       |                                                           |
-      |------------------ Joining Response (CoAP) --------------->|
+      |<----------------- Joining Response (CoAP) ---------------|
 
 ~~~~~~~~~~~
 {: #message-flow title="Authorisation Flow"}
@@ -318,10 +318,40 @@ type of the keys used with the algorithm indicated in
 
 ToDo: Need to specify N_S generation if we are allowing DTLS profile token transfer.
 
-## Join Request {#join-request}
+# Joining a Group {#join}
 
 In the next step, a node MUST have established a secure communication association
 established before attempting to join a group.  Possible ways to provide a secure communication association are described in the DTLS transport profile {{I-D.ietf-ace-dtls-authorize}} and OSCORE transport profile {{I-D.ietf-ace-oscore-profile}} of ACE.
+
+## Client Credentials {#client_cred}
+
+Source authentication of a message sent within the pub-sub group is ensured by means of a digital signature embedded in the message. Subscribers must be able to retrieve Publishers' authentication credential from a trusted repository, to verify source authenticity of received messages. Upon joining a pub-sub, a Publisher node is expected to provide its own authentication credential to the KDC.
+
+In particular, one of the following cases can occur when a new node joins the pub-sub group.
+
+*  The joining node is going to join the group exclusively as Subscriber, i.e., it is not going to send messages to the group.  In this case, the joining node is not required to provide its own authentication credential to the KDC. In case the joining node still provides an authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}), the KDC silently ignores that parameter, as well as the related parameters 'cnonce' and 'client_cred_verify'.
+*  The KDC already acquired the authentication credential of the joining node
+
+  -  during a past group joining process,  or
+  -  during establishing a secure communication association, and the joining node and the KDC use an asymmetric proof-of-possession key. If the authentication credential and
+  the proof-of-possession key are compatible with the signature or ECDH algorithm, and possible associated parameters, then the key can be used for the authentication credential in pub-sub groups.
+
+  In this case, the joining node MAY choose not to provide again its own authentication credential to the KDC, in order to limit the size of the Join Request.
+* If the joining node is a Publisher, and the KDC hasn't acquired an authentication credential, the joining node MUST provide a compatible authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}).
+
+Finally, the joining node MUST provide its own authentication credential again if it has provided the KDC with multiple authentication credentials during past joining processes, intended for different pub-sub groups.  If the joining node provides its own authentication credential, the KDC performs consistency checks as per Section{{ToDo}} and, in case of success, considers it as the authentication credential associated with the joining node in the pub-sub group.
+
+## Join Request {#join-request}
+
+~~~~~~~~~~~
+   Client                                  KDC
+      |----- Joining Request (CoAP) ------>|
+      |                                    |
+      |<-----Joining Response (CoAP) ------|
+
+~~~~~~~~~~~
+{: #message-flow title="Authorisation Flow"}
+{: artwork-align="center"}
 
 After establishing a secure communication, the Client sends a Join Request to the KDC as described in Section 4.3 of {{I-D.ietf-ace-key-groupcomm}}. More specifically, the Client sends a POST request to the /ace-group/GROUPNAME endpoint, with Content-Format "application/ace-groupcomm+cbor". The payload MUST contain the following information formatted as a CBOR map, which MUST be encoded as defined in Section 4.3.1 of {{I-D.ietf-ace-key-groupcomm}}:
 
