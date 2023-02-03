@@ -31,7 +31,6 @@ normative:
   IANA.cose_key-type:
   IANA.cose_header-parameters:
   RFC2119:
-  RFC5705:
   RFC6234:
   RFC6690:
   RFC6749:
@@ -40,8 +39,6 @@ normative:
   RFC8032:
   RFC8174:
   RFC8392:
-  RFC8446:
-  RFC8447:
   RFC8949:
   RFC9052:
   RFC9053:
