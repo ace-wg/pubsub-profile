@@ -358,12 +358,16 @@ Finally, the joining node MUST provide its own authentication credential again i
 
 The 'client\_cred\_verify' parameter contains the proof-of-possession evidence, and is computed as defined below (REQ14).
 
-If the Publisher Client and KDC use asymmetric proof-of-possession, the Publisher signs the scope, concatenated with N\_S and concatenated with N\_C using the private key corresponding to the public key in the 'client_cred' paramater. N\_S is the challenge received from the KDC in the 'kdcchallenge' parameter of the 2.01 (Created) response to the Token Transfer Request (see {{token-post}}).
+The Publisher signs the scope, concatenated with N\_S and concatenated with N\_C using the private key corresponding to the public key in the 'client_cred' paramater.
 
-If the Publisher Client used a symmetric proof-of-possession key in the DTLS handshake {{I-D.ietf-ace-dtls-authorize}},  then N_S is an exporter value computed as defined in Section 7.5 of {{RFC8446}}.  Specifically, N_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value', 32 bytes as 'key_length', and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-group-pubsub-app" defined in {{tls_exporter}} of this document. The Publisher signs the scope, concatenated with N\_S and concatenated with N\_C using the symmetric key exchanged in the DTLS handshake.
+The N\_S may be either:
+
+* The challenge received from the KDC in the 'kdcchallenge' parameter of the 2.01 (Created) response to the Token Transfer Request (see {{token-post}}).
+* If the Publisher Client used a symmetric proof-of-possession key in the DTLS handshake {{I-D.ietf-ace-dtls-authorize}},  then it is an exporter value computed as defined in Section 7.5 of {{RFC8446}}.  Specifically, N_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value', 32 bytes as 'key_length', and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-group-pubsub-app" defined in {{tls_exporter}} of this document. 
+* If the Join Request is a retry in response to an error response from the KDC, which included the 'kdcchallenge' parameter, N_S MUST be this new challenge parameter.
 
 
-## Join Response
+## Join Response {#join_response}
 
 On receiving the Join Request, the KDC processes the request as defined in Section 4.3.1 of {{I-D.ietf-ace-key-groupcomm}}, and may return a success or error response.
 
@@ -371,31 +375,36 @@ If 'client_cred' field is present, the KDC verifies signature in the the 'client
 the 'client_cred' parameter of the Join Request or the already stored authentication credential from previous interactions with the joining node. The KDC verifies the PoP evidence, which is a signature, by using the public key of the joining node, as well as the signature algorithm used in the group and possible corresponding parameters.
 
 The the case of a join request error, the KDC and the Clients attempting the join follow the procedure defined in {{join_error}}.
+
 In the case of success, the Client is added to the list of current members, if not already a member. The Client is assigned a NODENAME and assigned a sub-resource /ace-group/GROUPNAME/nodes/NODENAME. NODENAME is associated to the access token and secure session of the Client. For Publishers, their client credentials are also associated with tuple containing NODENAME, GROUPNAME and access token.
 
 Then, the KDC responds with a Join Response with response code 2.01 (Created) if the Client has been added to the list of group members, and 2.04 (Changed) otherwise (e.g., if the Client is re-joining).  The Content-Format  is "application/ace-groupcomm+cbor". The payload (formatted as a CBOR map) MUST contain the following fields from the Join Response  and encode them as defined in Section 4.3.1 of {{I-D.ietf-ace-key-groupcomm}}:
 
-- 'gkty', the key type for the 'key' parameter. 
-- 'key', the keying material for group communication. This is a "COSE\_Key" object (defined in {{RFC9052}} {{RFC9053}}, containing:
+- 'gkty': the key type for the 'key' parameter. 
+(ToDo: Additionally, documents specifying the key format MUST register it in the "ACE Groupcomm Key Types" registry including its name, type and application profile to be used with.)
+- 'key': The keying material for group communication is a "COSE\_Key" object (defined in {{RFC9052}} {{RFC9053}}, containing:
     * 'kty' with value 4 (symmetric)
-    * 'alg' with value defined by the AS (Content Encryption Algorithm)
-    * 'Base IV' with value defined by the AS
-    * 'k' with value the symmetric key value
-    * OPTIONALLY, 'kid' with an identifier for the key value 
-ToDo: Check the format of the 'key' value (REQ17)
-ToDo: Additionally, documents specifying the key format MUST register it in the "ACE Groupcomm Key Types" registry including its name, type and application profile to be used with.
-- 'num' containing the version number for the 'key'. The initial version number is set to 1.
-- 'exp', the value of the expiration time of the 'key'
-- 'creds', MUST be present, if the 'get\_creds' parameter was present. Otherwise, it MUST NOT be present. If the joining node has asked for the authentication credentials of all the group members, i.e., 'get_creds' had value the CBOR simple value "null" (0xf6) in the Join Request, then the Group Manager provides the authentication credentials of all the Publisher Clients in the group.
+    * 'kid', optional
+    * 'alg' with value defined by the KDC (Content Encryption Algorithm)
+    * 'key_ops' with value [3, 4] corresponding to encryption and decryption
+    * 'Base IV' with value defined by the KDC
+(ToDo: Check the format of the 'key' value (REQ17)
+- 'num': MUST be initialised to 1 as the version number of the keying material.
+- 'exp', MUST be present.
+- 'ace-groupcomm-profile' parameter MUST be present and has value coap_group_pubsub_app (PROFILE_TBD), which is defined in {{iana-coap-profile}} of this document.
+- 'creds', MUST be present, if the 'get\_creds' parameter was present. Otherwise, it MUST NOT be present. If the joining Subscriber has asked for the authentication credentials of all the group members, then the KDC provides the authentication credentials of all the Publisher Clients in the group.
 - 'peer\_roles' MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present.
-ToDo: Requested a change for this, and see how the Groupcomm draft is updated
+(ToDo: Requested a change for this, and see how the Groupcomm draft is updated.)
 - 'peer\_identifiers' MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present.
-- 'kdc\_cred', MUST be present if group re-keying is used, and encoded as a CBOR byte string, with value the original binary representation of the KDC's authentication credential.
-- 'kdc\_nonce', MUST be present, if 'kdc\_cred' is present and encoded as a CBOR byte string, and including a dedicated nonce N_KDC generated by the KDC.
-- 'kdc_cred_verify' MUST be present, if 'kdc\_cred' is present and encoded as a CBOR byte string. The PoP evidence is computed over the nonce N_KDC, which is specified in the 'kdc_nonce' parameter and taken as PoP input. KDC MUST compute the signature
-by using the signature algorithm used in the group, as
-well as its own private key associated with the authentication
-credential specified in the 'kdc_cred' parameter.
+(ToDo: REQ25 - Specify the format of the identifiers of group members)
+- 'kdc\_cred', MUST be present if group re-keying is used, and encoded as a CBOR byte string, with value the original binary representation of the KDC's authentication credential (REQ8).
+- 'kdc\_nonce', MUST be present, if 'kdc\_cred' is present and encoded as a CBOR byte string, and including a dedicated nonce N\_KDC generated by the KDC. For N\_KDC, it is RECOMMENDED to use a 8-byte long random nonce.
+- 'kdc_cred_verify' MUST be present, if 'kdc\_cred' is present and encoded as a CBOR byte string. The PoP evidence is computed over the nonce N\_KDC, which is specified in the 'kdc\_nonce' parameter and taken as PoP input. KDC MUST compute the signature by using the signature algorithm used in the group, as well as its own private key associated with the authentication credential specified in the 'kdc\_cred' parameter (REQ21).
+- 'group_rekeying': MAY be omitted, if the KDC uses the "Point-to-Point" group rekeying scheme registered in Section 11.12 of {{I-D.ietf-ace-key-groupcomm}} as the default rekeying scheme in the group (OPT9). In any other
+case, the 'group_rekeying' parameter MUST be included.
+
+The KDC starts at the same Base IV, and different keys are derived for each sender. Each sender is provided a different Partial IV to start with. The number of messages to be sent are restricted before rekeying.
+(ToDo: Clarify details)
 
 ## Join Error Handling {#join_error}
 
@@ -408,9 +417,9 @@ The KDC MUST reply with a 4.00 (Bad Request) error response to the Join Request 
     -  The KDC does not store an eligible authentication credential (e.g., of the format accepted in the group) for the joining node.
     -  The KDC stores multiple eligible authentication credentials (e.g., of the format accepted in the group) for the joining node.
 *The 'scope' parameter is not present in the Join Request, or it is present and specifies any set of roles not included in the role list as defined in {{scope}}.
- A 4.00 (Bad Request) error response from the Group Manager to the joining node MUST have content format application/ace-groupcomm+cbor.
 
- On receiving a 4.00 (Bad Request) error response, the joining Publisher node MAY send a new Join Request to the Group Manager.  
+ A 4.00 (Bad Request) error response from the Group Manager to the joining node MAY have content format application/ace-groupcomm+cbor and contain a CBOR map as payload. The CBOR map MAY include the 'kdcchallenge' parameter.  If present, this parameter is a CBOR byte string, which encodes a newly generated 'kdcchallenge' value that the Client can use when preparing a Join Request.  In such a case the Group Manager MUST store the newly generated value as the 'kdcchallenge' value associated with the joining node, possibly replacing the currently stored value.
+
 
 ## Join Request Response Examples
 
@@ -630,7 +639,7 @@ with the RFC number of this specification and delete this paragraph.
 
 ### CoAP Profile Registration {#iana-coap-profile}
 
-Name: coap_pubsub_app
+Name: coap_group_pubsub_app
 
 Description: Profile for delegating client authentication and authorization for publishers and subscribers in a CoAP pub-sub setting scenario in a constrained environment.
 
@@ -659,7 +668,7 @@ Name: COSE_Key
 
 Key Type Value: TBD
 
-Profile: coap_pubsub_app, mqtt_pubsub_app
+Profile: coap_group_pubsub_app, mqtt_pubsub_app
 
 Description: COSE_Key object
 
@@ -752,7 +761,7 @@ credentials and, if used, the acceptable values for 'cred_fmt': TODO
 coincide, specify the mechanism to map the GROUPNAME value in the
 URI to the group name: TODO
 
-* REQ8: Define whether the KDC has an authentication credential and if this has to be provided through the 'kdc_cred' parameter : TODO
+* REQ8: Define whether the KDC has an authentication credential and if this has to be provided through the 'kdc_cred' parameter : Yes, see {{join_response}} of this document.
 
 * REQ9: Specify if any part of the KDC interface as defined in {{I-D.ietf-ace-key-groupcomm}} is not supported by the KDC: TODO
 
@@ -784,17 +793,17 @@ instead): TODO
 
 * REQ18: Specify the acceptable values of the 'gkty' parameter: ToDo
 
-* REQ19: Specify and register the application profile identifier: coap_pubsub_app
+* REQ19: Specify and register the application profile identifier: coap_group_pubsub_app
 
 *  REQ20: If used, specify the format and content of 'group_policies' and its entries.  Specify the policies default values: N/A
 
-* REQ21: Specify the approaches used to compute and verify the PoP evidence to include in 'kdc_cred_verify', and which of those approaches is used in which case
+* REQ21: Specify the approaches used to compute and verify the PoP evidence to include in 'kdc_cred_verify', and which of those approaches is used in which case: see {{join_response}}
 
 * REQ22: Specify the communication protocol the members of the group must use.
 
 *  REQ23: Specify the security protocol the group members must use to protect their communication. This must provide encryption, integrity and replay protection.
 
-* REQ24: Specify how the communication is secured between Client and KDC.  Optionally, specify transport profile of ACE [RFC9200] to use between Client and KDC.
+* REQ24: Specify how the communication is secured between Client and KDC.  Optionally, specify transport profile of ACE {{RFC9200}} to use between Client and KDC.
 
 * REQ25: Specify the format of the identifiers of group members.
 
@@ -835,7 +844,8 @@ default is not used: No
 
 * OPT8: Optionally, specify the behavior of the handler in case of failure to retrieve an authentication credential for the specific node:
 
-* OPT9: Optionally, define a default group rekeying scheme, to refer to in case the 'rekeying_scheme' parameter is not included in the Join Response:
+* OPT9: Optionally, define a default group rekeying scheme, to refer to in case the 'rekeying_scheme' parameter is not included in the Join Response: the "Point-to-Point" rekeying scheme registered in Section 11.12 of
+{{I-D.ietf-ace-key-groupcomm}}.
 
 *  OPT10: Optionally, specify the functionalities implemented at the 'control_group_uri' resource hosted at the Client, including
 message exchange encoding and other details
