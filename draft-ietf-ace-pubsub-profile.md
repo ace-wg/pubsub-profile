@@ -25,6 +25,11 @@ author:
     name: Cigdem Sengul
     org: Brunel University
     email: csengul@acm.org
+     -
+    ins: M. Tiloca
+    name: Marco Tiloca
+    org: RISE AB
+    email: marco.tiloca@ri.se
 
 normative:
   IANA.cose_algorithms:
