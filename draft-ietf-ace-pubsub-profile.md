@@ -1,5 +1,5 @@
 ---
-title: Pub-Sub Profile for Authentication and Authorization for Constrained Environments (ACE)
+title: Publish-Subscribe Profile for Authentication and Authorization for Constrained Environments (ACE)
 abbrev: pubsub-profile
 docname: draft-ietf-ace-pubsub-profile-latest
 category: std
@@ -83,17 +83,17 @@ entity:
 --- abstract
 
 This document defines an application profile for enabling secure group
-communication for a constrained pub-sub scenario, where Publishers and Subscribers communicate through a broker, using the ACE framework. This profile relies on transport layer or application layer security profiles of ACE to achieve communication security, server authentication and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 Access Token. The document describes how to request and provision keying
-material for group communication, and protect the content of the pub-sub client message exchange, focusing mainly on the pub-sub scenarios using the Constrained Application Protocol (CoAP) {{I-D.ietf-core-coap-pubsub}}.
+communication for a constrained Publish-Subscribe (pub/sub) scenario, where Publishers and Subscribers communicate through a broker, using the ACE framework. This profile relies on transport layer or application layer security profiles of ACE to achieve communication security, server authentication and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 Access Token. The document describes how to request and provision keying
+material for group communication, and protect the content of the pub/sub client message exchange, focusing mainly on the pub/sub scenarios using the Constrained Application Protocol (CoAP) {{I-D.ietf-core-coap-pubsub}}.
 --- middle
 
 # Introduction
 
-In the publish-subscribe (pub-sub) scenario, devices with limited reachability communicate via a broker, which enables store-and-forward messaging between these devices. This document defines a way to authorize pub-sub clients using the ACE framework {{RFC9200}} to obtain the keys for protecting the content of their pub-sub messages when communicating through the broker.
+In the publish-subscribe (pub/sub) scenario, devices with limited reachability communicate via a broker, which enables store-and-forward messaging between these devices. This document defines a way to authorize pub/sub clients using the ACE framework {{RFC9200}} to obtain the keys for protecting the content of their pub/sub messages when communicating through the broker.
 
-This document specifies how to request, distribute and renew keying material and configuration parameters to protect message exchanges for pub-sub communication, using {{I-D.ietf-ace-key-groupcomm}}, which expands from the ACE framework ({{RFC9200}}).  Message exchanges among the participants as well as message formats and processing follow the specifications for provisioning and renewing keying material in group communication scenarios in {{I-D.ietf-ace-key-groupcomm}}.
+This document specifies how to request, distribute and renew keying material and configuration parameters to protect message exchanges for pub/sub communication, using {{I-D.ietf-ace-key-groupcomm}}, which expands from the ACE framework ({{RFC9200}}).  Message exchanges among the participants as well as message formats and processing follow the specifications for provisioning and renewing keying material in group communication scenarios in {{I-D.ietf-ace-key-groupcomm}}.
 
-The pub-sub communication using the Constrained Application Protocol (CoAP) {{RFC7252}} is specified in {{I-D.ietf-core-coap-pubsub}}.This document gives detailed specifications for CoAP pub-sub, and describes how it can be adapted for MQTT {{MQTT-OASIS-Standard-v5}}; similar adaptations can extend to other transport protocols as well.
+The pub/sub communication using the Constrained Application Protocol (CoAP) {{RFC7252}} is specified in {{I-D.ietf-core-coap-pubsub}}.This document gives detailed specifications for CoAP pub/sub, and describes how it can be adapted for MQTT {{MQTT-OASIS-Standard-v5}}; similar adaptations can extend to other transport protocols as well.
 
 ## Terminology
 
@@ -104,19 +104,19 @@ Readers are expected to be familiar with:
 
 * The terms and concepts described in {{RFC9200}}, and Authorization Information Format (AIF) {{RFC9237}} to express authorization information. In particular, analogously to {{RFC9200}}, terminology for entities in the architecture such as Client (C), Resource Server (RS), and Authorization Server (AS) is defined in OAuth 2.0 {{RFC6749}}.
 * The terms and concept related to the message formats and processing, specified in {{I-D.ietf-ace-key-groupcomm}}, for provisioning and renewing keying material in group communication scenarios. 
-* The terms and concepts of pub-sub group communication, as described in {{I-D.ietf-core-coap-pubsub}}.
+* The terms and concepts of pub/sub group communication, as described in {{I-D.ietf-core-coap-pubsub}}.
 * The terms and concepts described in CBOR {{RFC8949}} and COSE {{RFC9052}}{{RFC9053}}.
 
-A principal interested to participate in group communication as well as already participating as a group member is interchangeably denoted as "Client", "Pub-Sub client",  or "node".
+A principal interested to participate in group communication as well as already participating as a group member is interchangeably denoted as "Client", "pub/sub client",  or "node".
 
-* Group: a set of nodes that share common keying material and security parameters to protect their communications with one another. That is, the term refers to a "security group". This is not to be confused with an "application group", which has relevance at the application level and whose members may be a set of nodes registered to a pub-sub topic. 
+* Group: a set of nodes that share common keying material and security parameters to protect their communications with one another. That is, the term refers to a "security group". This is not to be confused with an "application group", which has relevance at the application level and whose members may be a set of nodes registered to a pub/sub topic. 
 
 
 # Application Profile Overview {#overview}
 
 The architecture of the scenario is shown in {{archi}}. A Client can act both as a publisher and a subscriber, publishing to some topics, and subscribing to others. However, for the simplicity of presentation, this profile describes Publisher and Subscriber Clients separately. The Broker acts as the ACE RS, and also corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}).
 
-Both Publisher and Subscriber Clients use the same pub-sub communication protocol and the same transport profile of ACE in their interaction with the broker. The pub-sub communication protocol considered in this document is CoAP, as described in {{I-D.ietf-core-coap-pubsub}}, but the specification can apply to other pub-sub protocols such as MQTT {{MQTT-OASIS-Standard-v5}}, or other transport.  All clients MUST use CoAP when communicating to the KDC.
+Both Publisher and Subscriber Clients use the same pub/sub communication protocol and the same transport profile of ACE in their interaction with the broker. The pub/sub communication protocol considered in this document is CoAP, as described in {{I-D.ietf-core-coap-pubsub}}, but the specification can apply to other pub/sub protocols such as MQTT {{MQTT-OASIS-Standard-v5}}, or other transport.  All clients MUST use CoAP when communicating to the KDC.
 
 ~~~~~~~~~~~~
              +----------------+   +----------------+
@@ -132,15 +132,15 @@ Both Publisher and Subscriber Clients use the same pub-sub communication protoco
      v   v
 +------------+             +------------+
 |            |             |            |
-| Pub-Sub    | <-- (C)---> |   Broker   |
+| Pub/Sub    | <-- (C)---> |   Broker   |
 | Client     |             |            |
 |            |             |            |
 +------------+             +------------+
 ~~~~~~~~~~~~~
-{: #archi title="Architecture for Pub-Sub with Authorization Server and Key Distribution Center"}
+{: #archi title="Architecture for Pub/Sub with Authorization Server and Key Distribution Center"}
 {: artwork-align="center"}
 
-All communications between the involved entities MUST be secured. This profile expects the establishment of a secure connection between a Client and Broker, using an ACE transport profile such as DTLS {{I-D.ietf-ace-dtls-authorize}} or OSCORE {{I-D.ietf-ace-oscore-profile}} (A and C). Once the client establishes a secure association with KDC with the help of AS, it can request to join the security groups of its pub-sub topics (A and B), and  can communicate securely with the other group members, using the keying material provided by the KDC.
+All communications between the involved entities MUST be secured. This profile expects the establishment of a secure connection between a Client and Broker, using an ACE transport profile such as DTLS {{I-D.ietf-ace-dtls-authorize}} or OSCORE {{I-D.ietf-ace-oscore-profile}} (A and C). Once the client establishes a secure association with KDC with the help of AS, it can request to join the security groups of its pub/sub topics (A and B), and  can communicate securely with the other group members, using the keying material provided by the KDC.
 
 (C) corresponds to the exchange between the Client and  the Broker, where the Client sends its access token to the Broker and establishes a secure connection with the Broker.
 Depending on the Information received in (A), the connection set-up may involve, for example, a DTLS handshake, or other protocols. Depending on the application, the set up phase may be skipped: for example, if OSCORE is used directly.
@@ -199,10 +199,10 @@ name GROUPNAME. | GET (All) |
 Note that the use of these resources follows what is defined in {{I-D.ietf-ace-key-groupcomm}} applies, and only additions or modifications to that specification are defined in this document.
 
 The Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in {{core_rt}} (REQ10), and can be used to describe group-membership resources and its sub-resources at Broker, e.g., by using a link-format document {{RFC6690}}}.
-Applications can use this common resource type to discover links to group-membership resources for joining pub-sub groups.
-(ToDo: Check this discovery is feasible in core pub-sub)
+Applications can use this common resource type to discover links to group-membership resources for joining pub/sub groups.
+(ToDo: Check this discovery is feasible in core pub/sub)
 
-# Getting Authorisation to Join a pub-sub security group (A-B) {#authorisation}
+# Getting Authorisation to Join a pub/sub security group (A-B) {#authorisation}
 
 Figure {{message-flow}} provides a high level overview of the message flow for a node getting authorisation to join a group. This message flow is expanded in the subsequent sections.
 
@@ -252,9 +252,9 @@ Both Authorisation Requests include the following fields (Section 3.1 of {{I-D.i
 
 Other additional parameters can be included if necessary, as defined in {{RFC9200}}.
 
-For the Broker, the scope represents pub-sub topics i.e., the application group, and for the KDC, the scope represents the security group. If there is a one-to-one mapping between the application group and the security group, the client uses the same scope for both requests. If there is not a one-to-one mapping, the correct policies regarding both sets of scopes MUST be available to the AS.
+For the Broker, the scope represents pub/sub topics i.e., the application group, and for the KDC, the scope represents the security group. If there is a one-to-one mapping between the application group and the security group, the client uses the same scope for both requests. If there is not a one-to-one mapping, the correct policies regarding both sets of scopes MUST be available to the AS.
 
-The client MUST ask for the correct scopes in its Authorization Requests. How the client discovers the (application group, security group) association is out of scope of this document. (ToDo: Can pub-sub discovery handle this?)
+The client MUST ask for the correct scopes in its Authorization Requests. How the client discovers the (application group, security group) association is out of scope of this document. (ToDo: Can pub/sub discovery handle this?)
 
 ### Format of Scope {#scope}
 
@@ -287,7 +287,7 @@ This document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM, that
 
    scope_entry = [pubsub-topic, pubsub-perm]
 ~~~~~~~~~~~
-{: #scope-aif title="Pub-Sub scope using the AIF format"}
+{: #scope-aif title="Pub/Sub scope using the AIF format"}
 {: artwork-align="center"}
 
 ## Authorisation response
@@ -324,7 +324,7 @@ indicated in 'sign_alg' under the "Capabilities" column of the "COSE Algorithms"
 
 # Joining a Group {#join}
 
-This section describes the interactions between the joining node and the KDC to join an pub-sub group. Source authentication of a message sent within the pub-sub group is ensured by means of a digital signature embedded in the message. Subscribers must be able to retrieve Publishers' authentication credential from a trusted repository, to verify source authenticity of received messages. Upon joining a pub-sub, a Publisher node is expected to provide its own authentication credential to the KDC.
+This section describes the interactions between the joining node and the KDC to join an pub/sub group. Source authentication of a message sent within the pub/sub group is ensured by means of a digital signature embedded in the message. Subscribers must be able to retrieve Publishers' authentication credential from a trusted repository, to verify source authenticity of received messages. Upon joining a pub/sub, a Publisher node is expected to provide its own authentication credential to the KDC.
 
  The message exchange between the joining node and the KDCC follows what's defined in Section 4.3.1.1 of {{I-D.ietf-ace-key-groupcomm}} and only additions or modifications to that specification are defined in this document.
 
@@ -350,13 +350,13 @@ After establishing a secure communication, the Client sends a Join Request to th
 
 ### Client Credentials-'client_cred' {#client_cred}
 
-One of the following cases can occur when a new node joins the pub-sub group.
+One of the following cases can occur when a new node joins the pub/sub group.
 
 *  The joining node is going to join the group exclusively as Subscriber, i.e., it is not going to send messages to the group.  In this case, the joining node is not required to provide its own authentication credential to the KDC. In case the joining node still provides an authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}), the KDC silently ignores that parameter, as well as the related parameters 'cnonce' and 'client_cred_verify'.
 *  The KDC already acquired the authentication credential of the joining node during a past group joining process. In this case, the joining node MAY choose not to provide again its own authentication credential to the KDC, in order to limit the size of the Join Request.
 * If the joining node is a Publisher, and the KDC hasn't acquired an authentication credential, the joining node MUST provide a compatible authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}).
 
-Finally, the joining node MUST provide its own authentication credential again if it has provided the KDC with multiple authentication credentials during past joining processes, intended for different pub-sub groups.  If the joining node provides its own authentication credential, the KDC performs consistency checks as per {{join-request}} and, in case of success, considers it as the authentication credential associated with the joining node in the pub-sub group.
+Finally, the joining node MUST provide its own authentication credential again if it has provided the KDC with multiple authentication credentials during past joining processes, intended for different pub/sub groups.  If the joining node provides its own authentication credential, the KDC performs consistency checks as per {{join-request}} and, in case of success, considers it as the authentication credential associated with the joining node in the pub/sub group.
 
 ### Proof-of-Possession {#pop}
 
@@ -533,7 +533,7 @@ Default rekeying scheme is Point-to-point (Section 6.1 of {{I-D.ietf-ace-key-gro
 
 If the group rekeying is performed due to one or multiple Publisher Clients that have joined the group, then a rekeying message MUST also include the authentication credentials that those Clients use in the group, together with the roles and node identifier that the corresponding Client has in the group.  This information is specified by means of the parameters 'creds', 'peer_roles' and 'peer_identifiers', like done in the Join Response message.
 
-ToDo: Any additional rekeying mechanisms. The pub-sub model, in which case, the KDC acts
+ToDo: Any additional rekeying mechanisms. The pub/sub model, in which case, the KDC acts
 as publisher (KDC authentication credential??) and publishes each rekeying message to a specific "rekeying topic", which is associated with the group and is hosted at a broker server.  Following their group joining, the group members subscribe to the rekeying topic at the broker, thus receiving the group rekeying messages as they are published by the KDC.
 
 # Considerations for Supporting MQTT PubSub Profile {#mqtt-pubsub}
@@ -580,7 +580,7 @@ with the RFC number of this specification and delete this paragraph.
 
 Name: coap_group_pubsub_app
 
-Description: Profile for delegating client authentication and authorization for publishers and subscribers in a CoAP pub-sub setting scenario in a constrained environment.
+Description: Profile for delegating client authentication and authorization for publishers and subscribers in a CoAP pub/sub setting scenario in a constrained environment.
 
 CBOR Key: TBD
 
@@ -590,7 +590,7 @@ Reference: \[\[This document\]\]
 
 Name: mqtt_pubsub_app
 
-Description: Profile for delegating client authentication and authorization for publishers and subscribers in a MQTT pub-sub setting scenario in a constrained environment.
+Description: Profile for delegating client authentication and authorization for publishers and subscribers in a MQTT pub/sub setting scenario in a constrained environment.
 
 CBOR Key: TBD
 
@@ -619,7 +619,7 @@ IANA is asked to register the following entry in the "Resource Type (rt=) Link T
 
    *  Value: "core.ps.gm"
 
-   *  Description: Group-membership resource for Pub-Sub communication.
+   *  Description: Group-membership resource for Pub/Sub communication.
 
    *  Reference: [RFC-XXXX]
 
