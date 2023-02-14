@@ -379,12 +379,13 @@ Then, the KDC responds with a Join Response with response code 2.01 (Created) if
 
 - 'gkty': the key type for the 'key' parameter. 
 (ToDo: Additionally, documents specifying the key format MUST register it in the "ACE Groupcomm Key Types" registry including its name, type and application profile to be used with.)
-- 'key': The keying material for group communication is a "COSE\_Key" object (defined in {{RFC9052}} {{RFC9053}} is the 'cnf' claim inside an untagged CCS, containing:
+- 'key': The keying material for group communication is a "COSE\_Key" object (defined in {{RFC9052}} {{RFC9053}} containing: 
     * 'kty' with value 4 (symmetric)
     * 'kid', optional
     * 'alg' with value defined by the KDC (Content Encryption Algorithm)
     * 'key_ops' with value [3, 4] corresponding to encryption and decryption
-    * 'Base IV' with value defined by the KDC
+    * 'Base IV' with value defined by the KDC,
+    * 'k', the value of the symmetric key
 (ToDo: 'key' not final (REQ17))
 - 'num': MUST be initialised to 1 as the version number of the keying material.
 - 'exp', MUST be present.
