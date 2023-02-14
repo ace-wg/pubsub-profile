@@ -107,11 +107,16 @@ Readers are expected to be familiar with:
 * The terms and concepts of pub-sub group communication, as described in {{I-D.ietf-core-coap-pubsub}}.
 * The terms and concepts described in CBOR {{RFC8949}} and COSE {{RFC9052}}{{RFC9053}}.
 
+A principal interested to participate in group communication as well as already participating as a group member is interchangeably denoted as "Client", "Pub-Sub client",  or "node".
+
+* Group: a set of nodes that share common keying material and security parameters to protect their communications with one another. That is, the term refers to a "security group". This is not to be confused with an "application group", which has relevance at the application level and whose members may be a set of nodes registered to a pub-sub topic. 
+
+
 # Application Profile Overview {#overview}
 
-The architecture of the scenario is shown in {{archi}}. A Client can act both as a publisher and a subscriber, publishing to some topics, and subscribing to others. However, for the simplicity of presentation, this profile describes Publisher and Subscriber clients separately. The Broker acts as the ACE RS, and also corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}).
+The architecture of the scenario is shown in {{archi}}. A Client can act both as a publisher and a subscriber, publishing to some topics, and subscribing to others. However, for the simplicity of presentation, this profile describes Publisher and Subscriber Clients separately. The Broker acts as the ACE RS, and also corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}).
 
-Both Publishers and Subscribers use the same pub-sub communication protocol and the same transport profile of ACE in their interaction with the broker. The pub-sub communication protocol considered in this document is CoAP, as described in {{I-D.ietf-core-coap-pubsub}}, but the specification can apply to other pub-sub protocols such as MQTT {{MQTT-OASIS-Standard-v5}}, or other transport.  All clients MUST use CoAP when communicating to the KDC.
+Both Publisher and Subscriber Clients use the same pub-sub communication protocol and the same transport profile of ACE in their interaction with the broker. The pub-sub communication protocol considered in this document is CoAP, as described in {{I-D.ietf-core-coap-pubsub}}, but the specification can apply to other pub-sub protocols such as MQTT {{MQTT-OASIS-Standard-v5}}, or other transport.  All clients MUST use CoAP when communicating to the KDC.
 
 ~~~~~~~~~~~~
              +----------------+   +----------------+
@@ -160,7 +165,8 @@ Given that the publication content is protected, the Broker MAY accept unauthori
 {: #associations title="Security Associations between Publisher, Broker, Subscriber pairs."}
 {: artwork-align="center"}
 
-This document describes how to use {{I-D.ietf-ace-key-groupcomm}} and {{RFC9200}} to perform authentication, authorization and key distribution actions as overviewed in Section 2 of {{I-D.ietf-ace-key-groupcomm}}, when the considered group is Publishers and Subsribers belonging to the same security group.
+This document describes how to use {{I-D.ietf-ace-key-groupcomm}} and {{RFC9200}} to perform authentication, authorization and key distribution actions as overviewed in Section 2 of {{I-D.ietf-ace-key-groupcomm}}, when the considered group is Publishers and Subsribers belonging to the same security group. In this document, the application groups are considered at a single topic name level, and a security group SHOULD be associated with a single application group. However, the same application group MAY be associated with multiple security groups.
+In addition, applications MAY create topic filters that expand to multiple topic names, and associate them a single security group but further details and considerations on the mapping between the two types of group are out of the scope of this document.
 
 To this end, this profile describes how:
 
