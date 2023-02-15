@@ -5,27 +5,28 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               M. Tiloca
-Expires: 17 August 2023                                          RISE AB
-                                                        13 February 2023
+Expires: 18 August 2023                                          RISE AB
+                                                        14 February 2023
 
 
-  Pub-Sub Profile for Authentication and Authorization for Constrained
-                           Environments (ACE)
+   Publish-Subscribe Profile for Authentication and Authorization for
+                     Constrained Environments (ACE)
                   draft-ietf-ace-pubsub-profile-latest
 
 Abstract
 
    This document defines an application profile for enabling secure
-   group communication for a constrained pub-sub scenario, where
-   Publishers and Subscribers communicate through a broker, using the
-   ACE framework.  This profile relies on transport layer or application
-   layer security profiles of ACE to achieve communication security,
-   server authentication and proof-of-possession for a key owned by the
-   Client and bound to an OAuth 2.0 Access Token.  The document
-   describes how to request and provision keying material for group
-   communication, and protect the content of the pub-sub client message
-   exchange, focusing mainly on the pub-sub scenarios using the
-   Constrained Application Protocol (CoAP) [I-D.ietf-core-coap-pubsub].
+   group communication for a constrained Publish-Subscribe (pub/sub)
+   scenario, where Publishers and Subscribers communicate through a
+   broker, using the ACE framework.  This profile relies on transport
+   layer or application layer security profiles of ACE to achieve
+   communication security, server authentication and proof-of-possession
+   for a key owned by the Client and bound to an OAuth 2.0 Access Token.
+   The document describes how to request and provision keying material
+   for group communication, and protect the content of the pub/sub
+   client message exchange, focusing mainly on the pub/sub scenarios
+   using the Constrained Application Protocol (CoAP)
+   [I-D.ietf-core-coap-pubsub].
 
 Note to Readers
 
@@ -48,12 +49,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 August 2023.
+   This Internet-Draft will expire on 18 August 2023.
 
 
 
-
-Palombini & Tiloca       Expires 17 August 2023                 [Page 1]
+Palombini & Tiloca       Expires 18 August 2023                 [Page 1]
 
 Internet-Draft               pubsub-profile                February 2023
 
@@ -78,28 +78,28 @@ Table of Contents
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Application Profile Overview  . . . . . . . . . . . . . . . .   4
    3.  Client Interface the KDC  . . . . . . . . . . . . . . . . . .   7
-   4.  Getting Authorisation to Join a pub-sub security group
+   4.  Getting Authorisation to Join a pub/sub security group
            (A-B) . . . . . . . . . . . . . . . . . . . . . . . . . .   9
      4.1.  AS Discovery at the Broker (Optional) . . . . . . . . . .   9
      4.2.  Authorisation Request/Response for the KDC and the
            Broker  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-       4.2.1.  Format of Scope . . . . . . . . . . . . . . . . . . .  10
-     4.3.  Authorisation response  . . . . . . . . . . . . . . . . .  11
+       4.2.1.  Format of Scope . . . . . . . . . . . . . . . . . . .  11
+     4.3.  Authorisation response  . . . . . . . . . . . . . . . . .  12
      4.4.  Token Transfer to KDC . . . . . . . . . . . . . . . . . .  12
-   5.  Joining a Group . . . . . . . . . . . . . . . . . . . . . . .  13
+   5.  Joining a Group . . . . . . . . . . . . . . . . . . . . . . .  14
      5.1.  Join Request  . . . . . . . . . . . . . . . . . . . . . .  14
-       5.1.1.  Client Credentials-'client_cred'  . . . . . . . . . .  14
+       5.1.1.  Client Credentials-'client_cred'  . . . . . . . . . .  15
        5.1.2.  Proof-of-Possession . . . . . . . . . . . . . . . . .  15
      5.2.  Join Response . . . . . . . . . . . . . . . . . . . . . .  16
-     5.3.  Join Error Handling . . . . . . . . . . . . . . . . . . .  18
+     5.3.  Join Error Handling . . . . . . . . . . . . . . . . . . .  19
    6.  PubSub Protected Communication (C)  . . . . . . . . . . . . .  19
      6.1.  Using COSE Objects To Protect The Resource
            Representation  . . . . . . . . . . . . . . . . . . . . .  20
-   7.  Other Group Operations through the KDC  . . . . . . . . . . .  21
-     7.1.  Querying for Group Information  . . . . . . . . . . . . .  21
+   7.  Other Group Operations through the KDC  . . . . . . . . . . .  22
+     7.1.  Querying for Group Information  . . . . . . . . . . . . .  22
      7.2.  Updating Authentication Credentials . . . . . . . . . . .  22
      7.3.  Removal from a Group  . . . . . . . . . . . . . . . . . .  22
-     7.4.  Rekeying a Group  . . . . . . . . . . . . . . . . . . . .  22
+     7.4.  Rekeying a Group  . . . . . . . . . . . . . . . . . . . .  23
    8.  Considerations for Supporting MQTT PubSub Profile . . . . . .  23
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .  24
    10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  25
@@ -109,12 +109,12 @@ Table of Contents
 
 
 
-Palombini & Tiloca       Expires 17 August 2023                 [Page 2]
+Palombini & Tiloca       Expires 18 August 2023                 [Page 2]
 
 Internet-Draft               pubsub-profile                February 2023
 
 
-     10.2.  ACE Groupcomm Key Registry . . . . . . . . . . . . . . .  25
+     10.2.  ACE Groupcomm Key Registry . . . . . . . . . . . . . . .  26
      10.3.  CoRE Resource Type . . . . . . . . . . . . . . . . . . .  26
      10.4.  AIF  . . . . . . . . . . . . . . . . . . . . . . . . . .  26
      10.5.  CoAP Content-Format  . . . . . . . . . . . . . . . . . .  27
@@ -122,29 +122,29 @@ Internet-Draft               pubsub-profile                February 2023
      11.1.  Normative References . . . . . . . . . . . . . . . . . .  27
      11.2.  Informative References . . . . . . . . . . . . . . . . .  30
    Appendix A.  Requirements on Application Profiles . . . . . . . .  31
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  34
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  35
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  35
 
 1.  Introduction
 
-   In the publish-subscribe (pub-sub) scenario, devices with limited
+   In the publish-subscribe (pub/sub) scenario, devices with limited
    reachability communicate via a broker, which enables store-and-
    forward messaging between these devices.  This document defines a way
-   to authorize pub-sub clients using the ACE framework [RFC9200] to
-   obtain the keys for protecting the content of their pub-sub messages
+   to authorize pub/sub clients using the ACE framework [RFC9200] to
+   obtain the keys for protecting the content of their pub/sub messages
    when communicating through the broker.
 
    This document specifies how to request, distribute and renew keying
    material and configuration parameters to protect message exchanges
-   for pub-sub communication, using [I-D.ietf-ace-key-groupcomm], which
+   for pub/sub communication, using [I-D.ietf-ace-key-groupcomm], which
    expands from the ACE framework ([RFC9200]).  Message exchanges among
    the participants as well as message formats and processing follow the
    specifications for provisioning and renewing keying material in group
    communication scenarios in [I-D.ietf-ace-key-groupcomm].
 
-   The pub-sub communication using the Constrained Application Protocol
+   The pub/sub communication using the Constrained Application Protocol
    (CoAP) [RFC7252] is specified in [I-D.ietf-core-coap-pubsub].This
-   document gives detailed specifications for CoAP pub-sub, and
+   document gives detailed specifications for CoAP pub/sub, and
    describes how it can be adapted for MQTT [MQTT-OASIS-Standard-v5];
    similar adaptations can extend to other transport protocols as well.
 
@@ -165,7 +165,7 @@ Internet-Draft               pubsub-profile                February 2023
 
 
 
-Palombini & Tiloca       Expires 17 August 2023                 [Page 3]
+Palombini & Tiloca       Expires 18 August 2023                 [Page 3]
 
 Internet-Draft               pubsub-profile                February 2023
 
@@ -182,46 +182,46 @@ Internet-Draft               pubsub-profile                February 2023
       provisioning and renewing keying material in group communication
       scenarios.
 
-   *  The terms and concepts of pub-sub group communication, as
+   *  The terms and concepts of pub/sub group communication, as
       described in [I-D.ietf-core-coap-pubsub].
 
    *  The terms and concepts described in CBOR [RFC8949] and COSE
       [RFC9052][RFC9053].
+
+   A principal interested to participate in group communication as well
+   as already participating as a group member is interchangeably denoted
+   as "Client", "pub/sub client", or "node".
+
+   *  Group: a set of nodes that share common keying material and
+      security parameters to protect their communications with one
+      another.  That is, the term refers to a "security group".  This is
+      not to be confused with an "application group", which has
+      relevance at the application level and whose members may be a set
+      of nodes registered to a pub/sub topic.
 
 2.  Application Profile Overview
 
    The architecture of the scenario is shown in Figure 1.  A Client can
    act both as a publisher and a subscriber, publishing to some topics,
    and subscribing to others.  However, for the simplicity of
-   presentation, this profile describes Publisher and Subscriber clients
+   presentation, this profile describes Publisher and Subscriber Clients
    separately.  The Broker acts as the ACE RS, and also corresponds to
    the Dispatcher in [I-D.ietf-ace-key-groupcomm]).
 
-   Both Publishers and Subscribers use the same pub-sub communication
-   protocol and the same transport profile of ACE in their interaction
-   with the broker.  The pub-sub communication protocol considered in
-   this document is CoAP, as described in [I-D.ietf-core-coap-pubsub],
-   but the specification can apply to other pub-sub protocols such as
-   MQTT [MQTT-OASIS-Standard-v5], or other transport.  All clients MUST
-   use CoAP when communicating to the KDC.
+   Both Publisher and Subscriber Clients use the same pub/sub
+   communication protocol and the same transport profile of ACE in their
+   interaction with the broker.  The pub/sub communication protocol
+   considered in this document is CoAP, as described in
+   [I-D.ietf-core-coap-pubsub], but the specification can apply to other
+   pub/sub protocols such as MQTT [MQTT-OASIS-Standard-v5], or other
+   transport.  All clients MUST use CoAP when communicating to the KDC.
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                 [Page 4]
+Palombini & Tiloca       Expires 18 August 2023                 [Page 4]
 
 Internet-Draft               pubsub-profile                February 2023
 
@@ -239,12 +239,12 @@ Internet-Draft               pubsub-profile                February 2023
                 v   v
            +------------+             +------------+
            |            |             |            |
-           | Pub-Sub    | <-- (C)---> |   Broker   |
+           | Pub/Sub    | <-- (C)---> |   Broker   |
            | Client     |             |            |
            |            |             |            |
            +------------+             +------------+
 
-    Figure 1: Architecture for Pub-Sub with Authorization Server and Key
+    Figure 1: Architecture for Pub/Sub with Authorization Server and Key
                             Distribution Center
 
    All communications between the involved entities MUST be secured.
@@ -253,7 +253,7 @@ Internet-Draft               pubsub-profile                February 2023
    [I-D.ietf-ace-dtls-authorize] or OSCORE [I-D.ietf-ace-oscore-profile]
    (A and C).  Once the client establishes a secure association with KDC
    with the help of AS, it can request to join the security groups of
-   its pub-sub topics (A and B), and can communicate securely with the
+   its pub/sub topics (A and B), and can communicate securely with the
    other group members, using the keying material provided by the KDC.
 
    (C) corresponds to the exchange between the Client and the Broker,
@@ -277,7 +277,7 @@ Internet-Draft               pubsub-profile                February 2023
 
 
 
-Palombini & Tiloca       Expires 17 August 2023                 [Page 5]
+Palombini & Tiloca       Expires 18 August 2023                 [Page 5]
 
 Internet-Draft               pubsub-profile                February 2023
 
@@ -307,7 +307,15 @@ Internet-Draft               pubsub-profile                February 2023
    [RFC9200] to perform authentication, authorization and key
    distribution actions as overviewed in Section 2 of
    [I-D.ietf-ace-key-groupcomm], when the considered group is Publishers
-   and Subsribers belonging to the same security group.
+   and Subsribers belonging to the same security group.  In this
+   document, the application groups are considered at a single topic
+   name level, and a security group SHOULD be associated with a single
+   application group.  However, the same application group MAY be
+   associated with multiple security groups.  In addition, applications
+   MAY create topic filters that expand to multiple topic names, and
+   associate them a single security group but further details and
+   considerations on the mapping between the two types of group are out
+   of the scope of this document.
 
    To this end, this profile describes how:
 
@@ -323,20 +331,17 @@ Internet-Draft               pubsub-profile                February 2023
 
    4.  A Client leaves a group.
 
+
+
+Palombini & Tiloca       Expires 18 August 2023                 [Page 6]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    5.  A ? evicts a Client from the group.  (ToDo: Who - the KDC?)
 
    6.  The KDC renews and redistributes the group keying (rekeying)
        material due to membership change in the group.
-
-
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                 [Page 6]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
    Appendix Appendix A lists the specifications on this application
    profile of ACE, based on the requirements defined in Appendix A of
@@ -381,19 +386,19 @@ Internet-Draft               pubsub-profile                February 2023
    |                                 | number for the   |             |
    |                                 | symmetric group  |             |
    |                                 | keying material  |             |
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                 [Page 7]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    |                                 | of the group     |             |
    |                                 | with name        |             |
    |                                 | GROUPNAME        |             |
    +---------------------------------+------------------+-------------+
    | /ace-group/GROUPNAME/nodes/     | Required.        | GET, DELETE |
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                 [Page 7]
-
-Internet-Draft               pubsub-profile                February 2023
-
-
    | NODENAME                        | Contains the     | (All).  PUT |
    |                                 | group keying     | not         |
    |                                 | material and the | supported.  |
@@ -435,22 +440,25 @@ Internet-Draft               pubsub-profile                February 2023
    [I-D.ietf-ace-key-groupcomm] applies, and only additions or
    modifications to that specification are defined in this document.
 
+
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                 [Page 8]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    The Resource Type (rt=) Link Target Attribute value "core.ps.gm" is
    registered in Section 10.3 (REQ10), and can be used to describe
    group-membership resources and its sub-resources at Broker, e.g., by
    using a link-format document [RFC6690]}. Applications can use this
    common resource type to discover links to group-membership resources
-   for joining pub-sub groups.  (ToDo: Check this discovery is feasible
-   in core pub-sub)
+   for joining pub/sub groups.  (ToDo: Check this discovery is feasible
+   in core pub/sub)
 
-
-
-Palombini & Tiloca       Expires 17 August 2023                 [Page 8]
-
-Internet-Draft               pubsub-profile                February 2023
-
-
-4.  Getting Authorisation to Join a pub-sub security group (A-B)
+4.  Getting Authorisation to Join a pub/sub security group (A-B)
 
    Figure Figure 3 provides a high level overview of the message flow
    for a node getting authorisation to join a group.  This message flow
@@ -490,21 +498,19 @@ Internet-Draft               pubsub-profile                February 2023
    Unauthorized Resource Request (Section 5.2).  An example using CBOR
    diagnostic notation and CoAP is given below:
 
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                 [Page 9]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
                 4.01 Unauthorized
                 Content-Format: application/ace-groupcomm+cbor
                 {"AS": "coaps://as.example.com/token"}
 
                       Figure 4: AS Information example
-
-
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                 [Page 9]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
 4.2.  Authorisation Request/Response for the KDC and the Broker
 
@@ -535,7 +541,7 @@ Internet-Draft               pubsub-profile                February 2023
    Other additional parameters can be included if necessary, as defined
    in [RFC9200].
 
-   For the Broker, the scope represents pub-sub topics i.e., the
+   For the Broker, the scope represents pub/sub topics i.e., the
    application group, and for the KDC, the scope represents the security
    group.  If there is a one-to-one mapping between the application
    group and the security group, the client uses the same scope for both
@@ -544,8 +550,17 @@ Internet-Draft               pubsub-profile                February 2023
 
    The client MUST ask for the correct scopes in its Authorization
    Requests.  How the client discovers the (application group, security
-   group) association is out of scope of this document.  (ToDo: Can pub-
+   group) association is out of scope of this document.  (ToDo: Can pub/
    sub discovery handle this?)
+
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 10]
+
+Internet-Draft               pubsub-profile                February 2023
+
 
 4.2.1.  Format of Scope
 
@@ -554,13 +569,6 @@ Internet-Draft               pubsub-profile                February 2023
    implementations MAY use this format.
 
    Based on the generic AIF model
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 10]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
          AIF-Generic<Toid, Tperm> = [* [Toid, Tperm]]
 
@@ -595,7 +603,20 @@ Internet-Draft               pubsub-profile                February 2023
 
          scope_entry = [pubsub-topic, pubsub-perm]
 
-                Figure 5: Pub-Sub scope using the AIF format
+                Figure 5: Pub/Sub scope using the AIF format
+
+
+
+
+
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 11]
+
+Internet-Draft               pubsub-profile                February 2023
+
 
 4.3.  Authorisation response
 
@@ -607,16 +628,6 @@ Internet-Draft               pubsub-profile                February 2023
    *  The AS MUST include the 'expires_in' parameter.  Other means for
       the AS to specify the lifetime of Access Tokens are out of the
       scope of this document.
-
-
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 11]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
    *  The AS MUST include the 'scope' parameter, when the value included
       in the Access Token differs from the one specified by the joining
@@ -654,6 +665,15 @@ Internet-Draft               pubsub-profile                February 2023
    used in this document, this requires sending a POST request to the
    authz-info endpoint.  In addition to that, the following applies.
 
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 12]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    In the token transfer response to the Publisher Clients, i.e., the
    Clients whose scope of the access token includes the "Pub" role, the
    KDC MUST include the parameter 'kdcchallenge' in the CBOR map.
@@ -666,13 +686,6 @@ Internet-Draft               pubsub-profile                February 2023
    If 'sign_info' is included in the Token Transfer Request, the KDC
    SHOULD include the 'sign_info' parameter in the Token Transfer
    Response.  The following applies for each element 'sign_info_entry'.
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 12]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
    *  'sign_alg' MUST take value from the "Value" column of one of the
       recommended algorithms in the "COSE Algorithms" registry
@@ -702,15 +715,30 @@ Internet-Draft               pubsub-profile                February 2023
       acceptable to use as long as they comply with the criteria defined
       above.
 
+
+
+
+
+
+
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 13]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
 5.  Joining a Group
 
    This section describes the interactions between the joining node and
-   the KDC to join an pub-sub group.  Source authentication of a message
-   sent within the pub-sub group is ensured by means of a digital
+   the KDC to join an pub/sub group.  Source authentication of a message
+   sent within the pub/sub group is ensured by means of a digital
    signature embedded in the message.  Subscribers must be able to
    retrieve Publishers' authentication credential from a trusted
    repository, to verify source authenticity of received messages.  Upon
-   joining a pub-sub, a Publisher node is expected to provide its own
+   joining a pub/sub, a Publisher node is expected to provide its own
    authentication credential to the KDC.
 
    The message exchange between the joining node and the KDCC follows
@@ -722,13 +750,6 @@ Internet-Draft               pubsub-profile                February 2023
                     |----- Joining Request (CoAP) ------>|
                     |                                    |
                     |<-----Joining Response (CoAP) ------|
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 13]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
                             Figure 6: Join Flow
 
@@ -758,6 +779,13 @@ Internet-Draft               pubsub-profile                February 2023
    *  'client_cred': The use of this parameter is detailed in
       Section 5.1.1.
 
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 14]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    *  'cnonce': Optional, MUST be present if 'client_cred' is present.
       It is a dedicated nonce N_C generated by the Client.  It is
       RECOMMENDED to use a 8-byte long random nonce.  Join Requests MUST
@@ -769,22 +797,8 @@ Internet-Draft               pubsub-profile                February 2023
 
 5.1.1.  Client Credentials-'client_cred'
 
-   One of the following cases can occur when a new node joins the pub-
+   One of the following cases can occur when a new node joins the pub/
    sub group.
-
-
-
-
-
-
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 14]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
    *  The joining node is going to join the group exclusively as
       Subscriber, i.e., it is not going to send messages to the group.
@@ -809,16 +823,24 @@ Internet-Draft               pubsub-profile                February 2023
    Finally, the joining node MUST provide its own authentication
    credential again if it has provided the KDC with multiple
    authentication credentials during past joining processes, intended
-   for different pub-sub groups.  If the joining node provides its own
+   for different pub/sub groups.  If the joining node provides its own
    authentication credential, the KDC performs consistency checks as per
    Section 5.1 and, in case of success, considers it as the
    authentication credential associated with the joining node in the
-   pub-sub group.
+   pub/sub group.
 
 5.1.2.  Proof-of-Possession
 
    The 'client_cred_verify' parameter contains the proof-of-possession
    evidence, and is computed as defined below (REQ14).
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 15]
+
+Internet-Draft               pubsub-profile                February 2023
+
 
    The Publisher signs the scope, concatenated with N_S and concatenated
    with N_C using the private key corresponding to the public key in the
@@ -833,14 +855,6 @@ Internet-Draft               pubsub-profile                February 2023
    *  If the Join Request is a retry in response to an error response
       from the KDC, which included the 'kdcchallenge' parameter, N_S
       MUST be this new challenge parameter.
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 15]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
 5.2.  Join Response
 
@@ -871,6 +885,19 @@ Internet-Draft               pubsub-profile                February 2023
    Client.  For Publishers, their client credentials are also associated
    with tuple containing NODENAME, GROUPNAME and access token.
 
+
+
+
+
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 16]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    Then, the KDC responds with a Join Response with response code 2.01
    (Created) if the Client has been added to the list of group members,
    and 2.04 (Changed) otherwise (e.g., if the Client is re-joining).
@@ -885,18 +912,9 @@ Internet-Draft               pubsub-profile                February 2023
       and application profile to be used with.)
 
    *  'key': The keying material for group communication is a "COSE_Key"
-      object (defined in [RFC9052] [RFC9053] is the 'cnf' claim inside
-      an untagged CCS, containing:
+      object (defined in [RFC9052] [RFC9053] containing:
 
       -  'kty' with value 4 (symmetric)
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 16]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
       -  'kid', optional
 
@@ -906,7 +924,9 @@ Internet-Draft               pubsub-profile                February 2023
       -  'key_ops' with value [3, 4] corresponding to encryption and
          decryption
 
-      -  'Base IV' with value defined by the KDC (ToDo: 'key' not final
+      -  'Base IV' with value defined by the KDC,
+
+      -  'k', the value of the symmetric key (ToDo: 'key' not final
          (REQ17))
 
    *  'num': MUST be initialised to 1 as the version number of the
@@ -924,6 +944,16 @@ Internet-Draft               pubsub-profile                February 2023
       group members, then the KDC provides the authentication
       credentials of all the Publisher Clients in the group.
 
+
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 17]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    *  'peer_roles' MUST be present if 'creds' is also present.
       Otherwise, it MUST NOT be present.  (ToDo: Requested a change for
       this, and see how the Groupcomm draft is updated.)
@@ -940,19 +970,6 @@ Internet-Draft               pubsub-profile                February 2023
       as a CBOR byte string, and including a dedicated nonce N_KDC
       generated by the KDC.  For N_KDC, it is RECOMMENDED to use a
       8-byte long random nonce.
-
-
-
-
-
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 17]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
    *  'kdc_cred_verify' MUST be present, if 'kdc_cred' is present and
       encoded as a CBOR byte string.  The PoP evidence is computed over
@@ -986,6 +1003,13 @@ Internet-Draft               pubsub-profile                February 2023
    which is a signature, specified in the 'kdc_cred_verify' parameter of
    the Join Response (REQ21).
 
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 18]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
 5.3.  Join Error Handling
 
    The KDC MUST reply with a 4.00 (Bad Request) error response to the
@@ -1001,14 +1025,6 @@ Internet-Draft               pubsub-profile                February 2023
    *  The 'client_cred' parameter is not present while the joining node
       is not going to join the group exclusively as a Subscriber, and
       any of the following conditions holds:
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 18]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
       -  The KDC does not store an eligible authentication credential
          (e.g., of the format accepted in the group) for the joining
@@ -1042,6 +1058,14 @@ Internet-Draft               pubsub-profile                February 2023
    |            |             |            | -----(F)---> |            |
    +------------+             +------------+              +------------+
 
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 19]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
       Figure 7: Secure communication between Publisher and Subscriber
 
    (D) corresponds to the publication of a topic on the Broker, using a
@@ -1052,19 +1076,6 @@ Internet-Draft               pubsub-profile                February 2023
    subscription MAY be unprotected.  The (F) message is the response
    from the Broker, where the publication is protected with COSE by the
    Publisher.
-
-
-
-
-
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 19]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
           Publisher                Broker               Subscriber
               | --- PUT /topic ----> |                       |
@@ -1102,6 +1113,15 @@ Internet-Draft               pubsub-profile                February 2023
       Response, with value the kid of the symmetric COSE Key received
       and MUST contain the content encryption algorithm.
 
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 20]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    *  The unprotected Headers MUST contain the Partial IV, with value a
       sequence number that is incremented for every message sent, and
       the counter signature that includes:
@@ -1113,14 +1133,6 @@ Internet-Draft               pubsub-profile                February 2023
          received in (B)) in the unprotected header;
 
       -  the signature computed as specified in [RFC9052] [RFC9053].
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 20]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
    *  The ciphertext, computed over the plaintext that MUST contain the
       message payload.
@@ -1157,6 +1169,15 @@ Internet-Draft               pubsub-profile                February 2023
    The encryption and decryption operations are described in [RFC9052]
    [RFC9053].
 
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 21]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
 7.  Other Group Operations through the KDC
 
 7.1.  Querying for Group Information
@@ -1169,14 +1190,6 @@ Internet-Draft               pubsub-profile                February 2023
       retrieve the symmetric group keying material of the group with the
       name GROUPNAME.  The value of the GROUPNAME URI path and the group
       name in the access token scope ('gname') MUST coincide.
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 21]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
    *  '/ace-group/GROUPNAME/creds': KDC acts as a repository of
       authentication credentials for Publisher Clients.  The Subscriber
@@ -1211,6 +1224,16 @@ Internet-Draft               pubsub-profile                February 2023
    group member due to any of the reasons described in Section 5 of
    [I-D.ietf-ace-key-groupcomm].
 
+
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 22]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
 7.4.  Rekeying a Group
 
    KDC MUST trigger a group rekeying as described in Section 6 of
@@ -1222,17 +1245,6 @@ Internet-Draft               pubsub-profile                February 2023
    Upon generating the new group keying material and before starting its
    distribution, the KDC MUST increment the version number of the group
    keying material.
-
-
-
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 22]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
    Default rekeying scheme is Point-to-point (Section 6.1 of
    [I-D.ietf-ace-key-groupcomm]), where KDC individually targets each
@@ -1247,7 +1259,7 @@ Internet-Draft               pubsub-profile                February 2023
    by means of the parameters 'creds', 'peer_roles' and
    'peer_identifiers', like done in the Join Response message.
 
-   ToDo: Any additional rekeying mechanisms.  The pub-sub model, in
+   ToDo: Any additional rekeying mechanisms.  The pub/sub model, in
    which case, the KDC acts as publisher (KDC authentication
    credential??) and publishes each rekeying message to a specific
    "rekeying topic", which is associated with the group and is hosted at
@@ -1268,6 +1280,16 @@ Internet-Draft               pubsub-profile                February 2023
    topic tree.  Hence, it is important to distinguish application groups
    and security groups defined in [I-D.ietf-core-groupcomm-bis].
 
+
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 23]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    Also differently for MQTT, the Client sends a token request to AS for
    the requested topics (application groups) using AIF-MQTT data model
    for representing the requested scopes is described in Section 3 of
@@ -1276,19 +1298,6 @@ Internet-Draft               pubsub-profile                February 2023
    Section 10.1.2.  Both Publisher and Subscriber Clients authorise to
    the Broker with their respective tokens (described in
    [I-D.ietf-ace-mqtt-tls-profile]).
-
-
-
-
-
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 23]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
    A Publisher Client sends PUBLISH messages for a given topic and
    protects the payload with the corresponding key for the associated
@@ -1327,6 +1336,16 @@ Internet-Draft               pubsub-profile                February 2023
    be used to allow an Authorization Server to notify the KDC about
    revoked Access Tokens.
 
+
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 24]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    The Broker is only trusted with verifying that the Publisher is
    authorized to publish, but is not trusted with the publications
    itself, which it cannot read nor modify.  In this setting, caching of
@@ -1337,14 +1356,6 @@ Internet-Draft               pubsub-profile                February 2023
    [I-D.ietf-ace-key-groupcomm-oscore].
 
    TODO: expand on security and privacy considerations
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 24]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
 10.  IANA Considerations
 
@@ -1363,7 +1374,7 @@ Internet-Draft               pubsub-profile                February 2023
    Name: coap_group_pubsub_app
 
    Description: Profile for delegating client authentication and
-   authorization for publishers and subscribers in a CoAP pub-sub
+   authorization for publishers and subscribers in a CoAP pub/sub
    setting scenario in a constrained environment.
 
    CBOR Key: TBD
@@ -1375,12 +1386,21 @@ Internet-Draft               pubsub-profile                February 2023
    Name: mqtt_pubsub_app
 
    Description: Profile for delegating client authentication and
-   authorization for publishers and subscribers in a MQTT pub-sub
+   authorization for publishers and subscribers in a MQTT pub/sub
    setting scenario in a constrained environment.
 
    CBOR Key: TBD
 
    Reference: [[This document]]
+
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 25]
+
+Internet-Draft               pubsub-profile                February 2023
+
 
 10.2.  ACE Groupcomm Key Registry
 
@@ -1393,14 +1413,6 @@ Internet-Draft               pubsub-profile                February 2023
    paragraph.
 
    Name: COSE_Key
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 25]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
    Key Type Value: TBD
 
@@ -1418,7 +1430,7 @@ Internet-Draft               pubsub-profile                February 2023
 
    *  Value: "core.ps.gm"
 
-   *  Description: Group-membership resource for Pub-Sub communication.
+   *  Description: Group-membership resource for Pub/Sub communication.
 
    *  Reference: [RFC-XXXX]
 
@@ -1439,6 +1451,13 @@ Internet-Draft               pubsub-profile                February 2023
 
    *  Description/Specification:
 
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 26]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    *  Reference: [[This document]]
 
    *  Parameter: Tperm
@@ -1448,15 +1467,6 @@ Internet-Draft               pubsub-profile                February 2023
    *  Description/Specification:
 
    *Reference: [[This document]]
-
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 26]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
 10.5.  CoAP Content-Format
 
@@ -1496,31 +1506,25 @@ Internet-Draft               pubsub-profile                February 2023
    [I-D.ietf-ace-key-groupcomm]
               Palombini, F. and M. Tiloca, "Key Provisioning for Group
               Communication using ACE", Work in Progress, Internet-
-              Draft, draft-ietf-ace-key-groupcomm-16, 5 September 2022,
-              <https://tools.ietf.org/html/draft-ietf-ace-key-groupcomm-
-              16>.
 
 
 
-
-
-
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 27]
+Palombini & Tiloca       Expires 18 August 2023                [Page 27]
 
 Internet-Draft               pubsub-profile                February 2023
 
+
+              Draft, draft-ietf-ace-key-groupcomm-16, 5 September 2022,
+              <https://tools.ietf.org/html/draft-ietf-ace-key-groupcomm-
+              16>.
 
    [I-D.ietf-core-coap-pubsub]
               Koster, M., Keränen, A., and J. Jimenez, "Publish-
               Subscribe Broker for the Constrained Application Protocol
               (CoAP)", Work in Progress, Internet-Draft, draft-ietf-
               core-coap-pubsub-11, 7 November 2022,
-              <https://www.ietf.org/archive/id/draft-ietf-core-coap-
-              pubsub-11.txt>.
+              <https://tools.ietf.org/html/draft-ietf-core-coap-pubsub-
+              11>.
 
    [I-D.ietf-core-groupcomm-bis]
               Dijk, E., Wang, C., and M. Tiloca, "Group Communication
@@ -1556,19 +1560,19 @@ Internet-Draft               pubsub-profile                February 2023
               DOI 10.17487/RFC6234, May 2011,
               <https://doi.org/10.17487/RFC6234>.
 
-   [RFC6690]  Shelby, Z., "Constrained RESTful Environments (CoRE) Link
-              Format", RFC 6690, DOI 10.17487/RFC6690, August 2012,
-              <https://doi.org/10.17487/RFC6690>.
 
 
 
 
 
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 28]
+Palombini & Tiloca       Expires 18 August 2023                [Page 28]
 
 Internet-Draft               pubsub-profile                February 2023
 
+
+   [RFC6690]  Shelby, Z., "Constrained RESTful Environments (CoRE) Link
+              Format", RFC 6690, DOI 10.17487/RFC6690, August 2012,
+              <https://doi.org/10.17487/RFC6690>.
 
    [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
               RFC 6749, DOI 10.17487/RFC6749, October 2012,
@@ -1612,19 +1616,21 @@ Internet-Draft               pubsub-profile                February 2023
               Initial Algorithms", RFC 9053, DOI 10.17487/RFC9053,
               August 2022, <https://doi.org/10.17487/RFC9053>.
 
+
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 29]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    [RFC9200]  Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
               H. Tschofenig, "Authentication and Authorization for
               Constrained Environments Using the OAuth 2.0 Framework
               (ACE-OAuth)", RFC 9200, DOI 10.17487/RFC9200, August 2022,
               <https://doi.org/10.17487/RFC9200>.
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 29]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
    [RFC9237]  Bormann, C., "An Authorization Information Format (AIF)
               for Authentication and Authorization for Constrained
@@ -1668,19 +1674,17 @@ Internet-Draft               pubsub-profile                February 2023
               Transport (MQTT)-TLS profile of Authentication and
               Authorization for Constrained Environments (ACE)
               Framework", Work in Progress, Internet-Draft, draft-ietf-
-              ace-mqtt-tls-profile-17, 23 March 2022,
-              <https://tools.ietf.org/html/draft-ietf-ace-mqtt-tls-
-              profile-17>.
 
 
 
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 30]
+Palombini & Tiloca       Expires 18 August 2023                [Page 30]
 
 Internet-Draft               pubsub-profile                February 2023
 
+
+              ace-mqtt-tls-profile-17, 23 March 2022,
+              <https://tools.ietf.org/html/draft-ietf-ace-mqtt-tls-
+              profile-17>.
 
    [I-D.ietf-ace-oscore-profile]
               Palombini, F., Seitz, L., Selander, G., and M. Gunnarsson,
@@ -1725,18 +1729,19 @@ Appendix A.  Requirements on Application Profiles
       credentials and, if used, the acceptable values for 'cred_fmt':
       TODO
 
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 31]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
    *  REQ7: If the value of the GROUPNAME URI path and the group name in
       the access token scope (gname) are not required to coincide,
       specify the mechanism to map the GROUPNAME value in the URI to the
       group name: TODO
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 31]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
    *  REQ8: Define whether the KDC has an authentication credential and
       if this has to be provided through the 'kdc_cred' parameter : Yes,
@@ -1781,18 +1786,16 @@ Internet-Draft               pubsub-profile                February 2023
    *  REQ19: Specify and register the application profile identifier:
       coap_group_pubsub_app
 
-   *  REQ20: If used, specify the format and content of 'group_policies'
-      and its entries.  Specify the policies default values: N/A
 
 
 
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 32]
+Palombini & Tiloca       Expires 18 August 2023                [Page 32]
 
 Internet-Draft               pubsub-profile                February 2023
 
+
+   *  REQ20: If used, specify the format and content of 'group_policies'
+      and its entries.  Specify the policies default values: N/A
 
    *  REQ21: Specify the approaches used to compute and verify the PoP
       evidence to include in 'kdc_cred_verify', and which of those
@@ -1840,15 +1843,15 @@ Internet-Draft               pubsub-profile                February 2023
       signature algorithm and signature keys, if 'sign_info' is not
       used: N/A
 
-   *  OPT4: Optionally, specify possible or required payload formats for
-      specific error cases.: not defined
 
 
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 33]
+Palombini & Tiloca       Expires 18 August 2023                [Page 33]
 
 Internet-Draft               pubsub-profile                February 2023
 
+
+   *  OPT4: Optionally, specify possible or required payload formats for
+      specific error cases.: not defined
 
    *  OPT5: Optionally, specify additional identifiers of error types,
       as values of the 'error' field in an error response from the KDC:
@@ -1893,18 +1896,21 @@ Internet-Draft               pubsub-profile                February 2023
       of the parameters defined as optional in
       [I-D.ietf-ace-key-groupcomm]:
 
+
+
+
+
+
+Palombini & Tiloca       Expires 18 August 2023                [Page 34]
+
+Internet-Draft               pubsub-profile                February 2023
+
+
 Acknowledgments
 
    The author wishes to thank Ari Keraenen, John Mattsson, Ludwig Seitz,
    Goeran Selander, Jim Schaad and Marco Tiloca for the useful
    discussion and reviews that helped shape this document.
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 34]
-
-Internet-Draft               pubsub-profile                February 2023
-
 
 Authors' Addresses
 
@@ -1951,10 +1957,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-Palombini & Tiloca       Expires 17 August 2023                [Page 35]
+Palombini & Tiloca       Expires 18 August 2023                [Page 35]

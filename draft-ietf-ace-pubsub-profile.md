@@ -83,8 +83,7 @@ entity:
 --- abstract
 
 This document defines an application profile for enabling secure group
-communication for a constrained Publish-Subscribe (pub/sub) scenario, where Publishers and Subscribers communicate through a broker, using the ACE framework. This profile relies on transport layer or application layer security profiles of ACE to achieve communication security, server authentication and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 Access Token. The document describes how to request and provision keying
-material for group communication, and protect the content of the pub/sub client message exchange, focusing mainly on the pub/sub scenarios using the Constrained Application Protocol (CoAP) {{I-D.ietf-core-coap-pubsub}}.
+communication for a constrained Publish-Subscribe (pub/sub) scenario, where Publishers and Subscribers communicate through a broker, using the ACE framework. This profile relies on transport layer or application layer security profiles of ACE to achieve communication security, server authentication and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 Access Token. The document describes how to request and provision keying material for group communication, and protect the content of the pub/sub client message exchange, focusing mainly on the pub/sub scenarios using the Constrained Application Protocol (CoAP) {{I-D.ietf-core-coap-pubsub}}.
 --- middle
 
 # Introduction
@@ -109,7 +108,7 @@ Readers are expected to be familiar with:
 
 A principal interested to participate in group communication as well as already participating as a group member is interchangeably denoted as "Client", "pub/sub client",  or "node".
 
-* Group: a set of nodes that share common keying material and security parameters to protect their communications with one another. That is, the term refers to a "security group". This is not to be confused with an "application group", which has relevance at the application level and whose members may be a set of nodes registered to a pub/sub topic. 
+* Group: a set of nodes that share common keying material and security parameters to protect their communications with one another. That is, the term refers to a "security group". This is not to be confused with an "application group", which has relevance at the application level and whose members may be a set of nodes registered to a pub/sub topic.
 
 
 # Application Profile Overview {#overview}
@@ -165,8 +164,9 @@ Given that the publication content is protected, the Broker MAY accept unauthori
 {: #associations title="Security Associations between Publisher, Broker, Subscriber pairs."}
 {: artwork-align="center"}
 
-This document describes how to use {{I-D.ietf-ace-key-groupcomm}} and {{RFC9200}} to perform authentication, authorization and key distribution actions as overviewed in Section 2 of {{I-D.ietf-ace-key-groupcomm}}, when the considered group is Publishers and Subsribers belonging to the same security group. In this document, the application groups are considered at a single topic name level, and a security group SHOULD be associated with a single application group. However, the same application group MAY be associated with multiple security groups.
-In addition, applications MAY create topic filters that expand to multiple topic names, and associate them a single security group but further details and considerations on the mapping between the two types of group are out of the scope of this document.
+This document describes how to use {{I-D.ietf-ace-key-groupcomm}} and {{RFC9200}} to perform authentication, authorization and key distribution actions as overviewed in Section 2 of {{I-D.ietf-ace-key-groupcomm}}, when the considered group is Publisher and Subsriber clients belonging to the same security group. 
+
+This document considers  the application groups as mapped to pub/sub topics. The pub/sub topic values may consist of a collection of one or more sub-topics, which may have their own sub-topics, forming a tree structure. The applications decide how to map this tree into different application groups, and a security group SHOULD be associated with a single application group. However, the same application group MAY be associated with multiple security groups. Further details and considerations on the mapping between the two types of group are out of the scope of this document.
 
 To this end, this profile describes how:
 
@@ -198,8 +198,7 @@ name GROUPNAME. | GET (All) |
 
 Note that the use of these resources follows what is defined in {{I-D.ietf-ace-key-groupcomm}} applies, and only additions or modifications to that specification are defined in this document.
 
-The Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in {{core_rt}} (REQ10), and can be used to describe group-membership resources and its sub-resources at Broker, e.g., by using a link-format document {{RFC6690}}}.
-Applications can use this common resource type to discover links to group-membership resources for joining pub/sub groups.
+The Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in {{core_rt}} (REQ10), and can be used to describe group-membership resources and its sub-resources at Broker, e.g., by using a link-format document {{RFC6690}}}. Applications can use this common resource type to discover links to group-membership resources for joining pub/sub groups.
 (ToDo: Check this discovery is feasible in core pub/sub)
 
 # Getting Authorisation to Join a pub/sub security group (A-B) {#authorisation}
@@ -276,7 +275,7 @@ This document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM, that
 
 ~~~~~~~~~~~
   AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-topic, pubsub-perm>
-   pubsub-topic = tstr ; Topic name or filter
+   pubsub-topic = tstr ; Pub/sub topic or the name of the associated security group
 
    pubsub-perm = uint . bits pubsub-roles
 
@@ -308,7 +307,7 @@ On receiving the Authorisation Response, the Client needs to manage which token 
 
 ## Token Transfer to KDC {#token-post}
 
-After receiving a token from the AS, the Client transfers the token to the KDC using one of the methods defined Section 3.3 {{I-D.ietf-ace-key-groupcomm}}). For asymmetric proof-of-possession used in this document, this requires sending a POST request to the authz-info endpoint. In addition to that, the following applies.
+After receiving a token from the AS, the Client transfers the token to the KDC using one of the methods defined Section 3.3 {{I-D.ietf-ace-key-groupcomm}}). This typically includes sending a POST request to the authz-info endpoint. However, if using the DTLS transport profile of ACE {{I-D.ietf-ace-dtls-authorize}} and the client uses a symmetric proof-of-possession key in the DTLS handshake, the Client MAY provide the access token to the KDC in the DTLS ClientKeyExchange message. In addition to that, the following applies.
 
 In the token transfer response to the Publisher Clients, i.e., the Clients whose scope of the access token includes the "Pub" role, the KDC MUST include the parameter 'kdcchallenge' in the CBOR map. 'kdcchallange' is a challenge N_S generated by the KDC, and is RECOMMENDED to use a 8-byte long random nonce. Later when joining the group, the Publisher Client can use the 'kdcchallenge' as part of proving possession of its private key (see {{I-D.ietf-ace-key-groupcomm}}).
 
@@ -353,7 +352,10 @@ After establishing a secure communication, the Client sends a Join Request to th
 One of the following cases can occur when a new node joins the pub/sub group.
 
 *  The joining node is going to join the group exclusively as Subscriber, i.e., it is not going to send messages to the group.  In this case, the joining node is not required to provide its own authentication credential to the KDC. In case the joining node still provides an authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}), the KDC silently ignores that parameter, as well as the related parameters 'cnonce' and 'client_cred_verify'.
-*  The KDC already acquired the authentication credential of the joining node during a past group joining process. In this case, the joining node MAY choose not to provide again its own authentication credential to the KDC, in order to limit the size of the Join Request.
+*  The KDC already acquired the authentication credential of the joining node
+    -  during a past group joining process,  or
+    -  during establishing a secure communication association, and the joining node and the KDC use an symmetric proof-of-possession key. If the authentication credential and the proof-of-possession key are compatible with the signature or ECDH algorithm, and possible associated parameters, then the key can be used for the authentication credential in pub-sub groups.
+In this case, the joining node MAY choose not to provide again its own authentication credential to the KDC, in order to limit the size of the Join Request.
 * If the joining node is a Publisher, and the KDC hasn't acquired an authentication credential, the joining node MUST provide a compatible authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}).
 
 Finally, the joining node MUST provide its own authentication credential again if it has provided the KDC with multiple authentication credentials during past joining processes, intended for different pub/sub groups.  If the joining node provides its own authentication credential, the KDC performs consistency checks as per {{join-request}} and, in case of success, considers it as the authentication credential associated with the joining node in the pub/sub group.
@@ -367,6 +369,7 @@ The Publisher signs the scope, concatenated with N\_S and concatenated with N\_C
 The N\_S may be either:
 
 * The challenge received from the KDC in the 'kdcchallenge' parameter of the 2.01 (Created) response to the Token Transfer Request (see {{token-post}}).
+* If the Publisher Client used a symmetric proof-of-possession key in the DTLS handshake {{I-D.ietf-ace-dtls-authorize}},  then it is an exporter value computed as defined in Section 7.5 of {{RFC8446}}.  Specifically, N_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value', 32 bytes as 'key_length', and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-group-pubsub-app" defined in {{tls_exporter}} of this document.
 * If the Join Request is a retry in response to an error response from the KDC, which included the 'kdcchallenge' parameter, N_S MUST be this new challenge parameter.
 
 
@@ -664,6 +667,18 @@ IANA is asked to register the following entries to the "CoAP Content- Formats" r
 *  ID: 295 (suggested)
 
 *  Reference: [RFC-XXXX]
+
+## TLS Exporter Labels {#tls_exporter}
+
+IANA is asked to register the following entry to the "TLS Exporter Labels" registry defined in Section 6 of {{RFC5705}} and updated in Section 12 of {{RFC8447}}.
+
+*  Value: EXPORTER-ACE-Sign-Challenge-coap-group-pubsub-app
+
+*  DTLS-OK: Y
+
+*  Recommended: N
+
+*  Reference: [RFC-XXXX] (Section XXX)
 
 --- back
 
