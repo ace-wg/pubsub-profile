@@ -807,7 +807,9 @@ decrypted
 # Acknowledgments
 {: numbered="no"}
 
-The author wishes to thank Ari Keränen, John Mattsson, Ludwig Seitz, Göran Selander, Jim Schaad and Marco Tiloca for the useful discussion and reviews that helped shape this document.
+The author wishes to thank Ari Keränen, John Mattsson, Ludwig Seitz, Göran Selander, and Jim Schaad for the useful discussion and reviews that helped shape this document.
+
+The work on this document has been partly supported by the H2020 project SIFIS-Home (Grant agreement 952652).
 
 --- fluff
 
