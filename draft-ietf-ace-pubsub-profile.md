@@ -1,6 +1,8 @@
 ---
+v: 3
+
 title: Publish-Subscribe Profile for Authentication and Authorization for Constrained Environments (ACE)
-abbrev: pubsub-profile
+abbrev: ACE Pub-sub Profile
 docname: draft-ietf-ace-pubsub-profile-latest
 category: std
 
@@ -10,6 +12,8 @@ ipr: trust200902
 area: Security
 workgroup: ACE Working Group
 keyword: Internet-Draft
+cat: std
+submissiontype: IETF
 
 stand_alone: yes
 pi: [toc, sortrefs, symrefs]
@@ -807,7 +811,7 @@ decrypted
 # Acknowledgments
 {: numbered="no"}
 
-The author wishes to thank Ari Keränen, John Mattsson, Ludwig Seitz, Göran Selander, and Jim Schaad for the useful discussion and reviews that helped shape this document.
+The author wishes to thank {{{Ari Keränen}}}, {{{John Preuß Mattsson}}}, {{{Ludwig Seitz}}}, {{{Göran Selander}}}, and {{{Jim Schaad}}} for the useful discussion and reviews that helped shape this document.
 
 The work on this document has been partly supported by the H2020 project SIFIS-Home (Grant agreement 952652).
 
