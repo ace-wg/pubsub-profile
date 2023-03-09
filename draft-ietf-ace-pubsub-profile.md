@@ -15,17 +15,17 @@ stand_alone: yes
 pi: [toc, sortrefs, symrefs]
 
 author:
-  -
+-
     ins: F. Palombini
     name: Francesca Palombini
     org: Ericsson
     email: francesca.palombini@ericsson.com
-  -
+-
     ins: C. Sengul
     name: Cigdem Sengul
     org: Brunel University
     email: csengul@acm.org
-     -
+-
     ins: M. Tiloca
     name: Marco Tiloca
     org: RISE AB
