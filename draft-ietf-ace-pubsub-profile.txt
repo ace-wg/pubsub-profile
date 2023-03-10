@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 10 September 2023                             Brunel University
+Expires: 11 September 2023                             Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                            9 March 2023
+                                                           10 March 2023
 
 
    Publish-Subscribe Profile for Authentication and Authorization for
@@ -53,12 +53,12 @@ Status of This Memo
 
 
 
-Palombini, et al.       Expires 10 September 2023               [Page 1]
+Palombini, et al.       Expires 11 September 2023               [Page 1]
 
 Internet-Draft             ACE Pub-sub Profile                March 2023
 
 
-   This Internet-Draft will expire on 10 September 2023.
+   This Internet-Draft will expire on 11 September 2023.
 
 Copyright Notice
 
@@ -70,63 +70,61 @@ Copyright Notice
    license-info) in effect on the date of publication of this document.
    Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
-   extracted from this document must include Revised BSD License text as
-   described in Section 4.e of the Trust Legal Provisions and are
-   provided without warranty as described in the Revised BSD License.
+   extracted from this document must include Simplified BSD License text
+   as described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Simplified BSD License.
 
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Application Profile Overview  . . . . . . . . . . . . . . . .   4
-   3.  Client Interface the KDC  . . . . . . . . . . . . . . . . . .   7
-   4.  Getting Authorisation to Join a pub/sub security group
-           (A-B) . . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     4.1.  AS Discovery at the Broker (Optional) . . . . . . . . . .   9
-     4.2.  Authorisation Request/Response for the KDC and the
-           Broker  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-       4.2.1.  Format of Scope . . . . . . . . . . . . . . . . . . .  11
-     4.3.  Authorisation response  . . . . . . . . . . . . . . . . .  12
-     4.4.  Token Transfer to KDC . . . . . . . . . . . . . . . . . .  12
-   5.  Joining a Group . . . . . . . . . . . . . . . . . . . . . . .  14
-     5.1.  Join Request  . . . . . . . . . . . . . . . . . . . . . .  14
-       5.1.1.  Client Credentials-'client_cred'  . . . . . . . . . .  15
-       5.1.2.  Proof-of-Possession . . . . . . . . . . . . . . . . .  16
-     5.2.  Join Response . . . . . . . . . . . . . . . . . . . . . .  16
-     5.3.  Join Error Handling . . . . . . . . . . . . . . . . . . .  19
-   6.  PubSub Protected Communication (C)  . . . . . . . . . . . . .  20
+   3.  Getting Authorisation to Join a Pub/sub security group (A)  .   7
+     3.1.  AS Discovery at the Broker (Optional) . . . . . . . . . .   8
+     3.2.  Topic and KDC Discovery at the Broker . . . . . . . . . .   8
+     3.3.  Authorisation Request/Response for the KDC and the
+           Broker  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+       3.3.1.  Format of Scope . . . . . . . . . . . . . . . . . . .   9
+     3.4.  Authorisation response  . . . . . . . . . . . . . . . . .  10
+     3.5.  Token Transfer to KDC . . . . . . . . . . . . . . . . . .  11
+   4.  Client Interface the KDC  . . . . . . . . . . . . . . . . . .  12
+     4.1.  Joining a Security Group  . . . . . . . . . . . . . . . .  14
+       4.1.1.  Join Request  . . . . . . . . . . . . . . . . . . . .  14
+       4.1.2.  Join Response . . . . . . . . . . . . . . . . . . . .  16
+       4.1.3.  Join Error Handling . . . . . . . . . . . . . . . . .  19
+   5.  Other Group Operations through the KDC  . . . . . . . . . . .  20
+     5.1.  Querying for Group Information  . . . . . . . . . . . . .  20
+     5.2.  Updating Authentication Credentials . . . . . . . . . . .  21
+     5.3.  Removal from a Group  . . . . . . . . . . . . . . . . . .  21
+     5.4.  Rekeying a Group  . . . . . . . . . . . . . . . . . . . .  21
+   6.  PubSub Protected Communication (C)  . . . . . . . . . . . . .  22
      6.1.  Using COSE Objects To Protect The Resource
-           Representation  . . . . . . . . . . . . . . . . . . . . .  21
-   7.  Other Group Operations through the KDC  . . . . . . . . . . .  22
-     7.1.  Querying for Group Information  . . . . . . . . . . . . .  22
-     7.2.  Updating Authentication Credentials . . . . . . . . . . .  23
-     7.3.  Removal from a Group  . . . . . . . . . . . . . . . . . .  23
-     7.4.  Rekeying a Group  . . . . . . . . . . . . . . . . . . . .  23
-   8.  Considerations for Supporting MQTT PubSub Profile . . . . . .  24
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  25
-   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  25
-     10.1.  ACE Groupcomm Profile Registry . . . . . . . . . . . . .  25
+           Representation  . . . . . . . . . . . . . . . . . . . . .  22
+   7.  Considerations for Supporting MQTT PubSub Profile . . . . . .  24
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  25
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  26
+     9.1.  ACE Groupcomm Profile Registry  . . . . . . . . . . . . .  26
+       9.1.1.  CoAP Profile Registration . . . . . . . . . . . . . .  26
+       9.1.2.  MQTT Profile Registration . . . . . . . . . . . . . .  26
 
 
 
-Palombini, et al.       Expires 10 September 2023               [Page 2]
+Palombini, et al.       Expires 11 September 2023               [Page 2]
 
 Internet-Draft             ACE Pub-sub Profile                March 2023
 
 
-       10.1.1.  CoAP Profile Registration  . . . . . . . . . . . . .  26
-       10.1.2.  MQTT Profile Registration  . . . . . . . . . . . . .  26
-     10.2.  ACE Groupcomm Key Registry . . . . . . . . . . . . . . .  26
-     10.3.  CoRE Resource Type . . . . . . . . . . . . . . . . . . .  27
-     10.4.  AIF  . . . . . . . . . . . . . . . . . . . . . . . . . .  27
-     10.5.  CoAP Content-Format  . . . . . . . . . . . . . . . . . .  27
-     10.6.  TLS Exporter Labels  . . . . . . . . . . . . . . . . . .  28
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  28
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .  28
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  31
+     9.2.  ACE Groupcomm Key Registry  . . . . . . . . . . . . . . .  27
+     9.3.  CoRE Resource Type  . . . . . . . . . . . . . . . . . . .  27
+     9.4.  AIF . . . . . . . . . . . . . . . . . . . . . . . . . . .  27
+     9.5.  CoAP Content-Format . . . . . . . . . . . . . . . . . . .  28
+     9.6.  TLS Exporter Labels . . . . . . . . . . . . . . . . . . .  28
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  29
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  29
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  31
    Appendix A.  Requirements on Application Profiles . . . . . . . .  32
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  35
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  35
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  36
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  36
 
 1.  Introduction
 
@@ -161,18 +159,17 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    Readers are expected to be familiar with:
 
+   *  The terms and concepts described in [RFC9200], and Authorization
+      Information Format (AIF) [RFC9237] to express authorization
+      information.  In particular, analogously to [RFC9200], terminology
 
 
 
-
-Palombini, et al.       Expires 10 September 2023               [Page 3]
+Palombini, et al.       Expires 11 September 2023               [Page 3]
 
 Internet-Draft             ACE Pub-sub Profile                March 2023
 
 
-   *  The terms and concepts described in [RFC9200], and Authorization
-      Information Format (AIF) [RFC9237] to express authorization
-      information.  In particular, analogously to [RFC9200], terminology
       for entities in the architecture such as Client (C), Resource
       Server (RS), and Authorization Server (AS) is defined in OAuth 2.0
       [RFC6749].
@@ -201,6 +198,34 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
 2.  Application Profile Overview
 
+   This document describes how to use [I-D.ietf-ace-key-groupcomm] and
+   [RFC9200] to perform authentication, authorization and key
+   distribution actions as overviewed in Section 2 of
+   [I-D.ietf-ace-key-groupcomm], when the considered group is pub/sub
+   clients belonging to the same security group.
+
+   Pub/sub clients communicate within their application groups as mapped
+   to pub/sub topics.  The pub/sub topic values may consist of a
+   collection of one or more sub-topics, which may have their own sub-
+   topics, forming a hierarchy.  The applications decide how to map this
+   hierarchy into different application groups, and a security group
+   SHOULD be associated with a single application group.  However, the
+   same application group MAY be associated with multiple security
+   groups.  Further details and considerations on the mapping between
+   the two types of groups are out of the scope of this document.
+
+
+
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023               [Page 4]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
    The architecture of the scenario is shown in Figure 1.  A Client can
    act both as a publisher and a subscriber, publishing to some topics,
    and subscribing to others.  However, for the simplicity of
@@ -214,17 +239,8 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    considered in this document is CoAP, as described in
    [I-D.ietf-core-coap-pubsub], but the specification can apply to other
    pub/sub protocols such as MQTT [MQTT-OASIS-Standard-v5], or other
-   transport.  All clients MUST use CoAP when communicating to the KDC.
-
-
-
-
-
-
-Palombini, et al.       Expires 10 September 2023               [Page 4]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
+   transport protocols.  All clients MUST use CoAP when communicating to
+   the KDC.
 
                         +----------------+   +----------------+
                         |                |   |      Key       |
@@ -238,9 +254,9 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
                 |   +--------------------(B)--------+
                 v   v
            +------------+             +------------+
-           |            |             |            |
-           | Pub/Sub    | <-- (C)---> |   Broker   |
-           | Client     |             |            |
+           |            | <-- (O) --> |            |
+           | Pub/Sub    |             |   Broker   |
+           | Client     | <-- (C)---> |            |
            |            |             |            |
            +------------+             +------------+
 
@@ -256,6 +272,16 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    communicate securely with the other group members, using the keying
    material provided by the KDC.
 
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023               [Page 5]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
    (C) corresponds to the exchange between the Client and the Broker,
    where the Client sends its access token to the Broker and establishes
    a secure connection with the Broker.  Depending on the Information
@@ -264,23 +290,20 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    the set up phase may be skipped: for example, if OSCORE is used
    directly.
 
+   In addition, this document describes an Optional Discovery though
+   Broker (O), where an anonymous Clients MAY discover the topic
+   categories, topics resources, the AS and KDC from the Broker.
+
    It must be noted that Clients maintain two different security
    associations.  On the one hand, the Publisher and the Subscriber
-   clients have a security association with the Broker,which, as the ACE
-   RS, verifies that the Clients are authorized (Security Association
-   1).  On the other hand, the Publisher has a security association with
-   the Subscriber, to protect the publication content (Security
-   Association 2) while sending it through the broker.  The Security
-   Association 1 is set up using AS and a transport profile of
+   clients have a security association with the Broker, which, as the
+   ACE RS, verifies that the Clients are authorized (Security
+   Association 1).  On the other hand, the Publisher has a security
+   association with the Subscriber, to protect the publication content
+   (Security Association 2) while sending it through the broker.  The
+   Security Association 1 is set up using AS and a transport profile of
    [RFC9200], the Security Association 2 is set up using AS, KDC and
    [I-D.ietf-ace-key-groupcomm].
-
-
-
-Palombini, et al.       Expires 10 September 2023               [Page 5]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
 
    Given that the publication content is protected, the Broker MAY
    accept unauthorised Subscribers.  In this case, the Subscriber client
@@ -303,23 +326,17 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
          Figure 2: Security Associations between Publisher, Broker,
                              Subscriber pairs.
 
-   This document describes how to use [I-D.ietf-ace-key-groupcomm] and
-   [RFC9200] to perform authentication, authorization and key
-   distribution actions as overviewed in Section 2 of
-   [I-D.ietf-ace-key-groupcomm], when the considered group is Publisher
-   and Subsriber clients belonging to the same security group.
+   In summary, this profile describes how:
 
-   This document considers the application groups as mapped to pub/sub
-   topics.  The pub/sub topic values may consist of a collection of one
-   or more sub-topics, which may have their own sub-topics, forming a
-   tree structure.  The applications decide how to map this tree into
-   different application groups, and a security group SHOULD be
-   associated with a single application group.  However, the same
-   application group MAY be associated with multiple security groups.
-   Further details and considerations on the mapping between the two
-   types of group are out of the scope of this document.
 
-   To this end, this profile describes how:
+
+
+
+
+Palombini, et al.       Expires 11 September 2023               [Page 6]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
 
    1.  A Client gets the authorization to join a security group, and
        providing it with the group keying material to communicate with
@@ -331,16 +348,9 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    3.  A Client retrieves authentication credentials of other group
        members, and provides and updates own authentication credentials.
 
+   4.  A Client leaves a group.  To-Do:
 
-
-Palombini, et al.       Expires 10 September 2023               [Page 6]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-   4.  A Client leaves a group.
-
-   5.  A ? evicts a Client from the group.  (ToDo: Who - the KDC?)
+   5.  A Client is evicted from the group.
 
    6.  The KDC renews and redistributes the group keying (rekeying)
        material due to membership change in the group.
@@ -349,11 +359,289 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    profile of ACE, based on the requirements defined in Appendix A of
    [I-D.ietf-ace-key-groupcomm].
 
-3.  Client Interface the KDC
+3.  Getting Authorisation to Join a Pub/sub security group (A)
+
+   Figure Figure 3 provides a high level overview of the message flow
+   for a node getting authorisation to join a group.  This message flow
+   is expanded in the subsequent sections.
+
+      Client                                       Broker   AS      KDC
+         | [--Resource Request (CoAP/MQTT or other)-->] |    |
+         |                                              |    |
+         | [<----AS Information (CoAP/MQTT or other)--] |    |
+         | --Broker Authorisation Req (CoAP/HTTP or other)-->|
+         |                                                   |
+         | <---Authorisation Response (CoAP/HTTP or other) --|
+         |                                                   |
+         | --KDC Authorisation Req (CoAP/HTTP or other)----->|
+         |                                                   |
+         | <---Authorisation Response (CoAP/HTTP or other) --|
+         |                                                   |
+         |----------------------------Token Post (CoAP)------------>|
+
+                        Figure 3: Authorisation Flow
+
+   Since [RFC9200] recommends the use of CoAP and CBOR, this document
+   describes the exchanges assuming CoAP and CBOR are used.  However,
+   using HTTP instead of CoAP is possible, using the corresponding
+   parameters and methods.  Analogously, JSON [RFC8259] can be used
+   instead of CBOR, using the conversion method specified in Sections
+
+
+
+Palombini, et al.       Expires 11 September 2023               [Page 7]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
+   6.1 and 6.2 of [RFC8949].  In case JSON is used, the Content Format
+   or Media Type of the message has to be changed accordingly.  Exact
+   definition of these exchanges are considered out of scope for this
+   document.
+
+3.1.  AS Discovery at the Broker (Optional)
+
+   Complementary to what is defined in [RFC9200] (Section 5.1) for AS
+   discovery, the Broker MAY send the address of the AS to the Client in
+   the 'AS' parameter in the AS Information as a response to an
+   Unauthorized Resource Request (Section 5.2).  An example using CBOR
+   diagnostic notation and CoAP is given below:
+
+                4.01 Unauthorized
+                Content-Format: application/ace-groupcomm+cbor
+                {"AS": "coaps://as.example.com/token"}
+
+                      Figure 4: AS Information example
+
+3.2.  Topic and KDC Discovery at the Broker
+
+   The Resource Type (rt=) Link Target Attribute value "core.ps.gm" is
+   registered in Section 9.3 (REQ10), and can be used to describe group-
+   membership resources and its sub-resources at Broker, e.g., by using
+   a link-format document [RFC6690]}. Applications can use this common
+   resource type to discover links to group-membership resources for
+   joining pub/sub groups.  (ToDo: Check this discovery is feasible in
+   core pub/sub)
+
+3.3.  Authorisation Request/Response for the KDC and the Broker
+
+   After retrieving the AS address, the Client sends two Authorisation
+   Requests to the AS for two audiences: the Broker and the KDC,
+   respectively.  AS handles authorisation requests for topics a Client
+   is allowed to Publish or Subscribe to the Broker, corresponding to an
+   application group.  To protect the message content, the client needs
+   to request to be part of the security group(s) for those application
+   groups.
+
+   Communications between the Client and the AS MUST be secured,
+   according to what is defined by the used transport profile of ACE.
+   This section builds on Section 3 of [I-D.ietf-ace-key-groupcomm] and
+   defined only additions or modifications to that specification.
+
+   Both Authorisation Requests include the following fields (Section 3.1
+   of [I-D.ietf-ace-key-groupcomm]):
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023               [Page 8]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
+   *  'scope': Optional.  If present, specifies the name of the topic
+      groups, that the Client requests to access.  This parameter is a
+      CBOR byte string that encodes a CBOR array, whose format MUST
+      follow the data model AIF-PUBSUB-GROUPCOMM defined below.
+
+   *  'audience': Required identifier corresponding to either the KDC or
+      the Broker.
+
+   Other additional parameters can be included if necessary, as defined
+   in [RFC9200].
+
+   For the Broker, the scope represents pub/sub topics i.e., the
+   application group, and for the KDC, the scope represents the security
+   group.  If there is a one-to-one mapping between the application
+   group and the security group, the client uses the same scope for both
+   requests.  If there is not a one-to-one mapping, the correct policies
+   regarding both sets of scopes MUST be available to the AS.
+
+   The client MUST ask for the correct scopes in its Authorization
+   Requests.  How the client discovers the (application group, security
+   group) association is out of scope of this document.  (ToDo: Can pub/
+   sub discovery handle this?)
+
+3.3.1.  Format of Scope
+
+   The 'scope' parameter SHOULD follow the AIF format.  However, if the
+   ACE transport profile, supports another 'scope' format, then
+   implementations MAY use this format.
+
+   Based on the generic AIF model
+
+         AIF-Generic<Toid, Tperm> = [* [Toid, Tperm]]
+
+   the value of the CBOR byte string used as scope encodes the CBOR
+   array [* [Toid, Tperm]], where each [Toid, Tperm] element corresponds
+   to one scope entry.
+
+   This document defines the new AIF specific data model AIF-PUBSUB-
+   GROUPCOMM, that this profile SHOULD use to format and encode scope
+   entries.
+
+   *  The object identifier ("Toid") is a CBOR text string, specifying
+      the topic name for the scope entry.
+
+   *  The permission set ("Tperm") is a CBOR unsigned integer with
+      value, specifying the role(s) that the Client wishes to take in
+      the group.  The set of numbers representing the role is converted
+      into a single number by taking two to the power of each method
+
+
+
+Palombini, et al.       Expires 11 September 2023               [Page 9]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
+      number and computing the inclusive OR of the binary
+      representations of all the power values.  The roles a Client may
+      take are Pub (0) and Sub (1).
+
+     AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-topic, pubsub-perm>
+      pubsub-topic = tstr ; Pub/sub topic or the name of the associated security group
+
+      pubsub-perm = uint . bits pubsub-roles
+
+      pubsub-roles = &(
+       Pub: 0,
+       Sub: 1
+      )
+
+      scope_entry = [pubsub-topic, pubsub-perm]
+
+                Figure 5: Pub/Sub scope using the AIF format
+
+3.4.  Authorisation response
+
+   The AS responds with an Authorization Response to each request,
+   containing claims, as defined in Section 5.8.2 of [RFC9200] and
+   Section 3.2 of [I-D.ietf-ace-key-groupcomm] with the following
+   additions:
+
+   *  The AS MUST include the 'expires_in' parameter.  Other means for
+      the AS to specify the lifetime of Access Tokens are out of the
+      scope of this document.
+
+   *  The AS MUST include the 'scope' parameter, when the value included
+      in the Access Token differs from the one specified by the joining
+      node in the Authorization Request.  In such a case, the second
+      element of each scope entry MUST be present, and specifies the set
+      of roles that the joining node is actually authorized to take in
+      for that scope entry, encoded as specified in Section 3.3.
+
+   Furthermore, the AS MAY use the extended format of scope defined in
+   Section 7 of [I-D.ietf-ace-key-groupcomm] for the 'scope' claim of
+   the Access Token.  In such a case, the AS MUST use the CBOR tag with
+   tag number TAG_NUMBER, associated with the CoAP Content-Format CF_ID
+   for the media type application/aif+cbor registered in Section 9.5 of
+   this document (REQ28).
+
+
+
+
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 10]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
+   Note to RFC Editor: In the previous paragraph, please replace
+   "TAG_NUMBER" with the CBOR tag number computed as TN(ct) in
+   Section 4.3 of [RFC9277], where ct is the ID assigned to the CoAP
+   Content-Format registered in Section 9.5 of this document.  Then,
+   please replace "CF_ID" with the ID assigned to that CoAP Content-
+   Format.  Finally, please delete this paragraph.
+
+   This indicates that the binary encoded scope follows the scope
+   semantics defined for this application profile in Section 3.3.1 of
+   this document.
+
+   On receiving the Authorisation Response, the Client needs to manage
+   which token to use for which audience, i.e., the KDC or the Broker.
+
+3.5.  Token Transfer to KDC
+
+   After receiving a token from the AS, the Client transfers the token
+   to the KDC using one of the methods defined Section 3.3
+   [I-D.ietf-ace-key-groupcomm]).  This typically includes sending a
+   POST request to the authz-info endpoint.  However, if using the DTLS
+   transport profile of ACE [RFC9202] and the client uses a symmetric
+   proof-of-possession key in the DTLS handshake, the Client MAY provide
+   the access token to the KDC in the DTLS ClientKeyExchange message.
+   In addition to that, the following applies.
+
+   In the token transfer response to the Publisher Clients, i.e., the
+   Clients whose scope of the access token includes the "Pub" role, the
+   KDC MUST include the parameter 'kdcchallenge' in the CBOR map.
+   'kdcchallange' is a challenge N_S generated by the KDC, and is
+   RECOMMENDED to use a 8-byte long random nonce.  Later when joining
+   the group, the Publisher Client can use the 'kdcchallenge' as part of
+   proving possession of its private key (see
+   [I-D.ietf-ace-key-groupcomm]).
+
+   If 'sign_info' is included in the Token Transfer Request, the KDC
+   SHOULD include the 'sign_info' parameter in the Token Transfer
+   Response.  The following applies for each element 'sign_info_entry'.
+
+   *  'sign_alg' MUST take value from the "Value" column of one of the
+      recommended algorithms in the "COSE Algorithms" registry
+      [IANA.cose_algorithms].
+
+   *  'sign_parameters' is a CBOR array.  Its format and value are the
+      same of the COSE capabilities array for the algorithm indicated in
+      'sign_alg' under the "Capabilities" column of the "COSE
+      Algorithms" registry [IANA.cose_algorithms] (REQ4).
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 11]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
+   *  'sign_key_parameters' is a CBOR array.  Its format and value are
+      the same of the COSE capabilities array for the COSE key type of
+      the keys used with the algorithm indicated in 'sign_alg', as
+      specified for that key type in the "Capabilities" column of the
+      "COSE Key Types" registry [IANA.cose_key-type] (REQ5).
+
+   *  'cred_fmt' takes value from the "Label" column of the "COSE Header
+      Parameters" registry [IANA.cose_header-parameters] (REQ6).
+      Acceptable values denote a format of authentication credential
+      that MUST explicitly provide the public key as well as the
+      comprehensive set of information related to the public key
+      algorithm, including, e.g., the used elliptic curve (when
+      applicable).  Acceptable formats of authentication credentials
+      include CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs)
+      [RFC8392], X.509 certificates [RFC7925] and C509 certificates
+      [I-D.ietf-cose-cbor-encoded-cert].  Future formats would be
+      acceptable to use as long as they comply with the criteria defined
+      above.
+
+4.  Client Interface the KDC
 
    The Clients uses the following KDC resources:
 
-   +=================================+==================+=============+
+   +---------------------------------+------------------+-------------+
    | KDC resource                    | Description      | Operations  |
    +=================================+==================+=============+
    | /ace-group                      | Required.        | FETCH (All  |
@@ -378,6 +666,14 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    |                                 | credentials of   |             |
    |                                 | all the          |             |
    |                                 | Publisher        |             |
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 12]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
    |                                 | members of the   |             |
    |                                 | group with name  |             |
    |                                 | GROUPNAME        |             |
@@ -386,14 +682,6 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    |                                 | Contains the     |             |
    |                                 | current version  |             |
    |                                 | number for the   |             |
-
-
-
-Palombini, et al.       Expires 10 September 2023               [Page 7]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
    |                                 | symmetric group  |             |
    |                                 | keying material  |             |
    |                                 | of the group     |             |
@@ -434,6 +722,14 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    |                                 | with             |             |
    +---------------------------------+------------------+-------------+
    | name GROUPNAME.                 | GET (All)        |             |
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 13]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
    +---------------------------------+------------------+-------------+
 
                                  Table 1
@@ -442,295 +738,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    [I-D.ietf-ace-key-groupcomm] applies, and only additions or
    modifications to that specification are defined in this document.
 
-
-
-
-Palombini, et al.       Expires 10 September 2023               [Page 8]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-   The Resource Type (rt=) Link Target Attribute value "core.ps.gm" is
-   registered in Section 10.3 (REQ10), and can be used to describe
-   group-membership resources and its sub-resources at Broker, e.g., by
-   using a link-format document [RFC6690]}. Applications can use this
-   common resource type to discover links to group-membership resources
-   for joining pub/sub groups.  (ToDo: Check this discovery is feasible
-   in core pub/sub)
-
-4.  Getting Authorisation to Join a pub/sub security group (A-B)
-
-   Figure Figure 3 provides a high level overview of the message flow
-   for a node getting authorisation to join a group.  This message flow
-   is expanded in the subsequent sections.
-
-      Client                                       Broker   AS      KDC
-         | [--Resource Request (CoAP/MQTT or other)-->] |    |
-         |                                              |    |
-         | [<----AS Information (CoAP/MQTT or other)--] |    |
-         | --Broker Authorisation Req (CoAP/HTTP or other)-->|
-         |                                                   |
-         | <---Authorisation Response (CoAP/HTTP or other) --|
-         |                                                   |
-         | --KDC Authorisation Req (CoAP/HTTP or other)----->|
-         |                                                   |
-         | <---Authorisation Response (CoAP/HTTP or other) --|
-         |                                                   |
-         |----------------------------Token Post (CoAP)------------>|
-
-                        Figure 3: Authorisation Flow
-
-   Since [RFC9200] recommends the use of CoAP and CBOR, this document
-   describes the exchanges assuming CoAP and CBOR are used.  However,
-   using HTTP instead of CoAP is possible, using the corresponding
-   parameters and methods.  Analogously, JSON [RFC8259] can be used
-   instead of CBOR, using the conversion method specified in Sections
-   6.1 and 6.2 of [RFC8949].  In case JSON is used, the Content Format
-   or Media Type of the message has to be changed accordingly.  Exact
-   definition of these exchanges are considered out of scope for this
-   document.
-
-4.1.  AS Discovery at the Broker (Optional)
-
-   Complementary to what is defined in [RFC9200] (Section 5.1) for AS
-   discovery, the Broker MAY send the address of the AS to the Client in
-   the 'AS' parameter in the AS Information as a response to an
-   Unauthorized Resource Request (Section 5.2).  An example using CBOR
-   diagnostic notation and CoAP is given below:
-
-
-
-
-Palombini, et al.       Expires 10 September 2023               [Page 9]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-                4.01 Unauthorized
-                Content-Format: application/ace-groupcomm+cbor
-                {"AS": "coaps://as.example.com/token"}
-
-                      Figure 4: AS Information example
-
-4.2.  Authorisation Request/Response for the KDC and the Broker
-
-   After retrieving the AS address, the Client sends two Authorisation
-   Requests to the AS for two audiences: the Broker and the KDC,
-   respectively.  AS handles authorisation requests for topics a Client
-   is allowed to Publish or Subscribe to the Broker, corresponding to an
-   application group.  To protect the message content, the client needs
-   to request to be part of the security group(s) for those application
-   groups.
-
-   Communications between the Client and the AS MUST be secured,
-   according to what is defined by the used transport profile of ACE.
-   This section builds on Section 3 of [I-D.ietf-ace-key-groupcomm] and
-   defined only additions or modifications to that specification.
-
-   Both Authorisation Requests include the following fields (Section 3.1
-   of [I-D.ietf-ace-key-groupcomm]):
-
-   *  'scope': Optional.  If present, specifies the name of the topic
-      groups, that the Client requests to access.  This parameter is a
-      CBOR byte string that encodes a CBOR array, whose format MUST
-      follow the data model AIF-PUBSUB-GROUPCOMM defined below.
-
-   *  'audience': Required identifier corresponding to either the KDC or
-      the Broker.
-
-   Other additional parameters can be included if necessary, as defined
-   in [RFC9200].
-
-   For the Broker, the scope represents pub/sub topics i.e., the
-   application group, and for the KDC, the scope represents the security
-   group.  If there is a one-to-one mapping between the application
-   group and the security group, the client uses the same scope for both
-   requests.  If there is not a one-to-one mapping, the correct policies
-   regarding both sets of scopes MUST be available to the AS.
-
-   The client MUST ask for the correct scopes in its Authorization
-   Requests.  How the client discovers the (application group, security
-   group) association is out of scope of this document.  (ToDo: Can pub/
-   sub discovery handle this?)
-
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 10]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-4.2.1.  Format of Scope
-
-   The 'scope' parameter SHOULD follow the AIF format.  However, if the
-   ACE transport profile, supports another 'scope' format, then
-   implementations MAY use this format.
-
-   Based on the generic AIF model
-
-         AIF-Generic<Toid, Tperm> = [* [Toid, Tperm]]
-
-   the value of the CBOR byte string used as scope encodes the CBOR
-   array [* [Toid, Tperm]], where each [Toid, Tperm] element corresponds
-   to one scope entry.
-
-   This document defines the new AIF specific data model AIF-PUBSUB-
-   GROUPCOMM, that this profile SHOULD use to format and encode scope
-   entries.
-
-   *  The object identifier ("Toid") is a CBOR text string, specifying
-      the topic name for the scope entry.
-
-   *  The permission set ("Tperm") is a CBOR unsigned integer with
-      value, specifying the role(s) that the Client wishes to take in
-      the group.  The set of numbers representing the role is converted
-      into a single number by taking two to the power of each method
-      number and computing the inclusive OR of the binary
-      representations of all the power values.  The roles a Client may
-      take are Pub (0) and Sub (1).
-
-  AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-topic, pubsub-perm>
-   pubsub-topic = tstr ; Pub/sub topic or the name of the associated security group
-
-   pubsub-perm = uint . bits pubsub-roles
-
-   pubsub-roles = &(
-    Pub: 0,
-    Sub: 1
-   )
-
-   scope_entry = [pubsub-topic, pubsub-perm]
-
-             Figure 5: Pub/Sub scope using the AIF format
-
-
-
-
-
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 11]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-4.3.  Authorisation response
-
-   The AS responds with an Authorization Response to each request,
-   containing claims, as defined in Section 5.8.2 of [RFC9200] and
-   Section 3.2 of [I-D.ietf-ace-key-groupcomm] with the following
-   additions:
-
-   *  The AS MUST include the 'expires_in' parameter.  Other means for
-      the AS to specify the lifetime of Access Tokens are out of the
-      scope of this document.
-
-   *  The AS MUST include the 'scope' parameter, when the value included
-      in the Access Token differs from the one specified by the joining
-      node in the Authorization Request.  In such a case, the second
-      element of each scope entry MUST be present, and specifies the set
-      of roles that the joining node is actually authorized to take in
-      for that scope entry, encoded as specified in Section 4.2.
-
-   Furthermore, the AS MAY use the extended format of scope defined in
-   Section 7 of [I-D.ietf-ace-key-groupcomm] for the 'scope' claim of
-   the Access Token.  In such a case, the AS MUST use the CBOR tag with
-   tag number TAG_NUMBER, associated with the CoAP Content-Format CF_ID
-   for the media type application/aif+cbor registered in Section 10.5 of
-   this document (REQ28).
-
-   Note to RFC Editor: In the previous paragraph, please replace
-   "TAG_NUMBER" with the CBOR tag number computed as TN(ct) in
-   Section 4.3 of [RFC9277], where ct is the ID assigned to the CoAP
-   Content-Format registered in Section 10.5 of this document.  Then,
-   please replace "CF_ID" with the ID assigned to that CoAP Content-
-   Format.  Finally, please delete this paragraph.
-
-   This indicates that the binary encoded scope follows the scope
-   semantics defined for this application profile in Section 4.2.1 of
-   this document.
-
-   On receiving the Authorisation Response, the Client needs to manage
-   which token to use for which audience, i.e., the KDC or the Broker.
-
-4.4.  Token Transfer to KDC
-
-   After receiving a token from the AS, the Client transfers the token
-   to the KDC using one of the methods defined Section 3.3
-   [I-D.ietf-ace-key-groupcomm]).  This typically includes sending a
-   POST request to the authz-info endpoint.  However, if using the DTLS
-   transport profile of ACE [RFC9202] and the client uses a symmetric
-   proof-of-possession key in the DTLS handshake, the Client MAY provide
-   the access token to the KDC in the DTLS ClientKeyExchange message.
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 12]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-   In addition to that, the following applies.
-
-   In the token transfer response to the Publisher Clients, i.e., the
-   Clients whose scope of the access token includes the "Pub" role, the
-   KDC MUST include the parameter 'kdcchallenge' in the CBOR map.
-   'kdcchallange' is a challenge N_S generated by the KDC, and is
-   RECOMMENDED to use a 8-byte long random nonce.  Later when joining
-   the group, the Publisher Client can use the 'kdcchallenge' as part of
-   proving possession of its private key (see
-   [I-D.ietf-ace-key-groupcomm]).
-
-   If 'sign_info' is included in the Token Transfer Request, the KDC
-   SHOULD include the 'sign_info' parameter in the Token Transfer
-   Response.  The following applies for each element 'sign_info_entry'.
-
-   *  'sign_alg' MUST take value from the "Value" column of one of the
-      recommended algorithms in the "COSE Algorithms" registry
-      [IANA.cose_algorithms].
-
-   *  'sign_parameters' is a CBOR array.  Its format and value are the
-      same of the COSE capabilities array for the algorithm indicated in
-      'sign_alg' under the "Capabilities" column of the "COSE
-      Algorithms" registry [IANA.cose_algorithms] (REQ4).
-
-   *  'sign_key_parameters' is a CBOR array.  Its format and value are
-      the same of the COSE capabilities array for the COSE key type of
-      the keys used with the algorithm indicated in 'sign_alg', as
-      specified for that key type in the "Capabilities" column of the
-      "COSE Key Types" registry [IANA.cose_key-type] (REQ5).
-
-   *  'cred_fmt' takes value from the "Label" column of the "COSE Header
-      Parameters" registry [IANA.cose_header-parameters] (REQ6).
-      Acceptable values denote a format of authentication credential
-      that MUST explicitly provide the public key as well as the
-      comprehensive set of information related to the public key
-      algorithm, including, e.g., the used elliptic curve (when
-      applicable).  Acceptable formats of authentication credentials
-      include CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs)
-      [RFC8392], X.509 certificates [RFC7925] and C509 certificates
-      [I-D.ietf-cose-cbor-encoded-cert].  Future formats would be
-      acceptable to use as long as they comply with the criteria defined
-      above.
-
-
-
-
-
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 13]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-5.  Joining a Group
+4.1.  Joining a Security Group
 
    This section describes the interactions between the joining node and
    the KDC to join an pub/sub group.  Source authentication of a message
@@ -753,7 +761,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
                             Figure 6: Join Flow
 
-5.1.  Join Request
+4.1.1.  Join Request
 
    After establishing a secure communication, the Client sends a Join
    Request to the KDC as described in Section 4.3 of
@@ -766,7 +774,17 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    *  'scope': Required.  MUST be set to the specific group that the
       Client is attempting to join, i.e., the group name, and the roles
       it wishes to have in the group.  This value corresponds to one
-      scope entry, as defined in Section 4.2.1.
+      scope entry, as defined in Section 3.3.1.
+
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 14]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
 
    *  'get_creds': Optional, present if the Subcriber Client wants to
       retrieve the public keys of all the Publisher Clients upon
@@ -777,14 +795,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
       default.
 
    *  'client_cred': The use of this parameter is detailed in
-      Section 5.1.1.
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 14]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
+      Section 4.1.1.1.
 
    *  'cnonce': Optional, MUST be present if 'client_cred' is present.
       It is a dedicated nonce N_C generated by the Client.  It is
@@ -793,9 +804,9 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    *  'client_cred_verify': Optional, MUST be present if 'client_cred'
       is present.  The use of this parameter is detailed in
-      Section 5.1.2
+      Section 4.1.1.2
 
-5.1.1.  Client Credentials-'client_cred'
+4.1.1.1.  Client Credentials-'client_cred'
 
    One of the following cases can occur when a new node joins the pub/
    sub group.
@@ -805,9 +816,9 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
       In this case, the joining node is not required to provide its own
       authentication credential to the KDC.  In case the joining node
       still provides an authentication credential in the 'client_cred'
-      parameter of the Join Request (see Section 5.1), the KDC silently
-      ignores that parameter, as well as the related parameters 'cnonce'
-      and 'client_cred_verify'.
+      parameter of the Join Request (see Section 4.1.1), the KDC
+      silently ignores that parameter, as well as the related parameters
+      'cnonce' and 'client_cred_verify'.
 
    *  The KDC already acquired the authentication credential of the
       joining node
@@ -824,29 +835,28 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
          its own authentication credential to the KDC, in order to limit
          the size of the Join Request.
 
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 15]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
    *  If the joining node is a Publisher, and the KDC hasn't acquired an
       authentication credential, the joining node MUST provide a
       compatible authentication credential in the 'client_cred'
-      parameter of the Join Request (see Section 5.1).
+      parameter of the Join Request (see Section 4.1.1).
 
    Finally, the joining node MUST provide its own authentication
    credential again if it has provided the KDC with multiple
    authentication credentials during past joining processes, intended
    for different pub/sub groups.  If the joining node provides its own
    authentication credential, the KDC performs consistency checks as per
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 15]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-   Section 5.1 and, in case of success, considers it as the
+   Section 4.1.1 and, in case of success, considers it as the
    authentication credential associated with the joining node in the
    pub/sub group.
 
-5.1.2.  Proof-of-Possession
+4.1.1.2.  Proof-of-Possession
 
    The 'client_cred_verify' parameter contains the proof-of-possession
    evidence, and is computed as defined below (REQ14).
@@ -859,7 +869,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    *  The challenge received from the KDC in the 'kdcchallenge'
       parameter of the 2.01 (Created) response to the Token Transfer
-      Request (see Section 4.4).
+      Request (see Section 3.5).
 
    *  If the Publisher Client used a symmetric proof-of-possession key
       in the DTLS handshake [RFC9202], then it is an exporter value
@@ -867,13 +877,13 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
       N_S is exported from the DTLS session between the joining node and
       the KDC, using an empty 'context_value', 32 bytes as 'key_length',
       and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-group-
-      pubsub-app" defined in Section 10.6 of this document.
+      pubsub-app" defined in Section 9.6 of this document.
 
    *  If the Join Request is a retry in response to an error response
       from the KDC, which included the 'kdcchallenge' parameter, N_S
       MUST be this new challenge parameter.
 
-5.2.  Join Response
+4.1.2.  Join Response
 
    On receiving the Join Request, the KDC processes the request as
    defined in Section 4.3.1 of [I-D.ietf-ace-key-groupcomm], and may
@@ -883,17 +893,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
 
 
-
-
-
-
-
-
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 16]
+Palombini, et al.       Expires 11 September 2023              [Page 16]
 
 Internet-Draft             ACE Pub-sub Profile                March 2023
 
@@ -912,7 +912,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    and possible corresponding parameters.
 
    The the case of a join request error, the KDC and the Clients
-   attempting the join follow the procedure defined in Section 5.3.
+   attempting the join follow the procedure defined in Section 4.1.3.
 
    In the case of success, the Client is added to the list of current
    members, if not already a member.  The Client is assigned a NODENAME
@@ -949,7 +949,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
 
 
-Palombini, et al.       Expires 10 September 2023              [Page 17]
+Palombini, et al.       Expires 11 September 2023              [Page 17]
 
 Internet-Draft             ACE Pub-sub Profile                March 2023
 
@@ -966,7 +966,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    *  'ace-groupcomm-profile' parameter MUST be present and has value
       coap_group_pubsub_app (PROFILE_TBD), which is defined in
-      Section 10.1.1 of this document.
+      Section 9.1.1 of this document.
 
    *  'creds', MUST be present, if the 'get_creds' parameter was
       present.  Otherwise, it MUST NOT be present.  If the joining
@@ -1005,7 +1005,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
 
 
-Palombini, et al.       Expires 10 September 2023              [Page 18]
+Palombini, et al.       Expires 11 September 2023              [Page 18]
 
 Internet-Draft             ACE Pub-sub Profile                March 2023
 
@@ -1025,7 +1025,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    If the application requires backward security, the KDC MUST generate
    updated security parameters and group keying material, and provide it
    to the current group members, upon the new node's joining (see
-   Section 7.4).  In such a case, the joining node is not able to access
+   Section 5.4).  In such a case, the joining node is not able to access
    secure communication in the pubsub group prior its joining.
 
    Upon receiving the Join Response, the joining node retrieves the
@@ -1034,7 +1034,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    which is a signature, specified in the 'kdc_cred_verify' parameter of
    the Join Response (REQ21).
 
-5.3.  Join Error Handling
+4.1.3.  Join Error Handling
 
    The KDC MUST reply with a 4.00 (Bad Request) error response to the
    Join Request in the following cases:
@@ -1061,7 +1061,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
 
 
-Palombini, et al.       Expires 10 September 2023              [Page 19]
+Palombini, et al.       Expires 11 September 2023              [Page 19]
 
 Internet-Draft             ACE Pub-sub Profile                March 2023
 
@@ -1070,7 +1070,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
          (e.g., of the format accepted in the group) for the joining
          node. *The 'scope' parameter is not present in the Join
          Request, or it is present and specifies any set of roles not
-         included in the role list as defined in Section 4.2.1.
+         included in the role list as defined in Section 3.3.1.
 
    A 4.00 (Bad Request) error response from the KDC to the joining node
    MAY have content format application/ace-groupcomm+cbor and contain a
@@ -1084,6 +1084,103 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    On receiving the Join Response, if the Client cannot verify the PoP
    evidence, the Client MUST stop processing the Join Response and MAY
    send a new Join Request to the KDC.
+
+5.  Other Group Operations through the KDC
+
+5.1.  Querying for Group Information
+
+   *  '/ace-group': All Clients send FETCH requests to retrieve a set of
+      group names associated with their group identifiers.  ToDo:
+      Encoding of gid
+
+   *  '/ace-group/GROUPNAME': All Clients can use GET requests to
+      retrieve the symmetric group keying material of the group with the
+      name GROUPNAME.  The value of the GROUPNAME URI path and the group
+      name in the access token scope ('gname') MUST coincide.
+
+   *  '/ace-group/GROUPNAME/creds': KDC acts as a repository of
+      authentication credentials for Publisher Clients.  The Subscriber
+      Clients of the group use GET/FETCH requests to retrieve the
+      authentication credentials of all or subset of the group members
+      of the group with name GROUPNAME.
+
+   *  '/ace-group/GROUPNAME/num': All group member Clients use GET
+      requests to retrieve the current version number for the symmetric
+      group keying material of the group with name GROUPNAME.
+
+   *  '/ace-group/GROUPNAME/kdc-cred': All group member Clients use GET
+      requests to retrieve the current authentication credential of the
+      KDC.
+
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 20]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
+5.2.  Updating Authentication Credentials
+
+   A Publisher Client can contact the KDC to upload a new authentication
+   credential to use in the group, and replace the currently stored one.
+   To this end, it sends a sends a CoAP POST request to the /ace-
+   group/GROUPNAME/nodes/NODENAME/cred.  The KDC replaces the stored
+   authentication credential of this Client (identified by NODENAME)
+   with the one specified in the request at the KDC, for the group
+   identified by GROUPNAME.
+
+5.3.  Removal from a Group
+
+   A Client can actively request to leave the group.  In this case, the
+   Client sends a CoAP DELETE request to the endpoint /ace-
+   group/GROUPNAME/nodes/NODENAME at the KDC, where GROUPNAME is the
+   group name and NODENAME is its node name.  KDC can also remove a
+   group member due to any of the reasons described in Section 5 of
+   [I-D.ietf-ace-key-groupcomm].
+
+5.4.  Rekeying a Group
+
+   KDC MUST trigger a group rekeying as described in Section 6 of
+   [I-D.ietf-ace-key-groupcomm] due to a change in the group membership
+   or the current group keying material approaching its expiration time.
+   KDC MAY trigger regularly scheduled update of the group keying
+   material.
+
+   Upon generating the new group keying material and before starting its
+   distribution, the KDC MUST increment the version number of the group
+   keying material.
+
+   Default rekeying scheme is Point-to-point (Section 6.1 of
+   [I-D.ietf-ace-key-groupcomm]), where KDC individually targets each
+   node to rekey, using the pairwise secure communication association
+   with that node.
+
+   If the group rekeying is performed due to one or multiple Publisher
+   Clients that have joined the group, then a rekeying message MUST also
+   include the authentication credentials that those Clients use in the
+   group, together with the roles and node identifier that the
+   corresponding Client has in the group.  This information is specified
+   by means of the parameters 'creds', 'peer_roles' and
+   'peer_identifiers', like done in the Join Response message.
+
+   ToDo: Any additional rekeying mechanisms.  The pub/sub model, in
+   which case, the KDC acts as publisher (KDC authentication
+   credential??) and publishes each rekeying message to a specific
+   "rekeying topic", which is associated with the group and is hosted at
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 21]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
+   a broker server.  Following their group joining, the group members
+   subscribe to the rekeying topic at the broker, thus receiving the
+   group rekeying messages as they are published by the KDC.
 
 6.  PubSub Protected Communication (C)
 
@@ -1115,13 +1212,6 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
            Figure 8: Example of protected communication for CoAP
 
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 20]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
 6.1.  Using COSE Objects To Protect The Resource Representation
 
    The Publisher uses the symmetric COSE Key received from the KDC to
@@ -1133,6 +1223,16 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    [RFC9052] [RFC9053].  The payload is replaced by the COSE object
    before the publication is sent to the Broker.  ToDo: Do we really
    mean countersign?
+
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 22]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
 
    The Subscriber uses the 'kid' in the 'countersignature' field in the
    COSE object to retrieve the right public key to verify the
@@ -1173,7 +1273,19 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
 
 
-Palombini, et al.       Expires 10 September 2023              [Page 21]
+
+
+
+
+
+
+
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 23]
 
 Internet-Draft             ACE Pub-sub Profile                March 2023
 
@@ -1206,103 +1318,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    The encryption and decryption operations are described in [RFC9052]
    [RFC9053].
 
-7.  Other Group Operations through the KDC
-
-7.1.  Querying for Group Information
-
-   *  '/ace-group': All Clients send FETCH requests to retrieve a set of
-      group names associated with their group identifiers.  ToDo:
-      Encoding of gid
-
-   *  '/ace-group/GROUPNAME': All Clients can use GET requests to
-      retrieve the symmetric group keying material of the group with the
-      name GROUPNAME.  The value of the GROUPNAME URI path and the group
-      name in the access token scope ('gname') MUST coincide.
-
-   *  '/ace-group/GROUPNAME/creds': KDC acts as a repository of
-      authentication credentials for Publisher Clients.  The Subscriber
-      Clients of the group use GET/FETCH requests to retrieve the
-      authentication credentials of all or subset of the group members
-      of the group with name GROUPNAME.
-
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 22]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-   *  '/ace-group/GROUPNAME/num': All group member Clients use GET
-      requests to retrieve the current version number for the symmetric
-      group keying material of the group with name GROUPNAME.
-
-   *  '/ace-group/GROUPNAME/kdc-cred': All group member Clients use GET
-      requests to retrieve the current authentication credential of the
-      KDC.
-
-7.2.  Updating Authentication Credentials
-
-   A Publisher Client can contact the KDC to upload a new authentication
-   credential to use in the group, and replace the currently stored one.
-   To this end, it sends a sends a CoAP POST request to the /ace-
-   group/GROUPNAME/nodes/NODENAME/cred.  The KDC replaces the stored
-   authentication credential of this Client (identified by NODENAME)
-   with the one specified in the request at the KDC, for the group
-   identified by GROUPNAME.
-
-7.3.  Removal from a Group
-
-   A Client can actively request to leave the group.  In this case, the
-   Client sends a CoAP DELETE request to the endpoint /ace-
-   group/GROUPNAME/nodes/NODENAME at the KDC, where GROUPNAME is the
-   group name and NODENAME is its node name.  KDC can also remove a
-   group member due to any of the reasons described in Section 5 of
-   [I-D.ietf-ace-key-groupcomm].
-
-7.4.  Rekeying a Group
-
-   KDC MUST trigger a group rekeying as described in Section 6 of
-   [I-D.ietf-ace-key-groupcomm] due to a change in the group membership
-   or the current group keying material approaching its expiration time.
-   KDC MAY trigger regularly scheduled update of the group keying
-   material.
-
-   Upon generating the new group keying material and before starting its
-   distribution, the KDC MUST increment the version number of the group
-   keying material.
-
-   Default rekeying scheme is Point-to-point (Section 6.1 of
-   [I-D.ietf-ace-key-groupcomm]), where KDC individually targets each
-   node to rekey, using the pairwise secure communication association
-   with that node.
-
-   If the group rekeying is performed due to one or multiple Publisher
-   Clients that have joined the group, then a rekeying message MUST also
-   include the authentication credentials that those Clients use in the
-   group, together with the roles and node identifier that the
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 23]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-   corresponding Client has in the group.  This information is specified
-   by means of the parameters 'creds', 'peer_roles' and
-   'peer_identifiers', like done in the Join Response message.
-
-   ToDo: Any additional rekeying mechanisms.  The pub/sub model, in
-   which case, the KDC acts as publisher (KDC authentication
-   credential??) and publishes each rekeying message to a specific
-   "rekeying topic", which is associated with the group and is hosted at
-   a broker server.  Following their group joining, the group members
-   subscribe to the rekeying topic at the broker, thus receiving the
-   group rekeying messages as they are published by the KDC.
-
-8.  Considerations for Supporting MQTT PubSub Profile
+7.  Considerations for Supporting MQTT PubSub Profile
 
    The steps MQTT clients go through would be similar to the CoAP
    clients, and the payload of the MQTT PUBLISH messages will be
@@ -1315,12 +1331,27 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    topic tree.  Hence, it is important to distinguish application groups
    and security groups defined in [I-D.ietf-core-groupcomm-bis].
 
+
+
+
+
+
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 24]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
    Also differently for MQTT, the Client sends a token request to AS for
    the requested topics (application groups) using AIF-MQTT data model
    for representing the requested scopes is described in Section 3 of
    the [I-D.ietf-ace-mqtt-tls-profile].  In the authorisation response,
    the 'profile' claim is set to "mqtt_pubsub_app" as defined in
-   Section 10.1.2.  Both Publisher and Subscriber Clients authorise to
+   Section 9.1.2.  Both Publisher and Subscriber Clients authorise to
    the Broker with their respective tokens (described in
    [I-D.ietf-ace-mqtt-tls-profile]).
 
@@ -1339,14 +1370,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    ToDo: It's not clear how pair-wise rekeying can be supported between
    KDC and the MQTT Clients.
 
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 24]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-9.  Security Considerations
+8.  Security Considerations
 
    All the security considerations in [I-D.ietf-ace-key-groupcomm]
    apply.
@@ -1359,14 +1383,24 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    Even though Access Tokens have expiration times, an Access Token may
    need to be revoked before its expiration time (see
-   [I-D.draft-ietf-ace-revoked-token-notification] for a list of
+   [I-D.draft-ietf-ace-revoked-token-notification-03] for a list of
    possible circumstances).  Clients can be excluded from future
    publications through re-keying for a certain topic.  This could be
    set up to happen on a regular basis, for certain applications.  How
    this could be done is out of scope for this work.  The method
-   described in [I-D.draft-ietf-ace-revoked-token-notification] MAY be
-   used to allow an Authorization Server to notify the KDC about revoked
-   Access Tokens.
+   described in [I-D.draft-ietf-ace-revoked-token-notification-03] MAY
+   be used to allow an Authorization Server to notify the KDC about
+   revoked Access Tokens.
+
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 25]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
 
    The Broker is only trusted with verifying that the Publisher is
    authorized to publish, but is not trusted with the publications
@@ -1379,9 +1413,9 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    TODO: expand on security and privacy considerations
 
-10.  IANA Considerations
+9.  IANA Considerations
 
-10.1.  ACE Groupcomm Profile Registry
+9.1.  ACE Groupcomm Profile Registry
 
    The following registrations are done for the "ACE Groupcomm Profile"
    Registry following the procedure specified in
@@ -1391,18 +1425,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    document]]" with the RFC number of this specification and delete this
    paragraph.
 
-
-
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 25]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-10.1.1.  CoAP Profile Registration
+9.1.1.  CoAP Profile Registration
 
    Name: coap_group_pubsub_app
 
@@ -1414,7 +1437,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    Reference: [[This document]]
 
-10.1.2.  MQTT Profile Registration
+9.1.2.  MQTT Profile Registration
 
    Name: mqtt_pubsub_app
 
@@ -1426,7 +1449,16 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    Reference: [[This document]]
 
-10.2.  ACE Groupcomm Key Registry
+
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 26]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
+9.2.  ACE Groupcomm Key Registry
 
    The following registrations are done for the ACE Groupcomm Key
    Registry following the procedure specified in
@@ -1446,19 +1478,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    References: [RFC9052] [RFC9053], [[This document]]
 
-
-
-
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 26]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
-10.3.  CoRE Resource Type
+9.3.  CoRE Resource Type
 
    IANA is asked to register the following entry in the "Resource Type
    (rt=) Link Target Attribute Values" registry within the "Constrained
@@ -1473,7 +1493,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    Clients can use this resource type to discover a group membership
    resource at a Broker.
 
-10.4.  AIF
+9.4.  AIF
 
    For the media-types application/aif+cbor and application/aif+json
    defined in Section 5.1 of [RFC9237], IANA is requested to register
@@ -1487,6 +1507,13 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    *  Description/Specification:
 
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 27]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
    *  Reference: [[This document]]
 
    *  Parameter: Tperm
@@ -1497,7 +1524,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    *Reference: [[This document]]
 
-10.5.  CoAP Content-Format
+9.5.  CoAP Content-Format
 
    IANA is asked to register the following entries to the "CoAP Content-
    Formats" registry within the "Constrained RESTful Environments (CoRE)
@@ -1505,14 +1532,6 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    *  Media Type: application/aif+cbor;Toid="pubsub-
       topic",Tperm="pubsub-perm"
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 27]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
 
    *  Encoding: -
 
@@ -1529,7 +1548,7 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    *  Reference: [RFC-XXXX]
 
-10.6.  TLS Exporter Labels
+9.6.  TLS Exporter Labels
 
    IANA is asked to register the following entry to the "TLS Exporter
    Labels" registry defined in Section 6 of [RFC5705] and updated in
@@ -1543,9 +1562,17 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    *  Reference: [RFC-XXXX] (Section XXX)
 
-11.  References
 
-11.1.  Normative References
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 28]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
+10.  References
+
+10.1.  Normative References
 
    [I-D.ietf-ace-key-groupcomm]
               Palombini, F. and M. Tiloca, "Key Provisioning for Group
@@ -1561,14 +1588,6 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
               core-coap-pubsub-11, 7 November 2022,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
               coap-pubsub-11>.
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 28]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
 
    [I-D.ietf-core-groupcomm-bis]
               Dijk, E., Wang, C., and M. Tiloca, "Group Communication
@@ -1588,15 +1607,24 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    [IANA.cose_algorithms]
               IANA, "COSE Algorithms",
-              <https://www.iana.org/assignments/cose>.
+              <http://www.iana.org/assignments/cose>.
 
    [IANA.cose_header-parameters]
               IANA, "COSE Header Parameters",
-              <https://www.iana.org/assignments/cose>.
+              <http://www.iana.org/assignments/cose>.
 
    [IANA.cose_key-type]
               IANA, "COSE Key Types",
-              <https://www.iana.org/assignments/cose>.
+              <http://www.iana.org/assignments/cose>.
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 29]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1614,17 +1642,6 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
               RFC 6749, DOI 10.17487/RFC6749, October 2012,
               <https://www.rfc-editor.org/info/rfc6749>.
-
-
-
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 29]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
 
    [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
               Application Protocol (CoAP)", RFC 7252,
@@ -1658,6 +1675,13 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
               DOI 10.17487/RFC8949, December 2020,
               <https://www.rfc-editor.org/info/rfc8949>.
 
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 30]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
    [RFC9052]  Schaad, J., "CBOR Object Signing and Encryption (COSE):
               Structures and Process", STD 96, RFC 9052,
               DOI 10.17487/RFC9052, August 2022,
@@ -1673,15 +1697,6 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
               (ACE-OAuth)", RFC 9200, DOI 10.17487/RFC9200, August 2022,
               <https://www.rfc-editor.org/info/rfc9200>.
 
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 30]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
    [RFC9237]  Bormann, C., "An Authorization Information Format (AIF)
               for Authentication and Authorization for Constrained
               Environments (ACE)", RFC 9237, DOI 10.17487/RFC9237,
@@ -1692,9 +1707,9 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
               RFC 9277, DOI 10.17487/RFC9277, August 2022,
               <https://www.rfc-editor.org/info/rfc9277>.
 
-11.2.  Informative References
+10.2.  Informative References
 
-   [I-D.draft-ietf-ace-revoked-token-notification]
+   [I-D.draft-ietf-ace-revoked-token-notification-03]
               Tiloca, M., Seitz, L., Palombini, F., Echeverria, S., and
               G. Lewis, "Notification of Revoked Access Tokens in the
               Authentication and Authorization for Constrained
@@ -1715,6 +1730,14 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
               Transport (MQTT)-TLS profile of Authentication and
               Authorization for Constrained Environments (ACE)
               Framework", Work in Progress, Internet-Draft, draft-ietf-
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 31]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
               ace-mqtt-tls-profile-17, 23 March 2022,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
               mqtt-tls-profile-17>.
@@ -1729,14 +1752,6 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
               Interchange Format", STD 90, RFC 8259,
               DOI 10.17487/RFC8259, December 2017,
               <https://www.rfc-editor.org/info/rfc8259>.
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 31]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
 
    [RFC9202]  Gerdes, S., Bergmann, O., Bormann, C., Selander, G., and
               L. Seitz, "Datagram Transport Layer Security (DTLS)
@@ -1771,6 +1786,14 @@ Appendix A.  Requirements on Application Profiles
    *  REQ5: If used, specify the acceptable values for
       'sign_key_parameters' : TODO
 
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 32]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
    *  REQ6: Specify the acceptable formats for authentication
       credentials and, if used, the acceptable values for 'cred_fmt':
       TODO
@@ -1782,22 +1805,15 @@ Appendix A.  Requirements on Application Profiles
 
    *  REQ8: Define whether the KDC has an authentication credential and
       if this has to be provided through the 'kdc_cred' parameter : Yes,
-      see Section 5.2 of this document.
+      see Section 4.1.2 of this document.
 
    *  REQ9: Specify if any part of the KDC interface as defined in
       [I-D.ietf-ace-key-groupcomm] is not supported by the KDC: TODO
 
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 32]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
    *  REQ10: Register a Resource Type for the root url-path, which is
       used to discover the correct url to access at the KDC : the
       Resource Type (rt=) Link Target Attribute value "core.ps.gm" is
-      registered in Section Section 10.3.
+      registered in Section Section 9.3.
 
    *  REQ11: Define what specific actions (e.g., CoAP methods) are
       allowed on each resource provided by the KDC interface, depending
@@ -1827,6 +1843,13 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    *  REQ18: Specify the acceptable values of the 'gkty' parameter: ToDo
 
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 33]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
    *  REQ19: Specify and register the application profile identifier:
       coap_group_pubsub_app
 
@@ -1835,20 +1858,10 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    *  REQ21: Specify the approaches used to compute and verify the PoP
       evidence to include in 'kdc_cred_verify', and which of those
-      approaches is used in which case: see Section 5.2
+      approaches is used in which case: see Section 4.1.2
 
    *  REQ22: Specify the communication protocol the members of the group
       must use.
-
-
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 33]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
 
    *  REQ23: Specify the security protocol the group members must use to
       protect their communication.  This must provide encryption,
@@ -1885,6 +1898,14 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    *  OPT2: Optionally, specify the additional parameters used in the
       exchange of Token Transfer Request and Response : N/A
 
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 34]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
    *  OPT3: Optionally, specify the negotiation of parameter values for
       signature algorithm and signature keys, if 'sign_info' is not
       used: N/A
@@ -1898,13 +1919,6 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
    *  OPT6: Optionally, specify the encoding of 'creds_repo' if the
       default is not used: No
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 34]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
 
    *  OPT7: Optionally, specify the functionalities implemented at the
       'control_uri' resource hosted at the Client, including message
@@ -1938,6 +1952,16 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
    *  OPT14: Optionally, specify additional information to include in
       rekeying messages for the "Point-to-Point" group rekeying scheme:
 
+
+
+
+
+
+Palombini, et al.       Expires 11 September 2023              [Page 35]
+
+Internet-Draft             ACE Pub-sub Profile                March 2023
+
+
    *  OPT15: Optionally, specify if Clients must or should support any
       of the parameters defined as optional in
       [I-D.ietf-ace-key-groupcomm]:
@@ -1953,27 +1977,21 @@ Acknowledgments
 
 Authors' Addresses
 
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 35]
-
-Internet-Draft             ACE Pub-sub Profile                March 2023
-
-
    Francesca Palombini
    Ericsson
+
    Email: francesca.palombini@ericsson.com
 
 
    Cigdem Sengul
    Brunel University
+
    Email: csengul@acm.org
 
 
    Marco Tiloca
    RISE AB
+
    Email: marco.tiloca@ri.se
 
 
@@ -1995,22 +2013,4 @@ Internet-Draft             ACE Pub-sub Profile                March 2023
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Palombini, et al.       Expires 10 September 2023              [Page 36]
+Palombini, et al.       Expires 11 September 2023              [Page 36]
