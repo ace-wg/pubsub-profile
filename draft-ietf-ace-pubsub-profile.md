@@ -398,7 +398,7 @@ In the case of success, the Client is added to the list of current members, if n
 - 'key': The keying material for group communication includes 'group_SenderId' if the Client is a Publisher,
 and a "COSE\_Key". The "COSE\_Key" object is defined in {{RFC9052}} {{RFC9053}} and contains:
     * 'kty' with value 4 (symmetric)
-    * 'kid' (ToDo: Set to gid?)
+    * 'kid' (ToDo: Set to group identifier?)
     * 'alg' with value defined by the KDC 
     * 'Base IV' with value defined by the KDC,
     * 'k', the value of the symmetric key (REQ17)
