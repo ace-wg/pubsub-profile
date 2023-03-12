@@ -386,12 +386,12 @@ On receiving the Join Request, the KDC processes the request as defined in Secti
 If 'client\_cred' field is present, the KDC verifies signature in the the 'client\_cred\_verify'. As PoP input, the KDC uses the value of the 'scope' parameter from the Join Request as a CBOR byte string, concatenated with N_S encoded as a CBOR byte string, concatenated with N_C encoded as a CBOR byte string. As public key of the joining node, the KDC uses either the one included in the authentication credential retrieved from
 the 'client\_cred' parameter of the Join Request or the already stored authentication credential from previous interactions with the joining node. The KDC verifies the PoP evidence, which is a signature, by using the public key of the joining node, as well as the signature algorithm used in the group and possible corresponding parameters.
 
-For a Publisher Client, the KDC assigns an available Sender ID that has not been used since the latest time when the current Group Identifier (Gid) value was assigned to the group. The KDC MUST NOT assign a Sender ID to the joining node if the node doesn't have a Publisher role. The Sender ID MUST be unique, and MAY be short. 
+For a Publisher Client, the KDC assigns an available Sender ID that has not been used <!--- since the latest time when the current Group Identifier (Gid) value was assigned to ---> in the group. The KDC MUST NOT assign a Sender ID to the joining node if the node doesn't have a Publisher role. The Sender ID MUST be unique, and MAY be short. 
 ToDo: SenderID Size from groupcomm oscore? - the maximum length of Sender ID in bytes equals the length of the AEAD nonce minus 6; for AES-CCM-16-64-128 the maximum length of Sender ID is 7 bytes.
 
 In the case of any join request error, the KDC and the Client attempting the join follow the procedure defined in {{join-error}}. 
 
-In the case of success, the Client is added to the list of current members, if not already a member. The Client is assigned a NODENAME and a sub-resource /ace-group/GROUPNAME/nodes/NODENAME. NODENAME is associated to the access token and secure session of the Client. Publishers' client credentials are also associated with tuple containing NODENAME, GROUPNAME, Group Identifier (Gid), sender ID and access token. The KDC responds with a Join Response with response code 2.01 (Created) if the Client has been added to the list of group members, and 2.04 (Changed) otherwise (e.g., if the Client is re-joining).  The Content-Format  is "application/ace-groupcomm+cbor". The payload (formatted as a CBOR map) MUST contain the following fields from the Join Response and encode them as defined in Section 4.3.1 of {{I-D.ietf-ace-key-groupcomm}}:
+In the case of success, the Client is added to the list of current members, if not already a member. The Client is assigned a NODENAME and a sub-resource /ace-group/GROUPNAME/nodes/NODENAME. NODENAME is associated to the access token and secure session of the Client. Publishers' client credentials are also associated with tuple containing NODENAME, GROUPNAME, <!--- Group Identifier (Gid), ---> sender ID and access token. The KDC responds with a Join Response with response code 2.01 (Created) if the Client has been added to the list of group members, and 2.04 (Changed) otherwise (e.g., if the Client is re-joining).  The Content-Format  is "application/ace-groupcomm+cbor". The payload (formatted as a CBOR map) MUST contain the following fields from the Join Response and encode them as defined in Section 4.3.1 of {{I-D.ietf-ace-key-groupcomm}}:
 
 - 'gkty': the key type "Group_PubSub_COSE_Key" for the 'key' parameter defined in {{iana-ace-groupcomm-key}} of
       this document.
@@ -448,7 +448,7 @@ The KDC MUST reply with a 4.00 (Bad Request) error response to the Join Request 
 ### Querying for Group Information {#query}
 
 * '/ace-group': All Clients send FETCH requests to retrieve a set of group names associated with their group identifiers. Each element of the CBOR array 'gid' is a CBOR byte string (REQ13), which encodes the Gid of the group for which the group name and the URI to the group-membership resource are provided.
-ToDo: Gid in security context; Gid on join response?
+ToDo: Support or not?
 * '/ace-group/GROUPNAME':  All Clients can use GET requests to retrieve the symmetric group keying material of the group with the name GROUPNAME. The value of the GROUPNAME URI path and the group name in the access token scope ('gname') MUST coincide.
 * '/ace-group/GROUPNAME/creds': KDC acts as a repository of authentication credentials for Publisher Clients. The Subscriber Clients of the group use GET/FETCH requests to retrieve the authentication credentials of all or subset of the group members of the group with name GROUPNAME. The KDC silently ignores  the Sender IDs   included in the 'get_creds' parameter of the request that are not associated with any current group member (REQ26).
 * '/ace-group/GROUPNAME/num': All group member Clients use GET requests to retrieve the current version number for the symmetric group keying material of the group with name GROUPNAME.
@@ -466,8 +466,8 @@ A Client can actively request to leave the group.  In this case, the Client send
 
 KDC MUST trigger a group rekeying as described in Section 6 of {{I-D.ietf-ace-key-groupcomm}} due to a change in the group membership or the current group keying material approaching its expiration time. KDC MAY trigger regularly scheduled update of the group keying material.
 
-Upon generating the new group keying material and before starting its distribution, the KDC MUST increment the version number of the group keying material. The KDC MUST preserve the current value of the Sender ID of each member in that group. The KDC MUST also generate a new Group Identifier (Gid) for the group as introduced in
-{{I-D.ietf-ace-key-groupcomm}}.
+Upon generating the new group keying material and before starting its distribution, the KDC MUST increment the version number of the group keying material. The KDC MUST preserve the current value of the Sender ID of each member in that group. 
+<!--- The KDC MUST also generate a new Group Identifier (Gid) for the group as introduced in {{I-D.ietf-ace-key-groupcomm}}. --->
 
 Default rekeying scheme is Point-to-point (Section 6.1 of {{I-D.ietf-ace-key-groupcomm}}), where KDC individually targets each node to rekey, using the pairwise secure communication association with that node.
 
