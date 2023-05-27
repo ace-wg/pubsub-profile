@@ -600,7 +600,7 @@ IANA is asked to register the following entry in the "Resource Type (rt=) Link T
 
 *  Reference: [{{&SELF}}
 
-Clients can use this resource type to discover a group membership resource at a Broker.
+Clients can use this resource type to discover a group membership resource at at the KDC.
 
 ## AIF Media-Type Sub-Parameters {#aif}
 
