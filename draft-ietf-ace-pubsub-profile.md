@@ -317,8 +317,7 @@ The Clients uses the following KDC resources to enable group communication:
 | /ace-group/GROUPNAME/nodes/NODENAME | Required. Contains the group keying material for that group member NODENAME in GROUPNAME. | GET, DELETE (All). PUT not supported. |
 | /ace-group/GROUPNAME/nodes/NODENAME/cred | Required. Authentication credential for NODENAME in the group GROUPNAME |  POST (Pub) |
 | /ace-group/GROUPNAME/kdc-cred | MUST be hosted if a group re-keying mechanism is used. Contains the authentication credential of the KDC for the group with name GROUPNAME. | GET (All) |
-| /ace-group/GROUPNAME/policies | Optional. Contains the group policies of the group with
-name GROUPNAME. | GET (All) |
+| /ace-group/GROUPNAME/policies | Optional. Contains the group policies of the group with name GROUPNAME. | GET (All) |
 
 Note that the use of these resources follows what is defined in {{I-D.ietf-ace-key-groupcomm}}, and only additions or modifications to that specification are defined in this document.
 
