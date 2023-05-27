@@ -759,6 +759,14 @@ pub/sub communication {{ I-D.ietf-core-coap-pubsub}}
 
 *  OPT15: Optionally, specify if Clients must or should support any of the parameters defined as optional in {{I-D.ietf-ace-key-groupcomm}}: No.
 
+# Document Updates # {#sec-document-updates}
+
+RFC EDITOR: PLEASE REMOVE THIS SECTION.
+
+## Version -06 to -07 ## {#sec-06-07}
+
+* Clarifications, fixes and editorial improvements.
+
 # Acknowledgments
 {: numbered="no"}
 
