@@ -103,7 +103,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 Readers are expected to be familiar with:
 
 * The terms and concepts described in {{RFC9200}}, and Authorization Information Format (AIF) {{RFC9237}} to express authorization information. In particular, analogously to {{RFC9200}}, terminology for entities in the architecture such as Client (C), Resource Server (RS), and Authorization Server (AS) is defined in OAuth 2.0 {{RFC6749}}.
-* The terms and concept related to the message formats and processing, specified in {{I-D.ietf-ace-key-groupcomm}}, for provisioning and renewing keying material in group communication scenarios. 
+* The terms and concept related to the message formats and processing, specified in {{I-D.ietf-ace-key-groupcomm}}, for provisioning and renewing keying material in group communication scenarios.
 * The terms and concepts of pub/sub group communication, as described in {{I-D.ietf-core-coap-pubsub}}.
 * The terms and concepts described in CBOR {{RFC8949}} and COSE {{RFC9052}}{{RFC9053}}.
 
@@ -543,7 +543,7 @@ In the profile described above, when the Publisher and Subscriber use asymmetric
 
 The Broker is only trusted with verifying that the Publisher is authorized to publish, but is not trusted with the publications itself, which it cannot read nor modify. In this setting, caching of publications on the Broker is still allowed.
 
-With respect to the reusage of nonces for Proof-of-Possession input, the same considerations apply as in the 
+With respect to the reusage of nonces for Proof-of-Possession input, the same considerations apply as in the
 {{I-D.ietf-ace-key-groupcomm-oscore}}.
 
 TODO: expand on security and privacy considerations
@@ -622,7 +622,7 @@ For the media-types application/aif+cbor and application/aif+json defined in Sec
 
 * Name: pubsub-perm
 
-* Description/Specification: Permissions corresponding to the roles in pub/sub group 
+* Description/Specification: Permissions corresponding to the roles in pub/sub group
 
 *Reference: [[This document]]
 
