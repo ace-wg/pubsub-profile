@@ -63,6 +63,7 @@ informative:
   RFC8259:
   RFC9202:
   RFC9203:
+  I-D.ietf-ace-edhoc-oscore-profile:
   I-D.ietf-ace-mqtt-tls-profile:
   I-D.draft-ietf-ace-revoked-token-notification-03:
   I-D.ietf-ace-key-groupcomm-oscore:
@@ -143,7 +144,7 @@ Both Publisher and Subscriber Clients use the same pub/sub communication protoco
 {: #archi title="Architecture for Pub/Sub with Authorization Server and Key Distribution Center"}
 {: artwork-align="center"}
 
-All communications between the involved entities MUST be secured. This profile expects the establishment of a secure association between a Client and Broker, using an ACE transport profile such as for DTLS {{RFC9202}} or OSCORE {{RFC9203}} (A and C). Once the client establishes a secure association with KDC with the help of AS, it can request to join the security groups of its pub/sub topics (A and B), and  can communicate securely with the other group members, using the keying material provided by the KDC.
+All communications between the involved entities MUST be secured. This profile expects the establishment of a secure association between a Client and Broker, using an ACE transport profile such as for DTLS {{RFC9202}} or OSCORE {{RFC9203}}{{I-D.ietf-ace-edhoc-oscore-profile}} (A and C). Once the client establishes a secure association with KDC with the help of AS, it can request to join the security groups of its pub/sub topics (A and B), and  can communicate securely with the other group members, using the keying material provided by the KDC.
 
 (C) corresponds to the exchange between the Client and  the Broker, where the Client sends its access token to the Broker and establishes a secure association with the Broker. Depending on the Information received in (A), the connection set-up may involve, for example, a DTLS handshake, or other protocols. Depending on the application, the set up phase may be skipped: for example, if OSCORE is used directly.
 
