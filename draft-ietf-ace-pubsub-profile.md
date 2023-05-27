@@ -109,16 +109,15 @@ Readers are expected to be familiar with:
 
 A principal interested to participate in group communication as well as already participating as a group member is interchangeably denoted as "Client", "pub/sub client",  or "node".
 
-* Group: a set of nodes that share common keying material and security parameters to protect their communications with one another. That is, the term refers to a "security group". This is not to be confused with an "application group", which has relevance at the application level and whose members may be a set of nodes registered to a pub/sub topic.
-
+* Group: a set of nodes that share common keying material and security parameters to protect their communications with one another. That is, the term refers to a "security group". This is not to be confused with an "application group", which has relevance at the application level and whose members are in this case the nodes acting as publishers and/or subscribers for a topic.
 
 # Application Profile Overview {#overview}
 
-This document describes how to use {{I-D.ietf-ace-key-groupcomm}} and {{RFC9200}} to perform authentication, authorization and key distribution actions as overviewed in Section 2 of {{I-D.ietf-ace-key-groupcomm}}, when the considered group is pub/sub clients belonging to the same security group.
+This document describes how to use {{RFC9200}} and {{I-D.ietf-ace-key-groupcomm}} to perform authentication, authorization and key distribution actions as overviewed in Section 2 of {{I-D.ietf-ace-key-groupcomm}}, when the considered group is the security group including the pub/sub clients that exchange end-to-end protected content through the broker.
 
 Pub/sub clients communicate within their application groups mapped to a collection of pub/sub topics. The pub/sub topics may consist of one or more sub-topics, which may have their own sub-topics, forming a hierarchy. The applications decide how to map this hierarchy into different application groups, and a security group SHOULD be associated with a single application group. However, the same application group MAY be associated with multiple security groups. Further details and considerations on the mapping between the two types of groups are out of the scope of this document.
 
-The architecture of the scenario is shown in {{archi}}. A Client can act both as a publisher and a subscriber, publishing to some topics, and subscribing to others. However, for the simplicity of presentation, this profile describes Publisher and Subscriber Clients separately. The Broker acts as the ACE RS, and also corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}. The Clients communicate with The Key Distribution Center (KDC) to join security groups, and obtain the group keying material.
+The architecture of the scenario is shown in {{archi}}. A Client can act both as a publisher and a subscriber, publishing to some topics, and subscribing to others. However, for the simplicity of presentation, this profile describes Publisher and Subscriber Clients separately. The Broker acts as the ACE RS, and also corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}. The Clients communicate with The Key Distribution Center (KDC) to join security groups, and obtain the group keying material for protecting and verifying the published content protected end-to-end.
 
 Both Publisher and Subscriber Clients use the same pub/sub communication protocol and the same transport profile of ACE in their interaction with the broker. The pub/sub communication protocol considered in this document is CoAP, as described in {{I-D.ietf-core-coap-pubsub}}, but the specification can apply to other pub/sub protocols such as MQTT {{MQTT-OASIS-Standard-v5}}, or other transport protocols.  All clients MUST use CoAP when communicating to the KDC.
 
@@ -144,13 +143,13 @@ Both Publisher and Subscriber Clients use the same pub/sub communication protoco
 {: #archi title="Architecture for Pub/Sub with Authorization Server and Key Distribution Center"}
 {: artwork-align="center"}
 
-All communications between the involved entities MUST be secured. This profile expects the establishment of a secure connection between a Client and Broker, using an ACE transport profile such as for DTLS {{RFC9202}} or OSCORE {{RFC9203}} (A and C). Once the client establishes a secure association with KDC with the help of AS, it can request to join the security groups of its pub/sub topics (A and B), and  can communicate securely with the other group members, using the keying material provided by the KDC.
+All communications between the involved entities MUST be secured. This profile expects the establishment of a secure association between a Client and Broker, using an ACE transport profile such as for DTLS {{RFC9202}} or OSCORE {{RFC9203}} (A and C). Once the client establishes a secure association with KDC with the help of AS, it can request to join the security groups of its pub/sub topics (A and B), and  can communicate securely with the other group members, using the keying material provided by the KDC.
 
-(C) corresponds to the exchange between the Client and  the Broker, where the Client sends its access token to the Broker and establishes a secure connection with the Broker. Depending on the Information received in (A), the connection set-up may involve, for example, a DTLS handshake, or other protocols. Depending on the application, the set up phase may be skipped: for example, if OSCORE is used directly.
+(C) corresponds to the exchange between the Client and  the Broker, where the Client sends its access token to the Broker and establishes a secure association with the Broker. Depending on the Information received in (A), the connection set-up may involve, for example, a DTLS handshake, or other protocols. Depending on the application, the set up phase may be skipped: for example, if OSCORE is used directly.
 
 In addition, this document describes an Optional Discovery though Broker (O), where an anonymous Clients MAY discover the topic categories, topics resources, the AS and the KDC from the Broker.
 
-It must be noted that Clients maintain two different security associations. On the one hand, the Publisher and the Subscriber clients have a security association with the Broker, which, as the ACE RS, verifies that the Clients are authorized (Security Association 1). On the other hand, the Publisher has a security association with the Subscriber, to protect the publication content (Security Association 2) while sending it through the broker. The Security Association 1 is set up using AS and a transport profile of {{RFC9200}}, the Security Association 2 is set up using AS, KDC and {{I-D.ietf-ace-key-groupcomm}}.
+It must be noted that Clients maintain two different security associations. On the one hand, the Publisher and the Subscriber clients have a security association with the Broker, which, as the ACE RS, verifies that the Clients are authorized to publish and/or subscribe on a certain set of topics at the broker (Security Association 1). On the other hand, with respect to each topic, all the Publisher and Subscribers for that topic have a common, group security association, through which the published content sent through the broker is protected end-to-end (Security Association 2). The Security Association 1 is set up using AS and a transport profile of {{RFC9200}}, the Security Association 2 is set up using AS, KDC and {{I-D.ietf-ace-key-groupcomm}}.
 
 Given that the publication content is protected, the Broker MAY accept unauthorised Subscribers. In this case, the Subscriber client MAY skip setting up Security Association 1 with the Broker and connect to it as an anonymous client to subscribe to topics of interest at the Broker.
 
@@ -231,7 +230,7 @@ Communications between the Client and the AS MUST be secured, according to what 
 
 Both Authorisation Requests include the following fields (Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}):
 
-* 'scope': Optional. If present, specifies the name of the topic groups, that the Client requests to access. This parameter is a CBOR byte string that encodes a CBOR array, whose format SHOULD follow the data model AIF-PUBSUB-GROUPCOMM defined below.
+* 'scope': Optional. If present, specifies the name of the topics, that the Client requests to access. This parameter is a CBOR byte string that encodes a CBOR array, whose format SHOULD follow the data model AIF-PUBSUB-GROUPCOMM defined below.
 * 'audience': Required identifier corresponding to either the KDC or the Broker.
 
 Other additional parameters can be included if necessary, as defined in {{RFC9200}}.
