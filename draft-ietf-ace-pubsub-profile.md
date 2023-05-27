@@ -82,7 +82,7 @@ informative:
         ins: R. Gupta
 
 entity:
-        SELF: "[RFC-XXXX]"
+  SELF: "[RFC-XXXX]"
 
 --- abstract
 
@@ -398,7 +398,7 @@ and a "COSE\_Key". The "COSE\_Key" object is defined in {{RFC9052}} {{RFC9053}} 
     * 'k', the value of the symmetric key (REQ17)
 - 'num': MUST be initialised to 0 as the version number of the keying material.
 - 'exp', MUST be present.
-- 'ace-groupcomm-profile' parameter MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is defined in {{iana-coap-profile}} of this document.
+- 'ace-groupcomm-profile' parameter MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is defined in {{iana-profile}} of this document.
 - 'creds', MUST be present, if the 'get\_creds' parameter was present. Otherwise, it MUST NOT be present. The KDC provides the authentication credentials of all the Publisher Clients in the group.
 - 'peer\_roles' MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present.
 (ToDo: Requested a change for this, and see how the Groupcomm draft is updated.)
@@ -527,7 +527,7 @@ The steps MQTT clients go through would be similar to the CoAP clients, and the 
 
 Authorisation Server (AS) Discovery is defined in Section 2.2.6.1 of {{I-D.ietf-ace-mqtt-tls-profile}} for MQTT v5 clients (and not supported for MQTT v3 clients). $SYS/ has been widely adopted as a prefix to topics that contain Server-specific information or control APIs, and may be used for topic and KDC discovery.
 
-Differently for MQTT, the Client sends an authorisation request to the AS using AIF-MQTT data model for representing the requested scopes is described in Section 3 of the {{I-D.ietf-ace-mqtt-tls-profile}}. In the authorisation response, the 'profile' claim is set to "mqtt_pubsub_app" as defined in {{iana-mqtt-profile}}.
+Differently for MQTT, the Client sends an authorisation request to the AS using AIF-MQTT data model for representing the requested scopes is described in Section 3 of the {{I-D.ietf-ace-mqtt-tls-profile}}. In the authorisation response, the 'profile' claim is set to "mqtt_pubsub_app" as defined in {{iana-profile}}.
 
 Both Publisher and Subscriber Clients MUST authorise to the Broker with their respective tokens (described in {{I-D.ietf-ace-mqtt-tls-profile}}) i.e.,  anonymous Subscribers are not supported in the profile. A Publisher Client sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. The Broker validates the PUBLISH message by verifying its topic in the stored token. A Subscriber Client may send SUBSCRIBE messages with one or multiple topic filters. A topic filter may correspond to multiple topics. The Broker validates the SUBSCRIBE message by checking the stored token for the Client.
 The Broker forwards all PUBLISH messages to all authorised Subscribers, including the retained messages.
@@ -550,49 +550,45 @@ TODO: expand on security and privacy considerations
 
 # IANA Considerations
 
-## ACE Groupcomm Profile Registry {#iana-profile}
+Note to RFC Editor: Please replace "{{&SELF}}" with the RFC number of this document and delete this paragraph.
 
-The following registrations are done for the "ACE Groupcomm Profile" Registry following the procedure specified in {{I-D.ietf-ace-key-groupcomm}}.
-
-Note to RFC Editor: Please replace all occurrences of "\[\[This document\]\]"
-with the RFC number of this specification and delete this paragraph.
-
-### CoAP Profile Registration {#iana-coap-profile}
-
-Name: coap_group_pubsub_app
-
-Description: Profile for delegating client authentication and authorization for publishers and subscribers in a CoAP pub/sub setting scenario in a constrained environment.
-
-CBOR Key: TBD
-
-Reference: \[\[This document\]\]
-
-### MQTT Profile Registration {#iana-mqtt-profile}
-
-Name: mqtt_pubsub_app
-
-Description: Profile for delegating client authentication and authorization for publishers and subscribers in a MQTT pub/sub setting scenario in a constrained environment.
-
-CBOR Key: TBD
-
-Reference: \[\[This document\]\]
+This document has the following actions for IANA.
 
 ## ACE Groupcomm Key Registry {#iana-ace-groupcomm-key}
 
-The following registrations are done for the "ACE Groupcomm Key Types"  defined in Section 11.7 of {{I-D.ietf-ace-key-groupcomm}}.
+IANA is asked to register the following entry in the "ACE Groupcomm Key Types" registry defined in Section 11.7 of {{I-D.ietf-ace-key-groupcomm}}.
 
-Note to RFC Editor: Please replace all occurrences of "\[\[This document\]\]"
-with the RFC number of this specification and delete this paragraph.
+* Name: Group_PubSub_COSE_Key
 
-Name: Group_PubSub_COSE_Key
+* Key Type Value: GROUPCOMM_KEY_TBD
 
-Key Type Value: GROUPCOMM_KEY_TBD
+* Profile: coap_group_pubsub_app, defined in {{iana-profile}} of this document.
 
-Profile: coap_group_pubsub_app, defined in {{iana-coap-profile}} of this document.
+* Description: COSE_Key object
 
-Description: COSE_Key object
+* References: {{RFC9052}}, {{RFC9053}}, {{&SELF}}
 
-References: {{RFC9052}} {{RFC9053}}, \[\[This document\]\]
+## ACE Groupcomm Profile Registry {#iana-profile}
+
+IANA is asked to register the following entries in the "ACE Groupcomm Profiles" registry defined in Section 11.8 of {{I-D.ietf-ace-key-groupcomm}}.
+
+* Name: coap_group_pubsub_app
+
+* Description: Profile for delegating client authentication and authorization for publishers and subscribers in a CoAP pub/sub setting scenario in a constrained environment.
+
+* CBOR Value: TBD
+
+* Reference: {{&SELF}}
+
+&nbsp;
+
+* Name: mqtt_pubsub_app
+
+* Description: Profile for delegating client authentication and authorization for publishers and subscribers in a MQTT pub/sub setting scenario in a constrained environment.
+
+* CBOR Value: TBD
+
+* Reference: {{&SELF}}
 
 ## CoRE Resource Type {#core_rt}
 
@@ -602,7 +598,7 @@ IANA is asked to register the following entry in the "Resource Type (rt=) Link T
 
 *  Description: Group-membership resource for Pub/Sub communication.
 
-*  Reference: [RFC-XXXX]
+*  Reference: [{{&SELF}}
 
 Clients can use this resource type to discover a group membership resource at a Broker.
 
@@ -616,7 +612,7 @@ For the media-types application/aif+cbor and application/aif+json defined in Sec
 
 * Description/Specification: Pub/sub topic name, corresponding to the security group
 
-* Reference: [[This document]]
+* Reference: {{&SELF}}
 
 &nbsp;
 
@@ -626,7 +622,7 @@ For the media-types application/aif+cbor and application/aif+json defined in Sec
 
 * Description/Specification: Permissions corresponding to the roles in pub/sub group
 
-* Reference: [[This document]]
+* Reference: {{&SELF}}
 
 ## CoAP Content-Format  {#content_format}
 
@@ -634,31 +630,33 @@ IANA is asked to register the following entries to the "CoAP Content- Formats" r
 
 * Media Type: application/aif+cbor;Toid="pubsub-topic",Tperm="pubsub-perm"
 
-*  Encoding: -
+* Encoding: -
 
-*  ID: 294 (suggested)
+* ID: 294 (suggested)
 
-*  Reference: [RFC-XXXX]
+* Reference: {{&SELF}}
+
+&nbsp;
 
 * Media Type: application/aif+json;Toid="pubsub-topic",Tperm="pubsub-perm"
 
-*  Encoding: -
+* Encoding: -
 
-*  ID: 295 (suggested)
+* ID: 295 (suggested)
 
-*  Reference: [RFC-XXXX]
+* Reference: {{&SELF}}
 
 ## TLS Exporter Labels {#tls_exporter}
 
 IANA is asked to register the following entry to the "TLS Exporter Labels" registry defined in Section 6 of {{RFC5705}} and updated in Section 12 of {{RFC8447}}.
 
-*  Value: EXPORTER-ACE-Sign-Challenge-coap-group-pubsub-app
+* Value: EXPORTER-ACE-Sign-Challenge-coap-group-pubsub-app
 
-*  DTLS-OK: Y
+* DTLS-OK: Y
 
-*  Recommended: N
+* Recommended: N
 
-*  Reference: [RFC-XXXX] (Section XXX)
+* Reference: {{Section 4.1.1.2 of &SELF}}
 
 --- back
 
@@ -705,7 +703,7 @@ instead): See {{pop}} in this document.
 
 * REQ18: Specify the acceptable values of the 'gkty' parameter: Group_PubSub_COSE_Key, see {{iana-ace-groupcomm-key}}.
 
-* REQ19: Specify and register the application profile identifier: coap_group_pubsub_app, see {{iana-coap-profile}}.
+* REQ19: Specify and register the application profile identifier: coap_group_pubsub_app, see {{iana-profile}}.
 
 *  REQ20: If used, specify the format and content of 'group_policies' and its entries.  Specify the policies default values: ToDo.
 
