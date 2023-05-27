@@ -4,7 +4,6 @@ v: 3
 title: Publish-Subscribe Profile for Authentication and Authorization for Constrained Environments (ACE)
 abbrev: ACE Pub-sub Profile
 docname: draft-ietf-ace-pubsub-profile-latest
-category: std
 
 coding: utf-8
 
@@ -86,8 +85,9 @@ entity:
 
 --- abstract
 
-This document defines an application profile for enabling secure group
-communication for a constrained Publish-Subscribe (pub/sub) scenario, where Publishers and Subscribers communicate through a broker, using the ACE framework. This profile relies on transport layer or application layer security profiles of ACE to achieve communication security, server authentication and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 Access Token. The document describes how to request and provision keying material for group communication, and protect the content of the pub/sub client message exchange, focusing mainly on the pub/sub scenarios using the Constrained Application Protocol (CoAP) {{I-D.ietf-core-coap-pubsub}}.
+This document defines an application profile for enabling secure group communication for a constrained Publish-Subscribe (pub/sub) scenario, where Publishers and Subscribers communicate through a broker, using the ACE framework. This profile relies on protocol-specific transport profiles of ACE to achieve communication security, server authentication and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 Access Token. This document describes how to request and provision keying material for group communication, and protect the content of the pub/sub client message exchange, focusing mainly on the pub/sub scenarios using the Constrained Application Protocol (CoAP) \[draft-ietf-core-coap-pubsub\].
+
+Note to RFC Editor: Please replace "[draft-ietf-core-coap-pubsub\]" with the RFC number of that document and delete this paragraph.
 --- middle
 
 # Introduction
@@ -248,7 +248,7 @@ Based on the generic AIF model
       AIF-Generic<Toid, Tperm> = [* [Toid, Tperm]]
 ~~~~~~~~~~~
 
-The value of the CBOR byte string used as the scope encodes the CBOR array [* [Toid, Tperm]], where each [Toid, Tperm] element corresponds to one scope entry.
+The value of the CBOR byte string used as the scope encodes the CBOR array \[* \[Toid, Tperm\]\], where each \[Toid, Tperm\] element corresponds to one scope entry.
 
 This document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM, that this profile SHOULD use to format and encode scope entries.
 
@@ -710,7 +710,7 @@ instead): See {{pop}} in this document.
 * REQ21: Specify the approaches used to compute and verify the PoP evidence to include in 'kdc_cred_verify', and which of those approaches is used in which case: see {{join-response}}.
 
 * REQ22: Specify the communication protocol the members of the group must use.: CoAP {{RFC7252}}, and for
-pub/sub communication {{ I-D.ietf-core-coap-pubsub}}
+pub/sub communication {{I-D.ietf-core-coap-pubsub}}
 
 *  REQ23: Specify the security protocol the group members must use to protect their communication. This must provide encryption, integrity and replay protection.: Symmetric COSE Key is used to create a COSE\_Encrypt0 object with an AEAD algorithm specified by the KDC.
 
