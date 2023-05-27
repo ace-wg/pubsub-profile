@@ -769,7 +769,7 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 # Acknowledgments
 {: numbered="no"}
 
-The authors wish to thank {{{Ari Keränen}}}, {{{John Preuß Mattsson}}}, {{{Ludwig Seitz}}}, {{{Jim Schaad}}}, and {{{Göran Selander}}} for the useful discussion and reviews that helped shape this document.
+The authors wish to thank {{{Ari Keränen}}}, {{{John Preuß Mattsson}}}, {{{Jim Schaad}}}, {{{Ludwig Seitz}}}, and {{{Göran Selander}}} for the useful discussion and reviews that helped shape this document.
 
 The work on this document has been partly supported by the H2020 project SIFIS-Home (Grant agreement 952652).
 
