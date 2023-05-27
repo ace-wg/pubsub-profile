@@ -624,13 +624,13 @@ For the media-types application/aif+cbor and application/aif+json defined in Sec
 
 * Reference: {{&SELF}}
 
-## CoAP Content-Format  {#content_format}
+## CoAP Content-Formats {#content_format}
 
-IANA is asked to register the following entries to the "CoAP Content- Formats" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
+IANA is asked to register the following entries to the "CoAP Content-Formats" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
 
-* Media Type: application/aif+cbor;Toid="pubsub-topic",Tperm="pubsub-perm"
+* Content Type: application/aif+cbor;Toid="pubsub-topic",Tperm="pubsub-perm"
 
-* Encoding: -
+* Content Coding: -
 
 * ID: 294 (suggested)
 
@@ -638,9 +638,9 @@ IANA is asked to register the following entries to the "CoAP Content- Formats" r
 
 &nbsp;
 
-* Media Type: application/aif+json;Toid="pubsub-topic",Tperm="pubsub-perm"
+* Content Type: application/aif+json;Toid="pubsub-topic",Tperm="pubsub-perm"
 
-* Encoding: -
+* Content Coding: -
 
 * ID: 295 (suggested)
 
