@@ -65,7 +65,7 @@ informative:
   RFC9203:
   I-D.ietf-ace-edhoc-oscore-profile:
   I-D.ietf-ace-mqtt-tls-profile:
-  I-D.draft-ietf-ace-revoked-token-notification-03:
+  I-D.draft-ietf-ace-revoked-token-notification:
   I-D.ietf-ace-key-groupcomm-oscore:
   MQTT-OASIS-Standard-v5:
     title: "OASIS Standard MQTT Version 5.0"
@@ -86,9 +86,9 @@ entity:
 
 --- abstract
 
-This document defines an application profile for enabling secure group communication for a constrained Publish-Subscribe (pub/sub) scenario, where Publishers and Subscribers communicate through a broker, using the ACE framework. This profile relies on protocol-specific transport profiles of ACE to achieve communication security, server authentication and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 Access Token. This document describes how to request and provision keying material for group communication, and protect the content of the pub/sub client message exchange, focusing mainly on the pub/sub scenarios using the Constrained Application Protocol (CoAP) \[draft-ietf-core-coap-pubsub\].
+This document defines an application profile of the Authentication and Authorization for Constrained Environments (ACE) framework, to enable secure group communication in a constrained Publish-Subscribe (pub/sub) scenario, where Publishers and Subscribers communicate through a broker. This profile relies on protocol-specific transport profiles of ACE to achieve communication security, server authentication, and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 Access Token. With a focus on the pub/sub architecture for the Constrained Application Protocol (CoAP) \[draft-ietf-core-coap-pubsub\], this document specifies the provisioning and enforcement of authorization information for clients to act as publishers and/or subscribers, as well as the provisioning of keying material and security parameters that publishers and subscribers use for protecting end-to-end their communications through the broker.
 
-Note to RFC Editor: Please replace "[draft-ietf-core-coap-pubsub\]" with the RFC number of that document and delete this paragraph.
+Note to RFC Editor: Please replace "\[draft-ietf-core-coap-pubsub\]" with the RFC number of that document and delete this paragraph.
 --- middle
 
 # Introduction
@@ -537,8 +537,8 @@ All the security considerations in {{I-D.ietf-ace-key-groupcomm}} apply.
 
 In the profile described above, the Publisher and Subscriber use asymmetric crypto, which would make the message exchange quite heavy for small constrained devices. Moreover, all Subscribers must be able to access the public keys of all the Publishers to a specific topic to verify the publications.
 
- Even though Access Tokens have expiration times, an Access Token may need to be revoked before its expiration time (see {{I-D.draft-ietf-ace-revoked-token-notification-03}} for a list of possible circumstances). Clients can be excluded from future publications through re-keying for a certain topic. This could be set up to happen on a regular basis, for certain applications. How this could be done is out of scope for this work.
- The method described in {{I-D.draft-ietf-ace-revoked-token-notification-03}} MAY be used to allow an Authorization Server to notify the KDC about revoked Access Tokens.
+ Even though Access Tokens have expiration times, an Access Token may need to be revoked before its expiration time (see {{I-D.draft-ietf-ace-revoked-token-notification}} for a list of possible circumstances). Clients can be excluded from future publications through re-keying for a certain topic. This could be set up to happen on a regular basis, for certain applications. How this could be done is out of scope for this work.
+ The method described in {{I-D.draft-ietf-ace-revoked-token-notification}} MAY be used to allow an Authorization Server to notify the KDC about revoked Access Tokens.
 
 The Broker is only trusted with verifying that the Publisher is authorized to publish, but is not trusted with the publications itself, which it cannot read nor modify. In this setting, caching of publications on the Broker is still allowed.
 
