@@ -118,13 +118,15 @@ Readers are expected to be familiar with:
 
 A principal interested to participate in group communication as well as already participating as a group member is interchangeably denoted as "Client", "pub/sub client",  or "node".
 
-* Group: a set of nodes that share common keying material and security parameters to protect their communications with one another. That is, the term refers to a "security group". This is not to be confused with an "application group", which has relevance at the application level and whose members are in this case the nodes acting as publishers and/or subscribers for a topic.
+* Group: a set of nodes that share common keying material and security parameters to protect their communications with one another. That is, the term refers to a "security group".
+
+   This is not to be confused with an "application group", which has relevance at the application level and whose members are in this case the nodes acting as publishers and/or subscribers for a topic.
 
 # Application Profile Overview {#overview}
 
 This document describes how to use {{RFC9200}} and {{I-D.ietf-ace-key-groupcomm}} to perform authentication, authorization and key distribution actions as overviewed in Section 2 of {{I-D.ietf-ace-key-groupcomm}}, when the considered group is the security group including the pub/sub clients that exchange end-to-end protected content through the broker.
 
-Pub/sub clients communicate within their application groups mapped to a collection of pub/sub topics. The pub/sub topics may consist of one or more sub-topics, which may have their own sub-topics, forming a hierarchy. The applications decide how to map this hierarchy into different application groups, and a security group SHOULD be associated with a single application group. However, the same application group MAY be associated with multiple security groups. Further details and considerations on the mapping between the two types of groups are out of the scope of this document.
+Pub/sub clients communicate within their application groups, each of which is mapped to a pub/sub topic. Depending on the application, a pub/sub topic may consist of one or more sub-topics, which may have their own sub-topics and so on, thus forming a hierarchy. A security group SHOULD be associated with a single application group. However, the same application group MAY be associated with multiple security groups. Further details and considerations on the mapping between the two types of groups are out of the scope of this document.
 
 The architecture of the scenario is shown in {{archi}}. A Client can act both as a publisher and a subscriber, publishing to some topics, and subscribing to others. However, for the simplicity of presentation, this profile describes Publisher and Subscriber Clients separately. The Broker acts as the ACE RS, and also corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}. The Clients communicate with The Key Distribution Center (KDC) to join security groups, and obtain the group keying material for protecting and verifying the published content protected end-to-end.
 
