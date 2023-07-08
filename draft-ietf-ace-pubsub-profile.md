@@ -99,7 +99,7 @@ With a focus on the pub/sub architecture defined in {{I-D.ietf-core-coap-pubsub}
 
 Building on the message formats and processing defined in {{I-D.ietf-ace-key-groupcomm}}, this document specifies the provisioning and enforcement of authorization information for Clients to act as Publishers and/or Subscribers at the broker, as well as the provisioning of keying material and security parameters that Clients use for protecting end-to-end their communications via the broker.
 
-In order to protect the publication/subscription operations at the broker as well as the provisioning of keying material and security parameters, this profile relies on protocol-specific transport profiles of ACE to achieve communication security, server authentication, and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 Access Token.
+In order to protect the publication/subscription operations at the broker as well as the provisioning of keying material and security parameters, this profile relies on protocol-specific transport profiles of ACE (e.g., {{RFC9202}} or {{RFC9203}}) to achieve communication security, server authentication, and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 Access Token.
 
 Furthermore, the content of published messages that are circulated by the broker is protected end-to-end between the corresponding Publisher and the intended Subscribers. To this end, this profile relies on COSE {{RFC9052}}{{RFC9053}} and on keying material provided to the Publishers and Subscribers participating in the same pub/sub topic. In particular, source authentication of published content is achieved by means of the corresponding Publisher signing such content with its own private key.
 
@@ -130,7 +130,11 @@ Pub/sub clients communicate within their application groups, each of which is ma
 
 The architecture of the scenario is shown in {{archi}}. A Client can act both as a publisher and a subscriber, publishing to some topics, and subscribing to others. However, for the simplicity of presentation, this profile describes Publisher and Subscriber Clients separately. The Broker acts as the ACE RS, and also corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}. The Clients communicate with The Key Distribution Center (KDC) to join security groups, and obtain the group keying material for protecting and verifying the published content protected end-to-end.
 
-Both Publisher and Subscriber Clients use the same pub/sub communication protocol and the same transport profile of ACE in their interaction with the broker. The pub/sub communication protocol considered in this document is CoAP, as described in {{I-D.ietf-core-coap-pubsub}}, but the specification can apply to other pub/sub protocols such as MQTT {{MQTT-OASIS-Standard-v5}}, or other transport protocols.  All clients MUST use CoAP when communicating to the KDC.
+Both Publisher and Subscriber Clients MUST use the same pub/sub communication protocol for their interaction with the broker. When using the profile defined in this document, such a protocol MUST be CoAP, which is used as described in {{I-D.ietf-core-coap-pubsub}}. What is specified in this document can apply to other pub/sub protocols such as MQTT {{MQTT-OASIS-Standard-v5}}, or to further transport protocols.
+
+All Publisher and Subscriber Clients MUST use CoAP when communicating with the KDC.
+
+Furthermore, both Publisher and Subscriber Clients MUST use the same transport profile of ACE (e.g., {{RFC9202}} or {{RFC9203}}) in their interaction with the broker. In order to reduce the number of libraries that Clients have to support, it is RECOMMENDED that the same transport profile of ACE is used also for the interaction between the Clients and the KDC.
 
 ~~~~~~~~~~~~
              +----------------+   +----------------+
