@@ -778,7 +778,13 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
 ## Version -06 to -07 ## {#sec-06-07}
 
-* Clarifications, fixes and editorial improvements.
+* Revised abstract and introduction.
+
+* Clarified use of "application groups".
+
+* Revised use of protocols and transport profiles with broker and KDC.
+
+* Further clarifications, fixes and editorial improvements.
 
 # Acknowledgments
 {: numbered="no"}
