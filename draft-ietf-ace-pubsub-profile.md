@@ -213,24 +213,48 @@ In summary, this profile specifies the following functionalities.
 
 # Getting Authorisation to Join a Pub/sub security group (A) {#authorisation}
 
-Figure {{message-flow}} provides a high level overview of the message flow for a node getting authorisation to join a group. This message flow is expanded in the subsequent sections.
+{{message-flow}} provides a high level overview of the message flow for a Client getting authorisation to join a group. Square brackets denote optional steps. The message flow is expanded in the subsequent sections.
 
 ~~~~~~~~~~~
-   Client                                       Broker   AS
-      | [--Resource Request (CoAP/MQTT or other)-->] |    |
-      | [<----AS Information (CoAP/MQTT or other)--] |    |
-      |[<--Topic Collection/Resource/KDC Discovery->]|
-      |                                              |
-      | --Broker Authorisation Req (CoAP/HTTP or other)-->|
-      | <---Authorisation Response (CoAP/HTTP or other) --|
-      |                                                   |
-      | --KDC Authorisation Req (CoAP/HTTP or other)----->|
-      | <---Authorisation Response (CoAP/HTTP or other) --|
+Client                                          Broker   AS   KDC
+   |                                                 |    |     |
+   |[<-------- Discovery of Topic Resource -------->]|    |     |
+   |[--------------- Resource Request ------------->]|    |     |
+   |[<--------------- AS Information ---------------]|    |     |
+   |                                                 |    |     |
+   |                                                 |    |     |
+   |---------- Broker Authorisation Request ------------->|     |
+   |<--------- Broker Authorisation Response -------------|     |
+   |                                                 |    |     |
+   |                                                 |    |     |
+   |------ Upload of authorisation information ----->|    |     |
+   |<----- Establishment of secure association ----->|    |     |
+   |                                                 |    |     |
+   |                                                 |    |     |
+   |[<------ Discovery of KDC and AS of KDC ------->]|    |     |
+   |                                                 |    |     |
+   |                                                 |    |     |
+   |------------ KDC Authorisation Request -------------->|     |
+   |<----------- KDC Authorisation Response --------------|     |
+   |                                                 |    |     |
+   |                                                 |    |     |
+   |--------- Upload of authorisation information ------------->|
+   |<-------- Establishment of secure association ------------->|
+   |                                                 |    |     |
+   |                                                 |    |     |
+   |----- Request to join the security group for the topic ---->|
+   |<-------- Keying material for the security group -----------|
+   |                                                 |    |     |
+   |                                                 |    |     |
+   |---------------- Resource Request -------------->|    |     |
+   |                                                 |    |     |
 ~~~~~~~~~~~
 {: #message-flow title="Authorisation Flow"}
 {: artwork-align="center"}
 
- Since {{RFC9200}} recommends the use of CoAP and CBOR, this document describes the exchanges assuming CoAP and CBOR are used. However, using HTTP instead of CoAP is possible, using the corresponding parameters and methods. Analogously, JSON {{RFC8259}} can be used instead of CBOR, using the conversion method specified in Sections 6.1 and 6.2 of {{RFC8949}}. In case JSON is used, the Content Format or Media Type of the message has to be changed accordingly. Exact definition of these exchanges are considered out of scope for this document.
+Since {{RFC9200}} recommends the use of CoAP and CBOR, this document describes the exchanges assuming CoAP and CBOR are used.
+
+However, using HTTP instead of CoAP is possible, by leveraging the corresponding parameters and methods. Analogously, JSON {{RFC8259}} can be used instead of CBOR, using the conversion method specified in {{Sections 6.1 and 6.2 of RFC8949}}. In case JSON is used, the Content-Format of the message has to be changed accordingly. Exact definitions of these exchanges are out of scope for this document.
 
 ## AS Discovery at the Broker (Optional) {#AS-discovery}
 
@@ -800,6 +824,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Revised use of protocols and transport profiles with Broker and KDC.
 
 * Revised overview of the profile and its security associations.
+
+* Revised presentation of authorization flow.
 
 * Subscribers cannot be anonymous anymore.
 
