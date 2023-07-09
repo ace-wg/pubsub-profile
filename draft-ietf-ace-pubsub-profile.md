@@ -331,7 +331,8 @@ The value of the CBOR byte string used as the scope encodes the CBOR array \[* \
 This document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM, that this profile SHOULD use to format and encode scope entries.
 
 * The object identifier ("Toid") is a CBOR text string, specifying the topic name for the scope entry.
-* The permission set ("Tperm") is a CBOR unsigned integer with value, specifying the Client role, based on the operations the Client can execute on Topic Data in the group. The set of numbers representing the permissions is converted into a single number by taking two to the power of each method number and computing the inclusive OR of the binary representations of all the power values. The roles a Client is allowed are Publish (1), Subscribe (or Read) (2) and Delete (3). An Admin(0) role is also defined, which is reserved for expressing permissions for Administrators of Pub/Sub groups. For Pub/Sub client communication, the scope entry MUST NOT include the Admin permission i.e.,  the least significant bit of "Tperm" always set to 0.
+
+* The permission set ("Tperm") is a CBOR unsigned integer, whose value specifies the operations that the Client is authorized to perform on the resources at the broker related to the topic indicated by Toid. The set of numbers representing the permissions is converted into a single number by taking two to the power of each method number and computing the inclusive OR of the binary representations of all the power values. The roles a Client is allowed are Publish (1), Subscribe (or Read) (2) and Delete (3). An Admin(0) role is also defined, which is reserved for expressing permissions for Administrators of Pub/Sub groups. For Pub/Sub client communication, the scope entry MUST NOT include the Admin permission i.e.,  the least significant bit of "Tperm" always set to 0.
 
 ~~~~~~~~~~~
   AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-topic, pubsub-perm>
