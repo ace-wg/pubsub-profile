@@ -265,7 +265,7 @@ Both Authorisation Requests include the following fields (Section 3.1 of {{I-D.i
 
 Other additional parameters can be included if necessary, as defined in {{RFC9200}}.
 
-For the Broker, the scope represents pub/sub topics i.e., the application group, and for the KDC, the scope represents the corresponding security group. This document expects a one-to-one mapping between the application group and the security group, and the client uses the same scope for both requests. If there is not a one-to-one mapping, the client MUST ask for the correct scopes in its Authorization Requests, and the correct policies regarding both sets of scopes MUST be available to the AS. How the client discovers the (application group, security group) association is out of scope of this document.
+For the Broker, the scope represents pub/sub topics i.e., the application group, and for the KDC, the scope represents the corresponding security group. This document expects a one-to-one mapping between the application group and the security group. If there is not a one-to-one mapping, the client MUST ask for the correct scopes in its Authorization Requests, and the correct policies regarding both sets of scopes MUST be available to the AS. How the client discovers the (application group, security group) association is out of scope of this document.
 
 ### Format of Scope {#scope}
 
