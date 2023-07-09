@@ -219,23 +219,24 @@ In summary, this profile specifies the following functionalities.
 Client                                          Broker   AS   KDC
    |                                                 |    |     |
    |[<-------- Discovery of Topic Resource -------->]|    |     |
+   |                                                 |    |     |
    |[--------------- Resource Request ------------->]|    |     |
    |[<--------------- AS Information ---------------]|    |     |
    |                                                 |    |     |
    |                                                 |    |     |
-   |---------- Broker Authorisation Request ------------->|     |
-   |<--------- Broker Authorisation Response -------------|     |
+   |----- Authorisation Request (Audience: Broker) ------>|     |
+   |<---- Authorisation Response (Audience: Broker) ------|     |
    |                                                 |    |     |
    |                                                 |    |     |
    |------ Upload of authorisation information ----->|    |     |
    |<----- Establishment of secure association ----->|    |     |
    |                                                 |    |     |
    |                                                 |    |     |
-   |[<------ Discovery of KDC and AS of KDC ------->]|    |     |
+   |[<-- Discovery of KDC and name of sec. group -->]|    |     |
    |                                                 |    |     |
    |                                                 |    |     |
-   |------------ KDC Authorisation Request -------------->|     |
-   |<----------- KDC Authorisation Response --------------|     |
+   |------- Authorisation Request (Audience: KDC) ------->|     |
+   |<------ Authorisation Response (Audience: KDC) -------|     |
    |                                                 |    |     |
    |                                                 |    |     |
    |--------- Upload of authorisation information ------------->|
@@ -256,40 +257,64 @@ Since {{RFC9200}} recommends the use of CoAP and CBOR, this document describes t
 
 However, using HTTP instead of CoAP is possible, by leveraging the corresponding parameters and methods. Analogously, JSON {{RFC8259}} can be used instead of CBOR, using the conversion method specified in {{Sections 6.1 and 6.2 of RFC8949}}. In case JSON is used, the Content-Format of the message has to be changed accordingly. Exact definitions of these exchanges are out of scope for this document.
 
+## Topic Discovery at the Broker (Optional) {#topic-discovery}
+
+The discovery of a topic at the Broker can be performed by discovering the corresponding topic resources hosted at the Broker. For example, the Client can send a lookup request to /.well-known/core at the Broker, specifying as lookup criterion the resource type "core.ps.conf" (see {{Section 2.3.2 of I-D.ietf-core-coap-pubsub}}).
+
+Although the links to the topic resources are also specified in the representation of the collection resource at the Broker (see {{Section 2.4 of I-D.ietf-core-coap-pubsub}}), the Client is not supposed to access such a resource, as intended for administrative operations that are out of the scope of this document.
+
 ## AS Discovery at the Broker (Optional) {#AS-discovery}
 
-Complementary to what is defined in {{RFC9200}} (Section 5.1) for AS discovery, the Broker MAY send the address of the AS to the Client in the 'AS' parameter in the AS Information as a response to an Unauthorized Resource Request (Section 5.2).  An example using CBOR diagnostic notation and CoAP is given below:
+Complementary to what is defined in {{Section 5.1 of RFC9200}} for AS discovery, the Broker MAY send the address of the AS to the Client in the 'AS' parameter of the AS Request Creation Hints, as a response to an Unauthorized Resource Request (see {{Section 5.2 of RFC9200}}). An example using CBOR diagnostic notation and CoAP is given below:
 
 ~~~~~~~~~~~
     4.01 Unauthorized
-    Content-Format: application/ace-groupcomm+cbor
-    {"AS": "coaps://as.example.com/token"}
+    Content-Format: application/ace+cbor
+    Payload:
+    {
+     "AS": "coaps://as.example.com/token"
+    }
 ~~~~~~~~~~~
-{: #AS-info-ex title="AS Information example"}
-{: artwork-align="center"}
+{: #AS-info-ex title="AS Request Creation Hints Example"}
+{: artwork-align="left"}
 
-## Topic and KDC Discovery at the Broker {#kdc-discovery}
-A Broker can offer a topic discovery entry point to enable clients to find topics of interest. The resource entry point thus represents a collection of related resources as specified in {{RFC6690}} and is identified by the resource type "core.ps.coll". A topic collection is a group of topic configuration resources that define topic properties and are identified by the resource type "core.ps.conf". An anonymous pub/sub client MAY request a collection of the topics present in the Broker by making a CoAP GET request to the collection URI.
-An anonymous pub/sub client MAY read the configuration of a topic by making a CoAP GET request to the topic configuration URI.
-(ToDo: Consider a discovery token to be consumed by the Broker for topic collection, and topic configuration?)
+## KDC Discovery at the Broker (Optional) {#kdc-discovery}
 
-(ToDo: Instead of defining "core.ps.gm", need to extend Topic Configuration Representation in core-coap-pubsub to include KDC?)
-The Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in {{core_rt}} (REQ10), and can be used to describe group-membership resources and its sub-resources at Broker, e.g., by using a link-format document {{RFC6690}}. Applications can use this common resource type to discover links to group-membership resources for joining pub/sub groups.
+Once a Client has obtained an Access Token from the AS and accordingly established a secure association with the Broker, the Client has the permission to access the topic resources at the broker that pertain the topics on which the Client is authorized to operate.
+
+In particular the Client is authorized to retrieve the representation of a topic resource, from which the Client can retrieve information related to the topic in question, as specified in {{Section 2.5 of I-D.ietf-core-coap-pubsub}}.
+
+This profile extends the set of CoAP Pubsub Parameters that is possible to specify within the representation of a topic resource, as originally defined in {{Section 3 of I-D.ietf-core-coap-pubsub}}. In particular, this profile defines the following two parameters that the Broker can specify in a response from a topic resource (see {{Section 2.5 of I-D.ietf-core-coap-pubsub}}). Note that, when these parameters are transported in a their respective field of the message payload, the Content-Format application/core-pubsub+cbor MUST be used.
+
+* 'kdc_uri', with value the URI of the group membership resource at KDC, where Clients can send a request to join the security group associated with the topic in question. The URI is encoded as a CBOR text string. Clients will have to obtain an Access Token from the AS to upload to the KDC, before starting the joining process with the KDC to join the security group.
+
+* 'sec_gp', specifying the name of the security group associated with the topic in question, as a stable and invariant identifier. The name of the security group is encoded as a CBOR text string.
+
+Furthermore, the Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in {{core_rt}} (REQ10), and can be used to describe group-membership resources and its sub-resources at KDC, e.g., by using a link-format document {{RFC6690}}. As an alternative to the discovery approach defined above and provided by the Broker, applications can use this common resource type to discover links to group-membership resources at the KDC for joining security groups associated with pub/sub topics.
 
 ## Authorisation Request/Response for the KDC and the Broker {#auth-request}
 
- The Client sends two Authorisation Requests to the AS for two audiences: the Broker and the KDC, respectively. AS handles authorisation requests for topics a Client is allowed to Publish or Subscribe to the Broker, corresponding to an application group.  The client sends a request to the KDC to join the security group(s) corresponding to those application groups to be able protect the message content with the group key.
+A Client sends two Authorisation Requests to the AS, targeting two different audiences, i.e, the Broker and the KDC.
 
-Communications between the Client and the AS MUST be secured, according to what is defined by the used transport profile of ACE. This section builds on Section 3 of {{I-D.ietf-ace-key-groupcomm}} and defined only additions or modifications to that specification.
+As to the former, the AS handles Authorisation Requests for topics that the Client is allowed to publish and/or subscribe at the Broker, as corresponding to an application group.
 
-Both Authorisation Requests include the following fields (Section 3.1 of {{I-D.ietf-ace-key-groupcomm}}):
+As to the latter, the AS handles Authorization Requests for security groups that the Client is allowed to join, in order to obtain the group keying material for protecting end-to-end and verifying the content of exchanged pub-sub messages on the associated topics.
 
-* 'scope': Optional. If present, specifies the name of the topics, that the Client requests to access. This parameter is a CBOR byte string that encodes a CBOR array, whose format SHOULD follow the data model AIF-PUBSUB-GROUPCOMM defined below.
-* 'audience': Required identifier corresponding to either the KDC or the Broker.
+This section builds on Section 3 of {{I-D.ietf-ace-key-groupcomm}} and defines only additions or modifications to that specification.
+
+Both Authorisation Requests include the following fields (see {{Section 3.1 of I-D.ietf-ace-key-groupcomm}}):
+
+* 'scope': Optional. If present, it specifies the following information, depending on the specifically targeted audience.
+
+   If the audience is the Broker, the scope specifies the name of the topics that the Client wishes to access, together with the corresponding permissions. If the audience is the KDC, the scope specifies the name of the security groups that the Client wishes to join, together with the corresponding permissions.
+
+   This parameter is encoded as a CBOR byte string, whose value is the binary encoding of a CBOR array, whose format SHOULD follow the data model AIF-PUBSUB-GROUPCOMM defined below.
+
+* 'audience': Required identifier corresponding to either the Broker or the KDC.
 
 Other additional parameters can be included if necessary, as defined in {{RFC9200}}.
 
-For the Broker, the scope represents pub/sub topics i.e., the application group, and for the KDC, the scope represents the corresponding security group. This document expects a one-to-one mapping between the application group and the security group. If there is not a one-to-one mapping, the client MUST ask for the correct scopes in its Authorization Requests, and the correct policies regarding both sets of scopes MUST be available to the AS.
+When using this profile, it is expected that a one-to-one mapping is enforced between the application group and the security group (see {{overview}}). If this is not the case, the correct access policies corresponding both sets of scopes have to be available to the AS.
 
 ### Format of Scope {#scope}
 
@@ -652,7 +677,7 @@ IANA is asked to register the following entry in the "Resource Type (rt=) Link T
 
 *  Reference: [{{&SELF}}
 
-Clients can use this resource type to discover a group membership resource at at the KDC.
+Clients can use this resource type to discover a group membership resource at the KDC.
 
 ## AIF Media-Type Sub-Parameters {#aif}
 
