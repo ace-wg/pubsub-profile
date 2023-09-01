@@ -308,7 +308,7 @@ Both Authorisation Requests include the following fields (see {{Section 3.1 of I
 
    If the audience is the Broker, the scope specifies the name of the topics that the Client wishes to access, together with the corresponding permissions. If the audience is the KDC, the scope specifies the name of the security groups that the Client wishes to join, together with the corresponding permissions.
 
-   This parameter is encoded as a CBOR byte string, whose value is the binary encoding of a CBOR array. The format MUST follow the data model AIF-PUBSUB-GROUPCOMM defined below. 
+   This parameter is encoded as a CBOR byte string, whose value is the binary encoding of a CBOR array. The format MUST follow the data model AIF-PUBSUB-GROUPCOMM defined below.
 
 * 'audience': Required identifier corresponding to either the Broker or the KDC.
 
@@ -318,7 +318,7 @@ When using this profile, it is expected that a one-to-one mapping is enforced be
 
 ### Format of Scope {#scope}
 
-The 'scope' parameter MUST follow the AIF format for requests for the KDC (REQ1). 
+The 'scope' parameter MUST follow the AIF format for requests for the KDC (REQ1).
 
 Based on the generic AIF model
 
@@ -357,8 +357,8 @@ This document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM, that
 
 The AS responds with an Authorization Response to each request, containing claims, as defined in Section 5.8.2 of {{RFC9200}} and Section 3.2 of {{I-D.ietf-ace-key-groupcomm}} with the following additions:
 
-*  The AS MUST include the 'expires_in' parameter.  Other means for the AS to specify the lifetime of Access Tokens are out of the scope of this document.
-*  The AS MUST include the 'scope' parameter, when the value included in the Access Token differs from the one specified by the joining node in the Authorization Request.  In such a case, the second element of each scope entry MUST be present, and specifies the set of roles that the joining node is actually authorized to take in for that scope entry, encoded as specified in {{auth-request}}.
+* The AS MUST include the 'expires_in' parameter.  Other means for the AS to specify the lifetime of Access Tokens are out of the scope of this document.
+* The AS MUST include the 'scope' parameter, when the value included in the Access Token differs from the one specified by the joining node in the Authorization Request.  In such a case, the second element of each scope entry MUST be present, and specifies the set of roles that the joining node is actually authorized to take in for that scope entry, encoded as specified in {{auth-request}}.
 
 ToDo: Extend the authorisation response to describe the token returned, and do a MUST on the Audience claim to indicate the response is for KDC or Broker?
 
@@ -434,8 +434,8 @@ After establishing a secure communication, the Client sends a Join Request to th
 
 One of the following cases can occur when a new node attempts to join a pub/sub group.
 
-*  The joining node requests to join the group exclusively as a Subscriber or for Delete, i.e., it is not going to send messages to the group.  In this case, the joining node is not required to provide its own authentication credential to the KDC. In case the joining node still provides an authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}), the KDC silently ignores that parameter, as well as the related parameters 'cnonce' and 'client_cred_verify'.
-*  The joining node has a Publisher role, and
+* The joining node requests to join the group exclusively as a Subscriber or for Delete, i.e., it is not going to send messages to the group.  In this case, the joining node is not required to provide its own authentication credential to the KDC. In case the joining node still provides an authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}), the KDC silently ignores that parameter, as well as the related parameters 'cnonce' and 'client_cred_verify'.
+* The joining node has a Publisher role, and
     -  the KDC already acquired the authentication credential of the joining node either during a past group joining process, or during establishing a secure communication association, and the joining node and the KDC use a symmetric proof-of-possession key. If the authentication credential and the proof-of-possession key are compatible with the signature or ECDH algorithm, and possible associated parameters, then the key can be used for the authentication credential in pub/sub groups. In this case, the joining node MAY choose not to provide again its own authentication credential to the KDC, in order to limit the size of the Join Request.
     - the KDC hasn't acquired an authentication credential. Then, the joining node MUST provide a compatible authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}).
 
@@ -497,7 +497,7 @@ joining.
 
 The KDC MUST reply with a 4.00 (Bad Request) error response to the Join Request in the following cases:
 
-*  The 'client_cred' parameter is present in the Join Request and its value is not an eligible authentication credential (e.g., it is not of the format accepted in the group) (OPT8).
+* The 'client_cred' parameter is present in the Join Request and its value is not an eligible authentication credential (e.g., it is not of the format accepted in the group) (OPT8).
 * The 'client_cred' parameter is present but does not include both the 'cnonce' and 'client_cred_verify' parameters.
 * The 'client_cred' parameter is not present while the joining node is not going to join the group exclusively as a Subscriber, and any of the following conditions holds:
 
