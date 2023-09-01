@@ -308,7 +308,7 @@ Both Authorisation Requests include the following fields (see {{Section 3.1 of I
 
    If the audience is the Broker, the scope specifies the name of the topics that the Client wishes to access, together with the corresponding permissions. If the audience is the KDC, the scope specifies the name of the security groups that the Client wishes to join, together with the corresponding permissions.
 
-   This parameter is encoded as a CBOR byte string, whose value is the binary encoding of a CBOR array, whose format SHOULD follow the data model AIF-PUBSUB-GROUPCOMM defined below.
+   This parameter is encoded as a CBOR byte string, whose value is the binary encoding of a CBOR array. The format MUST follow the data model AIF-PUBSUB-GROUPCOMM defined below. 
 
 * 'audience': Required identifier corresponding to either the Broker or the KDC.
 
@@ -318,7 +318,7 @@ When using this profile, it is expected that a one-to-one mapping is enforced be
 
 ### Format of Scope {#scope}
 
-The 'scope' parameter SHOULD follow the AIF format (REQ1). However, if the ACE transport profile, supports another 'scope' format, then implementations MAY use this format.
+The 'scope' parameter MUST follow the AIF format for requests for the KDC (REQ1). 
 
 Based on the generic AIF model
 
@@ -328,7 +328,7 @@ Based on the generic AIF model
 
 The value of the CBOR byte string used as the scope encodes the CBOR array \[* \[Toid, Tperm\]\], where each \[Toid, Tperm\] element corresponds to one scope entry.
 
-This document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM, that this profile SHOULD use to format and encode scope entries.
+This document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM, that this profile MUST use to format and encode scope entries.
 
 * The object identifier ("Toid") is a CBOR text string, specifying the topic name for the scope entry.
 
@@ -605,7 +605,7 @@ The steps MQTT clients go through would be similar to the CoAP clients, and the 
 
 Authorisation Server (AS) Discovery is defined in Section 2.2.6.1 of {{I-D.ietf-ace-mqtt-tls-profile}} for MQTT v5 clients (and not supported for MQTT v3 clients). $SYS/ has been widely adopted as a prefix to topics that contain Server-specific information or control APIs, and may be used for topic and KDC discovery.
 
-Differently for MQTT, the Client sends an authorisation request to the AS using AIF-MQTT data model for representing the requested scopes is described in Section 3 of the {{I-D.ietf-ace-mqtt-tls-profile}}. In the authorisation response, the 'profile' claim is set to "mqtt_pubsub_app" as defined in {{iana-profile}}.
+When the Client sends an authorisation request to the AS using the AIF-PUBSUB-GROUPCOMM data model, in the authorisation response, the 'profile' claim is set to "mqtt_pubsub_app" as defined in {{iana-profile}}.
 
 Both Publisher and Subscriber Clients MUST authorise to the Broker with their respective tokens (described in {{I-D.ietf-ace-mqtt-tls-profile}}) i.e.,  anonymous Subscribers are not supported in the profile. A Publisher Client sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. The Broker validates the PUBLISH message by verifying its topic in the stored token. A Subscriber Client may send SUBSCRIBE messages with one or multiple topic filters. A topic filter may correspond to multiple topics. The Broker validates the SUBSCRIBE message by checking the stored token for the Client.
 The Broker forwards all PUBLISH messages to all authorised Subscribers, including the retained messages.
