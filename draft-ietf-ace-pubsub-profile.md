@@ -318,7 +318,7 @@ When using this profile, it is expected that a one-to-one mapping is enforced be
 
 ### Format of Scope {#scope}
 
-The 'scope' parameter MUST follow the AIF format for requests for the KDC (REQ1).
+The 'scope' parameter MUST follow the AIF format. (REQ1).
 
 Based on the generic AIF model
 
@@ -332,7 +332,7 @@ This document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM, that
 
 * The object identifier ("Toid") is a CBOR text string, specifying the topic name for the scope entry.
 
-* The permission set ("Tperm") is a CBOR unsigned integer, whose value specifies the operations that the Client is authorized to perform on the resources at the broker related to the topic indicated by Toid. The set of numbers representing the permissions is converted into a single number by taking two to the power of each method number and computing the inclusive OR of the binary representations of all the power values. The roles a Client is allowed are Publish (1), Subscribe (or Read) (2) and Delete (3). An Admin(0) role is also defined, which is reserved for expressing permissions for Administrators of Pub/Sub groups. For Pub/Sub client communication, the scope entry MUST NOT include the Admin permission i.e.,  the least significant bit of "Tperm" always set to 0.
+* The permission set ("Tperm") is a CBOR unsigned integer, whose value specifies the operations that the Client is authorized to perform on the resources at the broker related to the topic indicated by Toid. The set of numbers representing the permissions is converted into a single number by taking two to the power of each method number and computing the inclusive OR of the binary representations of all the power values. The possible permissions for a Client are: Publish (1), Read (2) and Delete (3). These permissions are related to user operations, and therefore, a scope entry MUST not indicate the permission Admin (0). The Admin (0) permission is reserved for scope entries that express permissions for Administrators of Pub/Sub groups. That is, in scope entries used as defined in this application profile, the least significant bit of "Tperm" MUST be set to 0.
 
 ~~~~~~~~~~~
   AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-topic, pubsub-perm>
