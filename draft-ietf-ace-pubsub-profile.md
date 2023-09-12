@@ -332,19 +332,27 @@ This document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM, that
 
 * The object identifier ("Toid") is a CBOR text string, specifying the topic name for the scope entry.
 
-* The permission set ("Tperm") is a CBOR unsigned integer, whose value specifies the operations that the Client is authorized to perform on the resources at the broker related to the topic indicated by Toid. The set of numbers representing the permissions is converted into a single number by taking two to the power of each method number and computing the inclusive OR of the binary representations of all the power values. The possible permissions for a Client are: Publish (1), Read (2) and Delete (3). These permissions are related to user operations, and therefore, a scope entry MUST not indicate the permission Admin (0). The Admin (0) permission is reserved for scope entries that express permissions for Administrators of Pub/Sub groups. That is, in scope entries used as defined in this application profile, the least significant bit of "Tperm" MUST be set to 0.
+* The permission set ("Tperm") is a CBOR unsigned integer, whose value provides details about the following:
+
+  - Admin (0), reserved for scope entries that express permissions for Administrators of Pub/Sub groups.
+  - GroupType (1), taking the value 0 in case of application group in Toid, and 1 in case of security group in Toid.
+  - Client permissions Publish (1), Read (2) and Delete (3), specifying the operations that the Client is authorized to perform on the resources at the broker related to the topic indicated by Toid.
+
+The set of numbers representing the permissions is converted into a single number by taking two to the power of each method number and computing the inclusive OR of the binary representations of all the power values. Since this application profile considers user-related operations, the scope entries MUST have the least significant bit of "Tperm" set to 0.
+
+Furthermore, client permissions relate to Topic Data Interactions as defined in {{I-D.ietf-core-coap-pubsub}}. It must be noted that the Read (2) permission allows for both Subscribe and Read interactions on the topic data indicated by the Toid. Finally, reading the configuration of the topic indicated by Toid (i.e., GET and FETCH requests to the topic resource URI) is permitted by default.
 
 ~~~~~~~~~~~
   AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-topic, pubsub-perm>
    pubsub-topic = tstr ; Pub/sub topic name
                        ; (the associated security group)
 
-   pubsub-perm = uint . bits pubsub-roles
+   pubsub-perm = uint .bits pubsub-perm-details
 
-   pubsub-roles = &(
+   pubsub-perm-details = &(
     Admin: 0,
-    Pub: 1,
-    Sub: 2,
+    Publish: 1,
+    Read: 2,
     Delete: 3
    )
 
