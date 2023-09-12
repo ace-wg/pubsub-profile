@@ -479,7 +479,7 @@ and a "COSE\_Key". The "COSE\_Key" object is defined in {{RFC9052}} {{RFC9053}} 
     * 'alg' with value defined by the KDC
     * 'Base IV' with value defined by the KDC
     * 'k', the value of the symmetric key (REQ17)
-- 'num': MUST be initialised to 0 as the version number of the keying material.
+- 'num': the version number of the keying material (initial value of 0)
 - 'exp', MUST be present.
 - 'ace-groupcomm-profile' parameter MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is defined in {{iana-profile}} of this document.
 - 'creds', MUST be present, if the 'get\_creds' parameter was present. Otherwise, it MUST NOT be present. The KDC provides the authentication credentials of all the Publisher Clients in the group.
