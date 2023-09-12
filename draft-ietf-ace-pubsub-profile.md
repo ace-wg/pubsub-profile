@@ -408,7 +408,7 @@ Note that the use of these resources follows what is defined in {{I-D.ietf-ace-k
 
 ## Joining a Security Group {#join}
 
-This section describes the interactions between the joining node and the KDC to join a pub/sub group. Source authentication of a message sent within the pub/sub group is ensured by means of a digital signature embedded in the message. Subscribers must be able to retrieve Publishers' authentication credentials from a trusted repository, to verify source authenticity of received messages. Hence, on joining a pub/sub group, a Publisher node is expected to provide its own authentication credential to the KDC.
+This section describes the interactions between the joining node and the KDC to join a security group. Source authentication of a message sent within the group is ensured by means of a digital signature embedded in the message. Subscribers must be able to retrieve Publishers' authentication credentials from a trusted repository, to verify source authenticity of received messages. Hence, on joining a group, a Publisher node is expected to provide its own authentication credential to the KDC.
 
 On a successful join, the Clients receive the symmetric COSE Key from the KDC to protect the payload of a published topic data.
 
@@ -438,14 +438,14 @@ After establishing a secure communication, the Client sends a Join Request to th
 
 #### Client Credentials-'client_cred' {#client_cred}
 
-One of the following cases can occur when a new node attempts to join a pub/sub group.
+One of the following cases can occur when a new node attempts to join a group.
 
 * The joining node requests to join the group exclusively as a Subscriber or for Delete, i.e., it is not going to send messages to the group.  In this case, the joining node is not required to provide its own authentication credential to the KDC. In case the joining node still provides an authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}), the KDC silently ignores that parameter, as well as the related parameters 'cnonce' and 'client_cred_verify'.
 * The joining node has a Publisher role, and
-    -  the KDC already acquired the authentication credential of the joining node either during a past group joining process, or during establishing a secure communication association, and the joining node and the KDC use a symmetric proof-of-possession key. If the authentication credential and the proof-of-possession key are compatible with the signature or ECDH algorithm, and possible associated parameters, then the key can be used for the authentication credential in pub/sub groups. In this case, the joining node MAY choose not to provide again its own authentication credential to the KDC, in order to limit the size of the Join Request.
+    -  the KDC already acquired the authentication credential of the joining node either during a past group joining process, or during establishing a secure communication association, and the joining node and the KDC use a symmetric proof-of-possession key. If the authentication credential and the proof-of-possession key are compatible with the signature or ECDH algorithm, and possible associated parameters, then the key can be used for the authentication credential in the group. In this case, the joining node MAY choose not to provide again its own authentication credential to the KDC, in order to limit the size of the Join Request.
     - the KDC hasn't acquired an authentication credential. Then, the joining node MUST provide a compatible authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}).
 
-Finally, the joining node MUST provide its own authentication credential again if it has provided the KDC with multiple authentication credentials during past joining processes intended for different pub/sub groups.  If the joining node provides its own authentication credential, the KDC performs consistency checks as per {{join-request}} and, in case of success, considers it as the authentication credential associated with the joining node in the pub/sub group.
+Finally, the joining node MUST provide its own authentication credential again if it has provided the KDC with multiple authentication credentials during past joining processes intended for different groups.  If the joining node provides its own authentication credential, the KDC performs consistency checks as per {{join-request}} and, in case of success, considers it as the authentication credential associated with the joining node in the group.
 
 #### Proof-of-Possession {#pop}
 
@@ -704,7 +704,7 @@ For the media-types application/aif+cbor and application/aif+json defined in Sec
 
 * Name: pubsub-perm
 
-* Description/Specification: Permissions corresponding to the roles in pub/sub group
+* Description/Specification: Permissions corresponding to the roles in the pub/sub group
 
 * Reference: {{&SELF}}
 
