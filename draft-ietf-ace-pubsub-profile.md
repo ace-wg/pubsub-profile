@@ -597,9 +597,7 @@ The unprotected Headers MUST contain:
   - the algorithm (protected),
   - the kid, the sender ID (unprotected)
   - the signature computed as specified in {{RFC9052}} {{RFC9053}}.
-* The ciphertext, computed over the plaintext that MUST contain the message payload.
-
-The 'external\_aad' is an empty string.
+* The ciphertext, computed over the plaintext that MUST contain the message payload. The 'external\_aad' is an empty string.
 
 The encryption and decryption operations are described in  {{RFC9052}} {{RFC9053}}.
 
