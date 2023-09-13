@@ -51,12 +51,12 @@ normative:
   RFC8447:
   RFC8613:
   RFC8949:
+  RFC9052:
   RFC9053:
   RFC9147:
   RFC9200:
   RFC9237:
   RFC9277:
-  RFC9338:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-ace-key-groupcomm:
@@ -103,7 +103,7 @@ Building on the message formats and processing defined in {{I-D.ietf-ace-key-gro
 
 In order to protect the publication/subscription operations at the Broker as well as the provisioning of keying material and security parameters, this profile relies on protocol-specific transport profiles of ACE (e.g., {{RFC9202}}, {{RFC9203}}, or {{I-D.ietf-ace-edhoc-oscore-profile}}) to achieve communication security, server authentication, and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 Access Token.
 
-Furthermore, the content of published messages that are circulated by the Broker is protected end-to-end between the corresponding Publisher and the intended Subscribers. To this end, this profile relies on COSE {{RFC9338}}{{RFC9053}} and on keying material provided to the Publishers and Subscribers participating in the same pub/sub topic. In particular, source authentication of published content is achieved by means of the corresponding Publisher signing such content with its own private key.
+Furthermore, the content of published messages that are circulated by the Broker is protected end-to-end between the corresponding Publisher and the intended Subscribers. To this end, this profile relies on COSE {{RFC9052}}{{RFC9053}} and on keying material provided to the Publishers and Subscribers participating in the same pub/sub topic. In particular, source authentication of published content is achieved by means of the corresponding Publisher signing such content with its own private key.
 
 While this profile focuses on the pub/sub architecture for CoAP, this document also describes how it can be applicable to MQTT {{MQTT-OASIS-Standard-v5}}. Similar adaptations can also extend to further transport protocols and pub/sub architectures.
 
@@ -116,7 +116,7 @@ Readers are expected to be familiar with:
 * The terms and concepts described in {{RFC9200}}, and Authorization Information Format (AIF) {{RFC9237}} to express authorization information. In particular, analogously to {{RFC9200}}, terminology for entities in the architecture such as Client (C), Resource Server (RS), and Authorization Server (AS) is defined in OAuth 2.0 {{RFC6749}}.
 * The terms and concept related to the message formats and processing, specified in {{I-D.ietf-ace-key-groupcomm}}, for provisioning and renewing keying material in group communication scenarios.
 * The terms and concepts of pub/sub group communication, as described in {{I-D.ietf-core-coap-pubsub}}.
-* The terms and concepts described in CBOR {{RFC8949}} and COSE {{RFC9338}}{{RFC9053}}.
+* The terms and concepts described in CBOR {{RFC8949}} and COSE {{RFC9052}}{{RFC9053}}.
 
 A principal interested to participate in group communication as well as already participating as a group member is interchangeably denoted as "Client", "pub/sub client",  or "node".
 
@@ -477,7 +477,7 @@ In the case of success, the Client is added to the list of current members, if n
     * 'cred_fmt' parameter, specifiying the format of authentication credentials used in the group.  This parameter takes its value from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}}  At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC7925}} and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Further formats may be available in the future, and would be acceptable to use as long as they comply with the criteria defined above. (REQ6).
     * 'sign_alg' parameter, specifying the Signature Algorithm used to sign messages in the group.  This parameter takes values from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
     * 'sign_params' parameter, specifying the parameters of the Signature Algorithm.  This parameter is a CBOR array, which includes the following two elements: 'sign_alg_capab' and 'sign_key_type_capab'. sign_alg_capab'is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}. 'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{IANA.cose_key-type}}.
-    * and a "COSE\_Key". The "COSE\_Key" object is defined in {{RFC9338}} {{RFC9053}} and contains:'kty' with value 4 (symmetric), 'kid', 'alg' and 'Base IV' with value defined by the KDC, and 'k', the value of the symmetric key (REQ17). The 'kid' is a CBOR byte string encoding the Gid of the group.
+    * and a "COSE\_Key". The "COSE\_Key" object is defined in {{RFC9052}} {{RFC9053}} and contains:'kty' with value 4 (symmetric), 'kid', 'alg' and 'Base IV' with value defined by the KDC, and 'k', the value of the symmetric key (REQ17). The 'kid' is a CBOR byte string encoding the Gid of the group.
 - 'num': the version number of the keying material (initial value of 0)
 - 'exp', MUST be present.
 - 'ace-groupcomm-profile' parameter MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is defined in {{iana-profile}} of this document.
@@ -557,7 +557,7 @@ If the group rekeying is performed due to one or multiple Publisher Clients that
 {: #pubsub-3 title="Secure communication between Publisher and Subscriber"}
 {: artwork-align="center"}
 
-(D) corresponds to the publication of a topic on the Broker, using a CoAP PUT. The publication (the resource representation) is protected with COSE  ({{RFC9338}}{{RFC9053}}) by the Publisher. The (E) message is the subscription of the Subscriber, and uses a CoAP GET with the Observe option set to 0 (zero) {{I-D.ietf-core-coap-pubsub}}. The (F) message is the response from the Broker, where the publication is protected with COSE by the Publisher.
+(D) corresponds to the publication of a topic on the Broker, using a CoAP PUT. The publication (the resource representation) is protected with COSE  ({{RFC9052}}{{RFC9053}}) by the Publisher. The (E) message is the subscription of the Subscriber, and uses a CoAP GET with the Observe option set to 0 (zero) {{I-D.ietf-core-coap-pubsub}}. The (F) message is the response from the Broker, where the publication is protected with COSE by the Publisher.
 (ToDo: Add Delete to the flow?)
 
 ~~~~~~~~~~~
@@ -576,11 +576,11 @@ If the group rekeying is performed due to one or multiple Publisher Clients that
 
 The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (Section 4.3 of {{I-D.ietf-core-coap-pubsub}}). Specifically, the COSE Key is used to create a COSE\_Encrypt0 object with the AEAD algorithm specified by the KDC. The AEAD key lengths, AEAD nonce length, and maximum Sender Sequence Number (Partial IV) are algorithm dependent.
 
-The Publisher uses the private key corresponding to the public key sent to the KDC to countersign the COSE Object as specified in {{RFC9338}} {{RFC9053}}. The payload is replaced by the COSE object before the publication is sent to the Broker.
+The Publisher uses the private key corresponding to the public key sent to the KDC to countersign the COSE Object as specified in {{RFC9052}} {{RFC9053}}. The payload is replaced by the COSE object before the publication is sent to the Broker.
 
 The Subscriber uses the 'kid' in the 'countersignature' field in the COSE object to retrieve the right public key to verify the countersignature. It then uses the symmetric key received from KDC to verify and decrypt the publication received in the payload from the Broker (in the case of CoAP the publication is received either by the CoAP Notification or as a response to a GET request to the 'topic_data' URI).
 
-The COSE object is constructed in the following way (as described in {{RFC9338}} {{RFC9053}}).
+The COSE object is constructed in the following way (as described in {{RFC9052}} {{RFC9053}}).
 
 The protected Headers MUST contain:
 
@@ -594,10 +594,14 @@ The unprotected Headers MUST contain:
 * Countersignature version 2 header, version 2 counter signature on encrypted content as defined in {{RFC9338}}{{RFC9053}}, includes
   - the algorithm (protected),
   - the kid, the sender ID (unprotected)
+<<<<<<< HEAD
   - the signature computed over the payload the ciphertext, with context string 'CounterSignatureV2' and  'external\_aad' as an empty string.
+=======
+  - the signature computed as specified in {{RFC9052}} {{RFC9053}}.
+>>>>>>> parent of 833b486 (moved from RFC9052 to RFC 9338)
 * The ciphertext, computed over the plaintext that MUST contain the message payload. The 'external\_aad' is an empty string.
 
-The encryption and decryption operations are described in  {{RFC9338}} {{RFC9053}}.
+The encryption and decryption operations are described in  {{RFC9052}} {{RFC9053}}.
 
 
 # Applicability to MQTT PubSub Profile {#mqtt-pubsub}
@@ -645,7 +649,7 @@ IANA is asked to register the following entry in the "ACE Groupcomm Key Types" r
 
 * Description: Encoded as described in the {{join-response}} of this document.
 
-* References: {{RFC9338}}, {{RFC9053}}, {{&SELF}}
+* References: {{RFC9052}}, {{RFC9053}}, {{&SELF}}
 
 ## ACE Groupcomm Profile Registry {#iana-profile}
 
