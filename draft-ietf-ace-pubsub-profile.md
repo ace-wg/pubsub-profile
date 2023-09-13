@@ -588,13 +588,13 @@ The protected Headers MUST contain:
 
 The unprotected Headers MUST contain:
 
-* kid, with the value the same as in the symmetric COSE Key received
+* kid, with the value the same as in the symmetric COSE Key received <!-- representing group id-->
 * the Partial IV, with value a Sender Sequence Number that is incremented for every message sent.  All leading bytes of value zero SHALL be removed when encoding the Partial IV, except in the case of Partial IV value 0, which is encoded to the byte string 0x00.
 * the IV, generated following the construction in Section 5.2 of {{RFC8613}} using the sender ID, Partial IV, and Base IV from the symmetric COSE Key received.
-* the counter signature
+* Countersignature version 2 header, version 2 counter signature on encrypted content as defined in {{RFC9338}}{{RFC9053}}, includes
   - the algorithm (protected),
   - the kid, the sender ID (unprotected)
-  - the signature computed as specified in {{RFC9338}} {{RFC9053}}.
+  - the signature computed over the payload the ciphertext, with context string 'CounterSignatureV2' and  'external\_aad' as an empty string.
 * The ciphertext, computed over the plaintext that MUST contain the message payload. The 'external\_aad' is an empty string.
 
 The encryption and decryption operations are described in  {{RFC9338}} {{RFC9053}}.
