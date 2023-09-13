@@ -471,14 +471,13 @@ In the case of any join request error, the KDC and the Client attempting to join
 
 In the case of success, the Client is added to the list of current members, if not already a member. The Client is assigned a NODENAME and a sub-resource /ace-group/GROUPNAME/nodes/NODENAME. NODENAME is associated to the access token and secure session of the Client. Publishers' client credentials are also associated with the tuple containing NODENAME, GROUPNAME, <!-- Group Identifier (Gid), --> a new, next available sender ID and the access token. The KDC responds with a Join Response with response code 2.01 (Created) if the Client has been added to the list of group members, and 2.04 (Changed) otherwise (e.g., if the Client is re-joining).  The Content-Format  is "application/ace-groupcomm+cbor". The payload (formatted as a CBOR map) MUST contain the following fields from the Join Response and encode them as defined in Section 4.3.1 of {{I-D.ietf-ace-key-groupcomm}}:
 
-- 'gkty': the key type "Group_PubSub_COSE_Key" for the 'key' parameter defined in {{iana-ace-groupcomm-key}} of this document.
-- 'key': The keying material for group communication includes 'group_SenderId' if the Client is a Publisher,
-and a "COSE\_Key". The "COSE\_Key" object is defined in {{RFC9052}} {{RFC9053}} and contains:
-    * 'kty' with value 4 (symmetric)
-    * 'kid' with value defined by the KDC
-    * 'alg' with value defined by the KDC
-    * 'Base IV' with value defined by the KDC
-    * 'k', the value of the symmetric key (REQ17)
+- 'gkty': the key type "Group_PubSub_Keying_Material" for the 'key' parameter defined in {{iana-ace-groupcomm-key}} of this document.
+- 'key': The keying material for group communication includes:
+    * 'group_SenderId' if the Client is a Publisher.
+    * 'cred_fmt' parameter, specifiying the format of authentication credentials used in the group.  This parameter takes its value from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}}  At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC7925}} and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Further formats may be available in the future, and would be acceptable to use as long as they comply with the criteria defined above. (REQ6).
+    * 'sign_alg' parameter, specifying the Signature Algorithm used to sign messages in the group.  This parameter takes values from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
+    * 'sign_params' parameter, specifying the parameters of the Signature Algorithm.  This parameter is a CBOR array, which includes the following two elements: 'sign_alg_capab' and 'sign_key_type_capab'. sign_alg_capab'is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}. 'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{IANA.cose_key-type}}.
+    * and a "COSE\_Key". The "COSE\_Key" object is defined in {{RFC9052}} {{RFC9053}} and contains:'kty' with value 4 (symmetric), 'kid', 'alg' and 'Base IV' with value defined by the KDC, and 'k', the value of the symmetric key (REQ17).
 - 'num': the version number of the keying material (initial value of 0)
 - 'exp', MUST be present.
 - 'ace-groupcomm-profile' parameter MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is defined in {{iana-profile}} of this document.
@@ -639,13 +638,13 @@ This document has the following actions for IANA.
 
 IANA is asked to register the following entry in the "ACE Groupcomm Key Types" registry defined in Section 11.7 of {{I-D.ietf-ace-key-groupcomm}}.
 
-* Name: Group_PubSub_COSE_Key
+* Name: Group_PubSub_Keying_Material
 
 * Key Type Value: GROUPCOMM_KEY_TBD
 
 * Profile: coap_group_pubsub_app, defined in {{iana-profile}} of this document.
 
-* Description: COSE_Key object
+* Description: Encoded as described in the {{join-response}} of this document.
 
 * References: {{RFC9052}}, {{RFC9053}}, {{&SELF}}
 
@@ -782,7 +781,7 @@ instead): See {{pop}} in this document.
 
 * REQ17: Specify the format of the 'key' parameter: See {{join-response}}.
 
-* REQ18: Specify the acceptable values of the 'gkty' parameter: Group_PubSub_COSE_Key, see {{iana-ace-groupcomm-key}}.
+* REQ18: Specify the acceptable values of the 'gkty' parameter: Group_PubSub_Keying_Material, see {{iana-ace-groupcomm-key}}.
 
 * REQ19: Specify and register the application profile identifier: coap_group_pubsub_app, see {{iana-profile}}.
 
