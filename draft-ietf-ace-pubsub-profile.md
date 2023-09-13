@@ -57,6 +57,7 @@ normative:
   RFC9200:
   RFC9237:
   RFC9277:
+  RFC9338:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-ace-key-groupcomm:
@@ -594,11 +595,7 @@ The unprotected Headers MUST contain:
 * Countersignature version 2 header, version 2 counter signature on encrypted content as defined in {{RFC9338}}{{RFC9053}}, includes
   - the algorithm (protected),
   - the kid, the sender ID (unprotected)
-<<<<<<< HEAD
   - the signature computed over the payload the ciphertext, with context string 'CounterSignatureV2' and  'external\_aad' as an empty string.
-=======
-  - the signature computed as specified in {{RFC9052}} {{RFC9053}}.
->>>>>>> parent of 833b486 (moved from RFC9052 to RFC 9338)
 * The ciphertext, computed over the plaintext that MUST contain the message payload. The 'external\_aad' is an empty string.
 
 The encryption and decryption operations are described in  {{RFC9052}} {{RFC9053}}.
