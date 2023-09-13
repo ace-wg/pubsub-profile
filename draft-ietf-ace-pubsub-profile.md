@@ -477,8 +477,7 @@ In the case of success, the Client is added to the list of current members, if n
     * 'cred_fmt' parameter, specifiying the format of authentication credentials used in the group.  This parameter takes its value from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}}  At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC7925}} and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Further formats may be available in the future, and would be acceptable to use as long as they comply with the criteria defined above. (REQ6).
     * 'sign_alg' parameter, specifying the Signature Algorithm used to sign messages in the group.  This parameter takes values from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
     * 'sign_params' parameter, specifying the parameters of the Signature Algorithm.  This parameter is a CBOR array, which includes the following two elements: 'sign_alg_capab' and 'sign_key_type_capab'. sign_alg_capab'is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}. 'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{IANA.cose_key-type}}.
-    * and a "COSE\_Key". The "COSE\_Key" object is defined in {{RFC9052}} {{RFC9053}} and contains:'kty' with value 4 (symmetric), 'kid', 'alg' and 'Base IV' with value defined by the KDC, and 'k', the value of the symmetric key (REQ17). The 'kid'
-    is a CBOR byte string encoding the Gid of the group.
+    * and a "COSE\_Key". The "COSE\_Key" object is defined in {{RFC9052}} {{RFC9053}} and contains:'kty' with value 4 (symmetric), 'kid', 'alg' and 'Base IV' with value defined by the KDC, and 'k', the value of the symmetric key (REQ17). The 'kid' is a CBOR byte string encoding the Gid of the group.
 - 'num': the version number of the keying material (initial value of 0)
 - 'exp', MUST be present.
 - 'ace-groupcomm-profile' parameter MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is defined in {{iana-profile}} of this document.
@@ -543,7 +542,7 @@ Upon generating the new group keying material and before starting its distributi
 
 Default rekeying scheme is Point-to-point (Section 6.1 of {{I-D.ietf-ace-key-groupcomm}}), where KDC individually targets each node to rekey, using the pairwise secure communication association with that node.
 
-If the group rekeying is performed due to one or multiple Publisher Clients that have joined the group, then a rekeying message includes sender IDs, and authentication credentials that those Clients use in the group, together with their roles.  This information is specified by means of the parameters 'creds', 'peer_roles' and 'peer_identifiers', like done in the Join Response message.
+If the group rekeying is performed due to one or multiple Publisher Clients that have joined the group, then a rekeying message includes sender IDs, and authentication credentials that the Publisher Clients use in the group.  This information is specified by means of the parameters 'creds' and 'peer_identifiers', like done in the Join Response message.
 
 # PubSub Protected Communication (C) {#protected_communication}
 
