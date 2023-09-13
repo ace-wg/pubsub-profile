@@ -578,7 +578,7 @@ The Publisher uses the symmetric COSE Key received from the KDC to protect the p
 
 The Publisher uses the private key corresponding to the public key sent to the KDC to countersign the COSE Object as specified in {{RFC9052}} {{RFC9053}}. The payload is replaced by the COSE object before the publication is sent to the Broker.
 
-The Subscriber uses the 'kid' in the 'countersignature' field in the COSE object to retrieve the right public key to verify the countersignature. It then uses the symmetric key received from KDC to verify and decrypt the publication received in the payload from the Broker (in the case of CoAP the publication is received by the CoAP Notification).
+The Subscriber uses the 'kid' in the 'countersignature' field in the COSE object to retrieve the right public key to verify the countersignature. It then uses the symmetric key received from KDC to verify and decrypt the publication received in the payload from the Broker (in the case of CoAP the publication is received either by the CoAP Notification or as a response to a GET request to the 'topic_data' URI).
 
 The COSE object is constructed in the following way (as described in {{RFC9052}} {{RFC9053}}).
 
