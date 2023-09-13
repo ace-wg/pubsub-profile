@@ -584,7 +584,7 @@ The COSE object is constructed in the following way (as described in {{RFC9052}}
 
 The protected Headers MUST contain:
 
-*  alg, the AEAD algorithm specified by the KDC, the same as received in the symmetric COSE Key
+*  alg, the AEAD algorithm specified by the KDC, the same as received in the symmetric COSE Key in the Join Response
 
 The unprotected Headers MUST contain:
 
