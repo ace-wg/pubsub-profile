@@ -747,6 +747,12 @@ The construction above only supports AEAD algorithms that use nonces with length
 
 * Therefore neither the same Publisher Client nor any two Publisher Clients use the same AEAD nonce with the same group key.
 
+## Replay Checks # {#ssec-replay-checks}
+
+This section defines how a Subscriber Client checks whether the topic data conveyed in a received message from the Broker is a replay.
+
+TBD
+
 # Applicability to MQTT PubSub Profile {#mqtt-pubsub}
 
 The steps MQTT clients go through would be similar to the CoAP clients, and the payload of the MQTT PUBLISH messages will be protected using COSE. The MQTT clients needs to use CoAP to communicate to the KDC, to join security groups, and be part of the pair-wise rekeying initiated by the KDC.
