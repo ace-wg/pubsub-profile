@@ -309,7 +309,7 @@ Both Authorisation Requests include the following fields (see {{Section 3.1 of I
 
    If the audience is the Broker, the scope specifies the name of the topics that the Client wishes to access, together with the corresponding permissions. If the audience is the KDC, the scope specifies the name of the security groups that the Client wishes to join, together with the corresponding permissions.
 
-   This parameter is encoded as a CBOR byte string, whose value is the binary encoding of a CBOR array. The format MUST follow the data model AIF-PUBSUB-GROUPCOMM defined below.
+   This parameter is encoded as a CBOR byte string, whose value is the binary encoding of a CBOR array. The format MUST follow the data model AIF-PUBSUB-GROUPCOMM defined in {{scope}}.
 
 * 'audience': Required identifier corresponding to either the Broker or the KDC.
 
@@ -319,31 +319,47 @@ When using this profile, it is expected that a one-to-one mapping is enforced be
 
 ### Format of Scope {#scope}
 
-The 'scope' parameter MUST follow the AIF format. (REQ1).
+Building on {{Section 3.1 of I-D.ietf-ace-key-groupcomm}}, this section defines the exact format and encoding of scope used in this profile.
 
-Based on the generic AIF model
+To this end, this profile uses the Authorization Information Format (AIF) {{RFC9237}} (REQ1). With reference to the generic AIF model
 
 ~~~~~~~~~~~
       AIF-Generic<Toid, Tperm> = [* [Toid, Tperm]]
 ~~~~~~~~~~~
 
-The value of the CBOR byte string used as the scope encodes the CBOR array \[* \[Toid, Tperm\]\], where each \[Toid, Tperm\] element corresponds to one scope entry.
+the value of the CBOR byte string used as scope encodes the CBOR array \[* \[Toid, Tperm\]\], where each \[Toid, Tperm\] element corresponds to one scope entry.
 
-This document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM that this profile MUST use to format and encode scope entries.
+Furthermore, this document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM that this profile MUST use to format and encode scope entries.
 
-* The object identifier ("Toid") is a CBOR text string, specifying the name of the application group (topic name) or the corresponding security group.
+In particular, the following holds for each scope entry.
 
-* The permission set ("Tperm") is a CBOR unsigned integer, whose value provides permission details associated with this topic's resources at the Broker or associated with this security group at the KDC.
+* The object identifier ("Toid") is specialized as a CBOR item specifying the name of the application groups (topics) or the name of the corresponding security groups pertaining to the scope entry.
 
-  - Admin (0): Reserved for scope entries that express permissions for Administrators of pub/sub groups.
-  - AppGroup (1): Used to indicate whether the Toid indicates an application group (i.e., 1 signals an application group, 0 signals a security group).
-  - Publish (1): Concerns the publication of data from the Client to the topic, by means of PUT request to the corresponding data resource at the broker.
-  - Read (2): Concerns either the subscription to the topic (i.e., a GET request with Observe option set to 0), or reading the latest published data to the topic data resource (i.e., GET request).
-  - Delete (3): Concerns the deletion of the topic data resource (i.e., DELETE request).
+* The permission set ("Tperm") is specialized as a CBOR unsigned integer with value R, specifying the permissions that the Client wishes or has been authorized to have in the groups indicated by "Toid".
 
-The set of numbers representing the permissions is converted into a single number by taking two to the power of each method number and computing the inclusive OR of the binary representations of all the power values. Since this application profile considers user-related operations, the scope entries MUST have the least significant bit of "Tperm" set to 0 (i.e., Admin is set to 0).
+More specifically, the following applies when, as defined in this document, a scope entry specifies a Client's set of permissions for accessing: i) topic-related resources at the Broker; or ii) resources at the KDC associated with the corresponding security groups.
 
-It must be noted that, when Toid indicates the application group, the Client has always the permission to retrieve the configuration of the topic indicated by Toid (i.e., GET and FETCH requests to the topic resource at the broker).
+* The object identifier ("Toid") is a CBOR text string, specifying the name of one application group (topic) or of the corresponding security group to which the scope entry pertains.
+
+* The permission set ("Tperm") is a CBOR unsigned integer, whose value R specifies the operations that the Client wishes to or has been authorized to perform on the resources at the Broker associated with the application group (topic) indicated by "Toid", or on the resources at the KDC associated with the security group indicated by "Toid" (REQ1). The value R is computed as follows.
+
+   * Each operation (i.e., permission detail) in the permission set is converted into the corresponding numeric identifier X taken from the following set.
+
+      - Admin (0): This operation is reserved for scope entries that express permissions for Administrators of pub/sub groups.
+
+      - AppGroup (1): This operation is signaled as wished/authorized when "Toid" specifies the name of an application group (topic)+, while it is signaled as not wished/authorized when Toid specifies the name of a security group.
+
+      - Publish (2): This operation concerns the publication of data to the topic in question, performed by means of a PUT request sent by a Publisher Client to the corresponding topic-data resource at the Broker.
+
+      - Read (3): This operation concerns both: i) the subscription at the topic-data resource for the topic in question at the Broker, performed by means of a GET request with the CoAP Observe Option set to 0 and sent by a Subscriber Client; and ii) the simple reading of the latest data published to the topic in question, performed by means of a simple GET request sent to the same topic-data resource.
+
+      - Delete (4): This operation concerns the deletion of the topic-data resource for the topic in question at the Broker, performed by means of a DELETE request sent to that resource.
+
+   * The set of N numeric identifiers is converted into the single value R, by taking two to the power of each numeric identifier X_1, X_2, ..., X_N, and then computing the inclusive OR of the binary representations of all the power values.
+
+   Since this application profile considers user-related operations, the "Admin" operation is signaled as not wished/authorized. That is, the scope entries MUST have the least significant bit of "Tperm" set to 0.
+
+If the "Toid" of a scope entry in an access token specifies the name of an application group (i.e., the "AppGroup" operation is signaled as authorized), the Client has also the permission to retrieve the configuration of the application group (topic) whose name is indicated by "Toid", by sending a GET or FETCH request to the corresponding topic resource at the Broker.
 
 The specific interactions between the Client and the Broker are defined in {{I-D.ietf-core-coap-pubsub}}.
 
@@ -847,6 +863,10 @@ pub/sub communication {{I-D.ietf-core-coap-pubsub}}
 # Document Updates # {#sec-document-updates}
 
 RFC EDITOR: PLEASE REMOVE THIS SECTION.
+
+## Version -07 to -08 ## {#sec-07-08}
+
+* Revised presentation of the scope format.
 
 ## Version -06 to -07 ## {#sec-06-07}
 
