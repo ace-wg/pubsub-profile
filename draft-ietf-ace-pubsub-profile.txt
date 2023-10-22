@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 17 March 2024                                 Brunel University
+Expires: 24 April 2024                                 Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                       14 September 2023
+                                                         22 October 2023
 
 
    Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 March 2024.
+   This Internet-Draft will expire on 24 April 2024.
 
 Copyright Notice
 
@@ -116,7 +116,8 @@ Table of Contents
      9.2.  Informative References
    Appendix A.  Requirements on Application Profiles
    Appendix B.  Document Updates
-     B.1.  Version -06 to -07
+     B.1.  Version -07 to -08
+     B.2.  Version -06 to -07
    Acknowledgments
    Authors' Addresses
 
@@ -543,7 +544,7 @@ Table of Contents
 
       This parameter is encoded as a CBOR byte string, whose value is
       the binary encoding of a CBOR array.  The format MUST follow the
-      data model AIF-PUBSUB-GROUPCOMM defined below.
+      data model AIF-PUBSUB-GROUPCOMM defined in Section 3.4.1.
 
    *  'audience': Required identifier corresponding to either the Broker
       or the KDC.
@@ -558,59 +559,96 @@ Table of Contents
 
 3.4.1.  Format of Scope
 
-   The 'scope' parameter MUST follow the AIF format.  (REQ1).
+   Building on Section 3.1 of [I-D.ietf-ace-key-groupcomm], this section
+   defines the exact format and encoding of scope used in this profile.
 
-   Based on the generic AIF model
+   To this end, this profile uses the Authorization Information Format
+   (AIF) [RFC9237] (REQ1).  With reference to the generic AIF model
 
          AIF-Generic<Toid, Tperm> = [* [Toid, Tperm]]
 
-   The value of the CBOR byte string used as the scope encodes the CBOR
+   the value of the CBOR byte string used as scope encodes the CBOR
    array [* [Toid, Tperm]], where each [Toid, Tperm] element corresponds
    to one scope entry.
 
-   This document defines the new AIF specific data model AIF-PUBSUB-
-   GROUPCOMM that this profile MUST use to format and encode scope
-   entries.
+   Furthermore, this document defines the new AIF specific data model
+   AIF-PUBSUB-GROUPCOMM that this profile MUST use to format and encode
+   scope entries.
+
+   In particular, the following holds for each scope entry.
+
+   *  The object identifier ("Toid") is specialized as a CBOR item
+      specifying the name of the application groups (topics) or the name
+      of the corresponding security groups pertaining to the scope
+      entry.
+
+   *  The permission set ("Tperm") is specialized as a CBOR unsigned
+      integer with value R, specifying the permissions that the Client
+      wishes or has been authorized to have in the groups indicated by
+      "Toid".
+
+   More specifically, the following applies when, as defined in this
+   document, a scope entry specifies a Client's set of permissions for
+   accessing: i) topic-related resources at the Broker; or ii) resources
+   at the KDC associated with the corresponding security groups.
 
    *  The object identifier ("Toid") is a CBOR text string, specifying
-      the name of the application group (topic name) or the
-      corresponding security group.
+      the name of one application group (topic) or of the corresponding
+      security group to which the scope entry pertains.
 
    *  The permission set ("Tperm") is a CBOR unsigned integer, whose
-      value provides permission details associated with this topic's
-      resources at the Broker or associated with this security group at
-      the KDC.
+      value R specifies the operations that the Client wishes to or has
+      been authorized to perform on the resources at the Broker
+      associated with the application group (topic) indicated by "Toid",
+      or on the resources at the KDC associated with the security group
+      indicated by "Toid" (REQ1).  The value R is computed as follows.
 
-      -  Admin (0): Reserved for scope entries that express permissions
-         for Administrators of pub/sub groups.
+      -  Each operation (i.e., permission detail) in the permission set
+         is converted into the corresponding numeric identifier X taken
+         from the following set.
 
-      -  AppGroup (1): Used to indicate whether the Toid indicates an
-         application group (i.e., 1 signals an application group, 0
-         signals a security group).
+         o  Admin (0): This operation is reserved for scope entries that
+            express permissions for Administrators of pub/sub groups.
 
-      -  Publish (1): Concerns the publication of data from the Client
-         to the topic, by means of PUT request to the corresponding data
-         resource at the broker.
+         o  AppGroup (1): This operation is signaled as wished/
+            authorized when "Toid" specifies the name of an application
+            group (topic)+, while it is signaled as not wished/
+            authorized when Toid specifies the name of a security group.
 
-      -  Read (2): Concerns either the subscription to the topic (i.e.,
-         a GET request with Observe option set to 0), or reading the
-         latest published data to the topic data resource (i.e., GET
-         request).
+         o  Publish (2): This operation concerns the publication of data
+            to the topic in question, performed by means of a PUT
+            request sent by a Publisher Client to the corresponding
+            topic-data resource at the Broker.
 
-      -  Delete (3): Concerns the deletion of the topic data resource
-         (i.e., DELETE request).
+         o  Read (3): This operation concerns both: i) the subscription
+            at the topic-data resource for the topic in question at the
+            Broker, performed by means of a GET request with the CoAP
+            Observe Option set to 0 and sent by a Subscriber Client; and
+            ii) the simple reading of the latest data published to the
+            topic in question, performed by means of a simple GET
+            request sent to the same topic-data resource.
 
-   The set of numbers representing the permissions is converted into a
-   single number by taking two to the power of each method number and
-   computing the inclusive OR of the binary representations of all the
-   power values.  Since this application profile considers user-related
-   operations, the scope entries MUST have the least significant bit of
-   "Tperm" set to 0 (i.e., Admin is set to 0).
+         o  Delete (4): This operation concerns the deletion of the
+            topic-data resource for the topic in question at the Broker,
+            performed by means of a DELETE request sent to that
+            resource.
 
-   It must be noted that, when Toid indicates the application group, the
-   Client has always the permission to retrieve the configuration of the
-   topic indicated by Toid (i.e., GET and FETCH requests to the topic
-   resource at the broker).
+      -  The set of N numeric identifiers is converted into the single
+         value R, by taking two to the power of each numeric identifier
+         X_1, X_2, ..., X_N, and then computing the inclusive OR of the
+         binary representations of all the power values.
+
+      Since this application profile considers user-related operations,
+      the "Admin" operation is signaled as not wished/authorized.  That
+      is, the scope entries MUST have the least significant bit of
+      "Tperm" set to 0.
+
+   If the "Toid" of a scope entry in an access token specifies the name
+   of an application group (i.e., the "AppGroup" operation is signaled
+   as authorized), the Client has also the permission to retrieve the
+   configuration of the application group (topic) whose name is
+   indicated by "Toid", by sending a GET or FETCH request to the
+   corresponding topic resource at the Broker.
 
    The specific interactions between the Client and the Broker are
    defined in [I-D.ietf-core-coap-pubsub].
@@ -1517,25 +1555,25 @@ Table of Contents
    [I-D.ietf-ace-key-groupcomm]
               Palombini, F. and M. Tiloca, "Key Provisioning for Group
               Communication using ACE", Work in Progress, Internet-
-              Draft, draft-ietf-ace-key-groupcomm-16, 5 September 2022,
+              Draft, draft-ietf-ace-key-groupcomm-17, 6 October 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-
-              groupcomm-16>.
+              groupcomm-17>.
 
    [I-D.ietf-core-coap-pubsub]
-              Koster, M., Keränen, A., and J. Jimenez, "A publish-
+              Jimenez, J., Koster, M., and A. Keränen, "A publish-
               subscribe architecture for the Constrained Application
               Protocol (CoAP)", Work in Progress, Internet-Draft, draft-
-              ietf-core-coap-pubsub-12, 13 March 2023,
+              ietf-core-coap-pubsub-13, 20 October 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pubsub-12>.
+              coap-pubsub-13>.
 
    [I-D.ietf-cose-cbor-encoded-cert]
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-06, 7 July 2023,
+              ietf-cose-cbor-encoded-cert-07, 20 October 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-06>.
+              cbor-encoded-cert-07>.
 
    [IANA.cose_algorithms]
               IANA, "COSE Algorithms",
@@ -1911,7 +1949,11 @@ Appendix B.  Document Updates
 
    RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
-B.1.  Version -06 to -07
+B.1.  Version -07 to -08
+
+   *  Revised presentation of the scope format.
+
+B.2.  Version -06 to -07
 
    *  Revised abstract and introduction.
 
