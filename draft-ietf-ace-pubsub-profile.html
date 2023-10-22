@@ -1534,7 +1534,7 @@ Client                                          Broker   AS   KDC
 <p id="section-3.4-1">A Client sends two Authorisation Requests to the AS, targeting two different audiences, i.e, the Broker and the KDC.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 <p id="section-3.4-2">As to the former, the AS handles Authorisation Requests for topics that the Client is allowed to perform topic data operations at the Broker, as corresponding to an application group.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
 <p id="section-3.4-3">As to the latter, the AS handles Authorization Requests for security groups that the Client is allowed to join, in order to obtain the group keying material for protecting end-to-end and verifying the content of exchanged messages on the associated pub/sub topics.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
-<p id="section-3.4-4">This section builds on Section 3 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> and defines only additions or modifications to that specification.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.4-4">This section builds on <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> and defines only additions or modifications to that specification.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
 <p id="section-3.4-5">Both Authorisation Requests include the following fields (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-3.1" class="relref">Section 3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>):<a href="#section-3.4-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.4-6.1">
@@ -1645,7 +1645,7 @@ Since this application profile considers user-related operations, the "Admin" op
         <h3 id="name-authorisation-response">
 <a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-authorisation-response" class="section-name selfRef">Authorisation response</a>
         </h3>
-<p id="section-3.5-1">The AS responds with an Authorization Response to each request, containing claims, as defined in Section 5.8.2 of <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> and Section 3.2 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> with the following additions:<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.5-1">The AS responds with an Authorization Response to each request, containing claims, as defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.2" class="relref">Section 5.8.2</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> and <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-3.2" class="relref">Section 3.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> with the following additions:<a href="#section-3.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.5-2.1">
             <p id="section-3.5-2.1.1">The AS MUST include the 'expires_in' parameter.  Other means for the AS to specify the lifetime of Access Tokens are out of the scope of this document.<a href="#section-3.5-2.1.1" class="pilcrow">¶</a></p>
@@ -1654,8 +1654,8 @@ Since this application profile considers user-related operations, the "Admin" op
             <p id="section-3.5-2.2.1">The AS MUST include the 'scope' parameter, when the value included in the Access Token differs from the one specified by the Client in the Authorization Request.  In such a case, the second element of each scope entry MUST be present, and specifies the set of interactions that the Client is authorized for that scope entry, encoded as specified in <a href="#auth-request" class="auto internal xref">Section 3.4</a>.<a href="#section-3.5-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.5-3">Furthermore, the AS MAY use the extended format of scope defined in Section 7 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> for the 'scope' claim of the Access Token.  In such a case, the AS MUST use the CBOR tag with tag number TAG_NUMBER, associated with the CoAP Content-Format CF_ID for the media type application/aif+cbor registered in <a href="#content_format" class="auto internal xref">Section 8.5</a> of this document (REQ28).<a href="#section-3.5-3" class="pilcrow">¶</a></p>
-<p id="section-3.5-4">Note to RFC Editor: In the previous paragraph, please replace "TAG_NUMBER" with the CBOR tag number computed as TN(ct) in Section 4.3 of <span>[<a href="#RFC9277" class="cite xref">RFC9277</a>]</span>, where ct is the ID assigned to the CoAP Content-Format registered in <a href="#content_format" class="auto internal xref">Section 8.5</a> of this document.  Then, please replace "CF_ID" with the ID assigned to that CoAP Content-Format.  Finally, please delete this paragraph.<a href="#section-3.5-4" class="pilcrow">¶</a></p>
+<p id="section-3.5-3">Furthermore, the AS MAY use the extended format of scope defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-7" class="relref">Section 7</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> for the 'scope' claim of the Access Token.  In such a case, the AS MUST use the CBOR tag with tag number TAG_NUMBER, associated with the CoAP Content-Format CF_ID for the media type application/aif+cbor registered in <a href="#content_format" class="auto internal xref">Section 8.5</a> of this document (REQ28).<a href="#section-3.5-3" class="pilcrow">¶</a></p>
+<p id="section-3.5-4">Note to RFC Editor: In the previous paragraph, please replace "TAG_NUMBER" with the CBOR tag number computed as TN(ct) in <span><a href="https://rfc-editor.org/rfc/rfc9277#section-4.3" class="relref">Section 4.3</a> of [<a href="#RFC9277" class="cite xref">RFC9277</a>]</span>, where ct is the ID assigned to the CoAP Content-Format registered in <a href="#content_format" class="auto internal xref">Section 8.5</a> of this document.  Then, please replace "CF_ID" with the ID assigned to that CoAP Content-Format.  Finally, please delete this paragraph.<a href="#section-3.5-4" class="pilcrow">¶</a></p>
 <p id="section-3.5-5">This indicates that the binary encoded scope follows the scope semantics defined for this application profile in <a href="#scope" class="auto internal xref">Section 3.4.1</a> of this document.<a href="#section-3.5-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1750,9 +1750,9 @@ Since this application profile considers user-related operations, the "Admin" op
         <h3 id="name-joining-a-security-group">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-joining-a-security-group" class="section-name selfRef">Joining a Security Group</a>
         </h3>
-<p id="section-4.1-1">This section describes the interactions between a node and the KDC to join a security group. Source authentication of a message sent within the group is ensured by means of a digital signature embedded in the message. Subscribers must be able to retrieve Publishers' authentication credentials from a trusted repository, to verify source authenticity of received messages. Hence, on joining a group, a Publisher is expected to provide its own authentication credential to the KDC.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.1-2">On a successful join, the Clients receive the symmetric COSE Key from the KDC to protect the payload of a published topic data.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
-<p id="section-4.1-3">The message exchange between the joining node and the KDC follows what is defined in Section 4.3.1.1 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> and only additions or modifications to that specification are defined in this document.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">This section describes the interactions between a Client and the KDC to join a security group. Source authentication of a message sent within the group is ensured by means of a digital signature embedded in the message. Subscribers must be able to retrieve Publishers' authentication credentials from a trusted repository, to verify source authentication of received messages. Hence, on joining a security group, a Publisher is expected to provide its own authentication credential to the KDC.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">On a successful join, the Clients receive from the KDC the symmetric COSE Key used as shared group key to protect the payload of a published topic data.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.1-3">The message exchange between the joining node and the KDC follows what is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-4.3.1.1" class="relref">Section 4.3.1.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> and only additions or modifications to that specification are defined in this document.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <span id="name-join-flow"></span><div id="join-flow">
 <figure id="figure-6">
           <div class="alignCenter art-text artwork" id="section-4.1-4.1">
@@ -1773,13 +1773,13 @@ Since this application profile considers user-related operations, the "Admin" op
           <h4 id="name-join-request">
 <a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-join-request" class="section-name selfRef">Join Request</a>
           </h4>
-<p id="section-4.1.1-1">After establishing a secure communication, the Client sends a Join Request to the KDC as described in Section 4.3 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. More specifically, the Client sends a POST request to the /ace-group/GROUPNAME endpoint, with Content-Format "application/ace-groupcomm+cbor". The payload MUST contain the following information formatted as a CBOR map, which MUST be encoded as defined in Section 4.3.1 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>:<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-1">After establishing a secure communication association with the KDC, the Client sends a Join Request to the KDC as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-4.3" class="relref">Section 4.3</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. More specifically, the Client sends a POST request to the /ace-group/GROUPNAME endpoint, with Content-Format "application/ace-groupcomm+cbor". The payload MUST contain the following information formatted as a CBOR map, which MUST be encoded as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>:<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1.1-2.1">
               <p id="section-4.1.1-2.1.1">'scope': Required. MUST be set to the specific group that the Client is attempting to join, i.e., the group name, and the permissions it wishes to have in the group. This value corresponds to one scope entry, as defined in <a href="#scope" class="auto internal xref">Section 3.4.1</a>.<a href="#section-4.1.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.1.1-2.2">
-              <p id="section-4.1.1-2.2.1">'get_creds': Optional, present if the Subcriber wants to retrieve the public keys of all the Publishers upon joining. Otherwise, this parameter MUST NOT be present. If the parameter is present, the parameter MUST encode the CBOR simple value "null" (0xf6). Note that no 'role_filter' is necessary as KDC returns the authentication credentials of Publishers by default.<a href="#section-4.1.1-2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-4.1.1-2.2.1">'get_creds': Optional, present if the Client wishes to join as a Subcriber and wants to retrieve the public keys of all the Publishers upon joining. Otherwise, this parameter MUST NOT be present. If the parameter is present, the parameter MUST encode the CBOR simple value "null" (0xf6). Note that no 'role_filter' is necessary, as the KDC returns the authentication credentials of Publisher Clients by default.<a href="#section-4.1.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.1.1-2.3">
               <p id="section-4.1.1-2.3.1">'client_cred': The use of this parameter is detailed in <a href="#client_cred" class="auto internal xref">Section 4.1.1.1</a>.<a href="#section-4.1.1-2.3.1" class="pilcrow">¶</a></p>
@@ -1791,30 +1791,30 @@ Since this application profile considers user-related operations, the "Admin" op
               <p id="section-4.1.1-2.5.1">'client_cred_verify': Optional, it MUST be present if 'client_cred' is present. The use of this parameter is detailed in <a href="#pop" class="auto internal xref">Section 4.1.1.2</a>.<a href="#section-4.1.1-2.5.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-4.1.1-3">As a Publisher has its own authentication credential to use in a group, it MUST support the client_cred', 'cnonce', and 'client_cred_verify' parameters.<a href="#section-4.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-3">As a Publisher Client has its own authentication credential to use in a group, it MUST support the client_cred', 'cnonce', and 'client_cred_verify' parameters.<a href="#section-4.1.1-3" class="pilcrow">¶</a></p>
 <div id="client_cred">
 <section id="section-4.1.1.1">
-            <h5 id="name-client-credentials-client_c">
-<a href="#section-4.1.1.1" class="section-number selfRef">4.1.1.1. </a><a href="#name-client-credentials-client_c" class="section-name selfRef">Client Credentials-'client_cred'</a>
+            <h5 id="name-client-credentials-in-clien">
+<a href="#section-4.1.1.1" class="section-number selfRef">4.1.1.1. </a><a href="#name-client-credentials-in-clien" class="section-name selfRef">Client Credentials in 'client_cred'</a>
             </h5>
-<p id="section-4.1.1.1-1">One of the following cases can occur when a new node attempts to join a group.<a href="#section-4.1.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.1.1-1">One of the following cases can occur when a new Client attempts to join a security group.<a href="#section-4.1.1.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1.1.1-2.1">
-                <p id="section-4.1.1.1-2.1.1">The joining node isn't a Publisher, i.e., it is not going to send messages to the group.  In this case, the joining node is not required to provide its own authentication credential to the KDC. In case the joining node still provides an authentication credential in the 'client_cred' parameter of the Join Request (see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>), the KDC silently ignores that parameter, as well as the related parameter 'client_cred_verify'.<a href="#section-4.1.1.1-2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1.1.1-2.1.1">The joining node does not with to join as a Publisher, i.e., it is not going to send data to the application group.  In this case, the joining node is not required to provide its own authentication credential to the KDC. In case the joining node still provides an authentication credential in the 'client_cred' parameter of the Join Request (see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>), the KDC silently ignores that parameter, as well as the related parameter 'client_cred_verify'.<a href="#section-4.1.1.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1.1.1-2.2">
-                <p id="section-4.1.1.1-2.2.1">The joining node is a Publisher, and<a href="#section-4.1.1.1-2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1.1.1-2.2.1">The joining node wishes to join as a Publisher Client, and:<a href="#section-4.1.1.1-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1.1.1-2.2.2.1">
-                    <p id="section-4.1.1.1-2.2.2.1.1">the KDC already acquired the authentication credential of the joining node either during a past group joining process, or during establishing a secure communication association, and the joining node and the KDC use a symmetric proof-of-possession key. If the authentication credential and the proof-of-possession key are compatible with the signature or ECDH algorithm, and possible associated parameters, then the key can be used for the authentication credential in the group. In this case, the joining node MAY choose not to provide again its own authentication credential to the KDC, in order to limit the size of the Join Request.<a href="#section-4.1.1.1-2.2.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-4.1.1.1-2.2.2.1.1">The KDC already acquired the authentication credential of the joining node either during a past group joining process, or when establishing a secure communication association using asymmetric proof-of-possession keys. If the joining node's proof-of-possession key is compatible with the signature algorithm used in the security group and with possible associated parameters, then the corresponding authentication credential can be used in the group. In this case, the joining node MAY choose not to provide again its authentication credential to the KDC, in order to limit the size of the Join Request.<a href="#section-4.1.1.1-2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
                   <li class="normal" id="section-4.1.1.1-2.2.2.2">
-                    <p id="section-4.1.1.1-2.2.2.2.1">the KDC hasn't acquired an authentication credential. Then, the joining node MUST provide a compatible authentication credential in the 'client_cred' parameter of the Join Request (see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>).<a href="#section-4.1.1.1-2.2.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-4.1.1.1-2.2.2.2.1">The KDC has not acquired an authentication credential. Then, the joining node MUST provide a compatible authentication credential in the 'client_cred' parameter of the Join Request (see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>).<a href="#section-4.1.1.1-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
                 </ul>
 </li>
             </ul>
-<p id="section-4.1.1.1-3">Finally, the joining node MUST provide its own authentication credential again if it has provided the KDC with multiple authentication credentials during past joining processes intended for different groups.  If the joining node provides its own authentication credential, the KDC performs consistency checks as per <a href="#join-request" class="auto internal xref">Section 4.1.1</a> and, in case of success, considers it as the authentication credential associated with the joining node in the group.<a href="#section-4.1.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1.1.1-3">Finally, the joining node MUST provide its authentication credential again if it has provided the KDC with multiple authentication credentials during past joining processes intended for different security groups. If the joining node provides its authentication credential, the KDC performs consistency checks as per <a href="#join-request" class="auto internal xref">Section 4.1.1</a> and, in case of success, considers it as the authentication credential associated with the joining node in the group.<a href="#section-4.1.1.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="pop">
@@ -1823,19 +1823,30 @@ Since this application profile considers user-related operations, the "Admin" op
 <a href="#section-4.1.1.2" class="section-number selfRef">4.1.1.2. </a><a href="#name-proof-of-possession" class="section-name selfRef">Proof-of-Possession</a>
             </h5>
 <p id="section-4.1.1.2-1">The 'client_cred_verify' parameter contains the proof-of-possession evidence, and is computed as defined below (REQ14).<a href="#section-4.1.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.1.1.2-2">The Publisher signs the scope, concatenated with N_S and concatenated with N_C using the private key corresponding to the public key in the 'client_cred' parameter.<a href="#section-4.1.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.1.1.2-2">The Publisher Client signs the scope, concatenated with N_S and concatenated with N_C, using the private key corresponding to the public key in the 'client_cred' parameter.<a href="#section-4.1.1.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.1.1.2-3">The N_S may be either:<a href="#section-4.1.1.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1.1.2-4.1">
                 <p id="section-4.1.1.2-4.1.1">The challenge received from the KDC in the 'kdcchallenge' parameter of the 2.01 (Created) response to the Token Transfer Request (see <a href="#token-post" class="auto internal xref">Section 3.6</a>).<a href="#section-4.1.1.2-4.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1.1.2-4.2">
-                <p id="section-4.1.1.2-4.2.1">If the Publisher used a symmetric proof-of-possession key in the DTLS handshake <span>[<a href="#RFC9202" class="cite xref">RFC9202</a>]</span> with the KDC,  then it is an exporter value computed as defined in Section 7.5 of <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>.  Specifically, N_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value', 32 bytes as 'key_length', and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-group-pubsub-app" defined in <a href="#tls_exporter" class="auto internal xref">Section 8.6</a> of this document.<a href="#section-4.1.1.2-4.2.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1.1.2-4.2.1">If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE <span>[<a href="#RFC9202" class="cite xref">RFC9202</a>]</span>, and the access token was specified:<a href="#section-4.1.1.2-4.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.1.1.2-4.2.2.1">
+                    <p id="section-4.1.1.2-4.2.2.1.1">in the "psk_identity" field of the ClientKeyExchange message when using DTLS 1.2 <span>[<a href="#RFC6347" class="cite xref">RFC6347</a>]</span>; or<a href="#section-4.1.1.2-4.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                  <li class="normal" id="section-4.1.1.2-4.2.2.2">
+                    <p id="section-4.1.1.2-4.2.2.2.1">in the "identity" field of a PskIdentity within the PreSharedKeyExtension of the ClientHello message when using DTLS 1.3 <span>[<a href="#RFC9147" class="cite xref">RFC9147</a>]</span>,<a href="#section-4.1.1.2-4.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+                </ul>
+<p id="section-4.1.1.2-4.2.3">
+then N_S is an exporter value computed as defined in <span><a href="https://rfc-editor.org/rfc/rfc8446#section-7.5" class="relref">Section 7.5</a> of [<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>. Specifically, N_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value', 32 bytes as 'key_length', and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-group-pubsub-app" defined in <a href="#tls_exporter" class="auto internal xref">Section 8.6</a> of this document.<a href="#section-4.1.1.2-4.2.3" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1.1.2-4.3">
-                <p id="section-4.1.1.2-4.3.1">If the Join Request is a retry in response to an error response from the KDC, which included a new 'kdcchallenge' parameter, N_S MUST be this new challenge parameter.<a href="#section-4.1.1.2-4.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1.1.2-4.3.1">If the Join Request is a retry in response to an error response from the KDC, which included a new 'kdcchallenge' parameter, then N_S MUST be the new value from this parameter.<a href="#section-4.1.1.2-4.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
+<p id="section-4.1.1.2-5">It is up to applications to define how N_S is computed in further alternative settings.<a href="#section-4.1.1.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1845,95 +1856,100 @@ Since this application profile considers user-related operations, the "Admin" op
           <h4 id="name-join-response">
 <a href="#section-4.1.2" class="section-number selfRef">4.1.2. </a><a href="#name-join-response" class="section-name selfRef">Join Response</a>
           </h4>
-<p id="section-4.1.2-1">On receiving the Join Request, the KDC processes the request as defined in Section 4.3.1 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, and returns a success or error response.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-2">If the 'client_cred' field is present, the KDC verifies the signature in the 'client_cred_verify'. As PoP input, the KDC uses the value of the 'scope' parameter from the Join Request as a CBOR byte string, concatenated with N_S encoded as a CBOR byte string, concatenated with N_C encoded as a CBOR byte string. As public key of the joining node, the KDC uses either the one included in the authentication credential retrieved from the 'client_cred' parameter of the Join Request or the already stored authentication credential from previous interactions with the joining node. The KDC verifies the PoP evidence, which is a signature, by using the public key of the joining node, as well as the signature algorithm used in the group and possible corresponding parameters.<a href="#section-4.1.2-2" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-3">For a Publisher Client, the KDC assigns an available Sender ID that has not been used  in the group. The KDC MUST NOT assign a Sender ID to the joining node if the node isn't a Publisher. The Sender ID MUST be unique within the group. Similar to <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, the Sender ID can be short: the maximum length of Sender ID in bytes equals the length of the AEAD nonce minus 6; for AES-CCM-16-64-128 the maximum length of Sender ID is 7 bytes.<a href="#section-4.1.2-3" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-4">In the case of any join request error, the KDC and the Client attempting to join follow the procedure defined in <a href="#join-error" class="auto internal xref">Section 4.1.3</a>.<a href="#section-4.1.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-5">In the case of success, the Client is added to the list of current members, if not already a member. The Client is assigned a NODENAME and a sub-resource /ace-group/GROUPNAME/nodes/NODENAME. NODENAME is associated to the access token and secure session of the Client. Publishers' client credentials are also associated with the tuple containing NODENAME, GROUPNAME,  a newly assigned sender ID and the access token. Note that, as long as the secure association between the client and the KDC persists, then the same client re-joining the group is recognized by the KDC by virtue of their secure association. As a consequence, the re-joining Publisher keeps the same NODENAME and related subresource /ace-group/GROUPNAME/nodes/NODENAME, while receiving a new Sender ID according to the same criteria above.<a href="#section-4.1.2-5" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-6">The KDC responds with a Join Response with response code 2.01 (Created) if the Client has been added to the list of group members, and 2.04 (Changed) otherwise (e.g., if the Client is re-joining).  The Content-Format  is "application/ace-groupcomm+cbor". The payload (formatted as a CBOR map) MUST contain the following fields from the Join Response and encode them as defined in Section 4.3.1 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>:<a href="#section-4.1.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-1">On receiving the Join Request, the KDC processes the request as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, and returns a success or error response.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-2">If the 'client_cred' parameter is present, the KDC verifies the signature in the 'client_cred_verify' parameter. As PoP input, the KDC uses the value of the 'scope' parameter from the Join Request as a CBOR byte string, concatenated with N_S encoded as a CBOR byte string, concatenated with N_C encoded as a CBOR byte string. As public key of the joining node, the KDC uses either the one included in the authentication credential retrieved from the 'client_cred' parameter of the Join Request or the one from the already stored authentication credential from previous interactions with the joining node. The KDC verifies the PoP evidence, which is a signature, by using the public key of the joining node, as well as the signature algorithm used in the group and possible corresponding parameters.<a href="#section-4.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-3">In the case of any join request error, the KDC and the Client attempting to join follow the procedure defined in <a href="#join-error" class="auto internal xref">Section 4.1.3</a>.<a href="#section-4.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-4">In the case of success, the KDC responds with a Join Response, whose payload formatted as a CBOR map MUST contain the following fields as per <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>:<a href="#section-4.1.2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.1.2-7.1">
-              <p id="section-4.1.2-7.1.1">'gkty': the key type "Group_PubSub_Keying_Material" for the 'key' parameter defined in <a href="#iana-ace-groupcomm-key" class="auto internal xref">Section 8.1</a> of this document.<a href="#section-4.1.2-7.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1.2-5.1">
+              <p id="section-4.1.2-5.1.1">'gkty': the key type "Group_PubSub_Keying_Material" for the 'key' parameter defined in <a href="#iana-ace-groupcomm-key" class="auto internal xref">Section 8.1</a> of this document.<a href="#section-4.1.2-5.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.1.2-7.2">
-              <p id="section-4.1.2-7.2.1">'key': The keying material for group communication includes the following parameters:<a href="#section-4.1.2-7.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.1.2-5.2">
+              <p id="section-4.1.2-5.2.1">'key': The keying material for group communication includes the following parameters:<a href="#section-4.1.2-5.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.1.2-7.2.2.1">
-                  <p id="section-4.1.2-7.2.2.1.1">'group_SenderId', specifying the Client's Sender ID encoded as a CBOR byte string. This field MUST be included if the Client is a Publisher, and MUST NOT be included otherwise.<a href="#section-4.1.2-7.2.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1.2-5.2.2.1">
+                  <p id="section-4.1.2-5.2.2.1.1">'cred_fmt', specifying the format of authentication credentials used in the group. This parameter takes its value from the "Label" column of the "COSE Header Parameters" registry <span>[<a href="#IANA.cose_header-parameters" class="cite xref">IANA.cose_header-parameters</a>]</span>. At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>, X.509 certificates <span>[<a href="#RFC7925" class="cite xref">RFC7925</a>]</span> and C509 certificates <span>[<a href="#I-D.ietf-cose-cbor-encoded-cert" class="cite xref">I-D.ietf-cose-cbor-encoded-cert</a>]</span>. Further formats may be available in the future, and would be acceptable to use as long as they comply with the criteria defined above (REQ6).<a href="#section-4.1.2-5.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-4.1.2-7.2.2.2">
-                  <p id="section-4.1.2-7.2.2.2.1">'cred_fmt', specifying the format of authentication credentials used in the group. This parameter takes its value from the "Label" column of the "COSE Header Parameters" registry <span>[<a href="#IANA.cose_header-parameters" class="cite xref">IANA.cose_header-parameters</a>]</span>. At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>, X.509 certificates <span>[<a href="#RFC7925" class="cite xref">RFC7925</a>]</span> and C509 certificates <span>[<a href="#I-D.ietf-cose-cbor-encoded-cert" class="cite xref">I-D.ietf-cose-cbor-encoded-cert</a>]</span>. Further formats may be available in the future, and would be acceptable to use as long as they comply with the criteria defined above (REQ6).<a href="#section-4.1.2-7.2.2.2.1" class="pilcrow">¶</a></p>
+                <li class="normal" id="section-4.1.2-5.2.2.2">
+                  <p id="section-4.1.2-5.2.2.2.1">'sign_alg', specifying the Signature Algorithm used to sign messages in the group. This parameter takes values from the "Value" column of the "COSE Algorithms" registry <span>[<a href="#IANA.cose_algorithms" class="cite xref">IANA.cose_algorithms</a>]</span>.<a href="#section-4.1.2-5.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-4.1.2-7.2.2.3">
-                  <p id="section-4.1.2-7.2.2.3.1">'sign_alg', specifying the Signature Algorithm used to sign messages in the group. This parameter takes values from the "Value" column of the "COSE Algorithms" registry <span>[<a href="#IANA.cose_algorithms" class="cite xref">IANA.cose_algorithms</a>]</span>.<a href="#section-4.1.2-7.2.2.3.1" class="pilcrow">¶</a></p>
-</li>
-                <li class="normal" id="section-4.1.2-7.2.2.4">
-                  <p id="section-4.1.2-7.2.2.4.1">'sign_params', specifying the parameters of the Signature Algorithm. This parameter is a CBOR array, which includes the following two elements:<a href="#section-4.1.2-7.2.2.4.1" class="pilcrow">¶</a></p>
+                <li class="normal" id="section-4.1.2-5.2.2.3">
+                  <p id="section-4.1.2-5.2.2.3.1">'sign_params', specifying the parameters of the Signature Algorithm. This parameter is a CBOR array, which includes the following two elements:<a href="#section-4.1.2-5.2.2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.1.2-7.2.2.4.2.1">
-                      <p id="section-4.1.2-7.2.2.4.2.1.1">'sign_alg_capab'is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry <span>[<a href="#IANA.cose_algorithms" class="cite xref">IANA.cose_algorithms</a>]</span>.<a href="#section-4.1.2-7.2.2.4.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1.2-5.2.2.3.2.1">
+                      <p id="section-4.1.2-5.2.2.3.2.1.1">'sign_alg_capab'is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry <span>[<a href="#IANA.cose_algorithms" class="cite xref">IANA.cose_algorithms</a>]</span>.<a href="#section-4.1.2-5.2.2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                    <li class="normal" id="section-4.1.2-7.2.2.4.2.2">
-                      <p id="section-4.1.2-7.2.2.4.2.2.1">'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry <span>[<a href="#IANA.cose_key-type" class="cite xref">IANA.cose_key-type</a>]</span>.<a href="#section-4.1.2-7.2.2.4.2.2.1" class="pilcrow">¶</a></p>
+                    <li class="normal" id="section-4.1.2-5.2.2.3.2.2">
+                      <p id="section-4.1.2-5.2.2.3.2.2.1">'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry <span>[<a href="#IANA.cose_key-type" class="cite xref">IANA.cose_key-type</a>]</span>.<a href="#section-4.1.2-5.2.2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
                   </ul>
 </li>
-                <li class="normal" id="section-4.1.2-7.2.2.5">
-                  <p id="section-4.1.2-7.2.2.5.1">'group_key', specifying a COSE_Key object as defined in <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> and conveying the group key to use in the security group. The COSE_Key object MUST contain the following parameters:<a href="#section-4.1.2-7.2.2.5.1" class="pilcrow">¶</a></p>
+                <li class="normal" id="section-4.1.2-5.2.2.4">
+                  <p id="section-4.1.2-5.2.2.4.1">'group_key', specifying a COSE_Key object as defined in <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> and conveying the group key to use in the security group. The COSE_Key object MUST contain the following parameters:<a href="#section-4.1.2-5.2.2.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.1.2-7.2.2.5.2.1">
-                      <p id="section-4.1.2-7.2.2.5.2.1.1">'kty', with value 4 (Symmetric).<a href="#section-4.1.2-7.2.2.5.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1.2-5.2.2.4.2.1">
+                      <p id="section-4.1.2-5.2.2.4.2.1.1">'kty', with value 4 (Symmetric).<a href="#section-4.1.2-5.2.2.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                    <li class="normal" id="section-4.1.2-7.2.2.5.2.2">
-                      <p id="section-4.1.2-7.2.2.5.2.2.1">'alg', with value the identifier of the AEAD algorithm used in the security group.<a href="#section-4.1.2-7.2.2.5.2.2.1" class="pilcrow">¶</a></p>
+                    <li class="normal" id="section-4.1.2-5.2.2.4.2.2">
+                      <p id="section-4.1.2-5.2.2.4.2.2.1">'alg', with value the identifier of the AEAD algorithm used in the security group.<a href="#section-4.1.2-5.2.2.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
-                    <li class="normal" id="section-4.1.2-7.2.2.5.2.3">
-                      <p id="section-4.1.2-7.2.2.5.2.3.1">'Base IV', with value the Base Initialization Vector (Base IV) to use in the security group with this group key.<a href="#section-4.1.2-7.2.2.5.2.3.1" class="pilcrow">¶</a></p>
+                    <li class="normal" id="section-4.1.2-5.2.2.4.2.3">
+                      <p id="section-4.1.2-5.2.2.4.2.3.1">'Base IV', with value the Base Initialization Vector (Base IV) to use in the security group with this group key.<a href="#section-4.1.2-5.2.2.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
-                    <li class="normal" id="section-4.1.2-7.2.2.5.2.4">
-                      <p id="section-4.1.2-7.2.2.5.2.4.1">'k', with value the symmetric encryption key to use as group key (REQ17).<a href="#section-4.1.2-7.2.2.5.2.4.1" class="pilcrow">¶</a></p>
+                    <li class="normal" id="section-4.1.2-5.2.2.4.2.4">
+                      <p id="section-4.1.2-5.2.2.4.2.4.1">'k', with value the symmetric encryption key to use as group key (REQ17).<a href="#section-4.1.2-5.2.2.4.2.4.1" class="pilcrow">¶</a></p>
 </li>
-                    <li class="normal" id="section-4.1.2-7.2.2.5.2.5">
-                      <p id="section-4.1.2-7.2.2.5.2.5.1">'kid', with value the identifier of the COSE_Key object, hence of the group key. This value is used as Group Identifier (Gid) of the security group, as long as the present key is used as group key in the security group.<a href="#section-4.1.2-7.2.2.5.2.5.1" class="pilcrow">¶</a></p>
+                    <li class="normal" id="section-4.1.2-5.2.2.4.2.5">
+                      <p id="section-4.1.2-5.2.2.4.2.5.1">'kid', with value the identifier of the COSE_Key object, hence of the group key.<a href="#section-4.1.2-5.2.2.4.2.5.1" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-5.2.2.4.2.5.2">
+This value is used as Group Identifier (Gid) of the security group, as long as the present key is used as group key in the security group.<a href="#section-4.1.2-5.2.2.4.2.5.2" class="pilcrow">¶</a></p>
 </li>
                   </ul>
+</li>
+                <li class="normal" id="section-4.1.2-5.2.2.5">
+                  <p id="section-4.1.2-5.2.2.5.1">'group_SenderId', specifying the Client's Sender ID encoded as a CBOR byte string. This field MUST be included if the Client is joining the security group as a Publisher, and MUST NOT be included otherwise. A Publisher Client MUST support the 'group_SenderId' parameter (REQ29).<a href="#section-4.1.2-5.2.2.5.1" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-5.2.2.5.2">
+The Sender ID MUST be unique within the security group. The KDC MUST only assign an available Sender ID that has not been used in the security group since the last time when the current Gid value was assigned to the group (i.e., since the latest group rekeying, see <a href="#rekeying" class="auto internal xref">Section 4.2.4</a>). The KDC MUST NOT assign a Sender ID to the joining node if the node is not joining the group as a Publisher.<a href="#section-4.1.2-5.2.2.5.2" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-5.2.2.5.3">
+The Sender ID can be short in length. Its maximum length in bytes is the length in bytes of the AEAD nonce for the AEAD algorithm, minus 6. This means that, when using AES-CCM-16-64-128 as AEAD algorithm in the security group, the maximum length of Sender IDs is 7 bytes.<a href="#section-4.1.2-5.2.2.5.3" class="pilcrow">¶</a></p>
 </li>
               </ul>
 </li>
-            <li class="normal" id="section-4.1.2-7.3">
-              <p id="section-4.1.2-7.3.1">'num', specifying the version number of the keying material specified in the 'key' field (with initial value set to 0 on creation of the group).<a href="#section-4.1.2-7.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.1.2-5.3">
+              <p id="section-4.1.2-5.3.1">'num', specifying the version number of the keying material specified in the 'key' field (with initial value set to 0 on creation of the group).<a href="#section-4.1.2-5.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.1.2-7.4">
-              <p id="section-4.1.2-7.4.1">'exp', which MUST be present.<a href="#section-4.1.2-7.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.1.2-5.4">
+              <p id="section-4.1.2-5.4.1">'exp', which MUST be present.<a href="#section-4.1.2-5.4.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.1.2-7.5">
-              <p id="section-4.1.2-7.5.1">'ace-groupcomm-profile', which MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is defined in <a href="#iana-profile" class="auto internal xref">Section 8.2</a> of this document.<a href="#section-4.1.2-7.5.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.1.2-5.5">
+              <p id="section-4.1.2-5.5.1">'ace-groupcomm-profile', which MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is defined in <a href="#iana-profile" class="auto internal xref">Section 8.2</a> of this document.<a href="#section-4.1.2-5.5.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.1.2-7.6">
-              <p id="section-4.1.2-7.6.1">'creds', which MUST be present if the 'get_creds' parameter was present. Otherwise, it MUST NOT be present. The KDC provides the authentication credentials of all the Publishers in the security group.<a href="#section-4.1.2-7.6.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.1.2-5.6">
+              <p id="section-4.1.2-5.6.1">'creds', which MUST be present if the 'get_creds' parameter was present. Otherwise, it MUST NOT be present. The KDC provides the authentication credentials of all the Publishers in the security group.<a href="#section-4.1.2-5.6.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.1.2-7.7">
-              <p id="section-4.1.2-7.7.1">'peer_roles', which MAY be omitted even if 'creds' is present, since each authentication credential conveyed in the 'creds' parameter: i) is associated with a Client authorized to be Publisher in the group; and ii) plays no role if such Client was also authorized to be Subscriber in the group. If 'creds' is not present, 'peer_roles' MUST NOT be present.<a href="#section-4.1.2-7.7.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.1.2-5.7">
+              <p id="section-4.1.2-5.7.1">'peer_roles', which MAY be omitted even if 'creds' is present, since each authentication credential conveyed in the 'creds' parameter: i) is associated with a Client authorized to be Publisher in the group; and ii) plays no role if such Client was also authorized to be Subscriber in the group. If 'creds' is not present, 'peer_roles' MUST NOT be present.<a href="#section-4.1.2-5.7.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.1.2-7.8">
-              <p id="section-4.1.2-7.8.1">'peer_identifiers', which MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present. The identifiers are the Publisher Sender IDs whose authentication credential is specified in the 'creds' parameter (REQ 25).<a href="#section-4.1.2-7.8.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.1.2-5.8">
+              <p id="section-4.1.2-5.8.1">'peer_identifiers', which MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present. The identifiers are the Publisher Sender IDs whose authentication credential is specified in the 'creds' parameter (REQ 25).<a href="#section-4.1.2-5.8.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.1.2-7.9">
-              <p id="section-4.1.2-7.9.1">'kdc_cred', which MUST be present if group re-keying is used, and encoded as a CBOR byte string, with value the original binary representation of the KDC's authentication credential (REQ8).<a href="#section-4.1.2-7.9.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.1.2-5.9">
+              <p id="section-4.1.2-5.9.1">'kdc_cred', which MUST be present if group re-keying is used, and encoded as a CBOR byte string, with value the original binary representation of the KDC's authentication credential (REQ8).<a href="#section-4.1.2-5.9.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.1.2-7.10">
-              <p id="section-4.1.2-7.10.1">'kdc_nonce', which MUST be present, if 'kdc_cred' is present and encoded as a CBOR byte string, and including a dedicated nonce N_KDC generated by the KDC. For N_KDC, it is RECOMMENDED to use a 8-byte long random nonce.<a href="#section-4.1.2-7.10.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.1.2-5.10">
+              <p id="section-4.1.2-5.10.1">'kdc_nonce', which MUST be present, if 'kdc_cred' is present and encoded as a CBOR byte string, and including a dedicated nonce N_KDC generated by the KDC. For N_KDC, it is RECOMMENDED to use a 8-byte long random nonce.<a href="#section-4.1.2-5.10.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.1.2-7.11">
-              <p id="section-4.1.2-7.11.1">'kdc_cred_verify', which MUST be present, if 'kdc_cred' is present and encoded as a CBOR byte string. The PoP evidence is computed over the nonce N_KDC, which is specified in the 'kdc_nonce' parameter and taken as PoP input. KDC MUST compute the signature by using the signature algorithm used in the group, as well as its own private key associated with the authentication credential specified in the 'kdc_cred' parameter (REQ21).<a href="#section-4.1.2-7.11.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.1.2-5.11">
+              <p id="section-4.1.2-5.11.1">'kdc_cred_verify', which MUST be present, if 'kdc_cred' is present and encoded as a CBOR byte string. The PoP evidence is computed over the nonce N_KDC, which is specified in the 'kdc_nonce' parameter and taken as PoP input. KDC MUST compute the signature by using the signature algorithm used in the group, as well as its own private key associated with the authentication credential specified in the 'kdc_cred' parameter (REQ21).<a href="#section-4.1.2-5.11.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.1.2-7.12">
-              <p id="section-4.1.2-7.12.1">'group_rekeying', which MAY be omitted if the KDC uses the "Point-to-Point" group rekeying scheme registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-11.12" class="relref">Section 11.12</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> as the default rekeying scheme in the group (OPT9). In any other case, the 'group_rekeying' parameter MUST be included.<a href="#section-4.1.2-7.12.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.1.2-5.12">
+              <p id="section-4.1.2-5.12.1">'group_rekeying', which MAY be omitted if the KDC uses the "Point-to-Point" group rekeying scheme registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-11.12" class="relref">Section 11.12</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> as the default rekeying scheme in the group (OPT9). In any other case, the 'group_rekeying' parameter MUST be included.<a href="#section-4.1.2-5.12.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-4.1.2-8">A Publisher Client MUST support 'group_SenderId' parameter (REQ29).<a href="#section-4.1.2-8" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-9">If the application requires backward security, the KDC MUST generate updated security parameters and group keying material, and provide it to the current group members, upon the new node's joining (see <a href="#rekeying" class="auto internal xref">Section 4.2.4</a>).  In such a case, the joining node is not able to access secure communication in the pub/sub group prior its joining.<a href="#section-4.1.2-9" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-10">Upon receiving the Join Response, the joining node retrieves the KDC's authentication credential from the 'kdc_cred' parameter. The joining node MUST verify the proof-of-possession (PoP) evidence, which is a signature, specified in the 'kdc_cred_verify' parameter of the Join Response (REQ21).<a href="#section-4.1.2-10" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-6">After sending a successful Join Response, the KDC adds the Client to the list of current members of the security group, if that Client is not already a group member. Also, the Client is assigned a NODENAME and a sub-resource /ace-group/GROUPNAME/nodes/NODENAME. Furthermore, the KDC associates NODENAME with the Client's access token and with the secure session that the KDC has with the Client. If the Client is a Publisher, its authentication credential is also associated with the tuple containing NODENAME, GROUPNAME, the current Gid, the newly assigned Publisher's Sender ID, and the Client's access token. The KDC MUST keep this association updated over time.<a href="#section-4.1.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-7">Note that, as long as the secure association between the Client and the KDC persists, the same Client re-joining the group is recognized by the KDC by virtue of such a secure association. As a consequence, the re-joining Client keeps the same NODENAME and the associated subresource /ace-group/GROUPNAME/nodes/NODENAME. Also, if the Client is a Publisher, it receives a new Sender ID according to the same criteria defined above.<a href="#section-4.1.2-7" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-8">If the application requires backward security, the KDC MUST generate updated security parameters and group keying material, and provide it to the current group members, upon the new node's joining (see <a href="#rekeying" class="auto internal xref">Section 4.2.4</a>). In such a case, the joining node is not able to access secure communication in the pub/sub group prior its joining.<a href="#section-4.1.2-8" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-9">Upon receiving the Join Response, the joining node retrieves the KDC's authentication credential from the 'kdc_cred' parameter. The joining node MUST verify the proof-of-possession (PoP) evidence, which is a signature, specified in the 'kdc_cred_verify' parameter of the Join Response (REQ21).<a href="#section-4.1.2-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="join-error">
@@ -1964,9 +1980,10 @@ Since this application profile considers user-related operations, the "Admin" op
               <p id="section-4.1.3-2.4.1">The 'scope' parameter is not present in the Join Request, or it is present and specifies any set of permissions not included in the list defined in <a href="#scope" class="auto internal xref">Section 3.4.1</a>.<a href="#section-4.1.3-2.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-4.1.3-3">A 4.00 (Bad Request) error response from the KDC to the joining node MAY have content format application/ace-groupcomm+cbor and contain a CBOR map as payload. The CBOR map MAY include the 'kdcchallenge' parameter.  If present, this parameter is a CBOR byte string, which encodes a newly generated 'kdcchallenge' value that the Client can use when preparing a new Join Request.  In such a case the KDC MUST store the newly generated value as the 'kdcchallenge' value associated with the joining node, possibly replacing the currently stored value.<a href="#section-4.1.3-3" class="pilcrow">¶</a></p>
-<p id="section-4.1.3-4">On receiving the Join Response, if 'kdc_cred' is present but the Client cannot verify the PoP evidence, the Client MUST stop processing the Join Response and MAY send a new Join Request to the KDC.<a href="#section-4.1.3-4" class="pilcrow">¶</a></p>
-<p id="section-4.1.3-5">The Group Manager MUST return a 5.03 (Service Unavailable) response to a Publisher's join request in case there are currently no Sender IDs available.<a href="#section-4.1.3-5" class="pilcrow">¶</a></p>
+<p id="section-4.1.3-3">A 4.00 (Bad Request) error response from the KDC to the joining node MAY have content format application/ace-groupcomm+cbor and contain a CBOR map as payload.<a href="#section-4.1.3-3" class="pilcrow">¶</a></p>
+<p id="section-4.1.3-4">The CBOR map MAY include the 'kdcchallenge' parameter. If present, this parameter is a CBOR byte string, which encodes a newly generated 'kdcchallenge' value that the Client can use when preparing a new Join Request. In such a case, the KDC MUST store the newly generated value as the 'kdcchallenge' value associated with the joining node, which replaces the currently stored value (if any).<a href="#section-4.1.3-4" class="pilcrow">¶</a></p>
+<p id="section-4.1.3-5">Upon receiving the Join Response, if 'kdc_cred' is present but the Client cannot verify the PoP evidence, the Client MUST stop processing the Join Response and MAY send a new Join Request to the KDC.<a href="#section-4.1.3-5" class="pilcrow">¶</a></p>
+<p id="section-4.1.3-6">The KDC MUST return a 5.03 (Service Unavailable) response to a Client that sends a Join Request to join the security group as Publisher, in case there are currently no Sender IDs available to assign.<a href="#section-4.1.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1983,21 +2000,21 @@ Since this application profile considers user-related operations, the "Admin" op
           </h4>
 <ul class="normal">
 <li class="normal" id="section-4.2.1-1.1">
-              <p id="section-4.2.1-1.1.1">'/ace-group': All Clients send FETCH requests to retrieve a set of group names associated with their group identifiers. ToDo:Each element of the CBOR array 'gid' is a CBOR byte string (REQ13), which encodes the Gid of the group for which the group name and the URI to the group-membership resource are provided.<a href="#section-4.2.1-1.1.1" class="pilcrow">¶</a></p>
+              <p id="section-4.2.1-1.1.1">'/ace-group': All Clients can send a FETCH request to retrieve a set of group names associated with their group identifiers specified in the request payload. Each element of the CBOR array 'gid' is a CBOR byte string (REQ13), which encodes the Gid of the group (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>) for which the group name and the URI to the group-membership resource are provided.<a href="#section-4.2.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.2.1-1.2">
               <p id="section-4.2.1-1.2.1">'/ace-group/GROUPNAME':  All Clients can use GET requests to retrieve the symmetric group keying material of the group with the name GROUPNAME. The value of the GROUPNAME URI path and the group name in the access token scope ('gname') MUST coincide.<a href="#section-4.2.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.2.1-1.3">
-              <p id="section-4.2.1-1.3.1">'/ace-group/GROUPNAME/creds': KDC acts as a repository of authentication credentials for Publishers. The Subscribers of the group use GET/FETCH requests to retrieve the authentication credentials of all or a subset of the group members of the group with name GROUPNAME. The KDC silently ignores the Sender IDs included in the 'get_creds' parameter of the request that are not associated with any current group member (REQ26).<a href="#section-4.2.1-1.3.1" class="pilcrow">¶</a></p>
+              <p id="section-4.2.1-1.3.1">'/ace-group/GROUPNAME/creds': The KDC acts as a repository of authentication credentials for the Publishers Clients that are member of the security group GROUPNAME. The members of the group that are Subscribers cas send GET/FETCH requests to this resource in order to retrieve the authentication credentials of all or a subset of the group members that are Publishers. The KDC silently ignores the Sender IDs included in the 'get_creds' parameter of the request that are not associated with any current Publisher group member (REQ26).<a href="#section-4.2.1-1.3.1" class="pilcrow">¶</a></p>
 <p id="section-4.2.1-1.3.2">
 The response from the KDC MAY omit the parameter 'peer_roles', since each authentication credential conveyed in the 'creds' parameter: i) is associated with a Client authorized to be Publisher in the group; and ii) plays no role if such Client was also authorized to be Subscriber in the group. If 'creds' is not present, 'peer_roles' MUST NOT be present.<a href="#section-4.2.1-1.3.2" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.2.1-1.4">
-              <p id="section-4.2.1-1.4.1">'/ace-group/GROUPNAME/num': All group member Clients use GET requests to retrieve the current version number for the symmetric group keying material of the group with name GROUPNAME.<a href="#section-4.2.1-1.4.1" class="pilcrow">¶</a></p>
+              <p id="section-4.2.1-1.4.1">'/ace-group/GROUPNAME/num': All group member Clients can send a GET request to this resource in order to retrieve the current version number for the symmetric group keying material of the group with name GROUPNAME.<a href="#section-4.2.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.2.1-1.5">
-              <p id="section-4.2.1-1.5.1">'/ace-group/GROUPNAME/kdc-cred': All group member Clients use GET requests to retrieve the current authentication credential of the KDC.<a href="#section-4.2.1-1.5.1" class="pilcrow">¶</a></p>
+              <p id="section-4.2.1-1.5.1">'/ace-group/GROUPNAME/kdc-cred': All group member Clients can send a GET request to this resource in order to retrieve the current authentication credential of the KDC.<a href="#section-4.2.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -2007,7 +2024,7 @@ The response from the KDC MAY omit the parameter 'peer_roles', since each authen
           <h4 id="name-updating-authentication-cre">
 <a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-updating-authentication-cre" class="section-name selfRef">Updating Authentication Credentials</a>
           </h4>
-<p id="section-4.2.2-1">A Publisher can contact the KDC to upload a new authentication credential to use in the group, and replace the currently stored one. To this end, it sends a CoAP POST request to the /ace-group/GROUPNAME/nodes/NODENAME/cred. The KDC replaces the stored authentication credential of this Client (identified by NODENAME) with the one specified in the request at the KDC, for the group identified by GROUPNAME.<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-1">A Publisher with node name NODENAME can contact the KDC to upload a new authentication credential to use in the security group GROUPNAME, and replace the currently stored one. To this end, it sends a CoAP POST request to its associated sub-resource /ace-group/GROUPNAME/nodes/NODENAME/cred. The KDC replaces the stored authentication credential of this Client for the group GROUPNAME with the one specified in the request.<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="removal-from-a-group">
@@ -2015,7 +2032,7 @@ The response from the KDC MAY omit the parameter 'peer_roles', since each authen
           <h4 id="name-removal-from-a-group">
 <a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-removal-from-a-group" class="section-name selfRef">Removal from a Group</a>
           </h4>
-<p id="section-4.2.3-1">A Client can actively request to leave the group.  In this case, the Client sends a CoAP DELETE request to the endpoint /ace-group/GROUPNAME/nodes/NODENAME at the KDC, where GROUPNAME is the group name and NODENAME is its node name. KDC can also remove a group member due to any of the reasons described in Section 5 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.3-1">A Client with node name NODENAME can actively request to leave the security group GROUPNAME. In this case, the Client sends a CoAP DELETE request to the associated sub-resource /ace-group/GROUPNAME/nodes/NODENAME at the KDC. The KDC can also remove a group member due to any of the reasons described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-5" class="relref">Section 5</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="rekeying">
@@ -2023,10 +2040,10 @@ The response from the KDC MAY omit the parameter 'peer_roles', since each authen
           <h4 id="name-rekeying-a-group">
 <a href="#section-4.2.4" class="section-number selfRef">4.2.4. </a><a href="#name-rekeying-a-group" class="section-name selfRef">Rekeying a Group</a>
           </h4>
-<p id="section-4.2.4-1">The KDC MUST trigger a group rekeying as described in Section 6 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> due to a change in the group membership or the current group keying material approaching its expiration time. KDC MAY trigger regularly scheduled update of the group keying material.<a href="#section-4.2.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.4-2">Upon generating the new group keying material and before starting its distribution, the KDC MUST increment the version number of the group keying material. The KDC MUST preserve the current value of the Sender ID of each member in that group.<a href="#section-4.2.4-2" class="pilcrow">¶</a></p>
-<p id="section-4.2.4-3">Default rekeying scheme is Point-to-point (Section 6.1 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>), where KDC individually targets each node to rekey, using the pairwise secure communication association with that node.<a href="#section-4.2.4-3" class="pilcrow">¶</a></p>
-<p id="section-4.2.4-4">If the group rekeying is performed due to one or multiple Publishers joining the group, then a rekeying message includes sender IDs, and authentication credentials that the Publishers use in the group. This information is specified by means of the parameters 'creds' and 'peer_identifiers', like done in the Join Response message (i.e., 'peer_roles' MAY be omitted).<a href="#section-4.2.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.2.4-1">The KDC MUST trigger a group rekeying as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-6" class="relref">Section 6</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> due to a change in the group membership or the current group keying material approaching its expiration time. The KDC MAY trigger regularly scheduled update of the group keying material.<a href="#section-4.2.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.4-2">Upon generating the new group keying material and before starting its distribution, the KDC MUST increment the version number of the group keying material. The KDC MUST preserve the current value of the Sender ID of each member in that group. The KDC MUST also generate a new Group Identifier (Gid) for the group, and use it as identifier of the new group key provided through the group rekeying and hereafter to Clients (re-)joining the security group (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>).<a href="#section-4.2.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.4-3">The default rekeying scheme is Point-to-point (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-6.1" class="relref">Section 6.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>), where the KDC individually targets each node to rekey, using the pairwise secure communication association with that node.<a href="#section-4.2.4-3" class="pilcrow">¶</a></p>
+<p id="section-4.2.4-4">If the group rekeying is performed due to one or multiple Clients joining the group as Publishers, then a rekeying message includes the Sender IDs and authentication credentials that those clients are going to use in the group. This information is specified by means of the parameters 'creds' and 'peer_identifiers', like done in the Join Response message. In the same spirit, the 'peer_roles' parameter MAY be omitted.<a href="#section-4.2.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2078,7 +2095,7 @@ The response from the KDC MAY omit the parameter 'peer_roles', since each authen
         <h3 id="name-using-cose-objects-to-prote">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-using-cose-objects-to-prote" class="section-name selfRef">Using COSE Objects To Protect The Resource Representation</a>
         </h3>
-<p id="section-5.1-1">The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (Section 4.3 of <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>). Specifically, the Publisher creates a COSE_Encrypt0 object <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span><span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> by means of the COSE Key currently used as group key. The encryption algorithm and Base IV to use are specified by the 'alg' and 'Base IV' parameters of the COSE Key, together with its key identifier in the 'kid' parameter.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13#section-4.3" class="relref">Section 4.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>). Specifically, the Publisher creates a COSE_Encrypt0 object <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span><span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> by means of the COSE Key currently used as group key. The encryption algorithm and Base IV to use are specified by the 'alg' and 'Base IV' parameters of the COSE Key, together with its key identifier in the 'kid' parameter.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-2">Also, the Publisher uses its private key corresponding to the public key sent to the KDC for countersigning the COSE_Encrypt0 object as specified in <span>[<a href="#RFC9338" class="cite xref">RFC9338</a>]</span>. The countersignature is specified in the 'Countersignature version 2' parameter, within the 'unprotected' field of the COSE_Encrypt0 object.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.1-3">Finally, the Publisher sends the COSE_Encrypt0 object conveying the countersignature to the Broker, as payload of the PUT request sent to the topic-data of the topic targeted by the Publish operation.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 <p id="section-5.1-4">Upon receiving a response from the topic-data resource at the Broker, the Subscriber uses the 'kid' parameter from the 'Countersignature version 2' parameter within the 'unprotected' field of the COSE_Encrypt0 object, in order to retrieve the Publisher's public key from the Broker or from its local storage. Then, the Subscriber uses that public key to verify the countersignature.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
@@ -2098,7 +2115,7 @@ The response from the KDC MAY omit the parameter 'peer_roles', since each authen
           <li class="normal" id="section-5.1-10.2">
             <p id="section-5.1-10.2.1">The 'Partial IV' parameter, with value set to the current Sender Sequence Number of the Publisher. All leading bytes of value zero SHALL be removed when encoding the Partial IV, except in the case of Partial IV value 0, which is encoded to the byte string 0x00.<a href="#section-5.1-10.2.1" class="pilcrow">¶</a></p>
 <p id="section-5.1-10.2.2">
-The Publisher MUST increment its Sender Sequence Number value by 1, after having completed an encryption operation by means of the current group key.<a href="#section-5.1-10.2.2" class="pilcrow">¶</a></p>
+The Publisher MUST initialize the Sender Sequence Number to 0 upon joining the security group, and MUST reset it to 0 upon receiving a new group key as result of a group rekeying (see <a href="#rekeying" class="auto internal xref">Section 4.2.4</a>). The Publisher MUST increment its Sender Sequence Number value by 1, after having completed an encryption operation by means of the current group key.<a href="#section-5.1-10.2.2" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-10.3">
             <p id="section-5.1-10.3.1">The 'Countersignature version 2' parameter, specifying the countersignature of the COSE_Encrypt0 object. In particular:<a href="#section-5.1-10.3.1" class="pilcrow">¶</a></p>
@@ -2157,7 +2174,58 @@ The ciphertext is computed as defined in <span>[<a href="#RFC9052" class="cite x
         <h3 id="name-aead-nonce">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-aead-nonce" class="section-name selfRef">AEAD Nonce</a>
         </h3>
-<p id="section-5.2-1">The encryption and decryption operations. The AEAD nonce is generated following the construction in Section 5.2 of <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> using the sender ID, Partial IV, and Base IV from the symmetric COSE Key received.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-1">This section defines how to generate the AEAD nonce used for encrypting and decrypting the COSE_Encrypt0 object protecting the published topic data. This construction is analogous to that used to generate the AEAD nonce in the OSCORE security protocol (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-5.2" class="relref">Section 5.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>).<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">The AEAD nonce for producing or consuming the COSE_Encrypt0 object is constructed as defined below and also shown in <a href="#fig-aead-nonce" class="auto internal xref">Figure 9</a>.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-5.2-3">
+<li id="section-5.2-3.1">
+            <p id="section-5.2-3.1.1">Left-pad the Partial IV (PIV) with zeroes to exactly 5 bytes.<a href="#section-5.2-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-5.2-3.2">
+            <p id="section-5.2-3.2.1">Left-pad the Sender ID of the Publisher that generated the Partial IV (ID_PIV) with zeroes to exactly the nonce length of the AEAD algorithm minus 6 bytes.<a href="#section-5.2-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-5.2-3.3">
+            <p id="section-5.2-3.3.1">Concatenate the size of the ID_PIV (a single byte S) with the padded ID_PIV and the padded PIV.<a href="#section-5.2-3.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-5.2-3.4">
+            <p id="section-5.2-3.4.1">XOR the result from the previous step with the Base IV.<a href="#section-5.2-3.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ol>
+<span id="name-aead-nonce-construction"></span><div id="fig-aead-nonce">
+<figure id="figure-9">
+          <div class="alignCenter art-text artwork" id="section-5.2-4.1">
+<pre>
+     &lt;- nonce length minus 6 B -&gt; &lt;-- 5 bytes --&gt;
++---+-------------------+--------+---------+-----+
+| S |      padding      | ID_PIV | padding | PIV |-----+
++---+-------------------+--------+---------+-----+     |
+                                                       |
+ &lt;---------------- nonce length ----------------&gt;      |
++------------------------------------------------+     |
+|                    Base IV                     |--&gt;(XOR)
++------------------------------------------------+     |
+                                                       |
+ &lt;---------------- nonce length ----------------&gt;      |
++------------------------------------------------+     |
+|                     Nonce                      |&lt;----+
++------------------------------------------------+
+</pre>
+</div>
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
+<a href="#name-aead-nonce-construction" class="selfRef">AEAD Nonce Construction</a>
+          </figcaption></figure>
+</div>
+<p id="section-5.2-5">The construction above only supports AEAD algorithms that use nonces with length equal or greater than 7 bytes. At the same time, it makes it easy to verify that the nonces will be unique when used with the the same group key, even though this is shared and used by all the Publisher Clients in the security group. In fact:<a href="#section-5.2-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.2-6.1">
+            <p id="section-5.2-6.1.1">Since Publisher's Sender IDs are unique within the security group and they are not reassigned until a group rekeying occurs (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a> and <a href="#rekeying" class="auto internal xref">Section 4.2.4</a>), two Publisher Clients cannot share the same tuple (S, padded ID_PIV) by construction.<a href="#section-5.2-6.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-6.2">
+            <p id="section-5.2-6.2.1">Since a Publisher Client increments by 1 its Sender Sequence Number after each use that it makes of the current group key, the Publisher Client never reuses the same tuple (S, padded ID_PIV, padded ID_PIV) together with the same group key.<a href="#section-5.2-6.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-6.3">
+            <p id="section-5.2-6.3.1">Therefore neither the same Publisher Client nor any two Publisher Clients use the same AEAD nonce with the same group key.<a href="#section-5.2-6.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </section>
 </div>
 </section>
@@ -2168,7 +2236,7 @@ The ciphertext is computed as defined in <span>[<a href="#RFC9052" class="cite x
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-applicability-to-mqtt-pubsu" class="section-name selfRef">Applicability to MQTT PubSub Profile</a>
       </h2>
 <p id="section-6-1">The steps MQTT clients go through would be similar to the CoAP clients, and the payload of the MQTT PUBLISH messages will be protected using COSE. The MQTT clients needs to use CoAP to communicate to the KDC, to join security groups, and be part of the pair-wise rekeying initiated by the KDC.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">Authorisation Server (AS) Discovery is defined in Section 2.2.6.1 of <span>[<a href="#I-D.ietf-ace-mqtt-tls-profile" class="cite xref">I-D.ietf-ace-mqtt-tls-profile</a>]</span> for MQTT v5 clients (and not supported for MQTT v3 clients). $SYS/ has been widely adopted as a prefix to topics that contain server-specific information or control APIs, and may be used for topic and KDC discovery.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-2">Authorisation Server (AS) Discovery is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-mqtt-tls-profile-17#section-2.2.6.1" class="relref">Section 2.2.6.1</a> of [<a href="#I-D.ietf-ace-mqtt-tls-profile" class="cite xref">I-D.ietf-ace-mqtt-tls-profile</a>]</span> for MQTT v5 clients (and not supported for MQTT v3 clients). $SYS/ has been widely adopted as a prefix to topics that contain server-specific information or control APIs, and may be used for topic and KDC discovery.<a href="#section-6-2" class="pilcrow">¶</a></p>
 <p id="section-6-3">When the Client sends an authorisation request to the AS using the AIF-PUBSUB-GROUPCOMM data model, in the authorisation response, the 'profile' claim is set to "mqtt_pubsub_app" as defined in <a href="#iana-profile" class="auto internal xref">Section 8.2</a>.<a href="#section-6-3" class="pilcrow">¶</a></p>
 <p id="section-6-4">Both Publishers and Subscribers MUST authorise to the Broker with their respective tokens (described in <span>[<a href="#I-D.ietf-ace-mqtt-tls-profile" class="cite xref">I-D.ietf-ace-mqtt-tls-profile</a>]</span>). A Publisher Client sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. A Subscriber Client may send SUBSCRIBE messages with one or multiple topic filters. A topic filter may correspond to multiple topics. The Broker forwards all PUBLISH messages to all authorised Subscribers, including the retained messages.<a href="#section-6-4" class="pilcrow">¶</a></p>
 </section>
@@ -2199,7 +2267,7 @@ The ciphertext is computed as defined in <span>[<a href="#RFC9052" class="cite x
         <h3 id="name-ace-groupcomm-key-registry">
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-ace-groupcomm-key-registry" class="section-name selfRef">ACE Groupcomm Key Registry</a>
         </h3>
-<p id="section-8.1-1">IANA is asked to register the following entry in the "ACE Groupcomm Key Types" registry defined in Section 11.7 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.1-1">IANA is asked to register the following entry in the "ACE Groupcomm Key Types" registry defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-11.7" class="relref">Section 11.7</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1-2.1">
             <p id="section-8.1-2.1.1">Name: Group_PubSub_Keying_Material<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
@@ -2224,7 +2292,7 @@ The ciphertext is computed as defined in <span>[<a href="#RFC9052" class="cite x
         <h3 id="name-ace-groupcomm-profile-regis">
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-ace-groupcomm-profile-regis" class="section-name selfRef">ACE Groupcomm Profile Registry</a>
         </h3>
-<p id="section-8.2-1">IANA is asked to register the following entries in the "ACE Groupcomm Profiles" registry defined in Section 11.8 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<p id="section-8.2-1">IANA is asked to register the following entries in the "ACE Groupcomm Profiles" registry defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-11.8" class="relref">Section 11.8</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.1">
             <p id="section-8.2-2.1.1">Name: coap_group_pubsub_app<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
@@ -2281,7 +2349,7 @@ The ciphertext is computed as defined in <span>[<a href="#RFC9052" class="cite x
         <h3 id="name-aif-media-type-sub-paramete">
 <a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-aif-media-type-sub-paramete" class="section-name selfRef">AIF Media-Type Sub-Parameters</a>
         </h3>
-<p id="section-8.4-1">For the media-types application/aif+cbor and application/aif+json defined in Section 5.1 of <span>[<a href="#RFC9237" class="cite xref">RFC9237</a>]</span>, IANA is requested to register the following entries for the two media-type parameters Toid and Tperm, in the respective sub-registry defined in Section 5.2 of <span>[<a href="#RFC9237" class="cite xref">RFC9237</a>]</span> within the "MIME Media Type Sub-Parameter" registry group.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
+<p id="section-8.4-1">For the media-types application/aif+cbor and application/aif+json defined in <span><a href="https://rfc-editor.org/rfc/rfc9237#section-5.1" class="relref">Section 5.1</a> of [<a href="#RFC9237" class="cite xref">RFC9237</a>]</span>, IANA is requested to register the following entries for the two media-type parameters Toid and Tperm, in the respective sub-registry defined in <span><a href="https://rfc-editor.org/rfc/rfc9237#section-5.2" class="relref">Section 5.2</a> of [<a href="#RFC9237" class="cite xref">RFC9237</a>]</span> within the "MIME Media Type Sub-Parameter" registry group.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.4-2.1">
             <p id="section-8.4-2.1.1">Parameter: Toid<a href="#section-8.4-2.1.1" class="pilcrow">¶</a></p>
@@ -2355,7 +2423,7 @@ The ciphertext is computed as defined in <span>[<a href="#RFC9052" class="cite x
         <h3 id="name-tls-exporter-labels">
 <a href="#section-8.6" class="section-number selfRef">8.6. </a><a href="#name-tls-exporter-labels" class="section-name selfRef">TLS Exporter Labels</a>
         </h3>
-<p id="section-8.6-1">IANA is asked to register the following entry to the "TLS Exporter Labels" registry defined in Section 6 of <span>[<a href="#RFC5705" class="cite xref">RFC5705</a>]</span> and updated in Section 12 of <span>[<a href="#RFC8447" class="cite xref">RFC8447</a>]</span>.<a href="#section-8.6-1" class="pilcrow">¶</a></p>
+<p id="section-8.6-1">IANA is asked to register the following entry to the "TLS Exporter Labels" registry defined in <span><a href="https://rfc-editor.org/rfc/rfc5705#section-6" class="relref">Section 6</a> of [<a href="#RFC5705" class="cite xref">RFC5705</a>]</span> and updated in <span><a href="https://rfc-editor.org/rfc/rfc8447#section-12" class="relref">Section 12</a> of [<a href="#RFC8447" class="cite xref">RFC8447</a>]</span>.<a href="#section-8.6-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.6-2.1">
             <p id="section-8.6-2.1.1">Value: EXPORTER-ACE-Sign-Challenge-coap-group-pubsub-app<a href="#section-8.6-2.1.1" class="pilcrow">¶</a></p>
@@ -2452,10 +2520,6 @@ The ciphertext is computed as defined in <span>[<a href="#RFC9052" class="cite x
         <dd>
 <span class="refAuthor">Salowey, J.</span> and <span class="refAuthor">S. Turner</span>, <span class="refTitle">"IANA Registry Updates for TLS and DTLS"</span>, <span class="seriesInfo">RFC 8447</span>, <span class="seriesInfo">DOI 10.17487/RFC8447</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8447">https://www.rfc-editor.org/rfc/rfc8447</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC8613">[RFC8613]</dt>
-        <dd>
-<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J.</span>, <span class="refAuthor">Palombini, F.</span>, and <span class="refAuthor">L. Seitz</span>, <span class="refTitle">"Object Security for Constrained RESTful Environments (OSCORE)"</span>, <span class="seriesInfo">RFC 8613</span>, <span class="seriesInfo">DOI 10.17487/RFC8613</span>, <time datetime="2019-07" class="refDate">July 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8613">https://www.rfc-editor.org/rfc/rfc8613</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC8949">[RFC8949]</dt>
         <dd>
 <span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">STD 94</span>, <span class="seriesInfo">RFC 8949</span>, <span class="seriesInfo">DOI 10.17487/RFC8949</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>&gt;</span>. </dd>
@@ -2521,6 +2585,10 @@ The ciphertext is computed as defined in <span>[<a href="#RFC9052" class="cite x
         <dd>
 <span class="refAuthor">Bray, T., Ed.</span>, <span class="refTitle">"The JavaScript Object Notation (JSON) Data Interchange Format"</span>, <span class="seriesInfo">STD 90</span>, <span class="seriesInfo">RFC 8259</span>, <span class="seriesInfo">DOI 10.17487/RFC8259</span>, <time datetime="2017-12" class="refDate">December 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8259">https://www.rfc-editor.org/rfc/rfc8259</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC8613">[RFC8613]</dt>
+        <dd>
+<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J.</span>, <span class="refAuthor">Palombini, F.</span>, and <span class="refAuthor">L. Seitz</span>, <span class="refTitle">"Object Security for Constrained RESTful Environments (OSCORE)"</span>, <span class="seriesInfo">RFC 8613</span>, <span class="seriesInfo">DOI 10.17487/RFC8613</span>, <time datetime="2019-07" class="refDate">July 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8613">https://www.rfc-editor.org/rfc/rfc8613</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC9202">[RFC9202]</dt>
         <dd>
 <span class="refAuthor">Gerdes, S.</span>, <span class="refAuthor">Bergmann, O.</span>, <span class="refAuthor">Bormann, C.</span>, <span class="refAuthor">Selander, G.</span>, and <span class="refAuthor">L. Seitz</span>, <span class="refTitle">"Datagram Transport Layer Security (DTLS) Profile for Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="seriesInfo">RFC 9202</span>, <span class="seriesInfo">DOI 10.17487/RFC9202</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9202">https://www.rfc-editor.org/rfc/rfc9202</a>&gt;</span>. </dd>
@@ -2538,7 +2606,7 @@ The ciphertext is computed as defined in <span>[<a href="#RFC9052" class="cite x
       <h2 id="name-requirements-on-application">
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-requirements-on-application" class="section-name selfRef">Requirements on Application Profiles</a>
       </h2>
-<p id="appendix-A-1">This section lists the specifications on this profile based on the requirements defined in Appendix A of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">This section lists the specifications on this profile based on the requirements defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#appendix-A" class="relref">Appendix A</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A-2.1">
           <p id="appendix-A-2.1.1">REQ1: Specify the format and encoding of 'scope'. : See <a href="#scope" class="auto internal xref">Section 3.4.1</a>.<a href="#appendix-A-2.1.1" class="pilcrow">¶</a></p>
@@ -2579,7 +2647,7 @@ ToDo: This possibly will not stay as the final method, KDC discovery done differ
           <p id="appendix-A-2.12.1">REQ12: Categorize possible newly defined operations for Clients into primary operations expected to be minimally supported and secondary operations, and provide accompanying considerations: None added.<a href="#appendix-A-2.12.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.13">
-          <p id="appendix-A-2.13.1">REQ13: Specify the encoding of group identifier: CBOR byte string, see <a href="#query" class="auto internal xref">Section 4.2.1</a>.<a href="#appendix-A-2.13.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-2.13.1">REQ13: Specify the encoding of group identifier: CBOR byte string, with value used also to identify the current group key used in the security group (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>).<a href="#appendix-A-2.13.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.14">
           <p id="appendix-A-2.14.1">REQ14: Specify the approaches used to compute and verify the PoP evidence to include in 'client_cred_verify', and which of those approaches is used in which case: See <a href="#pop" class="auto internal xref">Section 4.1.1.2</a> in this document.<a href="#appendix-A-2.14.1" class="pilcrow">¶</a></p>
@@ -2629,10 +2697,10 @@ pub/sub communication <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xr
           <p id="appendix-A-2.28.1">REQ28: Specify which CBOR tag is used for identifying the semantics of binary scopes, or register a new CBOR tag if a suitable one does not exist already.: See <a href="#as-response" class="auto internal xref">Section 3.5</a> and <a href="#content_format" class="auto internal xref">Section 8.5</a> of this document.<a href="#appendix-A-2.28.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.29">
-          <p id="appendix-A-2.29.1">REQ29: Categorize newly defined parameters according to the same criteria of Section 8 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.:  A Publisher Client MUST support 'group_SenderId' in 'key'; see <a href="#join-response" class="auto internal xref">Section 4.1.2</a><a href="#appendix-A-2.29.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-2.29.1">REQ29: Categorize newly defined parameters according to the same criteria of <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-8" class="relref">Section 8</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.:  A Publisher Client MUST support 'group_SenderId' in 'key'; see <a href="#join-response" class="auto internal xref">Section 4.1.2</a><a href="#appendix-A-2.29.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.30">
-          <p id="appendix-A-2.30.1">REQ30: Define whether Clients must, should or may support the conditional parameters defined in Section 8 of <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, and under which circumstances.: A Publisher Client MUST support the client_cred', 'cnonce', and 'client_cred_verify' parameters; see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>. A Publisher Client that provides the token to the KDC, through the authz-info endpoint, MUST support the parameter 'kdcchallenge'; see <a href="#token-post" class="auto internal xref">Section 3.6</a>.<a href="#appendix-A-2.30.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-2.30.1">REQ30: Define whether Clients must, should or may support the conditional parameters defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-17#section-8" class="relref">Section 8</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, and under which circumstances.: A Publisher Client MUST support the client_cred', 'cnonce', and 'client_cred_verify' parameters; see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>. A Publisher Client that provides the token to the KDC, through the authz-info endpoint, MUST support the parameter 'kdcchallenge'; see <a href="#token-post" class="auto internal xref">Section 3.6</a>.<a href="#appendix-A-2.30.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.31">
           <p id="appendix-A-2.31.1">OPT1: Optionally, if the textual format of 'scope' is used, specify CBOR values to use for abbreviating the role identifiers in the group: No.<a href="#appendix-A-2.31.1" class="pilcrow">¶</a></p>
@@ -2699,16 +2767,25 @@ pub/sub communication <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xr
             <p id="appendix-B.1-1.1.1">Revised presentation of the scope format.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.2">
-            <p id="appendix-B.1-1.2.1">The 'cnonce' parameter must be present in the Join Request.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.2.1">Revised presentation of the Join Request-Response exchange.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.3">
-            <p id="appendix-B.1-1.3.1">The 'kid' of the group key is used as Group Identifier.<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.3.1">The 'cnonce' parameter must be present in the Join Request.<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.4">
-            <p id="appendix-B.1-1.4.1">Relaxed inclusion of the 'peer_roles' parameter.<a href="#appendix-B.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.4.1">The 'kid' of the group key is used as Group Identifier.<a href="#appendix-B.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.5">
-            <p id="appendix-B.1-1.5.1">More detailed description of the encryption and signing operations.<a href="#appendix-B.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.5.1">Relaxed inclusion of the 'peer_roles' parameter.<a href="#appendix-B.1-1.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.6">
+            <p id="appendix-B.1-1.6.1">More detailed description of the encryption and signing operations.<a href="#appendix-B.1-1.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.7">
+            <p id="appendix-B.1-1.7.1">Defined construction of the AEAD nonce.<a href="#appendix-B.1-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.8">
+            <p id="appendix-B.1-1.8.1">Clarifications and editorial improvements.<a href="#appendix-B.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
