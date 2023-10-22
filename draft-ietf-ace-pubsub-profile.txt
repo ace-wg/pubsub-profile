@@ -774,76 +774,86 @@ Table of Contents
    The pub/sub Clients uses the following KDC resources to enable group
    communication:
 
-   +=================================+====================+============+
-   | KDC resource                    | Description        | Operations |
-   +=================================+====================+============+
-   | /ace-group                      | Required.          | FETCH (All |
-   |                                 | Contains a set     | Clients)   |
-   |                                 | of group names,    |            |
-   |                                 | each               |            |
-   |                                 | corresponding to   |            |
-   |                                 | one of the         |            |
-   |                                 | specified group    |            |
-   |                                 | identifiers.       |            |
-   +---------------------------------+--------------------+------------+
-   | /ace-group/GROUPNAME            | Required.          | GET, POST  |
-   |                                 | Contains           | (All)      |
-   |                                 | symmetric group    |            |
-   |                                 | keying material    |            |
-   |                                 | associated with    |            |
-   |                                 | GROUPNAME.         |            |
-   +---------------------------------+--------------------+------------+
-   | /ace-group/GROUPNAME/creds      | Required.          | GET, FETCH |
-   |                                 | Contains the       | (All)      |
-   |                                 | authentication     |            |
-   |                                 | credentials of     |            |
-   |                                 | all the            |            |
-   |                                 | Publishers of      |            |
-   |                                 | the group with     |            |
-   |                                 | name GROUPNAME.    |            |
-   +---------------------------------+--------------------+------------+
-   | /ace-group/GROUPNAME/num        | Required.          | GET (All)  |
-   |                                 | Contains the       |            |
-   |                                 | current version    |            |
-   |                                 | number for the     |            |
-   |                                 | symmetric group    |            |
-   |                                 | keying material    |            |
-   |                                 | of the group       |            |
-   |                                 | with name          |            |
-   |                                 | GROUPNAME.         |            |
-   +---------------------------------+--------------------+------------+
-   | /ace-group/GROUPNAME/nodes/     | Required.          | GET,       |
-   | NODENAME                        | Contains the       | DELETE     |
-   |                                 | group keying       | (All).     |
-   |                                 | material for       | PUT (Pub). |
-   |                                 | that group         |            |
-   |                                 | member NODENAME    |            |
-   |                                 | in GROUPNAME.      |            |
-   +---------------------------------+--------------------+------------+
-   | /ace-                           | Required.          | POST (Pub) |
-   | group/GROUPNAME/nodes/NODENAME/ | Authentication     |            |
-   | cred                            | credential for     |            |
-   |                                 | NODENAME in the    |            |
-   |                                 | group GROUPNAME.   |            |
-   +---------------------------------+--------------------+------------+
-   | /ace-group/GROUPNAME/kdc-cred   | MUST be hosted     | GET (All)  |
-   |                                 | if a group re-     |            |
-   |                                 | keying mechanism   |            |
-   |                                 | is used.           |            |
-   |                                 | Contains the       |            |
-   |                                 | authentication     |            |
-   |                                 | credential of      |            |
-   |                                 | the KDC for the    |            |
-   |                                 | group with name    |            |
-   |                                 | GROUPNAME.         |            |
-   +---------------------------------+--------------------+------------+
-   | /ace-group/GROUPNAME/policies   | Optional.          | GET (All)  |
-   |                                 | Contains the       |            |
-   |                                 | group policies     |            |
-   |                                 | of the group       |            |
-   |                                 | with name          |            |
-   |                                 | GROUPNAME.         |            |
-   +---------------------------------+--------------------+------------+
+   +=================================+=================+===============+
+   | KDC resource                    | Description     | Operations    |
+   +=================================+=================+===============+
+   | /ace-group                      | Required.       | FETCH (All    |
+   |                                 | Contains a set  | Clients)      |
+   |                                 | of group        |               |
+   |                                 | names, each     |               |
+   |                                 | corresponding   |               |
+   |                                 | to one of the   |               |
+   |                                 | specified       |               |
+   |                                 | group           |               |
+   |                                 | identifiers.    |               |
+   +---------------------------------+-----------------+---------------+
+   | /ace-group/GROUPNAME            | Required.       | GET, POST     |
+   |                                 | Contains        | (All Clients) |
+   |                                 | symmetric       |               |
+   |                                 | group keying    |               |
+   |                                 | material        |               |
+   |                                 | associated      |               |
+   |                                 | with            |               |
+   |                                 | GROUPNAME.      |               |
+   +---------------------------------+-----------------+---------------+
+   | /ace-group/GROUPNAME/creds      | Required.       | GET, FETCH    |
+   |                                 | Contains the    | (All Clients) |
+   |                                 | authentication  |               |
+   |                                 | credentials of  |               |
+   |                                 | all the         |               |
+   |                                 | Publishers of   |               |
+   |                                 | the group with  |               |
+   |                                 | name            |               |
+   |                                 | GROUPNAME.      |               |
+   +---------------------------------+-----------------+---------------+
+   | /ace-group/GROUPNAME/num        | Required.       | GET (All      |
+   |                                 | Contains the    | Clients)      |
+   |                                 | current         |               |
+   |                                 | version number  |               |
+   |                                 | for the         |               |
+   |                                 | symmetric       |               |
+   |                                 | group keying    |               |
+   |                                 | material of     |               |
+   |                                 | the group with  |               |
+   |                                 | name            |               |
+   |                                 | GROUPNAME.      |               |
+   +---------------------------------+-----------------+---------------+
+   | /ace-group/GROUPNAME/nodes/     | Required.       | GET, DELETE   |
+   | NODENAME                        | Contains the    | (All          |
+   |                                 | group keying    | Clients).     |
+   |                                 | material for    | PUT           |
+   |                                 | that group      | (Publishers). |
+   |                                 | member          |               |
+   |                                 | NODENAME in     |               |
+   |                                 | GROUPNAME.      |               |
+   +---------------------------------+-----------------+---------------+
+   | /ace-                           | Required.       | POST          |
+   | group/GROUPNAME/nodes/NODENAME/ | Authentication  | (Publishers)  |
+   | cred                            | credential for  |               |
+   |                                 | NODENAME in     |               |
+   |                                 | the group       |               |
+   |                                 | GROUPNAME.      |               |
+   +---------------------------------+-----------------+---------------+
+   | /ace-group/GROUPNAME/kdc-cred   | MUST be hosted  | GET (All      |
+   |                                 | if a group re-  | Clients)      |
+   |                                 | keying          |               |
+   |                                 | mechanism is    |               |
+   |                                 | used.           |               |
+   |                                 | Contains the    |               |
+   |                                 | authentication  |               |
+   |                                 | credential of   |               |
+   |                                 | the KDC for     |               |
+   |                                 | the group with  |               |
+   |                                 | name            |               |
+   |                                 | GROUPNAME.      |               |
+   +---------------------------------+-----------------+---------------+
+   | /ace-group/GROUPNAME/policies   | Optional.       | GET (All      |
+   |                                 | Contains the    | Clients)      |
+   |                                 | group policies  |               |
+   |                                 | of the group    |               |
+   |                                 | with name       |               |
+   |                                 | GROUPNAME.      |               |
+   +---------------------------------+-----------------+---------------+
 
                                   Table 1
 
@@ -1111,11 +1121,15 @@ Table of Contents
 
    *  'creds', which MUST be present if the 'get_creds' parameter was
       present.  Otherwise, it MUST NOT be present.  The KDC provides the
-      authentication credentials of all the Publishers in the group.
+      authentication credentials of all the Publishers in the security
+      group.
 
-   *  'peer_roles', which MUST be present if 'creds' is also present.
-      Otherwise, it MUST NOT be present.  (ToDo: Requested a change for
-      this, and see how the Groupcomm draft is updated.)
+   *  'peer_roles', which MAY be omitted even if 'creds' is present,
+      since each authentication credential conveyed in the 'creds'
+      parameter: i) is associated with a Client authorized to be
+      Publisher in the group; and ii) plays no role if such Client was
+      also authorized to be Subscriber in the group.  If 'creds' is not
+      present, 'peer_roles' MUST NOT be present.
 
    *  'peer_identifiers', which MUST be present if 'creds' is also
       present.  Otherwise, it MUST NOT be present.  The identifiers are
@@ -1228,6 +1242,13 @@ Table of Contents
       with name GROUPNAME.  The KDC silently ignores the Sender IDs
       included in the 'get_creds' parameter of the request that are not
       associated with any current group member (REQ26).
+
+      The response from the KDC MAY omit the parameter 'peer_roles',
+      since each authentication credential conveyed in the 'creds'
+      parameter: i) is associated with a Client authorized to be
+      Publisher in the group; and ii) plays no role if such Client was
+      also authorized to be Subscriber in the group.  If 'creds' is not
+      present, 'peer_roles' MUST NOT be present.
 
    *  '/ace-group/GROUPNAME/num': All group member Clients use GET
       requests to retrieve the current version number for the symmetric
@@ -2027,6 +2048,8 @@ B.1.  Version -07 to -08
    *  Revised presentation of the scope format.
 
    *  The 'kid' of the group key is used as Group Identifier.
+
+   *  Relaxed inclusion of the 'peer_roles' parameter.
 
    *  More detailed description of the encryption and signing
       operations.
