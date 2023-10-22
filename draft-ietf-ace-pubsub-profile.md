@@ -496,25 +496,30 @@ In the case of success, the Client is added to the list of current members, if n
 The KDC responds with a Join Response with response code 2.01 (Created) if the Client has been added to the list of group members, and 2.04 (Changed) otherwise (e.g., if the Client is re-joining).  The Content-Format  is "application/ace-groupcomm+cbor". The payload (formatted as a CBOR map) MUST contain the following fields from the Join Response and encode them as defined in Section 4.3.1 of {{I-D.ietf-ace-key-groupcomm}}:
 
 - 'gkty': the key type "Group_PubSub_Keying_Material" for the 'key' parameter defined in {{iana-ace-groupcomm-key}} of this document.
-- 'key': The keying material for group communication includes:
+- 'key': The keying material for group communication includes the following parameters:
     * 'group_SenderId', specifying the Client's Sender ID encoded as a CBOR byte string. This field MUST be included if the Client is a Publisher, and MUST NOT be included otherwise.
-    * 'cred_fmt' parameter, specifying the format of authentication credentials used in the group. This parameter takes its value from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}}. At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC7925}} and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Further formats may be available in the future, and would be acceptable to use as long as they comply with the criteria defined above (REQ6).
-    * 'sign_alg' parameter, specifying the Signature Algorithm used to sign messages in the group. This parameter takes values from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
-    * 'sign_params' parameter, specifying the parameters of the Signature Algorithm. This parameter is a CBOR array, which includes the following two elements:
+    * 'cred_fmt', specifying the format of authentication credentials used in the group. This parameter takes its value from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}}. At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC7925}} and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Further formats may be available in the future, and would be acceptable to use as long as they comply with the criteria defined above (REQ6).
+    * 'sign_alg', specifying the Signature Algorithm used to sign messages in the group. This parameter takes values from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
+    * 'sign_params', specifying the parameters of the Signature Algorithm. This parameter is a CBOR array, which includes the following two elements:
       - 'sign_alg_capab'is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
       - 'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{IANA.cose_key-type}}.
-    * 'COSE\_Key', specifying a "COSE\_Key" object as defined in {{RFC9052}} {{RFC9053}} and containing:'kty' with value 4 (symmetric), 'kid', 'alg' and 'Base IV' with value defined by the KDC, and 'k', specifying the value of the symmetric key (REQ17). ToDo:The 'kid' is a CBOR byte string encoding the Gid of the group.
-- 'num': the version number of the keying material specified in the 'key' field (with initial value set to 0 on creation of the group)
-- 'exp', MUST be present.
-- 'ace-groupcomm-profile' parameter MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is defined in {{iana-profile}} of this document.
-- 'creds', MUST be present, if the 'get\_creds' parameter was present. Otherwise, it MUST NOT be present. The KDC provides the authentication credentials of all the Publishers in the group.
-- 'peer\_roles' MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present.
+    * 'group_key', specifying a COSE\_Key object as defined in {{RFC9052}} and conveying the group key to use in the security group. The COSE\_Key object MUST contain the following parameters:
+       - 'kty', with value 4 (Symmetric).
+       - 'alg', with value the identifier of the AEAD algorithm used in the security group.
+       - 'Base IV', with value the Base Initialization Vector (Base IV) to use in the security group with this group key.
+       - 'k', with value the symmetric encryption key to use as group key (REQ17).
+       - 'kid', with value the identifier of the COSE\_Key object, hence of the group key. This value is used as Group Identifier (Gid) of the security group, as long as the present key is used as group key in the security group.
+- 'num', specifying the version number of the keying material specified in the 'key' field (with initial value set to 0 on creation of the group).
+- 'exp', which MUST be present.
+- 'ace-groupcomm-profile', which MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is defined in {{iana-profile}} of this document.
+- 'creds', which MUST be present if the 'get\_creds' parameter was present. Otherwise, it MUST NOT be present. The KDC provides the authentication credentials of all the Publishers in the group.
+- 'peer\_roles', which MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present.
 (ToDo: Requested a change for this, and see how the Groupcomm draft is updated.)
-- 'peer\_identifiers' MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present. The identifiers are the Publisher Sender IDs whose authentication credential is specified in the 'creds' parameter (REQ 25).
-- 'kdc\_cred', MUST be present if group re-keying is used, and encoded as a CBOR byte string, with value the original binary representation of the KDC's authentication credential (REQ8).
-- 'kdc\_nonce', MUST be present, if 'kdc\_cred' is present and encoded as a CBOR byte string, and including a dedicated nonce N\_KDC generated by the KDC. For N\_KDC, it is RECOMMENDED to use a 8-byte long random nonce.
-- 'kdc_cred_verify' MUST be present, if 'kdc\_cred' is present and encoded as a CBOR byte string. The PoP evidence is computed over the nonce N\_KDC, which is specified in the 'kdc\_nonce' parameter and taken as PoP input. KDC MUST compute the signature by using the signature algorithm used in the group, as well as its own private key associated with the authentication credential specified in the 'kdc\_cred' parameter (REQ21).
-- 'group_rekeying': MAY be omitted, if the KDC uses the "Point-to-Point" group rekeying scheme registered in Section 11.12 of {{I-D.ietf-ace-key-groupcomm}} as the default rekeying scheme in the group (OPT9). In any other case, the 'group_rekeying' parameter MUST be included.
+- 'peer\_identifiers', which MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present. The identifiers are the Publisher Sender IDs whose authentication credential is specified in the 'creds' parameter (REQ 25).
+- 'kdc\_cred', which MUST be present if group re-keying is used, and encoded as a CBOR byte string, with value the original binary representation of the KDC's authentication credential (REQ8).
+- 'kdc\_nonce', which MUST be present, if 'kdc\_cred' is present and encoded as a CBOR byte string, and including a dedicated nonce N\_KDC generated by the KDC. For N\_KDC, it is RECOMMENDED to use a 8-byte long random nonce.
+- 'kdc_cred_verify', which MUST be present, if 'kdc\_cred' is present and encoded as a CBOR byte string. The PoP evidence is computed over the nonce N\_KDC, which is specified in the 'kdc\_nonce' parameter and taken as PoP input. KDC MUST compute the signature by using the signature algorithm used in the group, as well as its own private key associated with the authentication credential specified in the 'kdc\_cred' parameter (REQ21).
+- 'group_rekeying', which MAY be omitted if the KDC uses the "Point-to-Point" group rekeying scheme registered in {{Section 11.12 of I-D.ietf-ace-key-groupcomm}} as the default rekeying scheme in the group (OPT9). In any other case, the 'group_rekeying' parameter MUST be included.
 
 A Publisher Client MUST support 'group\_SenderId' parameter (REQ29).
 
@@ -599,30 +604,57 @@ If the group rekeying is performed due to one or multiple Publishers joining the
 
 ## Using COSE Objects To Protect The Resource Representation {#oscon}
 
-The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (Section 4.3 of {{I-D.ietf-core-coap-pubsub}}). Specifically, the COSE Key is used to create a COSE\_Encrypt0 object with the AEAD algorithm specified by the KDC. The AEAD key lengths, AEAD nonce length, and maximum Sender Sequence Number (Partial IV) are algorithm dependent.
+The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (Section 4.3 of {{I-D.ietf-core-coap-pubsub}}). Specifically, the Publisher creates a COSE\_Encrypt0 object {{RFC9052}}{{RFC9053}} by means of the COSE Key currently used as group key. The encryption algorithm and Base IV to use are specified by the 'alg' and 'Base IV' parameters of the COSE Key, together with its key identifier in the 'kid' parameter.
 
-The Publisher uses the private key corresponding to the public key sent to the KDC to countersign the COSE Object as specified in {{RFC9052}} {{RFC9053}}. The payload is replaced by the COSE object before the publication is sent to the Broker.
+Also, the Publisher uses its private key corresponding to the public key sent to the KDC for countersigning the COSE\_Encrypt0 object as specified in {{RFC9338}}. The countersignature is specified in the 'Countersignature version 2' parameter, within the 'unprotected' field of the COSE\_Encrypt0 object.
 
-The Subscriber uses the 'kid' in the 'countersignature' field in the COSE object to retrieve the right public key to verify the countersignature. It then uses the symmetric key received from KDC to verify and decrypt the publication received in the payload from the Broker (the publication is received through the Observe Notification or as the response to a GET request to the topic data resource).
+Finally, the Publisher sends the COSE\_Encrypt0 object conveying the countersignature to the Broker, as payload of the PUT request sent to the topic-data of the topic targeted by the Publish operation.
 
-The COSE object is constructed in the following way (as described in {{RFC9052}} {{RFC9053}}).
+Upon receiving a response from the topic-data resource at the Broker, the Subscriber uses the 'kid' parameter from the 'Countersignature version 2' parameter within the 'unprotected' field of the COSE\_Encrypt0 object, in order to retrieve the Publisher's public key from the Broker or from its local storage. Then, the Subscriber uses that public key to verify the countersignature.
 
-The protected Headers MUST contain:
+In case of successful verification, the Subscriber uses the 'kid' parameter from the 'unprotected' field of the COSE\_Encrypt0 object, in order to retrieve the COSE Key used as current group key from its local storage. Then, the Subscriber uses that group key to verify and decrypt the COSE\_Encrypt0 object. In case of successful verification, the Subscriber delivers the received topic data to the application.
 
-*  alg, the AEAD algorithm specified by the KDC, the same as received in the symmetric COSE Key in the Join Response
+The COSE\_Encrypt0 object is constructed as follows.
 
-The unprotected Headers MUST contain:
+The 'protected' field MUST include:
 
-* kid, with the value the same as in the symmetric COSE Key received <!-- representing group id-->
-* the Partial IV, with value a Sender Sequence Number that is incremented for every message sent.  All leading bytes of value zero SHALL be removed when encoding the Partial IV, except in the case of Partial IV value 0, which is encoded to the byte string 0x00.
-* Countersignature version 2 header, version 2 counter signature on encrypted content as defined in {{RFC9338}}{{RFC9053}}, includes
-  - the algorithm (protected),
-  - the kid, the sender ID (unprotected)
-  - the signature computed over the payload the ciphertext, with context string 'CounterSignatureV2' and  'external\_aad' as an empty string.
-* The ciphertext, computed over the plaintext that MUST contain the message payload. The 'external\_aad' is an empty string.
+* The 'alg' parameter, with value the identifier of the AEAD algorithm specified in the 'alg' parameter of the COSE Key used as current group key.
 
-The encryption and decryption operations are described in  {{RFC9052}} {{RFC9053}}. The AEAD nonce is generated following the construction in Section 5.2 of {{RFC8613}} using the sender ID, Partial IV, and Base IV from the symmetric COSE Key received.
+The 'unprotected' field MUST include:
 
+* The 'kid' parameter, with the same value specified in the 'kid' parameter of the COSE Key used as current group key. This value represent the current Group ID (Gid) of the security group associated with the application group (topic).
+
+* The 'Partial IV' parameter, with value set to the current Sender Sequence Number of the Publisher. All leading bytes of value zero SHALL be removed when encoding the Partial IV, except in the case of Partial IV value 0, which is encoded to the byte string 0x00.
+
+   The Publisher MUST increment its Sender Sequence Number value by 1, after having completed an encryption operation by means of the current group key.
+
+* The 'Countersignature version 2' parameter, specifying the countersignature of the COSE\_Encrypt0 object. In particular:
+
+   - The 'protected' field specifies the serialized parameters from the 'protected' field of the COSE\_Encrypt0 object, i.e., the 'alg' parameter with value the identifier of the Signature Algorithm used in the security group.
+
+   - The 'unprotected' field includes the 'kid' parameter, with value the Publisher's Sender ID that the Publisher obtained from the KDC when joining the security group, as value of the 'group_SenderId' parameter of the Join Response (see {{join-response}}).
+
+   - The 'signature' field, with value the countersignature.
+
+   The countersignature is computed as defined in {{RFC9338}}, by using the private key of the Publisher as signing key, and by means of the Signature Algorithm used in the group. The fields of the Countersign_structure are populated as follows:
+
+   - 'context' takes "CounterSignature".
+   - 'body_protected' takes the serialized parameters from the 'protected' field of the COSE\_Encrypt0 object, i.e., the 'alg' parameter.
+   - 'sign_protected' takes the serialized parameters from the 'protected' field of the 'Countersignature version 2' parameter, i.e., the 'alg' parameter.
+   - 'external_aad is not supplied.
+   - 'payload' is the ciphertext of the COSE\_Encrypt0 object.
+
+* The 'ciphertext' parameter, with value the ciphertext computed over the topic data to publish.
+
+   The ciphertext is computed as defined in {{RFC9052}}{{RFC9053}}, by using the current group key as encryption key, the AEAD Nonce computed as defined in {{ssec-aead-nonce}}, the topic data to publish as plaintext, and the Enc_structure populated as follows:
+
+   - 'context' takes "Encrypt".
+   - 'protected' takes the serialization of the protected parameter 'alg' from the 'protected' field of the COSE\_Encrypt0 object.
+   - 'external_aad is not supplied.
+
+## AEAD Nonce # {#ssec-aead-nonce}
+
+The encryption and decryption operations. The AEAD nonce is generated following the construction in Section 5.2 of {{RFC8613}} using the sender ID, Partial IV, and Base IV from the symmetric COSE Key received.
 
 # Applicability to MQTT PubSub Profile {#mqtt-pubsub}
 
@@ -867,6 +899,10 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 ## Version -07 to -08 ## {#sec-07-08}
 
 * Revised presentation of the scope format.
+
+* The 'kid' of the group key is used as Group Identifier.
+
+* More detailed description of the encryption and signing operations.
 
 ## Version -06 to -07 ## {#sec-06-07}
 
