@@ -103,6 +103,7 @@ Table of Contents
    5.  PubSub Protected Communication (C)
      5.1.  Using COSE Objects To Protect The Resource Representation
      5.2.  AEAD Nonce
+     5.3.  Replay Checks
    6.  Applicability to MQTT PubSub Profile
    7.  Security Considerations
    8.  IANA Considerations
@@ -1533,6 +1534,13 @@ Table of Contents
 
    *  Therefore neither the same Publisher Client nor any two Publisher
       Clients use the same AEAD nonce with the same group key.
+
+5.3.  Replay Checks
+
+   This section defines how a Subscriber Client checks whether the topic
+   data conveyed in a received message from the Broker is a replay.
+
+   TBD
 
 6.  Applicability to MQTT PubSub Profile
 
