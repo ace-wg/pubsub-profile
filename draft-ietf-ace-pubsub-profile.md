@@ -185,7 +185,7 @@ As highlighted in {{associations}}, each Client maintains two different security
 
 On the other hand, separately for each topic, all the Publisher and Subscribers for that topic have a common, group security association, through which the published content sent through the Broker is protected end-to-end (Security Association 2). As discussed above, this security association is set up and maintained as the different Clients request the KDC to join the security group, upon which they obtain from the KDC the corresponding group keying material to use for protecting end-to-end and verifying the content of their pub/sub group communication.
 
-~~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
 +------------+             +------------+              +------------+
 |            |             |            |              |            |
 | Publisher  |             |   Broker   |              | Subscriber |
@@ -221,7 +221,7 @@ In summary, this profile specifies the following functionalities.
 
 {{message-flow}} provides a high level overview of the message flow for a Client getting authorisation to join a group. Square brackets denote optional steps. The message flow is expanded in the subsequent sections.
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
 Client                                          Broker   AS   KDC
    |                                                 |    |     |
    |[<-------- Discovery of Topic Resource -------->]|    |     |
@@ -253,13 +253,14 @@ Client                                          Broker   AS   KDC
    |<-------- Keying material for the security group -----------|
    |                                                 |    |     |
    |                                                 |    |     |
-   |---------------- Resource Request -------------->|    |     |
+   |--------------- Resource Request --------------->|    |     |
+   |     (Publication/Subscription to the topic)     |    |     |
    |                                                 |    |     |
 ~~~~~~~~~~~
 {: #message-flow title="Authorisation Flow"}
 {: artwork-align="center"}
 
-Since {{RFC9200}} recommends the use of CoAP and CBOR, this document describes the exchanges assuming CoAP and CBOR are used.
+Since {{RFC9200}} recommends the use of CoAP and CBOR, this document describes the exchanges assuming that CoAP and CBOR are used.
 
 However, using HTTP instead of CoAP is possible, by leveraging the corresponding parameters and methods. Analogously, JSON {{RFC8259}} can be used instead of CBOR, using the conversion method specified in {{Sections 6.1 and 6.2 of RFC8949}}. In case JSON is used, the Content-Format of the message has to be changed accordingly. Exact definitions of these exchanges are out of scope for this document.
 
