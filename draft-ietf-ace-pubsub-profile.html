@@ -1747,6 +1747,8 @@ This parameter is encoded as a CBOR byte string, whose value is the binary encod
 </li>
                     <li class="normal" id="section-3.4.1-7.2.2.1.2.5">
                       <p id="section-3.4.1-7.2.2.1.2.5.1">Delete (4): This operation concerns the deletion of the topic-data resource for the topic in question at the Broker, performed by means of a DELETE request sent to that resource.<a href="#section-3.4.1-7.2.2.1.2.5.1" class="pilcrow">¶</a></p>
+<p id="section-3.4.1-7.2.2.1.2.5.2">
+If the "Toid" of the scope entry specifies the name of a security group (i.e., the "AppGroup" operation is signaled as not authorized), then this operation <span class="bcp14">MUST</span> be signaled as not wished/authorized.<a href="#section-3.4.1-7.2.2.1.2.5.2" class="pilcrow">¶</a></p>
 </li>
                   </ul>
 </li>
@@ -2935,13 +2937,16 @@ pub/sub communication <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xr
             <p id="appendix-B.1-2.1.1">Improved terminology section.<a href="#appendix-B.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-2.2">
-            <p id="appendix-B.1-2.2.1">Use of RFC 9290 instead of the custom format of error responses.<a href="#appendix-B.1-2.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-2.2.1">Improved definition of permissions in the format of scope.<a href="#appendix-B.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-2.3">
-            <p id="appendix-B.1-2.3.1">Fixed use of the resource type "core.ps.gm".<a href="#appendix-B.1-2.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-2.3.1">Use of RFC 9290 instead of the custom format of error responses.<a href="#appendix-B.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-2.4">
-            <p id="appendix-B.1-2.4.1">Clarification and editorial improvements.<a href="#appendix-B.1-2.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-2.4.1">Fixed use of the resource type "core.ps.gm".<a href="#appendix-B.1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-2.5">
+            <p id="appendix-B.1-2.5.1">Clarification and editorial improvements.<a href="#appendix-B.1-2.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

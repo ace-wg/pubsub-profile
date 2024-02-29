@@ -635,6 +635,11 @@ Table of Contents
             performed by means of a DELETE request sent to that
             resource.
 
+            If the "Toid" of the scope entry specifies the name of a
+            security group (i.e., the "AppGroup" operation is signaled
+            as not authorized), then this operation MUST be signaled as
+            not wished/authorized.
+
       -  The set of N numeric identifiers is converted into the single
          value R, by taking two to the power of each numeric identifier
          X_1, X_2, ..., X_N, and then computing the inclusive OR of the
@@ -2156,6 +2161,8 @@ B.1.  Version -08 to -09
    This section is to be removed before publishing as an RFC.
 
    *  Improved terminology section.
+
+   *  Improved definition of permissions in the format of scope.
 
    *  Use of RFC 9290 instead of the custom format of error responses.
 
