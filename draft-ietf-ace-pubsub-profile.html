@@ -2287,7 +2287,7 @@ The Publisher <span class="bcp14">MUST</span> initialize the Sender Sequence Num
             <p id="section-5.1-10.3.1">The 'Countersignature version 2' parameter, specifying the countersignature of the COSE_Encrypt0 object. In particular:<a href="#section-5.1-10.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.1-10.3.2.1">
-                <p id="section-5.1-10.3.2.1.1">The 'protected' field specifies the serialized parameters from the 'protected' field of the COSE_Encrypt0 object, i.e., the 'alg' parameter with value the identifier of the Signature Algorithm used in the security group.<a href="#section-5.1-10.3.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-5.1-10.3.2.1.1">The 'protected' field includes the 'alg' parameter, with value the identifier of the Signature Algorithm used in the security group.<a href="#section-5.1-10.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-5.1-10.3.2.2">
                 <p id="section-5.1-10.3.2.2.1">The 'unprotected' field includes the 'kid' parameter, with value the Publisher's Sender ID that the Publisher obtained from the KDC when joining the security group, as value of the 'group_SenderId' parameter of the Join Response (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>).<a href="#section-5.1-10.3.2.2.1" class="pilcrow">¶</a></p>
@@ -2312,25 +2312,21 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
                 <p id="section-5.1-10.3.4.4.1">'external_aad is not supplied.<a href="#section-5.1-10.3.4.4.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-5.1-10.3.4.5">
-                <p id="section-5.1-10.3.4.5.1">'payload' is the ciphertext of the COSE_Encrypt0 object.<a href="#section-5.1-10.3.4.5.1" class="pilcrow">¶</a></p>
+                <p id="section-5.1-10.3.4.5.1">'payload' is the ciphertext of the COSE_Encrypt0 object (see below).<a href="#section-5.1-10.3.4.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="section-5.1-10.4">
-            <p id="section-5.1-10.4.1">The 'ciphertext' parameter, with value the ciphertext computed over the topic data to publish.<a href="#section-5.1-10.4.1" class="pilcrow">¶</a></p>
-<p id="section-5.1-10.4.2">
-The ciphertext is computed as defined in <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span><span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span>, by using the current group key as encryption key, the AEAD Nonce computed as defined in <a href="#ssec-aead-nonce" class="auto internal xref">Section 5.2</a>, the topic data to publish as plaintext, and the Enc_structure populated as follows:<a href="#section-5.1-10.4.2" class="pilcrow">¶</a></p>
+        </ul>
+<p id="section-5.1-11">The 'ciphertext' field specifies the ciphertext computed over the topic data to publish. The ciphertext is computed as defined in <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span><span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span>, by using the current group key as encryption key, the AEAD Nonce computed as defined in <a href="#ssec-aead-nonce" class="auto internal xref">Section 5.2</a>, the topic data to publish as plaintext, and the Enc_structure populated as follows:<a href="#section-5.1-11" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.1-10.4.3.1">
-                <p id="section-5.1-10.4.3.1.1">'context' takes "Encrypt".<a href="#section-5.1-10.4.3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5.1-12.1">
+            <p id="section-5.1-12.1.1">'context' takes "Encrypt0".<a href="#section-5.1-12.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.1-10.4.3.2">
-                <p id="section-5.1-10.4.3.2.1">'protected' takes the serialization of the protected parameter 'alg' from the 'protected' field of the COSE_Encrypt0 object.<a href="#section-5.1-10.4.3.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-5.1-12.2">
+            <p id="section-5.1-12.2.1">'protected' takes the serialization of the protected parameter 'alg' from the 'protected' field of the COSE_Encrypt0 object.<a href="#section-5.1-12.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.1-10.4.3.3">
-                <p id="section-5.1-10.4.3.3.1">'external_aad is not supplied.<a href="#section-5.1-10.4.3.3.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
+          <li class="normal" id="section-5.1-12.3">
+            <p id="section-5.1-12.3.1">'external_aad is not supplied.<a href="#section-5.1-12.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -2969,10 +2965,13 @@ pub/sub communication <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xr
             <p id="appendix-B.1-2.6.1">Use of RFC 9290 instead of the custom format of error responses.<a href="#appendix-B.1-2.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-2.7">
-            <p id="appendix-B.1-2.7.1">Fixed use of the resource type "core.ps.gm".<a href="#appendix-B.1-2.7.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-2.7.1">Fixed construction of the COSE_Encrypt0 object.<a href="#appendix-B.1-2.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-2.8">
-            <p id="appendix-B.1-2.8.1">Clarification and editorial improvements.<a href="#appendix-B.1-2.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-2.8.1">Fixed use of the resource type "core.ps.gm".<a href="#appendix-B.1-2.8.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-2.9">
+            <p id="appendix-B.1-2.9.1">Clarification and editorial improvements.<a href="#appendix-B.1-2.9.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

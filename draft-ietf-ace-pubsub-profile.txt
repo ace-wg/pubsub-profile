@@ -1461,10 +1461,9 @@ Table of Contents
    *  The 'Countersignature version 2' parameter, specifying the
       countersignature of the COSE_Encrypt0 object.  In particular:
 
-      -  The 'protected' field specifies the serialized parameters from
-         the 'protected' field of the COSE_Encrypt0 object, i.e., the
-         'alg' parameter with value the identifier of the Signature
-         Algorithm used in the security group.
+      -  The 'protected' field includes the 'alg' parameter, with value
+         the identifier of the Signature Algorithm used in the security
+         group.
 
       -  The 'unprotected' field includes the 'kid' parameter, with
          value the Publisher's Sender ID that the Publisher obtained
@@ -1491,22 +1490,21 @@ Table of Contents
 
       -  'external_aad is not supplied.
 
-      -  'payload' is the ciphertext of the COSE_Encrypt0 object.
+      -  'payload' is the ciphertext of the COSE_Encrypt0 object (see
+         below).
 
-   *  The 'ciphertext' parameter, with value the ciphertext computed
-      over the topic data to publish.
+   The 'ciphertext' field specifies the ciphertext computed over the
+   topic data to publish.  The ciphertext is computed as defined in
+   [RFC9052][RFC9053], by using the current group key as encryption key,
+   the AEAD Nonce computed as defined in Section 5.2, the topic data to
+   publish as plaintext, and the Enc_structure populated as follows:
 
-      The ciphertext is computed as defined in [RFC9052][RFC9053], by
-      using the current group key as encryption key, the AEAD Nonce
-      computed as defined in Section 5.2, the topic data to publish as
-      plaintext, and the Enc_structure populated as follows:
+   *  'context' takes "Encrypt0".
 
-      -  'context' takes "Encrypt".
+   *  'protected' takes the serialization of the protected parameter
+      'alg' from the 'protected' field of the COSE_Encrypt0 object.
 
-      -  'protected' takes the serialization of the protected parameter
-         'alg' from the 'protected' field of the COSE_Encrypt0 object.
-
-      -  'external_aad is not supplied.
+   *  'external_aad is not supplied.
 
 5.2.  AEAD Nonce
 
@@ -2199,6 +2197,8 @@ B.1.  Version -08 to -09
    *  Use of the parameter 'exi' in the Join Response.
 
    *  Use of RFC 9290 instead of the custom format of error responses.
+
+   *  Fixed construction of the COSE_Encrypt0 object.
 
    *  Fixed use of the resource type "core.ps.gm".
 
