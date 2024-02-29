@@ -1395,21 +1395,55 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-2-16">On the other hand, separately for each topic, all the Publisher and Subscribers for that topic have a common, group security association, through which the published content sent through the Broker is protected end-to-end (Security Association 2). As discussed above, this security association is set up and maintained as the different Clients request the KDC to join the security group, upon which they obtain from the KDC the corresponding group keying material to use for protecting end-to-end and verifying the content of their pub/sub group communication.<a href="#section-2-16" class="pilcrow">¶</a></p>
 <span id="name-security-associations-betwe"></span><div id="associations">
 <figure id="figure-2">
-        <div class="alignCenter art-text artwork" id="section-2-17.1">
-<pre>
-+------------+             +------------+              +------------+
-|            |             |            |              |            |
-| Publisher  |             |   Broker   |              | Subscriber |
-|            |             |            |              |            |
-|            |             |            |              |            |
-+------------+             +------------+              +------------+
-      :   :                     :   :                      :   :
-      :   '----- Security ------'   '------ Security ------'   :
-      :        Association 1              Association 1        :
-      :                                                        :
-      '---------------------- Security ------------------------'
-                            Association 2
-</pre>
+        <div id="section-2-17.1">
+          <div class="alignCenter art-svg artwork" id="section-2-17.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="224" width="560" viewBox="0 0 560 224" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 8,32 L 8,112" fill="none" stroke="black"></path>
+              <path d="M 112,32 L 112,112" fill="none" stroke="black"></path>
+              <path d="M 224,32 L 224,112" fill="none" stroke="black"></path>
+              <path d="M 328,32 L 328,112" fill="none" stroke="black"></path>
+              <path d="M 448,32 L 448,112" fill="none" stroke="black"></path>
+              <path d="M 552,32 L 552,112" fill="none" stroke="black"></path>
+              <path d="M 8,32 L 112,32" fill="none" stroke="black"></path>
+              <path d="M 224,32 L 328,32" fill="none" stroke="black"></path>
+              <path d="M 448,32 L 552,32" fill="none" stroke="black"></path>
+              <path d="M 8,112 L 112,112" fill="none" stroke="black"></path>
+              <path d="M 224,112 L 328,112" fill="none" stroke="black"></path>
+              <path d="M 448,112 L 552,112" fill="none" stroke="black"></path>
+              <path d="M 88,144 L 128,144" fill="none" stroke="black"></path>
+              <path d="M 216,144 L 264,144" fill="none" stroke="black"></path>
+              <path d="M 296,144 L 344,144" fill="none" stroke="black"></path>
+              <path d="M 432,144 L 480,144" fill="none" stroke="black"></path>
+              <path d="M 56,192 L 232,192" fill="none" stroke="black"></path>
+              <path d="M 320,192 L 512,192" fill="none" stroke="black"></path>
+              <g class="text">
+                <text x="56" y="68">Publisher</text>
+                <text x="276" y="68">Broker</text>
+                <text x="500" y="68">Subscriber</text>
+                <text x="56" y="132">:</text>
+                <text x="88" y="132">:</text>
+                <text x="264" y="132">:</text>
+                <text x="296" y="132">:</text>
+                <text x="480" y="132">:</text>
+                <text x="512" y="132">:</text>
+                <text x="56" y="148">:</text>
+                <text x="172" y="148">Security</text>
+                <text x="388" y="148">Security</text>
+                <text x="512" y="148">:</text>
+                <text x="56" y="164">:</text>
+                <text x="168" y="164">Association</text>
+                <text x="224" y="164">1</text>
+                <text x="384" y="164">Association</text>
+                <text x="440" y="164">1</text>
+                <text x="512" y="164">:</text>
+                <text x="56" y="180">:</text>
+                <text x="512" y="180">:</text>
+                <text x="276" y="196">Security</text>
+                <text x="272" y="212">Association</text>
+                <text x="328" y="212">2</text>
+              </g>
+            </svg><a href="#section-2-17.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
 <a href="#name-security-associations-betwe" class="selfRef">Security Associations between Publisher, Broker, and Subscriber.</a>
@@ -1444,48 +1478,159 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-3-1"><a href="#message-flow" class="auto internal xref">Figure 3</a> provides a high level overview of the message flow for a Client getting authorisation to join a group. Square brackets denote optional steps. The message flow is expanded in the subsequent sections.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <span id="name-authorisation-flow"></span><div id="message-flow">
 <figure id="figure-3">
-        <div class="alignCenter art-text artwork" id="section-3-2.1">
-<pre>
-Client                                          Broker   AS   KDC
-   |                                                 |    |     |
-   |[&lt;-------- Discovery of Topic Resource --------&gt;]|    |     |
-   |                                                 |    |     |
-   |[--------------- Resource Request -------------&gt;]|    |     |
-   |[&lt;--------------- AS Information ---------------]|    |     |
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |----- Authorisation Request (Audience: Broker) ------&gt;|     |
-   |&lt;---- Authorisation Response (Audience: Broker) ------|     |
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |------ Upload of authorisation information -----&gt;|    |     |
-   |&lt;----- Establishment of secure association -----&gt;|    |     |
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |[&lt;-- Discovery of KDC and name of sec. group --&gt;]|    |     |
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |------- Authorisation Request (Audience: KDC) -------&gt;|     |
-   |&lt;------ Authorisation Response (Audience: KDC) -------|     |
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |--------- Upload of authorisation information -------------&gt;|
-   |&lt;-------- Establishment of secure association -------------&gt;|
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |----- Request to join the security group for the topic ----&gt;|
-   |&lt;-------- Keying material for the security group -----------|
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |---------------- Resource Request --------------&gt;|    |     |
-   |                                                 |    |     |
-</pre>
+        <div id="section-3-2.1">
+          <div class="alignCenter art-svg artwork" id="section-3-2.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="576" width="528" viewBox="0 0 528 576" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 32,48 L 32,560" fill="none" stroke="black"></path>
+              <path d="M 432,48 L 432,152" fill="none" stroke="black"></path>
+              <path d="M 432,184 L 432,328" fill="none" stroke="black"></path>
+              <path d="M 432,360 L 432,392" fill="none" stroke="black"></path>
+              <path d="M 432,424 L 432,448" fill="none" stroke="black"></path>
+              <path d="M 432,488 L 432,560" fill="none" stroke="black"></path>
+              <path d="M 472,48 L 472,392" fill="none" stroke="black"></path>
+              <path d="M 472,424 L 472,448" fill="none" stroke="black"></path>
+              <path d="M 472,488 L 472,560" fill="none" stroke="black"></path>
+              <path d="M 520,48 L 520,560" fill="none" stroke="black"></path>
+              <path d="M 48,64 L 112,64" fill="none" stroke="black"></path>
+              <path d="M 352,64 L 416,64" fill="none" stroke="black"></path>
+              <path d="M 48,96 L 160,96" fill="none" stroke="black"></path>
+              <path d="M 312,96 L 416,96" fill="none" stroke="black"></path>
+              <path d="M 48,112 L 168,112" fill="none" stroke="black"></path>
+              <path d="M 304,112 L 416,112" fill="none" stroke="black"></path>
+              <path d="M 40,160 L 72,160" fill="none" stroke="black"></path>
+              <path d="M 416,160 L 464,160" fill="none" stroke="black"></path>
+              <path d="M 40,176 L 72,176" fill="none" stroke="black"></path>
+              <path d="M 424,176 L 464,176" fill="none" stroke="black"></path>
+              <path d="M 40,224 L 80,224" fill="none" stroke="black"></path>
+              <path d="M 384,224 L 424,224" fill="none" stroke="black"></path>
+              <path d="M 40,240 L 80,240" fill="none" stroke="black"></path>
+              <path d="M 384,240 L 424,240" fill="none" stroke="black"></path>
+              <path d="M 48,288 L 64,288" fill="none" stroke="black"></path>
+              <path d="M 400,288 L 416,288" fill="none" stroke="black"></path>
+              <path d="M 40,336 L 88,336" fill="none" stroke="black"></path>
+              <path d="M 408,336 L 464,336" fill="none" stroke="black"></path>
+              <path d="M 40,352 L 88,352" fill="none" stroke="black"></path>
+              <path d="M 416,352 L 464,352" fill="none" stroke="black"></path>
+              <path d="M 40,400 L 104,400" fill="none" stroke="black"></path>
+              <path d="M 408,400 L 512,400" fill="none" stroke="black"></path>
+              <path d="M 40,416 L 104,416" fill="none" stroke="black"></path>
+              <path d="M 408,416 L 512,416" fill="none" stroke="black"></path>
+              <path d="M 40,464 L 72,464" fill="none" stroke="black"></path>
+              <path d="M 480,464 L 512,464" fill="none" stroke="black"></path>
+              <path d="M 40,480 L 104,480" fill="none" stroke="black"></path>
+              <path d="M 432,480 L 512,480" fill="none" stroke="black"></path>
+              <path d="M 40,528 L 152,528" fill="none" stroke="black"></path>
+              <path d="M 304,528 L 424,528" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="520,464 508,458.4 508,469.6" fill="black" transform="rotate(0,512,464)"></polygon>
+              <polygon class="arrowhead" points="520,416 508,410.4 508,421.6" fill="black" transform="rotate(0,512,416)"></polygon>
+              <polygon class="arrowhead" points="520,400 508,394.4 508,405.6" fill="black" transform="rotate(0,512,400)"></polygon>
+              <polygon class="arrowhead" points="472,336 460,330.4 460,341.6" fill="black" transform="rotate(0,464,336)"></polygon>
+              <polygon class="arrowhead" points="472,160 460,154.4 460,165.6" fill="black" transform="rotate(0,464,160)"></polygon>
+              <polygon class="arrowhead" points="432,528 420,522.4 420,533.6" fill="black" transform="rotate(0,424,528)"></polygon>
+              <polygon class="arrowhead" points="432,240 420,234.4 420,245.6" fill="black" transform="rotate(0,424,240)"></polygon>
+              <polygon class="arrowhead" points="432,224 420,218.4 420,229.6" fill="black" transform="rotate(0,424,224)"></polygon>
+              <polygon class="arrowhead" points="424,288 412,282.4 412,293.6" fill="black" transform="rotate(0,416,288)"></polygon>
+              <polygon class="arrowhead" points="424,96 412,90.4 412,101.6" fill="black" transform="rotate(0,416,96)"></polygon>
+              <polygon class="arrowhead" points="424,64 412,58.4 412,69.6" fill="black" transform="rotate(0,416,64)"></polygon>
+              <polygon class="arrowhead" points="56,288 44,282.4 44,293.6" fill="black" transform="rotate(180,48,288)"></polygon>
+              <polygon class="arrowhead" points="56,112 44,106.4 44,117.6" fill="black" transform="rotate(180,48,112)"></polygon>
+              <polygon class="arrowhead" points="56,64 44,58.4 44,69.6" fill="black" transform="rotate(180,48,64)"></polygon>
+              <polygon class="arrowhead" points="48,480 36,474.4 36,485.6" fill="black" transform="rotate(180,40,480)"></polygon>
+              <polygon class="arrowhead" points="48,416 36,410.4 36,421.6" fill="black" transform="rotate(180,40,416)"></polygon>
+              <polygon class="arrowhead" points="48,352 36,346.4 36,357.6" fill="black" transform="rotate(180,40,352)"></polygon>
+              <polygon class="arrowhead" points="48,240 36,234.4 36,245.6" fill="black" transform="rotate(180,40,240)"></polygon>
+              <polygon class="arrowhead" points="48,176 36,170.4 36,181.6" fill="black" transform="rotate(180,40,176)"></polygon>
+              <g class="text">
+                <text x="28" y="36">Client</text>
+                <text x="412" y="36">Broker</text>
+                <text x="468" y="36">AS</text>
+                <text x="512" y="36">KDC</text>
+                <text x="40" y="68">[</text>
+                <text x="160" y="68">Discovery</text>
+                <text x="212" y="68">of</text>
+                <text x="248" y="68">Topic</text>
+                <text x="308" y="68">Resource</text>
+                <text x="424" y="68">]</text>
+                <text x="40" y="100">[</text>
+                <text x="204" y="100">Resource</text>
+                <text x="272" y="100">Request</text>
+                <text x="424" y="100">]</text>
+                <text x="40" y="116">[</text>
+                <text x="188" y="116">AS</text>
+                <text x="248" y="116">Information</text>
+                <text x="424" y="116">]</text>
+                <text x="136" y="164">Authorisation</text>
+                <text x="224" y="164">Request</text>
+                <text x="300" y="164">(Audience:</text>
+                <text x="376" y="164">Broker)</text>
+                <text x="136" y="180">Authorisation</text>
+                <text x="228" y="180">Response</text>
+                <text x="308" y="180">(Audience:</text>
+                <text x="384" y="180">Broker)</text>
+                <text x="116" y="228">Upload</text>
+                <text x="156" y="228">of</text>
+                <text x="224" y="228">authorisation</text>
+                <text x="328" y="228">information</text>
+                <text x="144" y="244">Establishment</text>
+                <text x="212" y="244">of</text>
+                <text x="252" y="244">secure</text>
+                <text x="328" y="244">association</text>
+                <text x="40" y="292">[</text>
+                <text x="112" y="292">Discovery</text>
+                <text x="164" y="292">of</text>
+                <text x="192" y="292">KDC</text>
+                <text x="224" y="292">and</text>
+                <text x="260" y="292">name</text>
+                <text x="292" y="292">of</text>
+                <text x="324" y="292">sec.</text>
+                <text x="368" y="292">group</text>
+                <text x="424" y="292">]</text>
+                <text x="152" y="340">Authorisation</text>
+                <text x="240" y="340">Request</text>
+                <text x="316" y="340">(Audience:</text>
+                <text x="380" y="340">KDC)</text>
+                <text x="152" y="356">Authorisation</text>
+                <text x="244" y="356">Response</text>
+                <text x="324" y="356">(Audience:</text>
+                <text x="388" y="356">KDC)</text>
+                <text x="140" y="404">Upload</text>
+                <text x="180" y="404">of</text>
+                <text x="248" y="404">authorisation</text>
+                <text x="352" y="404">information</text>
+                <text x="168" y="420">Establishment</text>
+                <text x="236" y="420">of</text>
+                <text x="276" y="420">secure</text>
+                <text x="352" y="420">association</text>
+                <text x="112" y="468">Request</text>
+                <text x="156" y="468">to</text>
+                <text x="188" y="468">join</text>
+                <text x="224" y="468">the</text>
+                <text x="276" y="468">security</text>
+                <text x="336" y="468">group</text>
+                <text x="376" y="468">for</text>
+                <text x="408" y="468">the</text>
+                <text x="448" y="468">topic</text>
+                <text x="140" y="484">Keying</text>
+                <text x="204" y="484">material</text>
+                <text x="256" y="484">for</text>
+                <text x="288" y="484">the</text>
+                <text x="340" y="484">security</text>
+                <text x="400" y="484">group</text>
+                <text x="196" y="532">Resource</text>
+                <text x="264" y="532">Request</text>
+                <text x="176" y="548">(Publication/Subscription</text>
+                <text x="292" y="548">to</text>
+                <text x="320" y="548">the</text>
+                <text x="364" y="548">topic)</text>
+              </g>
+            </svg><a href="#section-3-2.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
 <a href="#name-authorisation-flow" class="selfRef">Authorisation Flow</a>
         </figcaption></figure>
 </div>
-<p id="section-3-3">Since <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> recommends the use of CoAP and CBOR, this document describes the exchanges assuming CoAP and CBOR are used.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-3">Since <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> recommends the use of CoAP and CBOR, this document describes the exchanges assuming that CoAP and CBOR are used.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <p id="section-3-4">However, using HTTP instead of CoAP is possible, by leveraging the corresponding parameters and methods. Analogously, JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> can be used instead of CBOR, using the conversion method specified in Sections <a href="https://rfc-editor.org/rfc/rfc8949#section-6.1" class="relref">6.1</a> and <a href="https://rfc-editor.org/rfc/rfc8949#section-6.2" class="relref">6.2</a> of <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>. In case JSON is used, the Content-Format of the message has to be changed accordingly. Exact definitions of these exchanges are out of scope for this document.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <div id="topic-discovery">
 <section id="section-3.1">
