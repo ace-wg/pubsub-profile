@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 25 April 2024                                 Brunel University
+Expires: 1 September 2024                              Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                         23 October 2023
+                                                        29 February 2024
 
 
    Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,11 +61,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 April 2024.
+   This Internet-Draft will expire on 1 September 2024.
 
 Copyright Notice
 
-   Copyright (c) 2023 IETF Trust and the persons identified as the
+   Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -118,8 +118,9 @@ Table of Contents
      9.2.  Informative References
    Appendix A.  Requirements on Application Profiles
    Appendix B.  Document Updates
-     B.1.  Version -07 to -08
-     B.2.  Version -06 to -07
+     B.1.  Version -08 to -09
+     B.2.  Version -07 to -08
+     B.3.  Version -06 to -07
    Acknowledgments
    Authors' Addresses
 
@@ -843,9 +844,13 @@ Table of Contents
 
                                   Table 1
 
-   Note that the use of these resources follows what is defined in
+   The use of these resources follows what is defined in
    [I-D.ietf-ace-key-groupcomm], and only additions or modifications to
    that specification are defined in this document.
+
+   Consistent with what is defined in [I-D.ietf-ace-key-groupcomm], some
+   error responses from the KDC can convey error-specific information
+   according to the problem-details format specified in [RFC9290].
 
 4.1.  Joining a Security Group
 
@@ -1728,9 +1733,9 @@ Table of Contents
    [I-D.ietf-ace-key-groupcomm]
               Palombini, F. and M. Tiloca, "Key Provisioning for Group
               Communication using ACE", Work in Progress, Internet-
-              Draft, draft-ietf-ace-key-groupcomm-17, 6 October 2023,
+              Draft, draft-ietf-ace-key-groupcomm-18, 16 January 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-
-              groupcomm-17>.
+              groupcomm-18>.
 
    [I-D.ietf-core-coap-pubsub]
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
@@ -1842,6 +1847,11 @@ Table of Contents
               Items in Concise Binary Object Representation (CBOR)",
               RFC 9277, DOI 10.17487/RFC9277, August 2022,
               <https://www.rfc-editor.org/rfc/rfc9277>.
+
+   [RFC9290]  Fossati, T. and C. Bormann, "Concise Problem Details for
+              Constrained Application Protocol (CoAP) APIs", RFC 9290,
+              DOI 10.17487/RFC9290, October 2022,
+              <https://www.rfc-editor.org/rfc/rfc9290>.
 
    [RFC9338]  Schaad, J., "CBOR Object Signing and Encryption (COSE):
               Countersignatures", STD 96, RFC 9338,
@@ -2123,7 +2133,11 @@ Appendix B.  Document Updates
 
    RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
-B.1.  Version -07 to -08
+B.1.  Version -08 to -09
+
+   *  Use of RFC 9290 instead of the custom format of error responses.
+
+B.2.  Version -07 to -08
 
    *  Revised presentation of the scope format.
 
@@ -2142,7 +2156,7 @@ B.1.  Version -07 to -08
 
    *  Clarifications and editorial improvements.
 
-B.2.  Version -06 to -07
+B.3.  Version -06 to -07
 
    *  Revised abstract and introduction.
 
