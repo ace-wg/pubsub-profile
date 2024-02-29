@@ -45,6 +45,7 @@ normative:
   RFC8392:
   RFC8446:
   RFC8447:
+  RFC8610:
   RFC8949:
   RFC9052:
   RFC9053:
@@ -112,11 +113,16 @@ While this profile focuses on the pub/sub architecture for CoAP, this document a
 Readers are expected to be familiar with:
 
 * The terms and concepts described in {{RFC9200}}, and Authorization Information Format (AIF) {{RFC9237}} to express authorization information. In particular, analogously to {{RFC9200}}, terminology for entities in the architecture such as Client (C), Resource Server (RS), and Authorization Server (AS) is defined in OAuth 2.0 {{RFC6749}}.
-* The terms and concept related to the message formats and processing, specified in {{I-D.ietf-ace-key-groupcomm}}, for provisioning and renewing keying material in group communication scenarios.
-* The terms and concepts of pub/sub group communication, as described in {{I-D.ietf-core-coap-pubsub}}.
-* The terms and concepts described in CBOR {{RFC8949}} and COSE {{RFC9052}}{{RFC9053}}.
 
-A principal interested to participate in group communication as well as already participating as a group member is interchangeably denoted as "Client", "pub/sub client" or "node".
+* The terms and concept related to the message formats and processing, specified in {{I-D.ietf-ace-key-groupcomm}}, for provisioning and renewing keying material in group communication scenarios. These include the abbreviations REQx and OPTx denoting the numbered mandatory-to-address and optional-to-address requirements, respectively.
+
+* The terms and concepts described in CDDL {{RFC8610}}, CBOR {{RFC8949}}, and COSE {{RFC9052}}{{RFC9053}}{{RFC9338}}.
+
+* The terms and concepts described in CoAP {{RFC7252}}. Unless otherwise indicated, the term "endpoint" is used here following its OAuth definition, aimed at denoting resources such as `/token` and `/introspect` at the AS, and `/authz-info` at the RS. This document does not use the CoAP definition of "endpoint", which is "An entity participating in the CoAP protocol".
+
+* The terms and concepts of pub/sub group communication with CoAP, as described in {{I-D.ietf-core-coap-pubsub}}.
+
+A party interested to participate in group communication as well as already participating as a group member is interchangeably denoted as "Client", "pub/sub client" or "node".
 
 * Group: a set of nodes that share common keying material and security parameters to protect their communications with one another. That is, the term refers to a "security group". This is not to be confused with an "application group", which has relevance at the application level and whose members are in this case the Clients acting as Publishers and/or Subscribers for a topic.
 
@@ -445,7 +451,7 @@ After establishing a secure communication association with the KDC, the Client s
 
 * 'scope': Required. MUST be set to the specific group that the Client is attempting to join, i.e., the group name, and the permissions it wishes to have in the group. This value corresponds to one scope entry, as defined in {{scope}}.
 
-* 'get_creds': Optional, present if the Client wishes to join as a Subcriber and wants to retrieve the public keys of all the Publishers upon joining. Otherwise, this parameter MUST NOT be present. If the parameter is present, the parameter MUST encode the CBOR simple value "null" (0xf6). Note that no 'role_filter' is necessary, as the KDC returns the authentication credentials of Publishers by default.
+* 'get_creds': Optional, present if the Client wishes to join as a Subcriber and wants to retrieve the public keys of all the Publishers upon joining. Otherwise, this parameter MUST NOT be present. If the parameter is present, the parameter MUST encode the CBOR simple value `null` (0xf6). Note that no 'role_filter' is necessary, as the KDC returns the authentication credentials of Publishers by default.
 
 * 'client\_cred': The use of this parameter is detailed in {{client_cred}}.
 
@@ -987,6 +993,8 @@ pub/sub communication {{I-D.ietf-core-coap-pubsub}}
 {:removeinrfc}
 
 ## Version -08 to -09 ## {#sec-08-09}
+
+* Improved terminology section.
 
 * Use of RFC 9290 instead of the custom format of error responses.
 
