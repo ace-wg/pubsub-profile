@@ -1349,27 +1349,63 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-2-4">Both Publishers and Subscribers act as ACE Clients. The Broker acts as an ACE RS, and corresponds to the Dispatcher in <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. The Key Distribution Center (KDC) also acts as an ACE RS, and builds on what is defined for the KDC in <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. From a high-level point of view, the Clients interact with the KDC in order to join security groups and obtain the group keying material to protect end-to-end and verify the content published in the associated topics.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <span id="name-architecture-for-pub-sub-wi"></span><div id="archi">
 <figure id="figure-1">
-        <div class="alignCenter art-text artwork" id="section-2-5.1">
-<pre>
-             +---------------+   +--------------+
-             | Authorization |   |     Key      |
-             |    Server     |   | Distribution |
-             |      (AS)     |   |    Center    |
-             |               |   |    (KDC)     |
-             +---------------+   +--------------+
-                      ^                  ^
-                      |                  |
-     +---------(A)----+                  |
-     |                                   |
-     |   +--------------------(B)--------+
-     v   v
-+------------+             +------------+
-|            | &lt;-- (O) --&gt; |            |
-|  Pub/sub   |             |   Broker   |
-|  Client    | &lt;-- (C)---&gt; |            |
-|            |             |            |
-+------------+             +------------+
-</pre>
+        <div id="section-2-5.1">
+          <div class="alignCenter art-svg artwork" id="section-2-5.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="320" width="400" viewBox="0 0 400 320" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 8,224 L 8,304" fill="none" stroke="black"></path>
+              <path d="M 48,160 L 48,216" fill="none" stroke="black"></path>
+              <path d="M 80,192 L 80,216" fill="none" stroke="black"></path>
+              <path d="M 112,32 L 112,112" fill="none" stroke="black"></path>
+              <path d="M 112,224 L 112,304" fill="none" stroke="black"></path>
+              <path d="M 184,120 L 184,160" fill="none" stroke="black"></path>
+              <path d="M 224,224 L 224,304" fill="none" stroke="black"></path>
+              <path d="M 240,32 L 240,112" fill="none" stroke="black"></path>
+              <path d="M 272,32 L 272,112" fill="none" stroke="black"></path>
+              <path d="M 328,224 L 328,304" fill="none" stroke="black"></path>
+              <path d="M 336,120 L 336,192" fill="none" stroke="black"></path>
+              <path d="M 392,32 L 392,112" fill="none" stroke="black"></path>
+              <path d="M 112,32 L 240,32" fill="none" stroke="black"></path>
+              <path d="M 272,32 L 392,32" fill="none" stroke="black"></path>
+              <path d="M 112,112 L 240,112" fill="none" stroke="black"></path>
+              <path d="M 272,112 L 392,112" fill="none" stroke="black"></path>
+              <path d="M 48,160 L 128,160" fill="none" stroke="black"></path>
+              <path d="M 144,160 L 184,160" fill="none" stroke="black"></path>
+              <path d="M 80,192 L 248,192" fill="none" stroke="black"></path>
+              <path d="M 264,192 L 336,192" fill="none" stroke="black"></path>
+              <path d="M 8,224 L 112,224" fill="none" stroke="black"></path>
+              <path d="M 224,224 L 328,224" fill="none" stroke="black"></path>
+              <path d="M 128,240 L 144,240" fill="none" stroke="black"></path>
+              <path d="M 192,240 L 208,240" fill="none" stroke="black"></path>
+              <path d="M 128,272 L 144,272" fill="none" stroke="black"></path>
+              <path d="M 176,272 L 208,272" fill="none" stroke="black"></path>
+              <path d="M 8,304 L 112,304" fill="none" stroke="black"></path>
+              <path d="M 224,304 L 328,304" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="344,120 332,114.4 332,125.6" fill="black" transform="rotate(270,336,120)"></polygon>
+              <polygon class="arrowhead" points="216,272 204,266.4 204,277.6" fill="black" transform="rotate(0,208,272)"></polygon>
+              <polygon class="arrowhead" points="216,240 204,234.4 204,245.6" fill="black" transform="rotate(0,208,240)"></polygon>
+              <polygon class="arrowhead" points="192,120 180,114.4 180,125.6" fill="black" transform="rotate(270,184,120)"></polygon>
+              <polygon class="arrowhead" points="136,272 124,266.4 124,277.6" fill="black" transform="rotate(180,128,272)"></polygon>
+              <polygon class="arrowhead" points="136,240 124,234.4 124,245.6" fill="black" transform="rotate(180,128,240)"></polygon>
+              <polygon class="arrowhead" points="88,216 76,210.4 76,221.6" fill="black" transform="rotate(90,80,216)"></polygon>
+              <polygon class="arrowhead" points="56,216 44,210.4 44,221.6" fill="black" transform="rotate(90,48,216)"></polygon>
+              <g class="text">
+                <text x="176" y="52">Authorization</text>
+                <text x="328" y="52">Key</text>
+                <text x="172" y="68">Server</text>
+                <text x="332" y="68">Distribution</text>
+                <text x="180" y="84">(AS)</text>
+                <text x="332" y="84">Center</text>
+                <text x="328" y="100">(KDC)</text>
+                <text x="136" y="164">A</text>
+                <text x="256" y="196">B</text>
+                <text x="168" y="244">(O)</text>
+                <text x="56" y="260">Pub/sub</text>
+                <text x="276" y="260">Broker</text>
+                <text x="52" y="276">Client</text>
+                <text x="164" y="276">(C</text>
+              </g>
+            </svg><a href="#section-2-5.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
 <a href="#name-architecture-for-pub-sub-wi" class="selfRef">Architecture for Pub/sub with Authorization Server and Key Distribution Center</a>
@@ -1924,14 +1960,29 @@ Since this application profile considers user-related operations, the "Admin" op
 <p id="section-4.1-3">The message exchange between the joining node and the KDC follows what is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-4.3.1.1" class="relref">Section 4.3.1.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> and only additions or modifications to that specification are defined in this document.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <span id="name-join-flow"></span><div id="join-flow">
 <figure id="figure-6">
-          <div class="alignCenter art-text artwork" id="section-4.1-4.1">
-<pre>
-   Client                               KDC
-      |----- Join Request (CoAP) ------&gt;|
-      |                                 |
-      |&lt;-----Join Response (CoAP) ------|
-
-</pre>
+          <div id="section-4.1-4.1">
+            <div class="alignCenter art-svg artwork" id="section-4.1-4.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="328" viewBox="0 0 328 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 32,48 L 32,80" fill="none" stroke="black"></path>
+                <path d="M 304,48 L 304,80" fill="none" stroke="black"></path>
+                <path d="M 40,48 L 72,48" fill="none" stroke="black"></path>
+                <path d="M 248,48 L 296,48" fill="none" stroke="black"></path>
+                <path d="M 40,80 L 80,80" fill="none" stroke="black"></path>
+                <path d="M 256,80 L 296,80" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="304,48 292,42.4 292,53.6" fill="black" transform="rotate(0,296,48)"></polygon>
+                <polygon class="arrowhead" points="48,80 36,74.4 36,85.6" fill="black" transform="rotate(180,40,80)"></polygon>
+                <g class="text">
+                  <text x="28" y="36">Client</text>
+                  <text x="312" y="36">KDC</text>
+                  <text x="100" y="52">Join</text>
+                  <text x="152" y="52">Request</text>
+                  <text x="212" y="52">(CoAP)</text>
+                  <text x="100" y="84">Join</text>
+                  <text x="156" y="84">Response</text>
+                  <text x="220" y="84">(CoAP)</text>
+                </g>
+              </svg><a href="#section-4.1-4.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
 <a href="#name-join-flow" class="selfRef">Join Flow</a>
@@ -2223,15 +2274,40 @@ The response from the KDC <span class="bcp14">MAY</span> omit the parameter 'pee
       </h2>
 <span id="name-secure-communication-betwee"></span><div id="pubsub-3">
 <figure id="figure-7">
-        <div class="alignCenter art-text artwork" id="section-5-1.1">
-<pre>
-+------------+             +------------+              +------------+
-|            |             |            |              |            |
-| Publisher  | ----(D)---&gt; |   Broker   |              | Subscriber |
-|            |             |            | &lt;----(E)---- |            |
-|            |             |            | -----(F)---&gt; |            |
-+------------+             +------------+              +------------+
-</pre>
+        <div id="section-5-1.1">
+          <div class="alignCenter art-svg artwork" id="section-5-1.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="560" viewBox="0 0 560 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 8,32 L 8,112" fill="none" stroke="black"></path>
+              <path d="M 112,32 L 112,112" fill="none" stroke="black"></path>
+              <path d="M 224,32 L 224,112" fill="none" stroke="black"></path>
+              <path d="M 328,32 L 328,112" fill="none" stroke="black"></path>
+              <path d="M 448,32 L 448,112" fill="none" stroke="black"></path>
+              <path d="M 552,32 L 552,112" fill="none" stroke="black"></path>
+              <path d="M 8,32 L 112,32" fill="none" stroke="black"></path>
+              <path d="M 224,32 L 328,32" fill="none" stroke="black"></path>
+              <path d="M 448,32 L 552,32" fill="none" stroke="black"></path>
+              <path d="M 128,64 L 160,64" fill="none" stroke="black"></path>
+              <path d="M 176,64 L 208,64" fill="none" stroke="black"></path>
+              <path d="M 344,80 L 384,80" fill="none" stroke="black"></path>
+              <path d="M 400,80 L 432,80" fill="none" stroke="black"></path>
+              <path d="M 344,96 L 384,96" fill="none" stroke="black"></path>
+              <path d="M 400,96 L 432,96" fill="none" stroke="black"></path>
+              <path d="M 8,112 L 112,112" fill="none" stroke="black"></path>
+              <path d="M 224,112 L 328,112" fill="none" stroke="black"></path>
+              <path d="M 448,112 L 552,112" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="440,96 428,90.4 428,101.6" fill="black" transform="rotate(0,432,96)"></polygon>
+              <polygon class="arrowhead" points="352,80 340,74.4 340,85.6" fill="black" transform="rotate(180,344,80)"></polygon>
+              <polygon class="arrowhead" points="216,64 204,58.4 204,69.6" fill="black" transform="rotate(0,208,64)"></polygon>
+              <g class="text">
+                <text x="56" y="68">Publisher</text>
+                <text x="168" y="68">D</text>
+                <text x="276" y="68">Broker</text>
+                <text x="500" y="68">Subscriber</text>
+                <text x="392" y="84">E</text>
+                <text x="392" y="100">F</text>
+              </g>
+            </svg><a href="#section-5-1.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
 <a href="#name-secure-communication-betwee" class="selfRef">Secure communication between Publisher and Subscriber</a>
@@ -2241,16 +2317,40 @@ The response from the KDC <span class="bcp14">MAY</span> omit the parameter 'pee
 (ToDo: Add Delete to the flow?)<a href="#section-5-2" class="pilcrow">¶</a></p>
 <span id="name-example-of-protected-commun"></span><div id="flow">
 <figure id="figure-8">
-        <div class="alignCenter art-text artwork" id="section-5-3.1">
-<pre>
-  Publisher                Broker               Subscriber
-      | --- PUT /topic ----&gt; |                       |
-      |  protected with COSE |                       |
-      |                      | &lt;--- GET /topic ----- |
-      |                      |      Observe:0        |
-      |                      | ---- response ------&gt; |
-      |                      |  protected with COSE  |
-</pre>
+        <div id="section-5-3.1">
+          <div class="alignCenter art-svg artwork" id="section-5-3.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="176" width="464" viewBox="0 0 464 176" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 40,48 L 40,144" fill="none" stroke="black"></path>
+              <path d="M 232,48 L 232,144" fill="none" stroke="black"></path>
+              <path d="M 424,48 L 424,144" fill="none" stroke="black"></path>
+              <path d="M 56,48 L 72,48" fill="none" stroke="black"></path>
+              <path d="M 176,48 L 216,48" fill="none" stroke="black"></path>
+              <path d="M 248,80 L 272,80" fill="none" stroke="black"></path>
+              <path d="M 376,80 L 408,80" fill="none" stroke="black"></path>
+              <path d="M 248,128 L 272,128" fill="none" stroke="black"></path>
+              <path d="M 360,128 L 408,128" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="416,128 404,122.4 404,133.6" fill="black" transform="rotate(0,408,128)"></polygon>
+              <polygon class="arrowhead" points="256,80 244,74.4 244,85.6" fill="black" transform="rotate(180,248,80)"></polygon>
+              <polygon class="arrowhead" points="224,48 212,42.4 212,53.6" fill="black" transform="rotate(0,216,48)"></polygon>
+              <g class="text">
+                <text x="40" y="36">Publisher</text>
+                <text x="236" y="36">Broker</text>
+                <text x="420" y="36">Subscriber</text>
+                <text x="96" y="52">PUT</text>
+                <text x="140" y="52">/topic</text>
+                <text x="96" y="68">protected</text>
+                <text x="156" y="68">with</text>
+                <text x="196" y="68">COSE</text>
+                <text x="296" y="84">GET</text>
+                <text x="340" y="84">/topic</text>
+                <text x="320" y="100">Observe:0</text>
+                <text x="316" y="132">Response</text>
+                <text x="288" y="148">protected</text>
+                <text x="348" y="148">with</text>
+                <text x="388" y="148">COSE</text>
+              </g>
+            </svg><a href="#section-5-3.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
 <a href="#name-example-of-protected-commun" class="selfRef">Example of protected communication for CoAP</a>
@@ -2409,7 +2509,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <p id="section-6-1">The steps MQTT clients go through would be similar to the CoAP clients, and the payload of the MQTT PUBLISH messages will be protected using COSE. The MQTT clients needs to use CoAP to communicate to the KDC, to join security groups, and be part of the pairwise rekeying initiated by the KDC.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <p id="section-6-2">Authorisation Server (AS) Discovery is defined in <span><a href="https://rfc-editor.org/rfc/rfc9431#section-2.4.1" class="relref">Section 2.4.1</a> of [<a href="#RFC9431" class="cite xref">RFC9431</a>]</span> for MQTT v5 clients (and not supported for MQTT v3 clients). $SYS/ has been widely adopted as a prefix to topics that contain server-specific information or control APIs, and may be used for topic and KDC discovery.<a href="#section-6-2" class="pilcrow">¶</a></p>
 <p id="section-6-3">When the Client sends an authorisation request to the AS using the AIF-PUBSUB-GROUPCOMM data model in the authorisation response, the 'profile' claim is set to "mqtt_pubsub_app" as defined in <a href="#iana-profile" class="auto internal xref">Section 8.2</a>.<a href="#section-6-3" class="pilcrow">¶</a></p>
-<p id="section-6-4">Both Publishers and Subscribers <span class="bcp14">MUST</span> authorise to the Broker with their respective tokens, ass described in <span>[<a href="#RFC9431" class="cite xref">RFC9431</a>]</span>. A Publisher sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. A Subscriber may send SUBSCRIBE messages with one or multiple topic filters. A topic filter may correspond to multiple topics. The Broker forwards all PUBLISH messages to all authorised Subscribers, including the retained messages.<a href="#section-6-4" class="pilcrow">¶</a></p>
+<p id="section-6-4">Both Publishers and Subscribers <span class="bcp14">MUST</span> authorise to the Broker with their respective tokens, as described in <span>[<a href="#RFC9431" class="cite xref">RFC9431</a>]</span>. A Publisher sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. A Subscriber may send SUBSCRIBE messages with one or multiple topic filters. A topic filter may correspond to multiple topics. The Broker forwards all PUBLISH messages to all authorised Subscribers, including the retained messages.<a href="#section-6-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -2418,7 +2518,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-7-1">All the security considerations in <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> apply.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">In the profile described above, the Publishers and Subscribers use asymmetric crypto, which would make the message exchange quite heavy for small constrained devices. Moreover, all Subscribers must be able to access the public keys of all the Publishers to a specific topic to verify the publications.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-2">In the profile described above, the Publishers and Subscribers use asymmetric cryptography, which would make the message exchange quite heavy for small constrained devices. Moreover, all Subscribers must be able to access the public keys of all the Publishers to a specific topic to verify the publications.<a href="#section-7-2" class="pilcrow">¶</a></p>
 <p id="section-7-3">Even though access tokens have expiration times, an access token may need to be revoked before its expiration time (see <span>[<a href="#I-D.draft-ietf-ace-revoked-token-notification" class="cite xref">I-D.draft-ietf-ace-revoked-token-notification</a>]</span> for a list of possible circumstances). Clients can be excluded from future publications through re-keying for a certain topic. This could be set up to happen on a regular basis, for certain applications. How this could be done is out of scope for this work. The method described in <span>[<a href="#I-D.draft-ietf-ace-revoked-token-notification" class="cite xref">I-D.draft-ietf-ace-revoked-token-notification</a>]</span> <span class="bcp14">MAY</span> be used to allow an Authorization Server to notify the KDC about revoked access tokens.<a href="#section-7-3" class="pilcrow">¶</a></p>
 <p id="section-7-4">The Broker is only trusted with verifying that the Publisher is authorized to publish, but is not trusted with the publications itself, which it cannot read nor modify.<a href="#section-7-4" class="pilcrow">¶</a></p>
 <p id="section-7-5">With respect to the reusage of nonces for Proof-of-Possession input, the same considerations apply as in the

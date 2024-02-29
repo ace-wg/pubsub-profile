@@ -1386,13 +1386,14 @@ Table of Contents
    the Broker, where the publication is protected with COSE by the
    Publisher.  (ToDo: Add Delete to the flow?)
 
-          Publisher                Broker               Subscriber
-              | --- PUT /topic ----> |                       |
-              |  protected with COSE |                       |
-              |                      | <--- GET /topic ----- |
-              |                      |      Observe:0        |
-              |                      | ---- response ------> |
-              |                      |  protected with COSE  |
+          Publisher                 Broker               Subscriber
+              | --- PUT /topic -----> |                       |
+              |  protected with COSE  |                       |
+              |                       | <--- GET /topic ----- |
+              |                       |      Observe:0        |
+              |                       |                       |
+              |                       | ---- Response ------> |
+              |                       |  protected with COSE  |
 
            Figure 8: Example of protected communication for CoAP
 
@@ -1591,7 +1592,7 @@ Table of Contents
    Section 8.2.
 
    Both Publishers and Subscribers MUST authorise to the Broker with
-   their respective tokens, ass described in [RFC9431].  A Publisher
+   their respective tokens, as described in [RFC9431].  A Publisher
    sends PUBLISH messages for a given topic and protects the payload
    with the corresponding key for the associated security group.  A
    Subscriber may send SUBSCRIBE messages with one or multiple topic
@@ -1605,9 +1606,9 @@ Table of Contents
    apply.
 
    In the profile described above, the Publishers and Subscribers use
-   asymmetric crypto, which would make the message exchange quite heavy
-   for small constrained devices.  Moreover, all Subscribers must be
-   able to access the public keys of all the Publishers to a specific
+   asymmetric cryptography, which would make the message exchange quite
+   heavy for small constrained devices.  Moreover, all Subscribers must
+   be able to access the public keys of all the Publishers to a specific
    topic to verify the publications.
 
    Even though access tokens have expiration times, an access token may
