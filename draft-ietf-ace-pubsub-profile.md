@@ -339,6 +339,12 @@ Furthermore, this document defines the new AIF data model AIF-PUBSUB-GROUPCOMM t
 
 In particular, the following holds for each scope entry.
 
+The object identifier ("Toid") is specialized as a CBOR item specifying the name of the groups pertaining to the scope entry.
+
+The permission set ("Tperm") is specialized as a CBOR unsigned integer with value R, specifying the permissions that the Client wishes to have in the groups indicated by "Toid".
+
+More specifically, the following applies when, as defined in this document, a scope entry includes as set of permissions for user-related operations performed by a pubsub Client.
+
 * The object identifier ("Toid") is a CBOR text string, specifying the name of one application group (topic) or of the corresponding security group to which the scope entry pertains.
 
 * The permission set ("Tperm") is a CBOR unsigned integer, whose value R specifies the operations that the Client wishes to or has been authorized to perform on the resources at the Broker associated with the application group (topic) indicated by "Toid", or on the resources at the KDC associated with the security group indicated by "Toid" (REQ1). The value R is computed as follows.
@@ -1000,6 +1006,8 @@ pub/sub communication {{I-D.ietf-core-coap-pubsub}}
 ## Version -08 to -09 ## {#sec-08-09}
 
 * Improved terminology section.
+
+* Generalized scope format for future, admin-related extensions.
 
 * Improved definition of permissions in the format of scope.
 
