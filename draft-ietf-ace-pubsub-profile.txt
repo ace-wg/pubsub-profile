@@ -1151,7 +1151,7 @@ Table of Contents
       specified in the 'key' field (with initial value set to 0 on
       creation of the group).
 
-   *  'exp', which MUST be present.
+   *  'exi', which MUST be present.
 
    *  'ace-groupcomm-profile', which MUST be present and has value
       "coap_group_pubsub_app" (PROFILE_TBD), which is defined in
@@ -2190,6 +2190,8 @@ B.1.  Version -08 to -09
 
    *  Clarified alternative computing of N_S Challenge when DTLS is
       used.
+
+   *  Use of the parameter 'exi' in the Join Response.
 
    *  Use of RFC 9290 instead of the custom format of error responses.
 
