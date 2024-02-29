@@ -374,9 +374,9 @@ The specific interactions between the Client and the Broker are defined in {{I-D
 The following CDDL {{RFC8610}} notation defines a scope entry that uses the AIF-PUBSUB-GROUPCOMM data model and expresses a set of permissions.
 
 ~~~~~~~~~~~
-  AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-topic, pubsub-perm>
-   pubsub-topic = tstr ; pub/sub topic name
-                       ; (the associated security group)
+  AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-group, pubsub-perm>
+   pubsub-group = tstr ; name of pub/sub topic or of
+                       ; the associated security group
 
    pubsub-perm = uint .bits pubsub-perm-details
 
