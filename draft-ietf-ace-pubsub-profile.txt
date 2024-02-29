@@ -267,12 +267,12 @@ Table of Contents
                   |                                   |
                   |   +--------------------(B)--------+
                   v   v
-             +------------+             +------------+
-             |            | <-- (O) --> |            |
-             |  Pub/sub   |             |   Broker   |
-             |  Client    | <-- (C)---> |            |
-             |            |             |            |
-             +------------+             +------------+
+             +------------+               +------------+
+             |            | <--- (O) ---> |            |
+             |  Pub/sub   |               |   Broker   |
+             |  Client    | <--- (C) ---> |            |
+             |            |               |            |
+             +------------+               +------------+
 
     Figure 1: Architecture for Pub/sub with Authorization Server and Key
                             Distribution Center
@@ -364,6 +364,7 @@ Table of Contents
    |            |             |            |              |            |
    |            |             |            |              |            |
    +------------+             +------------+              +------------+
+         :   :                     :   :                      :   :
          :   :                     :   :                      :   :
          :   '----- Security ------'   '------ Security ------'   :
          :        Association 1              Association 1        :
