@@ -139,7 +139,7 @@ This profile considers the architecture shown in {{archi}}. A Client can act as 
 
 Both Publishers and Subscribers act as ACE Clients. The Broker acts as an ACE RS, and corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}. The Key Distribution Center (KDC) also acts as an ACE RS, and builds on what is defined for the KDC in {{I-D.ietf-ace-key-groupcomm}}. From a high-level point of view, the Clients interact with the KDC in order to join security groups and obtain the group keying material to protect end-to-end and verify the content published in the associated topics.
 
-~~~~~~~~~~~~
+~~~~~~~~~~~~ aasvg
              +---------------+   +--------------+
              | Authorization |   |     Key      |
              |    Server     |   | Distribution |
@@ -450,7 +450,7 @@ On a successful join, the Clients receive from the KDC the symmetric COSE Key us
 
 The message exchange between the joining node and the KDC follows what is defined in {{Section 4.3.1.1 of I-D.ietf-ace-key-groupcomm}} and only additions or modifications to that specification are defined in this document.
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
    Client                               KDC
       |----- Join Request (CoAP) ------>|
       |                                 |
@@ -644,7 +644,7 @@ If the group rekeying is performed due to one or multiple Clients joining the gr
 
 # PubSub Protected Communication (C) {#protected_communication}
 
-~~~~~~~~~~~~
+~~~~~~~~~~~~ aasvg
 +------------+             +------------+              +------------+
 |            |             |            |              |            |
 | Publisher  | ----(D)---> |   Broker   |              | Subscriber |
@@ -658,14 +658,15 @@ If the group rekeying is performed due to one or multiple Clients joining the gr
 (D) corresponds to the publication of a topic on the Broker, using a CoAP PUT. The publication (the resource representation) is protected with COSE ({{RFC9052}}{{RFC9053}}) by the Publisher. The (E) message is the subscription of the Subscriber, and uses a CoAP GET with the Observe option set to 0 (zero) {{RFC7641}}, as per {{I-D.ietf-core-coap-pubsub}}. The (F) message is the response from the Broker, where the publication is protected with COSE by the Publisher.
 (ToDo: Add Delete to the flow?)
 
-~~~~~~~~~~~
-  Publisher                Broker               Subscriber
-      | --- PUT /topic ----> |                       |
-      |  protected with COSE |                       |
-      |                      | <--- GET /topic ----- |
-      |                      |      Observe:0        |
-      |                      | ---- response ------> |
-      |                      |  protected with COSE  |
+~~~~~~~~~~~ aasvg
+  Publisher                 Broker               Subscriber
+      | --- PUT /topic -----> |                       |
+      |  protected with COSE  |                       |
+      |                       | <--- GET /topic ----- |
+      |                       |      Observe:0        |
+      |                       |                       |
+      |                       | ---- Response ------> |
+      |                       |  protected with COSE  |
 ~~~~~~~~~~~
 {: #flow title="Example of protected communication for CoAP"}
 {: artwork-align="center"}
