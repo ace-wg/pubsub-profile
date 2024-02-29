@@ -301,9 +301,9 @@ Furthermore, the Resource Type (rt=) Link Target Attribute value "core.ps.gm" is
 
 ## Authorisation Request/Response for the KDC and the Broker {#auth-request}
 
-A Client sends two Authorisation Requests to the AS, targeting two different audiences, i.e, the Broker and the KDC.
+A Client sends two Authorisation Requests to the AS, targeting two different audiences, i.e., the Broker and the KDC.
 
-As to the former, the AS handles Authorisation Requests for topics that the Client is allowed to perform topic data operations at the Broker, as corresponding to an application group.
+As to the former, the AS handles Authorisation Requests related to a topic for which the Client is allowed to perform topic data operations at the Broker, as corresponding to an application group.
 
 As to the latter, the AS handles Authorization Requests for security groups that the Client is allowed to join, in order to obtain the group keying material for protecting end-to-end and verifying the content of exchanged messages on the associated pub/sub topics.
 
@@ -321,7 +321,7 @@ Both Authorisation Requests include the following fields (see {{Section 3.1 of I
 
 Other additional parameters can be included if necessary, as defined in {{RFC9200}}.
 
-When using this profile, it is expected that a one-to-one mapping is enforced between the application group and the security group (see {{overview}}). If this is not the case, the correct access policies corresponding both sets of scopes have to be available to the AS.
+When using this profile, it is expected that a one-to-one mapping is enforced between the application group and the security group (see {{overview}}). If this is not the case, the correct access policies for both sets of scopes have to be available to the AS.
 
 ### Format of Scope {#scope}
 
@@ -335,7 +335,7 @@ To this end, this profile uses the Authorization Information Format (AIF) {{RFC9
 
 the value of the CBOR byte string used as scope encodes the CBOR array \[* \[Toid, Tperm\]\], where each \[Toid, Tperm\] element corresponds to one scope entry.
 
-Furthermore, this document defines the new AIF specific data model AIF-PUBSUB-GROUPCOMM that this profile MUST use to format and encode scope entries.
+Furthermore, this document defines the new AIF data model AIF-PUBSUB-GROUPCOMM that this profile MUST use to format and encode scope entries.
 
 In particular, the following holds for each scope entry.
 
@@ -347,7 +347,7 @@ In particular, the following holds for each scope entry.
 
       - Admin (0): This operation is reserved for scope entries that express permissions for Administrators of pub/sub groups.
 
-      - AppGroup (1): This operation is signaled as wished/authorized when "Toid" specifies the name of an application group (topic)+, while it is signaled as not wished/authorized when Toid specifies the name of a security group.
+      - AppGroup (1): This operation is signaled as wished/authorized when "Toid" specifies the name of an application group (topic), while it is signaled as not wished/authorized when Toid specifies the name of a security group.
 
       - Publish (2): This operation concerns the publication of data to the topic in question, performed by means of a PUT request sent by a Publisher Client to the corresponding topic-data resource at the Broker.
 
