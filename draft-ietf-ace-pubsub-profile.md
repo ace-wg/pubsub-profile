@@ -355,6 +355,8 @@ In particular, the following holds for each scope entry.
 
       - Delete (4): This operation concerns the deletion of the topic-data resource for the topic in question at the Broker, performed by means of a DELETE request sent to that resource.
 
+         If the "Toid" of the scope entry specifies the name of a security group (i.e., the "AppGroup" operation is signaled as not authorized), then this operation MUST be signaled as not wished/authorized.
+
    * The set of N numeric identifiers is converted into the single value R, by taking two to the power of each numeric identifier X_1, X_2, ..., X_N, and then computing the inclusive OR of the binary representations of all the power values.
 
    Since this application profile considers user-related operations, the "Admin" operation is signaled as not wished/authorized. That is, the scope entries MUST have the least significant bit of "Tperm" set to 0.
@@ -998,6 +1000,8 @@ pub/sub communication {{I-D.ietf-core-coap-pubsub}}
 ## Version -08 to -09 ## {#sec-08-09}
 
 * Improved terminology section.
+
+* Improved definition of permissions in the format of scope.
 
 * Use of RFC 9290 instead of the custom format of error responses.
 
