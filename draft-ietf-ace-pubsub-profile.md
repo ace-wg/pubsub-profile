@@ -388,7 +388,7 @@ The following CDDL {{RFC8610}} notation defines a scope entry that uses the AIF-
     Delete: 4
    )
 
-   scope_entry = [pubsub-topic, pubsub-perm]
+   scope_entry = [pubsub-group, pubsub-perm]
 ~~~~~~~~~~~
 {: #scope-aif title="Pub/sub scope using the AIF format"}
 {: artwork-align="center"}
