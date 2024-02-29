@@ -1765,9 +1765,10 @@ Since this application profile considers user-related operations, the "Admin" op
           </ul>
 <p id="section-3.4.1-11">If the "Toid" of a scope entry in an access token specifies the name of an application group (i.e., the "AppGroup" operation is signaled as authorized), the Client has also the permission to retrieve the configuration of the application group (topic) whose name is indicated by "Toid", by sending a GET or FETCH request to the corresponding topic resource at the Broker.<a href="#section-3.4.1-11" class="pilcrow">¶</a></p>
 <p id="section-3.4.1-12">The specific interactions between the Client and the Broker are defined in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>.<a href="#section-3.4.1-12" class="pilcrow">¶</a></p>
+<p id="section-3.4.1-13">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> notation defines a scope entry that uses the AIF-PUBSUB-GROUPCOMM data model and expresses a set of permissions.<a href="#section-3.4.1-13" class="pilcrow">¶</a></p>
 <span id="name-pub-sub-scope-using-the-aif"></span><div id="scope-aif">
 <figure id="figure-5">
-            <div class="alignCenter art-text artwork" id="section-3.4.1-13.1">
+            <div class="alignCenter art-text artwork" id="section-3.4.1-14.1">
 <pre>
   AIF-PUBSUB-GROUPCOMM = AIF-Generic&lt;pubsub-topic, pubsub-perm&gt;
    pubsub-topic = tstr ; pub/sub topic name
