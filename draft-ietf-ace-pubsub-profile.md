@@ -5,17 +5,13 @@ title: Publish-Subscribe Profile for Authentication and Authorization for Constr
 abbrev: ACE Pub-sub Profile
 docname: draft-ietf-ace-pubsub-profile-latest
 
-coding: utf-8
-
-ipr: trust200902
 area: Security
-workgroup: ACE Working Group
-keyword: Internet-Draft
+wg: ACE Working Group
+kw: Internet-Draft
 cat: std
 submissiontype: IETF
 
-stand_alone: yes
-pi: [toc, sortrefs, symrefs]
+coding: utf-8
 
 author:
 -
@@ -111,7 +107,7 @@ While this profile focuses on the pub/sub architecture for CoAP, this document a
 
 ## Terminology
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 {{RFC2119}} {{RFC8174}}  when, and only when, they appear in all capitals, as shown here.
+{::boilerplate bcp14-tagged}
 
 Readers are expected to be familiar with:
 
@@ -988,11 +984,13 @@ pub/sub communication {{I-D.ietf-core-coap-pubsub}}
 
 # Document Updates # {#sec-document-updates}
 
-RFC EDITOR: PLEASE REMOVE THIS SECTION.
+{:removeinrfc}
 
 ## Version -08 to -09 ## {#sec-08-09}
 
 * Use of RFC 9290 instead of the custom format of error responses.
+
+* Clarification and editorial improvements.
 
 ## Version -07 to -08 ## {#sec-07-08}
 
@@ -1035,16 +1033,10 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Further clarifications, fixes and editorial improvements.
 
 # Acknowledgments
-{: numbered="no"}
+{:unnumbered}
 
 The authors wish to thank {{{Ari Keränen}}}, {{{John Preuß Mattsson}}}, {{{Jim Schaad}}}, {{{Ludwig Seitz}}}, and {{{Göran Selander}}} for the useful discussion and reviews that helped shape this document.
 
 The work on this document has been partly supported by the H2020 project SIFIS-Home (Grant agreement 952652).
 
 --- fluff
-
-<!-- Local Words: -->
-<!-- Local Variables: -->
-<!-- coding: utf-8 -->
-<!-- ispell-local-dictionary: "american" -->
-<!-- End: -->
