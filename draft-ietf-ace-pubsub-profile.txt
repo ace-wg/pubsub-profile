@@ -533,11 +533,11 @@ Table of Contents
 3.4.  Authorisation Request/Response for the KDC and the Broker
 
    A Client sends two Authorisation Requests to the AS, targeting two
-   different audiences, i.e, the Broker and the KDC.
+   different audiences, i.e., the Broker and the KDC.
 
-   As to the former, the AS handles Authorisation Requests for topics
-   that the Client is allowed to perform topic data operations at the
-   Broker, as corresponding to an application group.
+   As to the former, the AS handles Authorisation Requests related to a
+   topic for which the Client is allowed to perform topic data
+   operations at the Broker, as corresponding to an application group.
 
    As to the latter, the AS handles Authorization Requests for security
    groups that the Client is allowed to join, in order to obtain the
@@ -571,8 +571,8 @@ Table of Contents
 
    When using this profile, it is expected that a one-to-one mapping is
    enforced between the application group and the security group (see
-   Section 2).  If this is not the case, the correct access policies
-   corresponding both sets of scopes have to be available to the AS.
+   Section 2).  If this is not the case, the correct access policies for
+   both sets of scopes have to be available to the AS.
 
 3.4.1.  Format of Scope
 
@@ -588,9 +588,9 @@ Table of Contents
    array [* [Toid, Tperm]], where each [Toid, Tperm] element corresponds
    to one scope entry.
 
-   Furthermore, this document defines the new AIF specific data model
-   AIF-PUBSUB-GROUPCOMM that this profile MUST use to format and encode
-   scope entries.
+   Furthermore, this document defines the new AIF data model AIF-PUBSUB-
+   GROUPCOMM that this profile MUST use to format and encode scope
+   entries.
 
    In particular, the following holds for each scope entry.
 
@@ -614,8 +614,8 @@ Table of Contents
 
          o  AppGroup (1): This operation is signaled as wished/
             authorized when "Toid" specifies the name of an application
-            group (topic)+, while it is signaled as not wished/
-            authorized when Toid specifies the name of a security group.
+            group (topic), while it is signaled as not wished/authorized
+            when Toid specifies the name of a security group.
 
          o  Publish (2): This operation concerns the publication of data
             to the topic in question, performed by means of a PUT
