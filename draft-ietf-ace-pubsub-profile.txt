@@ -1386,14 +1386,13 @@ Table of Contents
    the Broker, where the publication is protected with COSE by the
    Publisher.  (ToDo: Add Delete to the flow?)
 
-          Publisher                 Broker               Subscriber
-              | --- PUT /topic -----> |                       |
-              |  protected with COSE  |                       |
-              |                       | <--- GET /topic ----- |
-              |                       |      Observe:0        |
-              |                       |                       |
-              |                       | ---- Response ------> |
-              |                       |  protected with COSE  |
+          Publisher                Broker               Subscriber
+              | --- PUT /topic ----> |                       |
+              |  protected with COSE |                       |
+              |                      | <--- GET /topic ----- |
+              |                      |      Observe:0        |
+              |                      | ---- response ------> |
+              |                      |  protected with COSE  |
 
            Figure 8: Example of protected communication for CoAP
 
