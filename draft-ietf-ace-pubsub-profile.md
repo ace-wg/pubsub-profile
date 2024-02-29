@@ -152,12 +152,12 @@ Both Publishers and Subscribers act as ACE Clients. The Broker acts as an ACE RS
      |                                   |
      |   +--------------------(B)--------+
      v   v
-+------------+             +------------+
-|            | <-- (O) --> |            |
-|  Pub/sub   |             |   Broker   |
-|  Client    | <-- (C)---> |            |
-|            |             |            |
-+------------+             +------------+
++------------+               +------------+
+|            | <--- (O) ---> |            |
+|  Pub/sub   |               |   Broker   |
+|  Client    | <--- (C) ---> |            |
+|            |               |            |
++------------+               +------------+
 ~~~~~~~~~~~~~
 {: #archi title="Architecture for Pub/sub with Authorization Server and Key Distribution Center"}
 {: artwork-align="center"}
@@ -193,6 +193,7 @@ On the other hand, separately for each topic, all the Publisher and Subscribers 
 |            |             |            |              |            |
 |            |             |            |              |            |
 +------------+             +------------+              +------------+
+      :   :                     :   :                      :   :
       :   :                     :   :                      :   :
       :   '----- Security ------'   '------ Security ------'   :
       :        Association 1              Association 1        :
