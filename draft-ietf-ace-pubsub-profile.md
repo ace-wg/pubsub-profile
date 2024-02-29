@@ -56,6 +56,7 @@ normative:
   RFC9200:
   RFC9237:
   RFC9277:
+  RFC9290:
   RFC9338:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-core-coap-pubsub:
@@ -420,7 +421,9 @@ The pub/sub clients uses the following KDC resources to enable group communicati
 | /ace-group/GROUPNAME/kdc-cred | MUST be hosted if a group re-keying mechanism is used. Contains the authentication credential of the KDC for the group with name GROUPNAME. | GET (All Clients) |
 | /ace-group/GROUPNAME/policies | Optional. Contains the group policies of the group with name GROUPNAME. | GET (All Clients) |
 
-Note that the use of these resources follows what is defined in {{I-D.ietf-ace-key-groupcomm}}, and only additions or modifications to that specification are defined in this document.
+The use of these resources follows what is defined in {{I-D.ietf-ace-key-groupcomm}}, and only additions or modifications to that specification are defined in this document.
+
+Consistent with what is defined in {{I-D.ietf-ace-key-groupcomm}}, some error responses from the KDC can convey error-specific information according to the problem-details format specified in {{RFC9290}}.
 
 ## Joining a Security Group {#join}
 
@@ -986,6 +989,10 @@ pub/sub communication {{I-D.ietf-core-coap-pubsub}}
 # Document Updates # {#sec-document-updates}
 
 RFC EDITOR: PLEASE REMOVE THIS SECTION.
+
+## Version -08 to -09 ## {#sec-08-09}
+
+* Use of RFC 9290 instead of the custom format of error responses.
 
 ## Version -07 to -08 ## {#sec-07-08}
 
