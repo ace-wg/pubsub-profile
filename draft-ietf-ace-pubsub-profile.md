@@ -557,7 +557,7 @@ In the case of success, the KDC responds with a Join Response, whose payload for
 
 - 'num', specifying the version number of the keying material specified in the 'key' field (with initial value set to 0 on creation of the group).
 
-- 'exp', which MUST be present.
+- 'exi', which MUST be present.
 
 - 'ace-groupcomm-profile', which MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is defined in {{iana-profile}} of this document.
 
@@ -1015,6 +1015,8 @@ pub/sub communication {{I-D.ietf-core-coap-pubsub}}
 * Improved definition of permissions in the format of scope.
 
 * Clarified alternative computing of N_S Challenge when DTLS is used.
+
+* Use of the parameter 'exi' in the Join Response.
 
 * Use of RFC 9290 instead of the custom format of error responses.
 
