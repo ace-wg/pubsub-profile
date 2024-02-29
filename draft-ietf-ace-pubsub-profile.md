@@ -56,7 +56,6 @@ normative:
   RFC9277:
   RFC9290:
   RFC9338:
-  I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-ace-key-groupcomm:
 
@@ -65,8 +64,9 @@ informative:
   RFC8259:
   RFC9202:
   RFC9203:
+  RFC9431:
+  I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-ace-edhoc-oscore-profile:
-  I-D.ietf-ace-mqtt-tls-profile:
   I-D.draft-ietf-ace-revoked-token-notification:
   I-D.ietf-ace-key-groupcomm-oscore:
   MQTT-OASIS-Standard-v5:
@@ -500,11 +500,11 @@ The N\_S may be either:
 
 * The challenge received from the KDC in the 'kdcchallenge' parameter of the 2.01 (Created) response to the Token Transfer Request (see {{token-post}}).
 
-* If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE {{RFC9202}}, and the access token was specified in the "psk_identity" field of the ClientKeyExchange message when using DTLS 1.2 {{RFC6347}}, then N\_S is an exporter value computed as defined in {{Section 4 of RFC5705}}.
+* If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE {{RFC9202}}, and the access token was specified in the "psk_identity" field of the ClientKeyExchange message when using DTLS 1.2 {{RFC6347}}, then N\_S is an exporter value computed as defined in {{Section 4 of RFC5705}} (REQ15).
 
    Specifically, N\_S is exported from the DTLS session between the joining node and the KDC, using an empty context value (i.e., a context value of zero-length), 32 as length value in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-group-pubsub-app" defined in {{tls_exporter}} of this document.
 
-* If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE {{RFC9202}}, and the access token was specified in the "identity" field of a PskIdentity within the PreSharedKeyExtension of the ClientHello message when using DTLS 1.3 {{RFC9147}}, then N\_S is an exporter value computed as defined in {{Section 7.5 of RFC8446}}.
+* If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE {{RFC9202}}, and the access token was specified in the "identity" field of a PskIdentity within the PreSharedKeyExtension of the ClientHello message when using DTLS 1.3 {{RFC9147}}, then N\_S is an exporter value computed as defined in {{Section 7.5 of RFC8446}} (REQ15).
 
    Specifically, N\_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value' (i.e., a 'context_value' of zero length), 32 as 'key_length' in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-group-pubsub-app" defined in {{tls_exporter}} of this document.
 
@@ -520,11 +520,11 @@ If the 'client\_cred' parameter is present, the KDC verifies the signature in th
 
 In the case of any join request error, the KDC and the Client attempting to join follow the procedure defined in {{join-error}}.
 
-In the case of success, the KDC responds with a Join Response, whose payload formatted as a CBOR map MUST contain the following fields as per {{Section 4.3.1 of I-D.ietf-ace-key-groupcomm}}:
+In case of success, the KDC responds with a Join Response, whose payload formatted as a CBOR map MUST contain the following fields as per {{Section 4.3.1 of I-D.ietf-ace-key-groupcomm}}:
 
-- 'gkty': the key type "Group_PubSub_Keying_Material" for the 'key' parameter defined in {{iana-ace-groupcomm-key}} of this document.
+- 'gkty': the key type "Group_PubSub_Keying_Material" (REQ18) registered in {{iana-ace-groupcomm-key}} for the 'key' parameter.
 
-- 'key': The keying material for group communication includes the following parameters:
+- 'key': The keying material for group communication includes the following parameters (REQ17):
 
    * 'cred_fmt', specifying the format of authentication credentials used in the group. This parameter takes its value from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}}. At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC7925}} and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Further formats may be available in the future, and would be acceptable to use as long as they comply with the criteria defined above (REQ6).
 
@@ -544,7 +544,7 @@ In the case of success, the KDC responds with a Join Response, whose payload for
 
       - 'Base IV', with value the Base Initialization Vector (Base IV) to use in the security group with this group key.
 
-      - 'k', with value the symmetric encryption key to use as group key (REQ17).
+      - 'k', with value the symmetric encryption key to use as group key.
 
       - 'kid', with value the identifier of the COSE\_Key object, hence of the group key.
 
@@ -556,17 +556,17 @@ In the case of success, the KDC responds with a Join Response, whose payload for
 
       The Sender ID can be short in length. Its maximum length in bytes is the length in bytes of the AEAD nonce for the AEAD algorithm, minus 6. This means that, when using AES-CCM-16-64-128 as AEAD algorithm in the security group, the maximum length of Sender IDs is 7 bytes.
 
-- 'num', specifying the version number of the keying material specified in the 'key' field (with initial value set to 0 on creation of the group).
+- 'num', specifying the version number of the keying material specified in the 'key' field. The initial value of the version number MUST be set to 0 upon creating the group (REQ16).
 
 - 'exi', which MUST be present.
 
-- 'ace-groupcomm-profile', which MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is defined in {{iana-profile}} of this document.
+- 'ace-groupcomm-profile', which MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD), which is registered in {{iana-profile}} (REQ19).
 
 - 'creds', which MUST be present if the 'get\_creds' parameter was present. Otherwise, it MUST NOT be present. The KDC provides the authentication credentials of all the Publishers in the security group.
 
 - 'peer\_roles', which MAY be omitted even if 'creds' is present, since each authentication credential conveyed in the 'creds' parameter: i) is associated with a Client authorized to be Publisher in the group; and ii) plays no role if such Client was also authorized to be Subscriber in the group. If 'creds' is not present, 'peer\_roles' MUST NOT be present.
 
-- 'peer\_identifiers', which MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present. The identifiers are the Publisher Sender IDs whose authentication credential is specified in the 'creds' parameter (REQ 25).
+- 'peer\_identifiers', which MUST be present if 'creds' is also present. Otherwise, it MUST NOT be present. The identifiers are the Publisher Sender IDs whose authentication credential is specified in the 'creds' parameter (REQ25).
 
 - 'kdc\_cred', which MUST be present if group re-keying is used, and is encoded as a CBOR byte string, with value the original binary representation of the KDC's authentication credential (REQ8).
 
@@ -586,7 +586,7 @@ Upon receiving the Join Response, the joining node retrieves the KDC's authentic
 
 ### Join Error Handling {#join-error}
 
-The KDC MUST reply with a 4.00 (Bad Request) error response to the Join Request in the following cases:
+The KDC MUST reply with a 4.00 (Bad Request) error response (OPT4) to the Join Request in the following cases:
 
 * The 'client_cred' parameter is present in the Join Request and its value is not an eligible authentication credential (e.g., it is not of the format accepted in the group) (OPT8).
 
@@ -755,7 +755,7 @@ The construction above only supports AEAD algorithms that use nonces with length
 
 * Since Publisher's Sender IDs are unique within the security group and they are not reassigned until a group rekeying occurs (see {{join-response}} and {{rekeying}}), two Publisher Clients cannot share the same tuple (S, padded ID_PIV) by construction.
 
-* Since a Publisher increments by 1 its Sender Sequence Number after each use that it makes of the current group key, the Publisher  never reuses the same tuple (S, padded ID_PIV, padded ID_PIV) together with the same group key.
+* Since a Publisher increments by 1 its Sender Sequence Number after each use that it makes of the current group key, the Publisher  never reuses the same tuple (S, padded ID_PIV, padded PIV) together with the same group key.
 
 * Therefore neither the same Publisher nor any two Publishers use the same AEAD nonce with the same group key.
 
@@ -767,13 +767,13 @@ TBD
 
 # Applicability to MQTT PubSub Profile {#mqtt-pubsub}
 
-The steps MQTT clients go through would be similar to the CoAP clients, and the payload of the MQTT PUBLISH messages will be protected using COSE. The MQTT clients needs to use CoAP to communicate to the KDC, to join security groups, and be part of the pair-wise rekeying initiated by the KDC.
+The steps MQTT clients go through would be similar to the CoAP clients, and the payload of the MQTT PUBLISH messages will be protected using COSE. The MQTT clients needs to use CoAP to communicate to the KDC, to join security groups, and be part of the pairwise rekeying initiated by the KDC.
 
-Authorisation Server (AS) Discovery is defined in {{Section 2.2.6.1 of I-D.ietf-ace-mqtt-tls-profile}} for MQTT v5 clients (and not supported for MQTT v3 clients). $SYS/ has been widely adopted as a prefix to topics that contain server-specific information or control APIs, and may be used for topic and KDC discovery.
+Authorisation Server (AS) Discovery is defined in {{Section 2.4.1 of RFC9431}} for MQTT v5 clients (and not supported for MQTT v3 clients). $SYS/ has been widely adopted as a prefix to topics that contain server-specific information or control APIs, and may be used for topic and KDC discovery.
 
-When the Client sends an authorisation request to the AS using the AIF-PUBSUB-GROUPCOMM data model, in the authorisation response, the 'profile' claim is set to "mqtt_pubsub_app" as defined in {{iana-profile}}.
+When the Client sends an authorisation request to the AS using the AIF-PUBSUB-GROUPCOMM data model in the authorisation response, the 'profile' claim is set to "mqtt_pubsub_app" as defined in {{iana-profile}}.
 
-Both Publishers and Subscribers MUST authorise to the Broker with their respective tokens (described in {{I-D.ietf-ace-mqtt-tls-profile}}). A Publisher sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. A Subscriber may send SUBSCRIBE messages with one or multiple topic filters. A topic filter may correspond to multiple topics. The Broker forwards all PUBLISH messages to all authorised Subscribers, including the retained messages.
+Both Publishers and Subscribers MUST authorise to the Broker with their respective tokens, ass described in {{RFC9431}}. A Publisher sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. A Subscriber may send SUBSCRIBE messages with one or multiple topic filters. A topic filter may correspond to multiple topics. The Broker forwards all PUBLISH messages to all authorised Subscribers, including the retained messages.
 
 # Security Considerations
 
@@ -796,9 +796,9 @@ Note to RFC Editor: Please replace "{{&SELF}}" with the RFC number of this docum
 
 This document has the following actions for IANA.
 
-## ACE Groupcomm Key Registry {#iana-ace-groupcomm-key}
+## ACE Groupcomm Key Types Registry {#iana-ace-groupcomm-key}
 
-IANA is asked to register the following entry in the "ACE Groupcomm Key Types" registry defined in {{Section 11.7 of I-D.ietf-ace-key-groupcomm}}.
+IANA is asked to register the following entry in the "ACE Groupcomm Key Types" registry defined in {{Section 11.8 of I-D.ietf-ace-key-groupcomm}}.
 
 * Name: Group_PubSub_Keying_Material
 
@@ -810,9 +810,9 @@ IANA is asked to register the following entry in the "ACE Groupcomm Key Types" r
 
 * References: {{RFC9052}}, {{RFC9053}}, {{&SELF}}
 
-## ACE Groupcomm Profile Registry {#iana-profile}
+## ACE Groupcomm Profiles Registry {#iana-profile}
 
-IANA is asked to register the following entries in the "ACE Groupcomm Profiles" registry defined in {{Section 11.8 of I-D.ietf-ace-key-groupcomm}}.
+IANA is asked to register the following entries in the "ACE Groupcomm Profiles" registry defined in {{Section 11.9 of I-D.ietf-ace-key-groupcomm}}.
 
 * Name: coap_group_pubsub_app
 
@@ -906,100 +906,96 @@ IANA is asked to register the following entry to the "TLS Exporter Labels" regis
 
 This section lists the specifications on this profile based on the requirements defined in {{Appendix A of I-D.ietf-ace-key-groupcomm}}.
 
-* REQ1: Specify the format and encoding of 'scope'. : See {{scope}}.
+* REQ1: Specify the format and encoding of 'scope': see {{scope}}.
 
-* REQ2: If the AIF format of 'scope' is used, register its specific instance of "Toid" and "Tperm" as Media Type parameters and a corresponding Content-Format, as per the guidelines in {{RFC9237}}.:See {{aif}}.
+* REQ2: If the AIF format of 'scope' is used, register its specific instance of "Toid" and "Tperm" as Media Type parameters and a corresponding Content-Format, as per the guidelines in {{RFC9237}}: see {{aif}}.
 
-* REQ3: If used, specify the acceptable values for 'sign_alg':  values from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
+* REQ3: If used, specify the acceptable values for 'sign_alg': values from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
 
 * REQ4: If used, specify the acceptable values for 'sign_parameters': format and values from the COSE algorithm
 capabilities as specified in the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
 
-* REQ5: If used, specify the acceptable values for 'sign_key_parameters' : Its format and value are the same of the COSE capabilities array for the COSE key type of the keys used with the algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{IANA.cose_key-type}}.
+* REQ5: If used, specify the acceptable values for 'sign_key_parameters': its format and value are the same of the COSE capabilities array for the COSE key type of the keys used with the algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{IANA.cose_key-type}}.
 
-* REQ6: Specify the acceptable formats for authentication credentials and, if used, the acceptable values for 'cred_fmt':  Acceptable formats explicitly provide the public key as well as the comprehensive set of information related to the public key algorithm. Takes value from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}}.
+* REQ6: Specify the acceptable formats for authentication credentials and, if used, the acceptable values for 'cred_fmt': acceptable formats explicitly provide the public key as well as the comprehensive set of information related to the public key algorithm. Takes value from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}}.
 
 * REQ7: If the value of the GROUPNAME URI path and the group name in the access token scope (gname) are not required to coincide, specify the mechanism to map the GROUPNAME value in the URI to the group name: not applicable; a perfect matching is required.
 
-* REQ8: Define whether the KDC has an authentication credential and if this has to be provided through the 'kdc_cred' parameter : Optional, see {{join-response}} of this document.
+* REQ8: Define whether the KDC has an authentication credential and if this has to be provided through the 'kdc_cred' parameter: optional, see {{join-response}} of this document.
 
-* REQ9: Specify if any part of the KDC interface as defined in {{I-D.ietf-ace-key-groupcomm}} is not supported by the KDC: Some left optional, see {{kdc-interface}} of this document.
+* REQ9: Specify if any part of the KDC interface as defined in {{I-D.ietf-ace-key-groupcomm}} is not supported by the KDC: some are left optional, see {{kdc-interface}} of this document.
 
-* REQ10: Register a Resource Type for the root url-path, which is used to discover the correct url to access at the KDC : the Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in Section {{core_rt}}.
-ToDo: This possibly will not stay as the final method, KDC discovery done differently through topic discovery?
+* REQ10: Register a Resource Type for the group-membership resource, which is used to discover the correct URL for sending a Join Request to the KDC: the Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in Section {{core_rt}}.
 
-* REQ11: Define what specific actions (e.g., CoAP methods) are allowed on each resource provided by the KDC interface, depending on whether the Client is a current group member; the roles that a Client is authorized to take as per the obtained access token;  and the roles that the Client has as current group member.: See {{kdc-interface}} of this document.
+* REQ11: Define what specific actions (e.g., CoAP methods) are allowed on each resource provided by the KDC interface, depending on whether the Client is a current group member; the roles that a Client is authorized to take as per the obtained access token; and the roles that the Client has as current group member: see {{kdc-interface}} of this document.
 
-* REQ12: Categorize possible newly defined operations for Clients into primary operations expected to be minimally supported and secondary operations, and provide accompanying considerations: None added.
+* REQ12: Categorize possible newly defined operations for Clients into primary operations expected to be minimally supported and secondary operations, and provide accompanying considerations: none added.
 
 * REQ13: Specify the encoding of group identifier: CBOR byte string, with value used also to identify the current group key used in the security group (see {{join-response}}).
 
-* REQ14: Specify the approaches used to compute and verify the PoP evidence to include in 'client_cred_verify', and which of those approaches is used in which case: See {{pop}} in this document.
+* REQ14: Specify the approaches used to compute and verify the PoP evidence to include in 'client_cred_verify', and which of those approaches is used in which case: see {{pop}}.
 
-* REQ15: Specify how the nonce N_S is generated, if the token is not provided to the KDC through the Token Transfer Request to the authz-info endpoint (e.g., if it is used directly to validate TLS
-instead): See {{pop}} in this document.
+* REQ15: Specify how the nonce N_S is generated, if the token is not provided to the KDC through the Token Transfer Request to the authz-info endpoint (e.g., if it is used directly to validate TLS instead): see {{pop}}.
 
-* REQ16: Define the initial value of the 'num' parameter: The initial value MUST be set to 0.
+* REQ16: Define the initial value of the 'num' parameter: the initial value MUST be set to 0 (see {{join-response}}).
 
-* REQ17: Specify the format of the 'key' parameter: See {{join-response}}.
+* REQ17: Specify the format of the 'key' parameter and register a corresponding entry in the "ACE Groupcomm Key Types" IANA registry: see {{join-response}} and {{iana-ace-groupcomm-key}}.
 
-* REQ18: Specify the acceptable values of the 'gkty' parameter: Group_PubSub_Keying_Material, see {{iana-ace-groupcomm-key}}.
+* REQ18: Specify the acceptable values of the 'gkty' parameter: Group_PubSub_Keying_Material, see {{join-response}}.
 
-* REQ19: Specify and register the application profile identifier: coap_group_pubsub_app, see {{iana-profile}}.
+* REQ19: Specify and register the application profile identifier: coap_group_pubsub_app, see {{join-response}} and {{iana-profile}}.
 
-*  REQ20: If used, specify the format and content of 'group_policies' and its entries.  Specify the policies default values: ToDo.
+*  REQ20: If used, specify the format and content of 'group_policies' and its entries. Specify the policies default values: ToDo.
 
-* REQ21: Specify the approaches used to compute and verify the PoP evidence to include in 'kdc_cred_verify', and which of those approaches is used in which case: see {{join-response}}.
+* REQ21: Specify the approaches used to compute and verify the PoP evidence to include in 'kdc_cred_verify', and which of those approaches is used in which case. If external signature verifiers are supported, specify how those provide a nonce to the KDC to be used for computing the PoP evidence: see {{join-response}}.
 
-* REQ22: Specify the communication protocol the members of the group must use.: CoAP {{RFC7252}}, and for
-pub/sub communication {{I-D.ietf-core-coap-pubsub}}
+* REQ22: Specify the communication protocol that the members of the group must use: CoAP {{RFC7252}}, and for pub/sub communication {{I-D.ietf-core-coap-pubsub}}.
 
-*  REQ23: Specify the security protocol the group members must use to protect their communication. This must provide encryption, integrity and replay protection.: Symmetric COSE Key is used to create a COSE\_Encrypt0 object with an AEAD algorithm specified by the KDC.
+*  REQ23: Specify the security protocol the group members must use to protect their communication. This must provide encryption, integrity and replay protection: a symmetric COSE Key is used to create a COSE\_Encrypt0 object with an AEAD algorithm specified by the KDC.
 
-* REQ24: Specify how the communication is secured between Client and KDC.  Optionally, specify transport profile of ACE {{RFC9200}} to use between Client and KDC.: ACE transport profile such as DTLS {{RFC9202}} or OSCORE {{RFC9203}}.
+* REQ24: Specify how the communication is secured between Client and KDC.  Optionally, specify transport profile of ACE {{RFC9200}} to use between Client and KDC: ACE transport profile such as for DTLS {{RFC9202}} or OSCORE {{RFC9203}}.
 
-* REQ25: Specify the format of the identifiers of group members.: the Sender ID defined in {{join-response}}.
+* REQ25: Specify the format of the identifiers of group members: the Sender ID defined in {{join-response}}.
 
-* REQ26: Specify policies at the KDC to handle ids that are not included in 'get_creds'.: See {{query}}.
+* REQ26: Specify policies at the KDC to handle ids that are not included in 'get_creds': see {{query}}.
 
-* REQ27: Specify the format of newly-generated individual keying material for group members, or of the information to derive it, and corresponding CBOR label.: Not applicable.
+* REQ27: Specify the format of newly-generated individual keying material for group members, or of the information to derive it, and corresponding CBOR label: not applicable.
 
-* REQ28: Specify which CBOR tag is used for identifying the semantics of binary scopes, or register a new CBOR tag if a suitable one does not exist already.: See {{as-response}} and {{content_format}} of this document.
+* REQ28: Specify which CBOR tag is used for identifying the semantics of binary scopes, or register a new CBOR tag if a suitable one does not exist already: see {{as-response}} and {{content_format}} of this document.
 
-* REQ29: Categorize newly defined parameters according to the same criteria of {{Section 8 of I-D.ietf-ace-key-groupcomm}}.:  A Publisher Client MUST support 'group\_SenderId' in 'key'; see {{join-response}}
+* REQ29: Categorize newly defined parameters according to the same criteria of {{Section 8 of I-D.ietf-ace-key-groupcomm}}: a Publisher Client MUST support 'group\_SenderId' in 'key'; see {{join-response}}.
 
-* REQ30: Define whether Clients must, should or may support the conditional parameters defined in {{Section 8 of I-D.ietf-ace-key-groupcomm}}, and under which circumstances.: A Publisher Client MUST support the client_cred', 'cnonce', and 'client_cred_verify' parameters; see {{join-request}}. A Publisher Client that provides the token to the KDC, through the authz-info endpoint, MUST support the parameter 'kdcchallenge'; see {{token-post}}.
+* REQ30: Define whether Clients must, should or may support the conditional parameters defined in {{Section 8 of I-D.ietf-ace-key-groupcomm}}, and under which circumstances: a Publisher Client MUST support the client_cred', 'cnonce', and 'client_cred_verify' parameters; see {{join-request}}. A Publisher Client that provides the token to the KDC, through the authz-info endpoint, MUST support the parameter 'kdcchallenge'; see {{token-post}}.
 
-* OPT1: Optionally, if the textual format of 'scope' is used, specify CBOR values to use for abbreviating the role identifiers in the group: No.
+* OPT1: Optionally, if the textual format of 'scope' is used, specify CBOR values to use for abbreviating the role identifiers in the group: no.
 
-* OPT2: Optionally, specify the additional parameters used in the exchange of Token Transfer Request and Response : No.
+* OPT2: Optionally, specify the additional parameters used in the exchange of Token Transfer Request and Response: no.
 
-* OPT3: Optionally, specify the negotiation of parameter values for signature algorithm and signature keys, if 'sign_info' is not used: See {{token-post}}.
+* OPT3: Optionally, specify the negotiation of parameter values for signature algorithm and signature keys, if 'sign_info' is not used: see {{token-post}}.
 
-* OPT4: Optionally, specify possible or required payload formats for specific error cases.: See {{join-error}}.
+* OPT4: Optionally, specify possible or required payload formats for specific error cases: see {{join-error}}.
 
-*  OPT5: Optionally, specify additional identifiers of error types, as values of the 'error' field in an error response from the KDC: No.
+*  OPT5: Optionally, specify additional identifiers of error types, as values of the 'error-id' field within the Custom Problem Detail entry 'ace-groupcomm-error': no.
 
-*  OPT6: Optionally, specify the encoding of 'creds_repo' if the default is not used: No.
+*  OPT6: Optionally, specify the encoding of 'creds_repo' if the default is not used: no.
 
-*  OPT7: Optionally, specify the functionalities implemented at the 'control_uri' resource hosted at the Client, including message exchange encoding and other details.: No.
+*  OPT7: Optionally, specify the functionalities implemented at the 'control_uri' resource hosted at the Client, including message exchange encoding and other details: no.
 
 * OPT8: Optionally, specify the behavior of the handler in case of failure to retrieve an authentication credential for the specific node: The KDC MUST reply with a 4.00 (Bad Request) error response to the Join Request; see {{join-error}}.
 
-* OPT9: Optionally, define a default group rekeying scheme, to refer to in case the 'rekeying_scheme' parameter is not included in the Join Response: the "Point-to-Point" rekeying scheme registered in Section 11.12 of
-{{I-D.ietf-ace-key-groupcomm}}.
+* OPT9: Optionally, define a default group rekeying scheme, to refer to in case the 'rekeying_scheme' parameter is not included in the Join Response: the "Point-to-Point" rekeying scheme registered in {{Section 11.12 of I-D.ietf-ace-key-groupcomm}}.
 
-*  OPT10: Optionally, specify the functionalities implemented at the 'control_group_uri' resource hosted at the Client, including message exchange encoding and other details. : No.
+*  OPT10: Optionally, specify the functionalities implemented at the 'control_group_uri' resource hosted at the Client, including message exchange encoding and other details: no.
 
-* OPT11: Optionally, specify policies that instruct Clients to retain messages and for how long, if they are unsuccessfully decrypted.: No.
+* OPT11: Optionally, specify policies that instruct Clients to retain messages and for how long, if they are unsuccessfully decrypted: no.
 
 * OPT12: Optionally, specify for the KDC to perform group rekeying (together or instead of renewing individual keying material) when receiving a Key Renewal Request: ToDo.
 
-* OPT13: Optionally, specify how the identifier of a group member's authentication credential is included in requests sent to other group members: No.
+* OPT13: Optionally, specify how the identifier of a group member's authentication credential is included in requests sent to other group members: no.
 
 *  OPT14: Optionally, specify additional information to include in rekeying messages for the "Point-to-Point" group rekeying scheme: ToDo.
 
-*  OPT15: Optionally, specify if Clients must or should support any of the parameters defined as optional in {{I-D.ietf-ace-key-groupcomm}}: No.
+*  OPT15: Optionally, specify if Clients must or should support any of the parameters defined as optional in {{I-D.ietf-ace-key-groupcomm}}: no.
 
 # Document Updates # {#sec-document-updates}
 
@@ -1022,6 +1018,8 @@ pub/sub communication {{I-D.ietf-core-coap-pubsub}}
 * Fixed construction of the COSE_Encrypt0 object.
 
 * Fixed use of the resource type "core.ps.gm".
+
+* Updated formulation of profile requirements.
 
 * Clarification and editorial improvements.
 
