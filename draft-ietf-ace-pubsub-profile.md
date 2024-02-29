@@ -698,7 +698,7 @@ The 'unprotected' field MUST include:
 
 * The 'Countersignature version 2' parameter, specifying the countersignature of the COSE\_Encrypt0 object. In particular:
 
-   - The 'protected' field specifies the serialized parameters from the 'protected' field of the COSE\_Encrypt0 object, i.e., the 'alg' parameter with value the identifier of the Signature Algorithm used in the security group.
+   - The 'protected' field includes the 'alg' parameter, with value the identifier of the Signature Algorithm used in the security group.
 
    - The 'unprotected' field includes the 'kid' parameter, with value the Publisher's Sender ID that the Publisher obtained from the KDC when joining the security group, as value of the 'group_SenderId' parameter of the Join Response (see {{join-response}}).
 
@@ -710,13 +710,11 @@ The 'unprotected' field MUST include:
    - 'body_protected' takes the serialized parameters from the 'protected' field of the COSE\_Encrypt0 object, i.e., the 'alg' parameter.
    - 'sign_protected' takes the serialized parameters from the 'protected' field of the 'Countersignature version 2' parameter, i.e., the 'alg' parameter.
    - 'external_aad is not supplied.
-   - 'payload' is the ciphertext of the COSE\_Encrypt0 object.
+   - 'payload' is the ciphertext of the COSE\_Encrypt0 object (see below).
 
-* The 'ciphertext' parameter, with value the ciphertext computed over the topic data to publish.
+The 'ciphertext' field specifies the ciphertext computed over the topic data to publish. The ciphertext is computed as defined in {{RFC9052}}{{RFC9053}}, by using the current group key as encryption key, the AEAD Nonce computed as defined in {{ssec-aead-nonce}}, the topic data to publish as plaintext, and the Enc_structure populated as follows:
 
-   The ciphertext is computed as defined in {{RFC9052}}{{RFC9053}}, by using the current group key as encryption key, the AEAD Nonce computed as defined in {{ssec-aead-nonce}}, the topic data to publish as plaintext, and the Enc_structure populated as follows:
-
-   - 'context' takes "Encrypt".
+   - 'context' takes "Encrypt0".
    - 'protected' takes the serialization of the protected parameter 'alg' from the 'protected' field of the COSE\_Encrypt0 object.
    - 'external_aad is not supplied.
 
@@ -1020,6 +1018,8 @@ pub/sub communication {{I-D.ietf-core-coap-pubsub}}
 * Use of the parameter 'exi' in the Join Response.
 
 * Use of RFC 9290 instead of the custom format of error responses.
+
+* Fixed construction of the COSE_Encrypt0 object.
 
 * Fixed use of the resource type "core.ps.gm".
 
