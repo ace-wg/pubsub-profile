@@ -281,7 +281,7 @@ Complementary to what is defined in {{Section 5.1 of RFC9200}} for AS discovery,
     Content-Format: application/ace+cbor
     Payload:
     {
-     "AS": "coaps://as.example.com/token"
+     / AS / 1 : "coaps://as.example.com/token"
     }
 ~~~~~~~~~~~
 {: #AS-info-ex title="AS Request Creation Hints Example"}
@@ -361,7 +361,7 @@ More specifically, the following applies when, as defined in this document, a sc
 
       - Read (3): This operation concerns both: i) the subscription at the topic-data resource for the topic in question at the Broker, performed by means of a GET request with the CoAP Observe Option set to 0 and sent by a Subscriber Client; and ii) the simple reading of the latest data published to the topic in question, performed by means of a simple GET request sent to the same topic-data resource.
 
-      - Delete (4): This operation concerns the deletion of the topic-data resource for the topic in question at the Broker, performed by means of a DELETE request sent to that resource.
+      - Delete (4): This operation concerns the deletion of the topic-data resource for the topic in question at the Broker, performed by means of a DELETE request sent to that resource. A Client that has only the Delete permission on the application group does not need to request a token for KDC. On the other hand, if the Delete operation is on the security group, the AS and the KDC should ignore the Delete bit set to 1.
 
    * The set of N numeric identifiers is converted into the single value R, by taking two to the power of each numeric identifier X_1, X_2, ..., X_N, and then computing the inclusive OR of the binary representations of all the power values.
 
@@ -655,19 +655,22 @@ If the group rekeying is performed due to one or multiple Clients joining the gr
 {: artwork-align="center"}
 
 (D) corresponds to the publication of a topic on the Broker, using a CoAP PUT. The publication (the resource representation) is protected with COSE ({{RFC9052}}{{RFC9053}}) by the Publisher. The (E) message is the subscription of the Subscriber, and uses a CoAP GET with the Observe option set to 0 (zero) {{RFC7641}}, as per {{I-D.ietf-core-coap-pubsub}}. The (F) message is the response from the Broker, where the publication is protected with COSE by the Publisher.
-(ToDo: Add Delete to the flow?)
 
 ~~~~~~~~~~~ aasvg
-  Publisher                 Broker               Subscriber
-      | --- PUT /topic -----> |                       |
-      |  protected with COSE  |                       |
-      |                       | <--- GET /topic ----- |
-      |                       |      Observe:0        |
-      |                       |                       |
-      |                       | ---- Response ------> |
-      |                       |  protected with COSE  |
+  Publisher                            Broker                       Subscriber
+      | -- 0.03 PUT ps/data/1bd0d6d ---> |                                |                             
+      |                                  |                                |
+      | <----- 2.01 Created ------------ |                                |
+      |                                  |<-- 0.01 GET /ps/data/1bd0d6d --|
+      |                                  |   Observe:0                    |
+      |                                  |                                |
+      |                                  | ------ 2.05 Content  ------ -> |
+      |- 0.04 DELETE /ps/data/1bd0d6d -->|      Observe: 10001            |
+      |                                  |                                |
+      |<--------- 2.02 Deleted --------- |                                |
+      |                                  | ------ 4.04 Not Found -------->|
 ~~~~~~~~~~~
-{: #flow title="Example of protected communication for CoAP"}
+{: #flow title="Example of protected communication for CoAP. All request and response messages are protected with COSE"}
 {: artwork-align="center"}
 
 ## Using COSE Objects To Protect The Resource Representation {#oscon}
