@@ -268,12 +268,12 @@ Table of Contents
                   |                                   |
                   |   +--------------------(B)--------+
                   v   v
-             +------------+               +------------+
-             |            | <--- (O) ---> |            |
-             |  Pub/sub   |               |   Broker   |
-             |  Client    | <--- (C) ---> |            |
-             |            |               |            |
-             +------------+               +------------+
+             +------------+                     +------------+
+             |            |<------- (O) ------->|            |
+             |  Pub/sub   |                     |   Broker   |
+             |  Client    |<------- (C) ------->|            |
+             |            |                     |            |
+             +------------+                     +------------+
 
     Figure 1: Architecture for Pub/sub with Authorization Server and Key
                             Distribution Center
@@ -365,11 +365,11 @@ Table of Contents
    |            |             |            |              |            |
    |            |             |            |              |            |
    +------------+             +------------+              +------------+
-         :   :                     :   :                      :   :
-         :   :                     :   :                      :   :
-         :   '----- Security ------'   '------ Security ------'   :
-         :        Association 1              Association 1        :
-         :                                                        :
+         |   |                     |   |                      |   |
+         |   |                     |   |                      |   |
+         |   '----- Security ------'   '------ Security ------'   |
+         |        Association 1              Association 1        |
+         |                                                        |
          '---------------------- Security ------------------------'
                                Association 2
 
@@ -411,40 +411,40 @@ Table of Contents
    optional steps.  The message flow is expanded in the subsequent
    sections.
 
-     Client                                          Broker   AS   KDC
-        |                                                 |    |     |
-        |[<-------- Discovery of Topic Resource -------->]|    |     |
-        |                                                 |    |     |
-        |[--------------- Resource Request ------------->]|    |     |
-        |[<--------------- AS Information ---------------]|    |     |
-        |                                                 |    |     |
-        |                                                 |    |     |
-        |----- Authorisation Request (Audience: Broker) ------>|     |
-        |<---- Authorisation Response (Audience: Broker) ------|     |
-        |                                                 |    |     |
-        |                                                 |    |     |
-        |------ Upload of authorisation information ----->|    |     |
-        |<----- Establishment of secure association ----->|    |     |
-        |                                                 |    |     |
-        |                                                 |    |     |
-        |[<-- Discovery of KDC and name of sec. group -->]|    |     |
-        |                                                 |    |     |
-        |                                                 |    |     |
-        |------- Authorisation Request (Audience: KDC) ------->|     |
-        |<------ Authorisation Response (Audience: KDC) -------|     |
-        |                                                 |    |     |
-        |                                                 |    |     |
-        |--------- Upload of authorisation information ------------->|
-        |<-------- Establishment of secure association ------------->|
-        |                                                 |    |     |
-        |                                                 |    |     |
-        |----- Request to join the security group for the topic ---->|
-        |<-------- Keying material for the security group -----------|
-        |                                                 |    |     |
-        |                                                 |    |     |
-        |--------------- Resource Request --------------->|    |     |
-        |     (Publication/Subscription to the topic)     |    |     |
-        |                                                 |    |     |
+   Client                                            Broker    AS   KDC
+     |                                                  |       |    |
+     |[<-------- Discovery of Topic Resource --------->]|       |    |
+     |                                                  |       |    |
+     |[--------------- Resource Request -------------->]|       |    |
+     |[<--------------- AS Information ----------------]|       |    |
+     |                                                  |       |    |
+     |                                                  |       |    |
+     +----- Authorisation Request (Audience: Broker) ---------->|    |
+     |<---- Authorisation Response (Audience: Broker) ----------+    |
+     |                                                  |       |    |
+     |                                                  |       |    |
+     +------ Upload of authorisation information ------>|       |    |
+     |<----- Establishment of secure association ------>|       |    |
+     |                                                  |       |    |
+     |                                                  |       |    |
+     |[<-- Discovery of KDC and name of sec. group --->]|       |    |
+     |                                                  |       |    |
+     |                                                  |       |    |
+     +------- Authorisation Request (Audience: KDC) ----------->|    |
+     |<------ Authorisation Response (Audience: KDC) -----------+    |
+     |                                                  |       |    |
+     |                                                  |       |    |
+     +--------- Upload of authorisation information ---------------->|
+     |<-------- Establishment of secure association ---------------->|
+     |                                                  |       |    |
+     |                                                  |       |    |
+     +----- Request to join the security group for the topic ------->|
+     |<-------- Keying material for the security group --------------+
+     |                                                  |       |    |
+     |                                                  |       |    |
+     +--------------- Resource Request ---------------->|       |    |
+     |     (Publication/Subscription to the topic)      |       |    |
+     |                                                  |       |    |
 
                         Figure 3: Authorisation Flow
 
@@ -908,10 +908,12 @@ Table of Contents
    and only additions or modifications to that specification are defined
    in this document.
 
-                   Client                               KDC
-                      |----- Join Request (CoAP) ------>|
+                   Client                              KDC
                       |                                 |
-                      |<-----Join Response (CoAP) ------|
+                      +----- Join Request (CoAP) ------>|
+                      |                                 |
+                      |<-----Join Response (CoAP) ------+
+                      |                                 |
 
                             Figure 6: Join Flow
 
@@ -1369,12 +1371,15 @@ Table of Contents
 
 5.  PubSub Protected Communication (C)
 
-   +------------+             +------------+              +------------+
-   |            |             |            |              |            |
-   | Publisher  | ----(D)---> |   Broker   |              | Subscriber |
-   |            |             |            | <----(E)---- |            |
-   |            |             |            | -----(F)---> |            |
-   +------------+             +------------+              +------------+
+     +-----------+             +--------+              +------------+
+     |           |             |        |              |            |
+     |           | ----(D)---> |        |              |            |
+     |           |             |        |              |            |
+     | Publisher |             | Broker | <----(E)---- | Subscriber |
+     |           |             |        |              |            |
+     |           |             |        | -----(F)---> |            |
+     |           |             |        |              |            |
+     +-----------+             +--------+              +------------+
 
       Figure 7: Secure communication between Publisher and Subscriber
 
@@ -1387,21 +1392,27 @@ Table of Contents
    the Broker, where the publication is protected with COSE by the
    Publisher.
 
-  Publisher                            Broker                       Subscriber
-      | -- 0.03 PUT ps/data/1bd0d6d ---> |                                |
-      |                                  |                                |
-      | <----- 2.01 Created ------------ |                                |
-      |                                  |<-- 0.01 GET /ps/data/1bd0d6d --|
-      |                                  |   Observe:0                    |
-      |                                  |                                |
-      |                                  | ------ 2.05 Content  ------ -> |
-      |- 0.04 DELETE /ps/data/1bd0d6d -->|      Observe: 10001            |
-      |                                  |                                |
-      |<--------- 2.02 Deleted --------- |                                |
-      |                                  | ------ 4.04 Not Found -------->|
+  Publisher                         Broker                    Subscriber
+  |                                   |                                |
+  +---- 0.03 PUT ps/data/1bd0d6d ---->|                                |
+  |                                   |                                |
+  |                                   |                                |
+  |<------ 2.01 Created --------------+                                |
+  |                                   |                                |
+  |                                   |<-- 0.01 GET /ps/data/1bd0d6d --+
+  |                                   |    Observe:0                   |
+  |                                   |                                |
+  |                                   +------ 2.05 Content ----------->|
+  |                                   |                                |
+  +-- 0.04 DELETE /ps/data/1bd0d6d -->|       Observe: 10001           |
+  |                                   |                                |
+  |<---- 2.02 Deleted ----------------+                                |
+  |                                   |                                |
+  |                                   +------ 4.04 Not Found --------->|
+  |                                   |                                |
 
-     Figure 8: Example of protected communication for CoAP.  All
-        request and response messages are protected with COSE
+       Figure 8: Example of protected communication for CoAP.  All
+          request and response messages are protected with COSE
 
 5.1.  Using COSE Objects To Protect The Resource Representation
 
