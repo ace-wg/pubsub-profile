@@ -153,12 +153,12 @@ Both Publishers and Subscribers act as ACE Clients. The Broker acts as an ACE RS
      |                                   |
      |   +--------------------(B)--------+
      v   v
-+------------+               +------------+
-|            | <--- (O) ---> |            |
-|  Pub/sub   |               |   Broker   |
-|  Client    | <--- (C) ---> |            |
-|            |               |            |
-+------------+               +------------+
++------------+                     +------------+
+|            |<------- (O) ------->|            |
+|  Pub/sub   |                     |   Broker   |
+|  Client    |<------- (C) ------->|            |
+|            |                     |            |
++------------+                     +------------+
 ~~~~~~~~~~~~~
 {: #archi title="Architecture for Pub/sub with Authorization Server and Key Distribution Center"}
 {: artwork-align="center"}
@@ -194,11 +194,11 @@ On the other hand, separately for each topic, all the Publisher and Subscribers 
 |            |             |            |              |            |
 |            |             |            |              |            |
 +------------+             +------------+              +------------+
-      :   :                     :   :                      :   :
-      :   :                     :   :                      :   :
-      :   '----- Security ------'   '------ Security ------'   :
-      :        Association 1              Association 1        :
-      :                                                        :
+      |   |                     |   |                      |   |
+      |   |                     |   |                      |   |
+      |   '----- Security ------'   '------ Security ------'   |
+      |        Association 1              Association 1        |
+      |                                                        |
       '---------------------- Security ------------------------'
                             Association 2
 ~~~~~~~~~~~~~
@@ -225,40 +225,40 @@ In summary, this profile specifies the following functionalities.
 {{message-flow}} provides a high level overview of the message flow for a Client getting authorisation to join a group. Square brackets denote optional steps. The message flow is expanded in the subsequent sections.
 
 ~~~~~~~~~~~ aasvg
-Client                                          Broker   AS   KDC
-   |                                                 |    |     |
-   |[<-------- Discovery of Topic Resource -------->]|    |     |
-   |                                                 |    |     |
-   |[--------------- Resource Request ------------->]|    |     |
-   |[<--------------- AS Information ---------------]|    |     |
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |----- Authorisation Request (Audience: Broker) ------>|     |
-   |<---- Authorisation Response (Audience: Broker) ------|     |
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |------ Upload of authorisation information ----->|    |     |
-   |<----- Establishment of secure association ----->|    |     |
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |[<-- Discovery of KDC and name of sec. group -->]|    |     |
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |------- Authorisation Request (Audience: KDC) ------->|     |
-   |<------ Authorisation Response (Audience: KDC) -------|     |
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |--------- Upload of authorisation information ------------->|
-   |<-------- Establishment of secure association ------------->|
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |----- Request to join the security group for the topic ---->|
-   |<-------- Keying material for the security group -----------|
-   |                                                 |    |     |
-   |                                                 |    |     |
-   |--------------- Resource Request --------------->|    |     |
-   |     (Publication/Subscription to the topic)     |    |     |
-   |                                                 |    |     |
+Client                                            Broker    AS   KDC
+  |                                                  |       |    |
+  |[<-------- Discovery of Topic Resource --------->]|       |    |
+  |                                                  |       |    |
+  |[--------------- Resource Request -------------->]|       |    |
+  |[<--------------- AS Information ----------------]|       |    |
+  |                                                  |       |    |
+  |                                                  |       |    |
+  +----- Authorisation Request (Audience: Broker) ---------->|    |
+  |<---- Authorisation Response (Audience: Broker) ----------+    |
+  |                                                  |       |    |
+  |                                                  |       |    |
+  +------ Upload of authorisation information ------>|       |    |
+  |<----- Establishment of secure association ------>|       |    |
+  |                                                  |       |    |
+  |                                                  |       |    |
+  |[<-- Discovery of KDC and name of sec. group --->]|       |    |
+  |                                                  |       |    |
+  |                                                  |       |    |
+  +------- Authorisation Request (Audience: KDC) ----------->|    |
+  |<------ Authorisation Response (Audience: KDC) -----------+    |
+  |                                                  |       |    |
+  |                                                  |       |    |
+  +--------- Upload of authorisation information ---------------->|
+  |<-------- Establishment of secure association ---------------->|
+  |                                                  |       |    |
+  |                                                  |       |    |
+  +----- Request to join the security group for the topic ------->|
+  |<-------- Keying material for the security group --------------+
+  |                                                  |       |    |
+  |                                                  |       |    |
+  +--------------- Resource Request ---------------->|       |    |
+  |     (Publication/Subscription to the topic)      |       |    |
+  |                                                  |       |    |
 ~~~~~~~~~~~
 {: #message-flow title="Authorisation Flow"}
 {: artwork-align="center"}
@@ -451,14 +451,14 @@ On a successful join, the Clients receive from the KDC the symmetric COSE Key us
 The message exchange between the joining node and the KDC follows what is defined in {{Section 4.3.1.1 of I-D.ietf-ace-key-groupcomm}} and only additions or modifications to that specification are defined in this document.
 
 ~~~~~~~~~~~ aasvg
-   Client                               KDC
-      |----- Join Request (CoAP) ------>|
+   Client                              KDC
       |                                 |
-      |<-----Join Response (CoAP) ------|
-
+      +----- Join Request (CoAP) ------>|
+      |                                 |
+      |<-----Join Response (CoAP) ------+
+      |                                 |
 ~~~~~~~~~~~
-{: #join-flow title="Join Flow"}
-{: artwork-align="center"}
+{: #join-flow title="Join Flow" artwork-align="center"}
 
 ### Join Request {#join-request}
 
@@ -645,34 +645,41 @@ If the group rekeying is performed due to one or multiple Clients joining the gr
 # PubSub Protected Communication (C) {#protected_communication}
 
 ~~~~~~~~~~~~ aasvg
-+------------+             +------------+              +------------+
-|            |             |            |              |            |
-| Publisher  | ----(D)---> |   Broker   |              | Subscriber |
-|            |             |            | <----(E)---- |            |
-|            |             |            | -----(F)---> |            |
-+------------+             +------------+              +------------+
++-----------+             +--------+              +------------+
+|           |             |        |              |            |
+|           | ----(D)---> |        |              |            |
+|           |             |        |              |            |
+| Publisher |             | Broker | <----(E)---- | Subscriber |
+|           |             |        |              |            |
+|           |             |        | -----(F)---> |            |
+|           |             |        |              |            |
++-----------+             +--------+              +------------+
 ~~~~~~~~~~~~~
-{: #pubsub-3 title="Secure communication between Publisher and Subscriber"}
-{: artwork-align="center"}
+{: #pubsub-3 title="Secure communication between Publisher and Subscriber" artwork-align="center"}
 
 (D) corresponds to the publication of a topic on the Broker, using a CoAP PUT. The publication (the resource representation) is protected with COSE ({{RFC9052}}{{RFC9053}}) by the Publisher. The (E) message is the subscription of the Subscriber, and uses a CoAP GET with the Observe option set to 0 (zero) {{RFC7641}}, as per {{I-D.ietf-core-coap-pubsub}}. The (F) message is the response from the Broker, where the publication is protected with COSE by the Publisher.
 
 ~~~~~~~~~~~ aasvg
-  Publisher                            Broker                       Subscriber
-      | -- 0.03 PUT ps/data/1bd0d6d ---> |                                |
-      |                                  |                                |
-      | <----- 2.01 Created ------------ |                                |
-      |                                  |<-- 0.01 GET /ps/data/1bd0d6d --|
-      |                                  |   Observe:0                    |
-      |                                  |                                |
-      |                                  | ------ 2.05 Content  ------ -> |
-      |- 0.04 DELETE /ps/data/1bd0d6d -->|      Observe: 10001            |
-      |                                  |                                |
-      |<--------- 2.02 Deleted --------- |                                |
-      |                                  | ------ 4.04 Not Found -------->|
+Publisher                         Broker                    Subscriber
+|                                   |                                |
++---- 0.03 PUT ps/data/1bd0d6d ---->|                                |
+|                                   |                                |
+|                                   |                                |
+|<------ 2.01 Created --------------+                                |
+|                                   |                                |
+|                                   |<-- 0.01 GET /ps/data/1bd0d6d --+
+|                                   |    Observe:0                   |
+|                                   |                                |
+|                                   +------ 2.05 Content ----------->|
+|                                   |                                |
++-- 0.04 DELETE /ps/data/1bd0d6d -->|       Observe: 10001           |
+|                                   |                                |
+|<---- 2.02 Deleted ----------------+                                |
+|                                   |                                |
+|                                   +------ 4.04 Not Found --------->|
+|                                   |                                |
 ~~~~~~~~~~~
-{: #flow title="Example of protected communication for CoAP. All request and response messages are protected with COSE"}
-{: artwork-align="center"}
+{: #flow title="Example of protected communication for CoAP. All request and response messages are protected with COSE" artwork-align="center"}
 
 ## Using COSE Objects To Protect The Resource Representation {#oscon}
 
