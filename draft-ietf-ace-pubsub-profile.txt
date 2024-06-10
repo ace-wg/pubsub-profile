@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 5 September 2024                              Brunel University
+Expires: 12 December 2024                              Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                            4 March 2024
+                                                            10 June 2024
 
 
    Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 September 2024.
+   This Internet-Draft will expire on 12 December 2024.
 
 Copyright Notice
 
@@ -118,9 +118,10 @@ Table of Contents
      9.2.  Informative References
    Appendix A.  Requirements on Application Profiles
    Appendix B.  Document Updates
-     B.1.  Version -08 to -09
-     B.2.  Version -07 to -08
-     B.3.  Version -06 to -07
+     B.1.  Version -09 to -10
+     B.2.  Version -08 to -09
+     B.3.  Version -07 to -08
+     B.4.  Version -06 to -07
    Acknowledgments
    Authors' Addresses
 
@@ -483,7 +484,7 @@ Table of Contents
        Content-Format: application/ace+cbor
        Payload:
        {
-        "AS": "coaps://as.example.com/token"
+        / AS / 1 : "coaps://as.example.com/token"
        }
 
                 Figure 4: AS Request Creation Hints Example
@@ -645,7 +646,11 @@ Table of Contents
          o  Delete (4): This operation concerns the deletion of the
             topic-data resource for the topic in question at the Broker,
             performed by means of a DELETE request sent to that
-            resource.
+            resource.  A Client that has only the Delete permission on
+            the application group does not need to request a token for
+            KDC.  On the other hand, if the Delete operation is on the
+            security group, the AS and the KDC should ignore the Delete
+            bit set to 1.
 
       -  The set of N numeric identifiers is converted into the single
          value R, by taking two to the power of each numeric identifier
@@ -1380,18 +1385,23 @@ Table of Contents
    Observe option set to 0 (zero) [RFC7641], as per
    [I-D.ietf-core-coap-pubsub].  The (F) message is the response from
    the Broker, where the publication is protected with COSE by the
-   Publisher.  (ToDo: Add Delete to the flow?)
+   Publisher.
 
-          Publisher                 Broker               Subscriber
-              | --- PUT /topic -----> |                       |
-              |  protected with COSE  |                       |
-              |                       | <--- GET /topic ----- |
-              |                       |      Observe:0        |
-              |                       |                       |
-              |                       | ---- Response ------> |
-              |                       |  protected with COSE  |
+  Publisher                            Broker                       Subscriber
+      | -- 0.03 PUT ps/data/1bd0d6d ---> |                                |
+      |                                  |                                |
+      | <----- 2.01 Created ------------ |                                |
+      |                                  |<-- 0.01 GET /ps/data/1bd0d6d --|
+      |                                  |   Observe:0                    |
+      |                                  |                                |
+      |                                  | ------ 2.05 Content  ------ -> |
+      |- 0.04 DELETE /ps/data/1bd0d6d -->|      Observe: 10001            |
+      |                                  |                                |
+      |<--------- 2.02 Deleted --------- |                                |
+      |                                  | ------ 4.04 Not Found -------->|
 
-           Figure 8: Example of protected communication for CoAP
+     Figure 8: Example of protected communication for CoAP.  All
+        request and response messages are protected with COSE
 
 5.1.  Using COSE Objects To Protect The Resource Representation
 
@@ -1768,17 +1778,17 @@ Table of Contents
    [I-D.ietf-ace-key-groupcomm]
               Palombini, F. and M. Tiloca, "Key Provisioning for Group
               Communication using ACE", Work in Progress, Internet-
-              Draft, draft-ietf-ace-key-groupcomm-18, 16 January 2024,
+              Draft, draft-ietf-ace-key-groupcomm-19, 30 April 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-
-              groupcomm-18>.
+              groupcomm-19>.
 
    [I-D.ietf-core-coap-pubsub]
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
               subscribe architecture for the Constrained Application
               Protocol (CoAP)", Work in Progress, Internet-Draft, draft-
-              ietf-core-coap-pubsub-13, 20 October 2023,
+              ietf-core-coap-pubsub-14, 18 April 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pubsub-13>.
+              coap-pubsub-14>.
 
    [IANA.cose_algorithms]
               IANA, "COSE Algorithms",
@@ -1903,9 +1913,9 @@ Table of Contents
               "Notification of Revoked Access Tokens in the
               Authentication and Authorization for Constrained
               Environments (ACE) Framework", Work in Progress, Internet-
-              Draft, draft-ietf-ace-revoked-token-notification-06, 2
-              June 2023, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-ace-revoked-token-notification-06>.
+              Draft, draft-ietf-ace-revoked-token-notification-07, 27
+              May 2024, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-ace-revoked-token-notification-07>.
 
    [I-D.ietf-ace-edhoc-oscore-profile]
               Selander, G., Mattsson, J. P., Tiloca, M., and R. Höglund,
@@ -1913,9 +1923,9 @@ Table of Contents
               Security for Constrained Environments (OSCORE) Profile for
               Authentication and Authorization for Constrained
               Environments (ACE)", Work in Progress, Internet-Draft,
-              draft-ietf-ace-edhoc-oscore-profile-03, 23 October 2023,
+              draft-ietf-ace-edhoc-oscore-profile-04, 4 March 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              edhoc-oscore-profile-03>.
+              edhoc-oscore-profile-04>.
 
    [I-D.ietf-ace-key-groupcomm-oscore]
               Tiloca, M., Park, J., and F. Palombini, "Key Management
@@ -1928,9 +1938,9 @@ Table of Contents
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-07, 20 October 2023,
+              ietf-cose-cbor-encoded-cert-09, 4 March 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-07>.
+              cbor-encoded-cert-09>.
 
    [MQTT-OASIS-Standard-v5]
               Banks, A., Briggs, E., Borgendale, K., and R. Gupta,
@@ -2174,9 +2184,17 @@ Appendix A.  Requirements on Application Profiles
 
 Appendix B.  Document Updates
 
-B.1.  Version -08 to -09
+B.1.  Version -09 to -10
 
    This section is to be removed before publishing as an RFC.
+
+   *  More details on the scope format.
+
+   *  Improved examples.
+
+   *  Clarifications and editorial improvements.
+
+B.2.  Version -08 to -09
 
    *  Improved terminology section.
 
@@ -2199,7 +2217,7 @@ B.1.  Version -08 to -09
 
    *  Clarification and editorial improvements.
 
-B.2.  Version -07 to -08
+B.3.  Version -07 to -08
 
    *  Revised presentation of the scope format.
 
@@ -2218,7 +2236,7 @@ B.2.  Version -07 to -08
 
    *  Clarifications and editorial improvements.
 
-B.3.  Version -06 to -07
+B.4.  Version -06 to -07
 
    *  Revised abstract and introduction.
 

@@ -12,18 +12,18 @@
        This document defines an application profile of the Authentication and Authorization for Constrained Environments (ACE) framework, to enable secure group communication in the Publish-Subscribe (pub/sub) architecture for the Constrained Application Protocol (CoAP) [draft-ietf-core-coap-pubsub], where Publishers and Subscribers communicate through a Broker. This profile relies on protocol-specific transport profiles of ACE to achieve communication security, server authentication, and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 Access Token. This document specifies the provisioning and enforcement of authorization information for Clients to act as Publishers and/or Subscribers, as well as the provisioning of keying material and security parameters that Clients use for protecting their communications end-to-end through the Broker. 
        Note to RFC Editor: Please replace "[draft-ietf-core-coap-pubsub]" with the RFC number of that document and delete this paragraph. 
     ' name="description">
-<meta content="xml2rfc 3.20.0" name="generator">
+<meta content="xml2rfc 3.21.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-ace-pubsub-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.20.0
-    Python 3.11.8
+  xml2rfc 3.21.0
+    Python 3.11.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 4.2.0
+    platformdirs 4.2.1
     pycountry 22.3.5
     PyYAML 6.0.1
     requests 2.31.0
@@ -1028,11 +1028,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ACE Pub-sub Profile</td>
-<td class="right">March 2024</td>
+<td class="right">June 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Palombini, et al.</td>
-<td class="center">Expires 5 September 2024</td>
+<td class="center">Expires 12 December 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1045,12 +1045,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-pubsub-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-03-04" class="published">4 March 2024</time>
+<time datetime="2024-06-10" class="published">10 June 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-09-05">5 September 2024</time></dd>
+<dd class="expires"><time datetime="2024-12-12">12 December 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1104,7 +1104,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 December 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1269,13 +1269,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-document-updates" class="internal xref">Document Updates</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
-                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-version-08-to-09" class="internal xref">Version -08 to -09</a></p>
+                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-version-09-to-10" class="internal xref">Version -09 to -10</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
-                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-version-07-to-08" class="internal xref">Version -07 to -08</a></p>
+                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-version-08-to-09" class="internal xref">Version -08 to -09</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.3">
-                <p id="section-toc.1-1.11.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-version-06-to-07" class="internal xref">Version -06 to -07</a></p>
+                <p id="section-toc.1-1.11.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-version-07-to-08" class="internal xref">Version -07 to -08</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.4">
+                <p id="section-toc.1-1.11.2.4.1"><a href="#appendix-B.4" class="auto internal xref">B.4</a>.  <a href="#name-version-06-to-07" class="internal xref">Version -06 to -07</a></p>
 </li>
             </ul>
 </li>
@@ -1343,7 +1346,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
       <h2 id="name-application-profile-overvie">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-application-profile-overvie" class="section-name selfRef">Application Profile Overview</a>
       </h2>
-<p id="section-2-1">This document describes how to use <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> and <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> to perform authentication, authorization, and key distribution operations as overviewed in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-2" class="relref">Section 2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, where the considered group is the security group composed of the pub/sub clients that exchange end-to-end protected content through the Broker.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">This document describes how to use <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> and <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> to perform authentication, authorization, and key distribution operations as overviewed in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-2" class="relref">Section 2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, where the considered group is the security group composed of the pub/sub clients that exchange end-to-end protected content through the Broker.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">Pub/sub clients communicate within their application groups, each of which is mapped to a topic. Depending on the application, a topic may consist of one or more sub-topics, which may have their own sub-topics and so on, thus forming a hierarchy. A security group <span class="bcp14">SHOULD</span> be associated with a single application group. However, the same application group <span class="bcp14">MAY</span> be associated with multiple security groups. Further details and considerations on the mapping between the two types of groups are out of the scope of this document.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">This profile considers the architecture shown in <a href="#archi" class="auto internal xref">Figure 1</a>. A Client can act as a Publisher, or a Subscriber, or both, e.g., by publishing to some topics and subscribing to others. However, for the simplicity of presentation, this profile describes Publisher and Subscriber Clients separately.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <p id="section-2-4">Both Publishers and Subscribers act as ACE Clients. The Broker acts as an ACE RS, and corresponds to the Dispatcher in <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. The Key Distribution Center (KDC) also acts as an ACE RS, and builds on what is defined for the KDC in <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. From a high-level point of view, the Clients interact with the KDC in order to join security groups and obtain the group keying material to protect end-to-end and verify the content published in the associated topics.<a href="#section-2-4" class="pilcrow">¶</a></p>
@@ -1417,13 +1420,13 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-2-9">All communications between the involved entities <span class="bcp14">MUST</span> be secured.<a href="#section-2-9" class="pilcrow">¶</a></p>
 <p id="section-2-10">The Client and the Broker <span class="bcp14">MUST</span> have a secure communication association, which they establish with the help of the AS and using a transport profile of ACE. This is shown by the interactions A and C in <a href="#archi" class="auto internal xref">Figure 1</a>. During this process, the Client obtains an Access Token from the AS and uploads it to the Broker, thus providing an evidence of the topics that it is authorized to participate in, and with which permissions.<a href="#section-2-10" class="pilcrow">¶</a></p>
 <p id="section-2-11">The Client and the KDC <span class="bcp14">MUST</span> have a secure communication association, which they also establish with the help of the AS and using a transport profile of ACE. This is shown by the interactions A and B in <a href="#archi" class="auto internal xref">Figure 1</a>. During this process, the Client obtains an Access Token from the AS and uploads it to the KDC, thus providing an evidence of the security groups that it can join, as associated with the topics of interest at the Broker. Based on the permissions specified in the Access Token, the Client can request the KDC to join a security group, after which the Client obtains from the KDC the keying material to use for communicating with the other group members. This builds on the process for joining security groups with ACE defined in <span>[<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> and further specified in this document.<a href="#section-2-11" class="pilcrow">¶</a></p>
-<p id="section-2-12">In addition, this profile allows an anonymous Client to perform some of the discovery operations defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13#section-2.3" class="relref">Section 2.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> through the Broker, as shown by the interaction O in <a href="#archi" class="auto internal xref">Figure 1</a>. That is, an anonymous Client can discover:<a href="#section-2-12" class="pilcrow">¶</a></p>
+<p id="section-2-12">In addition, this profile allows an anonymous Client to perform some of the discovery operations defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-14#section-2.3" class="relref">Section 2.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> through the Broker, as shown by the interaction O in <a href="#archi" class="auto internal xref">Figure 1</a>. That is, an anonymous Client can discover:<a href="#section-2-12" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-13.1">
-          <p id="section-2-13.1.1">the Broker itself, by relying on the resource type "core.ps" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>); and<a href="#section-2-13.1.1" class="pilcrow">¶</a></p>
+          <p id="section-2-13.1.1">the Broker itself, by relying on the resource type "core.ps" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-14#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>); and<a href="#section-2-13.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-13.2">
-          <p id="section-2-13.2.1">topics of interest at the Broker (i.e., the corresponding topic resources hosted at the Broker), by relying on the resource type "core.ps.conf" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13#section-2.3.2" class="relref">Section 2.3.2</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-2-13.2.1" class="pilcrow">¶</a></p>
+          <p id="section-2-13.2.1">topics of interest at the Broker (i.e., the corresponding topic resources hosted at the Broker), by relying on the resource type "core.ps.conf" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-14#section-2.3.2" class="relref">Section 2.3.2</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-2-13.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-2-14">However, an anonymous Client is not allowed to access topic resources at the Broker and obtain from those any additional information or metadata about the corresponding topic (e.g., the topic status, the URI of the topic-data resource where to publish or subscribe for that topic, or the URI to the KDC).<a href="#section-2-14" class="pilcrow">¶</a></p>
@@ -1509,7 +1512,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
           <p id="section-2-19.5.1">The KDC renews and redistributes the group keying material (rekeying), e.g., due to a membership change in the group.<a href="#section-2-19.5.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
-<p id="section-2-20"><a href="#groupcomm_requirements" class="auto internal xref">Appendix A</a> lists the specifications on this application profile of ACE, based on the requirements defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#appendix-A" class="relref">Appendix A</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-2-20" class="pilcrow">¶</a></p>
+<p id="section-2-20"><a href="#groupcomm_requirements" class="auto internal xref">Appendix A</a> lists the specifications on this application profile of ACE, based on the requirements defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#appendix-A" class="relref">Appendix A</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-2-20" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authorisation">
@@ -1679,8 +1682,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
         <h3 id="name-topic-discovery-at-the-brok">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-topic-discovery-at-the-brok" class="section-name selfRef">Topic Discovery at the Broker (Optional)</a>
         </h3>
-<p id="section-3.1-1">The discovery of a topic at the Broker can be performed by discovering the corresponding topic resources hosted at the Broker. For example, the Client can send a lookup request to /.well-known/core at the Broker, specifying as lookup criterion the resource type "core.ps.conf" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13#section-2.3.2" class="relref">Section 2.3.2</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">Although the links to the topic resources are also specified in the representation of the collection resource at the Broker (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13#section-2.4" class="relref">Section 2.4</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>), the Client is not supposed to access such a resource, as intended for administrative operations that are out of the scope of this document.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">The discovery of a topic at the Broker can be performed by discovering the corresponding topic resources hosted at the Broker. For example, the Client can send a lookup request to /.well-known/core at the Broker, specifying as lookup criterion the resource type "core.ps.conf" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-14#section-2.3.2" class="relref">Section 2.3.2</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">Although the links to the topic resources are also specified in the representation of the collection resource at the Broker (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-14#section-2.4" class="relref">Section 2.4</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>), the Client is not supposed to access such a resource, as intended for administrative operations that are out of the scope of this document.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="AS-discovery">
@@ -1697,7 +1700,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
     Content-Format: application/ace+cbor
     Payload:
     {
-     "AS": "coaps://as.example.com/token"
+     / AS / 1 : "coaps://as.example.com/token"
     }
 </pre>
 </div>
@@ -1713,8 +1716,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-kdc-discovery-at-the-broker" class="section-name selfRef">KDC Discovery at the Broker (Optional)</a>
         </h3>
 <p id="section-3.3-1">Once a Client has obtained an Access Token from the AS and accordingly established a secure association with the Broker, the Client has the permission to access the topic resources at the Broker that pertain to the topics on which the Client is authorized to operate.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3-2">In particular the Client is authorized to retrieve the representation of a topic resource, from which the Client can retrieve information related to the topic in question, as specified in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13#section-2.5" class="relref">Section 2.5</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
-<p id="section-3.3-3">This profile extends the set of CoAP Pub/sub Parameters that is possible to specify within the representation of a topic resource, as originally defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>. In particular, this profile defines the following two parameters that the Broker can specify in a response from a topic resource (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13#section-2.5" class="relref">Section 2.5</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>). Note that, when these parameters are transported in their respective fields of the message payload, the Content-Format application/core-pubsub+cbor defined in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> <span class="bcp14">MUST</span> be used.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">In particular the Client is authorized to retrieve the representation of a topic resource, from which the Client can retrieve information related to the topic in question, as specified in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-14#section-2.5" class="relref">Section 2.5</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.3-3">This profile extends the set of CoAP Pub/sub Parameters that is possible to specify within the representation of a topic resource, as originally defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-14#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>. In particular, this profile defines the following two parameters that the Broker can specify in a response from a topic resource (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-14#section-2.5" class="relref">Section 2.5</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>). Note that, when these parameters are transported in their respective fields of the message payload, the Content-Format application/core-pubsub+cbor defined in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> <span class="bcp14">MUST</span> be used.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3-4.1">
             <p id="section-3.3-4.1.1">'kdc_uri', with value the URI of the group membership resource at KDC, where Clients can send a request to join the security group associated with the topic in question. The URI is encoded as a CBOR text string. Clients will have to obtain an Access Token from the AS to upload to the KDC, before starting the process to join the security group at the KDC.<a href="#section-3.3-4.1.1" class="pilcrow">¶</a></p>
@@ -1734,8 +1737,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-3.4-1">A Client sends two Authorisation Requests to the AS, targeting two different audiences, i.e., the Broker and the KDC.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 <p id="section-3.4-2">As to the former, the AS handles Authorisation Requests related to a topic for which the Client is allowed to perform topic data operations at the Broker, as corresponding to an application group.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
 <p id="section-3.4-3">As to the latter, the AS handles Authorization Requests for security groups that the Client is allowed to join, in order to obtain the group keying material for protecting end-to-end and verifying the content of exchanged messages on the associated pub/sub topics.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
-<p id="section-3.4-4">This section builds on <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> and defines only additions or modifications to that specification.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
-<p id="section-3.4-5">Both Authorisation Requests include the following fields (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-3.1" class="relref">Section 3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>):<a href="#section-3.4-5" class="pilcrow">¶</a></p>
+<p id="section-3.4-4">This section builds on <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> and defines only additions or modifications to that specification.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.4-5">Both Authorisation Requests include the following fields (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-3.1" class="relref">Section 3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>):<a href="#section-3.4-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.4-6.1">
             <p id="section-3.4-6.1.1">'scope': Optional. If present, it specifies the following information, depending on the specifically targeted audience.<a href="#section-3.4-6.1.1" class="pilcrow">¶</a></p>
@@ -1755,7 +1758,7 @@ This parameter is encoded as a CBOR byte string, whose value is the binary encod
           <h4 id="name-format-of-scope">
 <a href="#section-3.4.1" class="section-number selfRef">3.4.1. </a><a href="#name-format-of-scope" class="section-name selfRef">Format of Scope</a>
           </h4>
-<p id="section-3.4.1-1">Building on <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-3.1" class="relref">Section 3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, this section defines the exact format and encoding of scope used in this profile.<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.4.1-1">Building on <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-3.1" class="relref">Section 3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, this section defines the exact format and encoding of scope used in this profile.<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.4.1-2">To this end, this profile uses the Authorization Information Format (AIF) <span>[<a href="#RFC9237" class="cite xref">RFC9237</a>]</span> (REQ1). With reference to the generic AIF model<a href="#section-3.4.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.4.1-3">
 <pre>
@@ -1791,7 +1794,7 @@ This parameter is encoded as a CBOR byte string, whose value is the binary encod
                       <p id="section-3.4.1-10.2.2.1.2.4.1">Read (3): This operation concerns both: i) the subscription at the topic-data resource for the topic in question at the Broker, performed by means of a GET request with the CoAP Observe Option set to 0 and sent by a Subscriber Client; and ii) the simple reading of the latest data published to the topic in question, performed by means of a simple GET request sent to the same topic-data resource.<a href="#section-3.4.1-10.2.2.1.2.4.1" class="pilcrow">¶</a></p>
 </li>
                     <li class="normal" id="section-3.4.1-10.2.2.1.2.5">
-                      <p id="section-3.4.1-10.2.2.1.2.5.1">Delete (4): This operation concerns the deletion of the topic-data resource for the topic in question at the Broker, performed by means of a DELETE request sent to that resource.<a href="#section-3.4.1-10.2.2.1.2.5.1" class="pilcrow">¶</a></p>
+                      <p id="section-3.4.1-10.2.2.1.2.5.1">Delete (4): This operation concerns the deletion of the topic-data resource for the topic in question at the Broker, performed by means of a DELETE request sent to that resource. A Client that has only the Delete permission on the application group does not need to request a token for KDC. On the other hand, if the Delete operation is on the security group, the AS and the KDC should ignore the Delete bit set to 1.<a href="#section-3.4.1-10.2.2.1.2.5.1" class="pilcrow">¶</a></p>
 </li>
                   </ul>
 </li>
@@ -1840,7 +1843,7 @@ Since this application profile considers user-related operations, the "Admin" op
         <h3 id="name-authorisation-response">
 <a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-authorisation-response" class="section-name selfRef">Authorisation response</a>
         </h3>
-<p id="section-3.5-1">The AS responds with an Authorization Response to each request, containing claims, as defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.2" class="relref">Section 5.8.2</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> and <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-3.2" class="relref">Section 3.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> with the following additions:<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.5-1">The AS responds with an Authorization Response to each request, containing claims, as defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.2" class="relref">Section 5.8.2</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> and <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-3.2" class="relref">Section 3.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> with the following additions:<a href="#section-3.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.5-2.1">
             <p id="section-3.5-2.1.1">The AS <span class="bcp14">MUST</span> include the 'expires_in' parameter.  Other means for the AS to specify the lifetime of Access Tokens are out of the scope of this document.<a href="#section-3.5-2.1.1" class="pilcrow">¶</a></p>
@@ -1849,7 +1852,7 @@ Since this application profile considers user-related operations, the "Admin" op
             <p id="section-3.5-2.2.1">The AS <span class="bcp14">MUST</span> include the 'scope' parameter, when the value included in the Access Token differs from the one specified by the Client in the Authorization Request.  In such a case, the second element of each scope entry specifies the set of interactions that the Client is authorized for that scope entry, encoded as specified in <a href="#auth-request" class="auto internal xref">Section 3.4</a>.<a href="#section-3.5-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.5-3">Furthermore, the AS <span class="bcp14">MAY</span> use the extended format of scope defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-7" class="relref">Section 7</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> for the 'scope' claim of the Access Token.  In such a case, the AS <span class="bcp14">MUST</span> use the CBOR tag with tag number TAG_NUMBER, associated with the CoAP Content-Format CF_ID for the media type application/aif+cbor registered in <a href="#content_format" class="auto internal xref">Section 8.5</a> of this document (REQ28).<a href="#section-3.5-3" class="pilcrow">¶</a></p>
+<p id="section-3.5-3">Furthermore, the AS <span class="bcp14">MAY</span> use the extended format of scope defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-7" class="relref">Section 7</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> for the 'scope' claim of the Access Token.  In such a case, the AS <span class="bcp14">MUST</span> use the CBOR tag with tag number TAG_NUMBER, associated with the CoAP Content-Format CF_ID for the media type application/aif+cbor registered in <a href="#content_format" class="auto internal xref">Section 8.5</a> of this document (REQ28).<a href="#section-3.5-3" class="pilcrow">¶</a></p>
 <p id="section-3.5-4">Note to RFC Editor: In the previous paragraph, please replace "TAG_NUMBER" with the CBOR tag number computed as TN(ct) in <span><a href="https://rfc-editor.org/rfc/rfc9277#section-4.3" class="relref">Section 4.3</a> of [<a href="#RFC9277" class="cite xref">RFC9277</a>]</span>, where ct is the ID assigned to the CoAP Content-Format registered in <a href="#content_format" class="auto internal xref">Section 8.5</a> of this document.  Then, please replace "CF_ID" with the ID assigned to that CoAP Content-Format.  Finally, please delete this paragraph.<a href="#section-3.5-4" class="pilcrow">¶</a></p>
 <p id="section-3.5-5">This indicates that the binary encoded scope follows the scope semantics defined for this application profile in <a href="#scope" class="auto internal xref">Section 3.4.1</a> of this document.<a href="#section-3.5-5" class="pilcrow">¶</a></p>
 </section>
@@ -1961,7 +1964,7 @@ Since this application profile considers user-related operations, the "Admin" op
         </h3>
 <p id="section-4.1-1">This section describes the interactions between a Client and the KDC to join a security group. Source authentication of a message sent within the group is ensured by means of a digital signature embedded in the message. Subscribers must be able to retrieve Publishers' authentication credentials from a trusted repository, to verify source authentication of received messages. Hence, on joining a security group, a Publisher is expected to provide its own authentication credential to the KDC.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1-2">On a successful join, the Clients receive from the KDC the symmetric COSE Key used as shared group key to protect the payload of a published topic data.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
-<p id="section-4.1-3">The message exchange between the joining node and the KDC follows what is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-4.3.1.1" class="relref">Section 4.3.1.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> and only additions or modifications to that specification are defined in this document.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-3">The message exchange between the joining node and the KDC follows what is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.3.1.1" class="relref">Section 4.3.1.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> and only additions or modifications to that specification are defined in this document.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <span id="name-join-flow"></span><div id="join-flow">
 <figure id="figure-6">
           <div id="section-4.1-4.1">
@@ -1997,7 +2000,7 @@ Since this application profile considers user-related operations, the "Admin" op
           <h4 id="name-join-request">
 <a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-join-request" class="section-name selfRef">Join Request</a>
           </h4>
-<p id="section-4.1.1-1">After establishing a secure communication association with the KDC, the Client sends a Join Request to the KDC as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-4.3" class="relref">Section 4.3</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. More specifically, the Client sends a POST request to the /ace-group/GROUPNAME endpoint, with Content-Format "application/ace-groupcomm+cbor". The payload contains the following information formatted as a CBOR map, which <span class="bcp14">MUST</span> be encoded as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>:<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-1">After establishing a secure communication association with the KDC, the Client sends a Join Request to the KDC as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.3" class="relref">Section 4.3</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. More specifically, the Client sends a POST request to the /ace-group/GROUPNAME endpoint, with Content-Format "application/ace-groupcomm+cbor". The payload contains the following information formatted as a CBOR map, which <span class="bcp14">MUST</span> be encoded as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>:<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1.1-2.1">
               <p id="section-4.1.1-2.1.1">'scope': It <span class="bcp14">MUST</span> be present and specify the group that the Client is attempting to join, i.e., the group name, and the permissions it wishes to have in the group. This value corresponds to one scope entry, as defined in <a href="#scope" class="auto internal xref">Section 3.4.1</a>.<a href="#section-4.1.1-2.1.1" class="pilcrow">¶</a></p>
@@ -2077,10 +2080,10 @@ Specifically, N_S is exported from the DTLS session between the joining node and
           <h4 id="name-join-response">
 <a href="#section-4.1.2" class="section-number selfRef">4.1.2. </a><a href="#name-join-response" class="section-name selfRef">Join Response</a>
           </h4>
-<p id="section-4.1.2-1">On receiving the Join Request, the KDC processes the request as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, and returns a success or error response.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-1">On receiving the Join Request, the KDC processes the request as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, and returns a success or error response.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-2">If the 'client_cred' parameter is present, the KDC verifies the signature in the 'client_cred_verify' parameter. As PoP input, the KDC uses the value of the 'scope' parameter from the Join Request as a CBOR byte string, concatenated with N_S encoded as a CBOR byte string, concatenated with N_C encoded as a CBOR byte string. As public key of the joining node, the KDC uses either the one included in the authentication credential retrieved from the 'client_cred' parameter of the Join Request or the one from the already stored authentication credential from previous interactions with the joining node. The KDC verifies the PoP evidence, which is a signature, by using the public key of the joining node, as well as the signature algorithm used in the group and possible corresponding parameters.<a href="#section-4.1.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-3">In the case of any join request error, the KDC and the Client attempting to join follow the procedure defined in <a href="#join-error" class="auto internal xref">Section 4.1.3</a>.<a href="#section-4.1.2-3" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-4">In case of success, the KDC responds with a Join Response, whose payload formatted as a CBOR map <span class="bcp14">MUST</span> contain the following fields as per <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>:<a href="#section-4.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-4">In case of success, the KDC responds with a Join Response, whose payload formatted as a CBOR map <span class="bcp14">MUST</span> contain the following fields as per <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>:<a href="#section-4.1.2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1.2-5.1">
               <p id="section-4.1.2-5.1.1">'gkty': the key type "Group_PubSub_Keying_Material" (REQ18) registered in <a href="#iana-ace-groupcomm-key" class="auto internal xref">Section 8.1</a> for the 'key' parameter.<a href="#section-4.1.2-5.1.1" class="pilcrow">¶</a></p>
@@ -2164,7 +2167,7 @@ The Sender ID can be short in length. Its maximum length in bytes is the length 
               <p id="section-4.1.2-5.11.1">'kdc_cred_verify', which <span class="bcp14">MUST</span> be present if 'kdc_cred' is present, and is encoded as a CBOR byte string. The KDC <span class="bcp14">MUST</span> compute the specified PoP evidence as a signature by using the signature algorithm used in the group, as well as its own private key associated with the authentication credential specified in the 'kdc_cred' parameter (REQ21).<a href="#section-4.1.2-5.11.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.1.2-5.12">
-              <p id="section-4.1.2-5.12.1">'group_rekeying', which <span class="bcp14">MAY</span> be omitted if the KDC uses the "Point-to-Point" group rekeying scheme registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-11.13" class="relref">Section 11.13</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> as the default rekeying scheme in the group (OPT9). In any other case, the 'group_rekeying' parameter <span class="bcp14">MUST</span> be included.<a href="#section-4.1.2-5.12.1" class="pilcrow">¶</a></p>
+              <p id="section-4.1.2-5.12.1">'group_rekeying', which <span class="bcp14">MAY</span> be omitted if the KDC uses the "Point-to-Point" group rekeying scheme registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-11.13" class="relref">Section 11.13</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> as the default rekeying scheme in the group (OPT9). In any other case, the 'group_rekeying' parameter <span class="bcp14">MUST</span> be included.<a href="#section-4.1.2-5.12.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-4.1.2-6">After sending a successful Join Response, the KDC adds the Client to the list of current members of the security group, if that Client is not already a group member. Also, the Client is assigned a name NODENAME and a sub-resource /ace-group/GROUPNAME/nodes/NODENAME. Furthermore, the KDC associates NODENAME with the Client's access token and with the secure communication association that the KDC has with the Client. If the Client is a Publisher, its authentication credential is also associated with the tuple containing NODENAME, GROUPNAME, the current Gid, the newly assigned Publisher's Sender ID, and the Client's access token. The KDC <span class="bcp14">MUST</span> keep this association updated over time.<a href="#section-4.1.2-6" class="pilcrow">¶</a></p>
@@ -2253,7 +2256,7 @@ The response from the KDC <span class="bcp14">MAY</span> omit the parameter 'pee
           <h4 id="name-removal-from-a-group">
 <a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-removal-from-a-group" class="section-name selfRef">Removal from a Group</a>
           </h4>
-<p id="section-4.2.3-1">A Client with node name NODENAME can actively request to leave the security group with name GROUPNAME. In this case, the Client sends a CoAP DELETE request to the associated sub-resource /ace-group/GROUPNAME/nodes/NODENAME at the KDC. The KDC can also remove a group member due to any of the reasons described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-5" class="relref">Section 5</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.3-1">A Client with node name NODENAME can actively request to leave the security group with name GROUPNAME. In this case, the Client sends a CoAP DELETE request to the associated sub-resource /ace-group/GROUPNAME/nodes/NODENAME at the KDC. The KDC can also remove a group member due to any of the reasons described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-5" class="relref">Section 5</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="rekeying">
@@ -2261,9 +2264,9 @@ The response from the KDC <span class="bcp14">MAY</span> omit the parameter 'pee
           <h4 id="name-rekeying-a-group">
 <a href="#section-4.2.4" class="section-number selfRef">4.2.4. </a><a href="#name-rekeying-a-group" class="section-name selfRef">Rekeying a Group</a>
           </h4>
-<p id="section-4.2.4-1">The KDC <span class="bcp14">MUST</span> trigger a group rekeying as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-6" class="relref">Section 6</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> due to a change in the group membership or the current group keying material approaching its expiration time. The KDC <span class="bcp14">MAY</span> trigger regularly scheduled update of the group keying material.<a href="#section-4.2.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.4-1">The KDC <span class="bcp14">MUST</span> trigger a group rekeying as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-6" class="relref">Section 6</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span> due to a change in the group membership or the current group keying material approaching its expiration time. The KDC <span class="bcp14">MAY</span> trigger regularly scheduled update of the group keying material.<a href="#section-4.2.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.2.4-2">Upon generating the new group keying material and before starting its distribution, the KDC <span class="bcp14">MUST</span> increment the version number of the group keying material. The KDC <span class="bcp14">MUST</span> preserve the current value of the Sender ID of each member in that group. The KDC <span class="bcp14">MUST</span> also generate a new Group Identifier (Gid) for the group, and use it as identifier of the new group key provided through the group rekeying and hereafter to Clients (re-)joining the security group (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>).<a href="#section-4.2.4-2" class="pilcrow">¶</a></p>
-<p id="section-4.2.4-3">The default rekeying scheme is Point-to-Point (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-6.1" class="relref">Section 6.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>), where the KDC individually targets each node to rekey, using the pairwise secure communication association with that node.<a href="#section-4.2.4-3" class="pilcrow">¶</a></p>
+<p id="section-4.2.4-3">The default rekeying scheme is Point-to-Point (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-6.1" class="relref">Section 6.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>), where the KDC individually targets each node to rekey, using the pairwise secure communication association with that node.<a href="#section-4.2.4-3" class="pilcrow">¶</a></p>
 <p id="section-4.2.4-4">If the group rekeying is performed due to one or multiple Clients joining the group as Publishers, then a rekeying message includes the Sender IDs and authentication credentials that those clients are going to use in the group. This information is specified by means of the parameters 'creds' and 'peer_identifiers', like done in the Join Response message. In the same spirit, the 'peer_roles' parameter <span class="bcp14">MAY</span> be omitted.<a href="#section-4.2.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2317,47 +2320,67 @@ The response from the KDC <span class="bcp14">MAY</span> omit the parameter 'pee
 <a href="#name-secure-communication-betwee" class="selfRef">Secure communication between Publisher and Subscriber</a>
         </figcaption></figure>
 </div>
-<p id="section-5-2">(D) corresponds to the publication of a topic on the Broker, using a CoAP PUT. The publication (the resource representation) is protected with COSE (<span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span><span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span>) by the Publisher. The (E) message is the subscription of the Subscriber, and uses a CoAP GET with the Observe option set to 0 (zero) <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>, as per <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>. The (F) message is the response from the Broker, where the publication is protected with COSE by the Publisher.
-(ToDo: Add Delete to the flow?)<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-2">(D) corresponds to the publication of a topic on the Broker, using a CoAP PUT. The publication (the resource representation) is protected with COSE (<span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span><span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span>) by the Publisher. The (E) message is the subscription of the Subscriber, and uses a CoAP GET with the Observe option set to 0 (zero) <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>, as per <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>. The (F) message is the response from the Broker, where the publication is protected with COSE by the Publisher.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <span id="name-example-of-protected-commun"></span><div id="flow">
 <figure id="figure-8">
         <div id="section-5-3.1">
           <div class="alignCenter art-svg artwork" id="section-5-3.1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="176" width="464" viewBox="0 0 464 176" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-              <path d="M 40,48 L 40,144" fill="none" stroke="black"></path>
-              <path d="M 232,48 L 232,144" fill="none" stroke="black"></path>
-              <path d="M 424,48 L 424,144" fill="none" stroke="black"></path>
-              <path d="M 56,48 L 72,48" fill="none" stroke="black"></path>
-              <path d="M 176,48 L 216,48" fill="none" stroke="black"></path>
-              <path d="M 248,80 L 272,80" fill="none" stroke="black"></path>
-              <path d="M 376,80 L 408,80" fill="none" stroke="black"></path>
-              <path d="M 248,128 L 272,128" fill="none" stroke="black"></path>
-              <path d="M 360,128 L 408,128" fill="none" stroke="black"></path>
-              <polygon class="arrowhead" points="416,128 404,122.4 404,133.6" fill="black" transform="rotate(0,408,128)"></polygon>
-              <polygon class="arrowhead" points="256,80 244,74.4 244,85.6" fill="black" transform="rotate(180,248,80)"></polygon>
-              <polygon class="arrowhead" points="224,48 212,42.4 212,53.6" fill="black" transform="rotate(0,216,48)"></polygon>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="240" width="616" viewBox="0 0 616 240" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 40,48 L 40,208" fill="none" stroke="black"></path>
+              <path d="M 320,48 L 320,208" fill="none" stroke="black"></path>
+              <path d="M 584,48 L 584,208" fill="none" stroke="black"></path>
+              <path d="M 280,48 L 304,48" fill="none" stroke="black"></path>
+              <path d="M 56,80 L 96,80" fill="none" stroke="black"></path>
+              <path d="M 216,80 L 304,80" fill="none" stroke="black"></path>
+              <path d="M 328,96 L 344,96" fill="none" stroke="black"></path>
+              <path d="M 336,144 L 376,144" fill="none" stroke="black"></path>
+              <path d="M 504,144 L 544,144" fill="none" stroke="black"></path>
+              <path d="M 296,160 L 312,160" fill="none" stroke="black"></path>
+              <path d="M 48,192 L 120,192" fill="none" stroke="black"></path>
+              <path d="M 240,192 L 304,192" fill="none" stroke="black"></path>
+              <path d="M 336,208 L 376,208" fill="none" stroke="black"></path>
+              <path d="M 512,208 L 576,208" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="584,208 572,202.4 572,213.6" fill="black" transform="rotate(0,576,208)"></polygon>
+              <polygon class="arrowhead" points="336,96 324,90.4 324,101.6" fill="black" transform="rotate(180,328,96)"></polygon>
+              <polygon class="arrowhead" points="320,160 308,154.4 308,165.6" fill="black" transform="rotate(0,312,160)"></polygon>
+              <polygon class="arrowhead" points="312,48 300,42.4 300,53.6" fill="black" transform="rotate(0,304,48)"></polygon>
+              <polygon class="arrowhead" points="64,80 52,74.4 52,85.6" fill="black" transform="rotate(180,56,80)"></polygon>
+              <polygon class="arrowhead" points="56,192 44,186.4 44,197.6" fill="black" transform="rotate(180,48,192)"></polygon>
               <g class="text">
                 <text x="40" y="36">Publisher</text>
-                <text x="236" y="36">Broker</text>
-                <text x="420" y="36">Subscriber</text>
-                <text x="96" y="52">PUT</text>
-                <text x="140" y="52">/topic</text>
-                <text x="96" y="68">protected</text>
-                <text x="156" y="68">with</text>
-                <text x="196" y="68">COSE</text>
-                <text x="296" y="84">GET</text>
-                <text x="340" y="84">/topic</text>
-                <text x="320" y="100">Observe:0</text>
-                <text x="316" y="132">Response</text>
-                <text x="288" y="148">protected</text>
-                <text x="348" y="148">with</text>
-                <text x="388" y="148">COSE</text>
+                <text x="324" y="36">Broker</text>
+                <text x="572" y="36">Subscriber</text>
+                <text x="60" y="52">--</text>
+                <text x="92" y="52">0.03</text>
+                <text x="128" y="52">PUT</text>
+                <text x="208" y="52">ps/data/1bd0d6d</text>
+                <text x="124" y="84">2.01</text>
+                <text x="176" y="84">Created</text>
+                <text x="372" y="100">0.01</text>
+                <text x="408" y="100">GET</text>
+                <text x="492" y="100">/ps/data/1bd0d6d</text>
+                <text x="572" y="100">--</text>
+                <text x="384" y="116">Observe:0</text>
+                <text x="404" y="148">2.05</text>
+                <text x="456" y="148">Content</text>
+                <text x="564" y="148">-&gt;</text>
+                <text x="48" y="164">-</text>
+                <text x="76" y="164">0.04</text>
+                <text x="124" y="164">DELETE</text>
+                <text x="220" y="164">/ps/data/1bd0d6d</text>
+                <text x="404" y="164">Observe:</text>
+                <text x="464" y="164">10001</text>
+                <text x="148" y="196">2.02</text>
+                <text x="200" y="196">Deleted</text>
+                <text x="404" y="212">4.04</text>
+                <text x="440" y="212">Not</text>
+                <text x="480" y="212">Found</text>
               </g>
             </svg><a href="#section-5-3.1.1" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
-<a href="#name-example-of-protected-commun" class="selfRef">Example of protected communication for CoAP</a>
+<a href="#name-example-of-protected-commun" class="selfRef">Example of protected communication for CoAP. All request and response messages are protected with COSE</a>
         </figcaption></figure>
 </div>
 <div id="oscon">
@@ -2365,7 +2388,7 @@ The response from the KDC <span class="bcp14">MAY</span> omit the parameter 'pee
         <h3 id="name-using-cose-objects-to-prote">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-using-cose-objects-to-prote" class="section-name selfRef">Using COSE Objects To Protect The Resource Representation</a>
         </h3>
-<p id="section-5.1-1">The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13#section-4.3" class="relref">Section 4.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>). Specifically, the Publisher creates a COSE_Encrypt0 object <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span><span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> by means of the COSE Key currently used as group key. The encryption algorithm and Base IV to use are specified by the 'alg' and 'Base IV' parameters of the COSE Key, together with its key identifier in the 'kid' parameter.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-14#section-4.3" class="relref">Section 4.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>). Specifically, the Publisher creates a COSE_Encrypt0 object <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span><span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> by means of the COSE Key currently used as group key. The encryption algorithm and Base IV to use are specified by the 'alg' and 'Base IV' parameters of the COSE Key, together with its key identifier in the 'kid' parameter.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-2">Also, the Publisher uses its private key corresponding to the public key sent to the KDC for countersigning the COSE_Encrypt0 object as specified in <span>[<a href="#RFC9338" class="cite xref">RFC9338</a>]</span>. The countersignature is specified in the 'Countersignature version 2' parameter, within the 'unprotected' field of the COSE_Encrypt0 object.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.1-3">Finally, the Publisher sends the COSE_Encrypt0 object conveying the countersignature to the Broker, as payload of the PUT request sent to the topic-data of the topic targeted by the Publish operation.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 <p id="section-5.1-4">Upon receiving a response from the topic-data resource at the Broker, the Subscriber uses the 'kid' parameter from the 'Countersignature version 2' parameter within the 'unprotected' field of the COSE_Encrypt0 object, in order to retrieve the Publisher's public key from the Broker or from its local storage. Then, the Subscriber uses that public key to verify the countersignature.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
@@ -2542,7 +2565,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
         <h3 id="name-ace-groupcomm-key-types-reg">
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-ace-groupcomm-key-types-reg" class="section-name selfRef">ACE Groupcomm Key Types Registry</a>
         </h3>
-<p id="section-8.1-1">IANA is asked to register the following entry in the "ACE Groupcomm Key Types" registry defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-11.8" class="relref">Section 11.8</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.1-1">IANA is asked to register the following entry in the "ACE Groupcomm Key Types" registry defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-11.8" class="relref">Section 11.8</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1-2.1">
             <p id="section-8.1-2.1.1">Name: Group_PubSub_Keying_Material<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
@@ -2567,7 +2590,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
         <h3 id="name-ace-groupcomm-profiles-regi">
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-ace-groupcomm-profiles-regi" class="section-name selfRef">ACE Groupcomm Profiles Registry</a>
         </h3>
-<p id="section-8.2-1">IANA is asked to register the following entries in the "ACE Groupcomm Profiles" registry defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-11.9" class="relref">Section 11.9</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<p id="section-8.2-1">IANA is asked to register the following entries in the "ACE Groupcomm Profiles" registry defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-11.9" class="relref">Section 11.9</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.1">
             <p id="section-8.2-2.1.1">Name: coap_group_pubsub_app<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
@@ -2729,11 +2752,11 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <dl class="references">
 <dt id="I-D.ietf-ace-key-groupcomm">[I-D.ietf-ace-key-groupcomm]</dt>
         <dd>
-<span class="refAuthor">Palombini, F.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Provisioning for Group Communication using ACE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-key-groupcomm-18</span>, <time datetime="2024-01-16" class="refDate">16 January 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18">https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18</a>&gt;</span>. </dd>
+<span class="refAuthor">Palombini, F.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Provisioning for Group Communication using ACE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-key-groupcomm-19</span>, <time datetime="2024-04-30" class="refDate">30 April 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19">https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-coap-pubsub">[I-D.ietf-core-coap-pubsub]</dt>
         <dd>
-<span class="refAuthor">Jimenez, J.</span>, <span class="refAuthor">Koster, M.</span>, and <span class="refAuthor">A. Keränen</span>, <span class="refTitle">"A publish-subscribe architecture for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-13</span>, <time datetime="2023-10-20" class="refDate">20 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13</a>&gt;</span>. </dd>
+<span class="refAuthor">Jimenez, J.</span>, <span class="refAuthor">Koster, M.</span>, and <span class="refAuthor">A. Keränen</span>, <span class="refTitle">"A publish-subscribe architecture for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-14</span>, <time datetime="2024-04-18" class="refDate">18 April 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-14">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-14</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="IANA.cose_algorithms">[IANA.cose_algorithms]</dt>
         <dd>
@@ -2846,11 +2869,11 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <dl class="references">
 <dt id="I-D.draft-ietf-ace-revoked-token-notification">[I-D.draft-ietf-ace-revoked-token-notification]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Echeverria, S.</span>, and <span class="refAuthor">G. Lewis</span>, <span class="refTitle">"Notification of Revoked Access Tokens in the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-revoked-token-notification-06</span>, <time datetime="2023-06-02" class="refDate">2 June 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-revoked-token-notification-06">https://datatracker.ietf.org/doc/html/draft-ietf-ace-revoked-token-notification-06</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Echeverria, S.</span>, and <span class="refAuthor">G. Lewis</span>, <span class="refTitle">"Notification of Revoked Access Tokens in the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-revoked-token-notification-07</span>, <time datetime="2024-05-27" class="refDate">27 May 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-revoked-token-notification-07">https://datatracker.ietf.org/doc/html/draft-ietf-ace-revoked-token-notification-07</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-ace-edhoc-oscore-profile">[I-D.ietf-ace-edhoc-oscore-profile]</dt>
         <dd>
-<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Tiloca, M.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for Constrained Environments (OSCORE) Profile for Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-edhoc-oscore-profile-03</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-edhoc-oscore-profile-03">https://datatracker.ietf.org/doc/html/draft-ietf-ace-edhoc-oscore-profile-03</a>&gt;</span>. </dd>
+<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Tiloca, M.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for Constrained Environments (OSCORE) Profile for Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-edhoc-oscore-profile-04</span>, <time datetime="2024-03-04" class="refDate">4 March 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-edhoc-oscore-profile-04">https://datatracker.ietf.org/doc/html/draft-ietf-ace-edhoc-oscore-profile-04</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-ace-key-groupcomm-oscore">[I-D.ietf-ace-key-groupcomm-oscore]</dt>
         <dd>
@@ -2858,7 +2881,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <dd class="break"></dd>
 <dt id="I-D.ietf-cose-cbor-encoded-cert">[I-D.ietf-cose-cbor-encoded-cert]</dt>
         <dd>
-<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, and <span class="refAuthor">M. Furuhed</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-07</span>, <time datetime="2023-10-20" class="refDate">20 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-07">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-07</a>&gt;</span>. </dd>
+<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, and <span class="refAuthor">M. Furuhed</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-09</span>, <time datetime="2024-03-04" class="refDate">4 March 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-09">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-09</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="MQTT-OASIS-Standard-v5">[MQTT-OASIS-Standard-v5]</dt>
         <dd>
@@ -2893,7 +2916,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
       <h2 id="name-requirements-on-application">
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-requirements-on-application" class="section-name selfRef">Requirements on Application Profiles</a>
       </h2>
-<p id="appendix-A-1">This section lists the specifications on this profile based on the requirements defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#appendix-A" class="relref">Appendix A</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">This section lists the specifications on this profile based on the requirements defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#appendix-A" class="relref">Appendix A</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A-2.1">
           <p id="appendix-A-2.1.1">REQ1: Specify the format and encoding of 'scope': see <a href="#scope" class="auto internal xref">Section 3.4.1</a>.<a href="#appendix-A-2.1.1" class="pilcrow">¶</a></p>
@@ -2981,10 +3004,10 @@ capabilities as specified in the "COSE Algorithms" registry <span>[<a href="#IAN
           <p id="appendix-A-2.28.1">REQ28: Specify which CBOR tag is used for identifying the semantics of binary scopes, or register a new CBOR tag if a suitable one does not exist already: see <a href="#as-response" class="auto internal xref">Section 3.5</a> and <a href="#content_format" class="auto internal xref">Section 8.5</a> of this document.<a href="#appendix-A-2.28.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.29">
-          <p id="appendix-A-2.29.1">REQ29: Categorize newly defined parameters according to the same criteria of <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-8" class="relref">Section 8</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>: a Publisher Client <span class="bcp14">MUST</span> support 'group_SenderId' in 'key'; see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>.<a href="#appendix-A-2.29.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-2.29.1">REQ29: Categorize newly defined parameters according to the same criteria of <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-8" class="relref">Section 8</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>: a Publisher Client <span class="bcp14">MUST</span> support 'group_SenderId' in 'key'; see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>.<a href="#appendix-A-2.29.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.30">
-          <p id="appendix-A-2.30.1">REQ30: Define whether Clients must, should or may support the conditional parameters defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-8" class="relref">Section 8</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, and under which circumstances: a Publisher Client <span class="bcp14">MUST</span> support the client_cred', 'cnonce', and 'client_cred_verify' parameters; see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>. A Publisher Client that provides the token to the KDC, through the authz-info endpoint, <span class="bcp14">MUST</span> support the parameter 'kdcchallenge'; see <a href="#token-post" class="auto internal xref">Section 3.6</a>.<a href="#appendix-A-2.30.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-2.30.1">REQ30: Define whether Clients must, should or may support the conditional parameters defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-8" class="relref">Section 8</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, and under which circumstances: a Publisher Client <span class="bcp14">MUST</span> support the client_cred', 'cnonce', and 'client_cred_verify' parameters; see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>. A Publisher Client that provides the token to the KDC, through the authz-info endpoint, <span class="bcp14">MUST</span> support the parameter 'kdcchallenge'; see <a href="#token-post" class="auto internal xref">Section 3.6</a>.<a href="#appendix-A-2.30.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.31">
           <p id="appendix-A-2.31.1">OPT1: Optionally, if the textual format of 'scope' is used, specify CBOR values to use for abbreviating the role identifiers in the group: no.<a href="#appendix-A-2.31.1" class="pilcrow">¶</a></p>
@@ -3011,7 +3034,7 @@ capabilities as specified in the "COSE Algorithms" registry <span>[<a href="#IAN
           <p id="appendix-A-2.38.1">OPT8: Optionally, specify the behavior of the handler in case of failure to retrieve an authentication credential for the specific node: The KDC <span class="bcp14">MUST</span> reply with a 4.00 (Bad Request) error response to the Join Request; see <a href="#join-error" class="auto internal xref">Section 4.1.3</a>.<a href="#appendix-A-2.38.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.39">
-          <p id="appendix-A-2.39.1">OPT9: Optionally, define a default group rekeying scheme, to refer to in case the 'rekeying_scheme' parameter is not included in the Join Response: the "Point-to-Point" rekeying scheme registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-18#section-11.12" class="relref">Section 11.12</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#appendix-A-2.39.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-2.39.1">OPT9: Optionally, define a default group rekeying scheme, to refer to in case the 'rekeying_scheme' parameter is not included in the Join Response: the "Point-to-Point" rekeying scheme registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-11.12" class="relref">Section 11.12</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#appendix-A-2.39.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.40">
           <p id="appendix-A-2.40.1">OPT10: Optionally, specify the functionalities implemented at the 'control_group_uri' resource hosted at the Client, including message exchange encoding and other details: no.<a href="#appendix-A-2.40.1" class="pilcrow">¶</a></p>
@@ -3039,114 +3062,132 @@ capabilities as specified in the "COSE Algorithms" registry <span>[<a href="#IAN
       <h2 id="name-document-updates">
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-document-updates" class="section-name selfRef">Document Updates</a>
       </h2>
-<div id="sec-08-09">
+<div id="sec-09-10">
 <section id="appendix-B.1">
-        <h3 id="name-version-08-to-09">
-<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-08-to-09" class="section-name selfRef">Version -08 to -09</a>
+        <h3 id="name-version-09-to-10">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-09-to-10" class="section-name selfRef">Version -09 to -10</a>
         </h3>
 <p id="appendix-B.1-1">This section is to be removed before publishing as an RFC.<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B.1-2.1">
-            <p id="appendix-B.1-2.1.1">Improved terminology section.<a href="#appendix-B.1-2.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-2.1.1">More details on the scope format.<a href="#appendix-B.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-2.2">
-            <p id="appendix-B.1-2.2.1">Generalized scope format for future, admin-related extensions.<a href="#appendix-B.1-2.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-2.2.1">Improved examples.<a href="#appendix-B.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-2.3">
-            <p id="appendix-B.1-2.3.1">Improved definition of permissions in the format of scope.<a href="#appendix-B.1-2.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-2.3.1">Clarifications and editorial improvements.<a href="#appendix-B.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-2.4">
-            <p id="appendix-B.1-2.4.1">Clarified alternative computing of N_S Challenge when DTLS is used.<a href="#appendix-B.1-2.4.1" class="pilcrow">¶</a></p>
+        </ul>
+</section>
+</div>
+<div id="sec-08-09">
+<section id="appendix-B.2">
+        <h3 id="name-version-08-to-09">
+<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-version-08-to-09" class="section-name selfRef">Version -08 to -09</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="appendix-B.2-1.1">
+            <p id="appendix-B.2-1.1.1">Improved terminology section.<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-2.5">
-            <p id="appendix-B.1-2.5.1">Use of the parameter 'exi' in the Join Response.<a href="#appendix-B.1-2.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.2">
+            <p id="appendix-B.2-1.2.1">Generalized scope format for future, admin-related extensions.<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-2.6">
-            <p id="appendix-B.1-2.6.1">Use of RFC 9290 instead of the custom format of error responses.<a href="#appendix-B.1-2.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.3">
+            <p id="appendix-B.2-1.3.1">Improved definition of permissions in the format of scope.<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-2.7">
-            <p id="appendix-B.1-2.7.1">Fixed construction of the COSE_Encrypt0 object.<a href="#appendix-B.1-2.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.4">
+            <p id="appendix-B.2-1.4.1">Clarified alternative computing of N_S Challenge when DTLS is used.<a href="#appendix-B.2-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-2.8">
-            <p id="appendix-B.1-2.8.1">Fixed use of the resource type "core.ps.gm".<a href="#appendix-B.1-2.8.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.5">
+            <p id="appendix-B.2-1.5.1">Use of the parameter 'exi' in the Join Response.<a href="#appendix-B.2-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-2.9">
-            <p id="appendix-B.1-2.9.1">Updated formulation of profile requirements.<a href="#appendix-B.1-2.9.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.6">
+            <p id="appendix-B.2-1.6.1">Use of RFC 9290 instead of the custom format of error responses.<a href="#appendix-B.2-1.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-2.10">
-            <p id="appendix-B.1-2.10.1">Clarification and editorial improvements.<a href="#appendix-B.1-2.10.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.7">
+            <p id="appendix-B.2-1.7.1">Fixed construction of the COSE_Encrypt0 object.<a href="#appendix-B.2-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.2-1.8">
+            <p id="appendix-B.2-1.8.1">Fixed use of the resource type "core.ps.gm".<a href="#appendix-B.2-1.8.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.2-1.9">
+            <p id="appendix-B.2-1.9.1">Updated formulation of profile requirements.<a href="#appendix-B.2-1.9.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.2-1.10">
+            <p id="appendix-B.2-1.10.1">Clarification and editorial improvements.<a href="#appendix-B.2-1.10.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-07-08">
-<section id="appendix-B.2">
+<section id="appendix-B.3">
         <h3 id="name-version-07-to-08">
-<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-version-07-to-08" class="section-name selfRef">Version -07 to -08</a>
+<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-version-07-to-08" class="section-name selfRef">Version -07 to -08</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.2-1.1">
-            <p id="appendix-B.2-1.1.1">Revised presentation of the scope format.<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.3-1.1">
+            <p id="appendix-B.3-1.1.1">Revised presentation of the scope format.<a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.2">
-            <p id="appendix-B.2-1.2.1">Revised presentation of the Join Request-Response exchange.<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.2">
+            <p id="appendix-B.3-1.2.1">Revised presentation of the Join Request-Response exchange.<a href="#appendix-B.3-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.3">
-            <p id="appendix-B.2-1.3.1">The 'cnonce' parameter must be present in the Join Request.<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.3">
+            <p id="appendix-B.3-1.3.1">The 'cnonce' parameter must be present in the Join Request.<a href="#appendix-B.3-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.4">
-            <p id="appendix-B.2-1.4.1">The 'kid' of the group key is used as Group Identifier.<a href="#appendix-B.2-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.4">
+            <p id="appendix-B.3-1.4.1">The 'kid' of the group key is used as Group Identifier.<a href="#appendix-B.3-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.5">
-            <p id="appendix-B.2-1.5.1">Relaxed inclusion of the 'peer_roles' parameter.<a href="#appendix-B.2-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.5">
+            <p id="appendix-B.3-1.5.1">Relaxed inclusion of the 'peer_roles' parameter.<a href="#appendix-B.3-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.6">
-            <p id="appendix-B.2-1.6.1">More detailed description of the encryption and signing operations.<a href="#appendix-B.2-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.6">
+            <p id="appendix-B.3-1.6.1">More detailed description of the encryption and signing operations.<a href="#appendix-B.3-1.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.7">
-            <p id="appendix-B.2-1.7.1">Defined construction of the AEAD nonce.<a href="#appendix-B.2-1.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.7">
+            <p id="appendix-B.3-1.7.1">Defined construction of the AEAD nonce.<a href="#appendix-B.3-1.7.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.8">
-            <p id="appendix-B.2-1.8.1">Clarifications and editorial improvements.<a href="#appendix-B.2-1.8.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.8">
+            <p id="appendix-B.3-1.8.1">Clarifications and editorial improvements.<a href="#appendix-B.3-1.8.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-06-07">
-<section id="appendix-B.3">
+<section id="appendix-B.4">
         <h3 id="name-version-06-to-07">
-<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-version-06-to-07" class="section-name selfRef">Version -06 to -07</a>
+<a href="#appendix-B.4" class="section-number selfRef">B.4. </a><a href="#name-version-06-to-07" class="section-name selfRef">Version -06 to -07</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.3-1.1">
-            <p id="appendix-B.3-1.1.1">Revised abstract and introduction.<a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.4-1.1">
+            <p id="appendix-B.4-1.1.1">Revised abstract and introduction.<a href="#appendix-B.4-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.2">
-            <p id="appendix-B.3-1.2.1">Clarified use of "application groups".<a href="#appendix-B.3-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.2">
+            <p id="appendix-B.4-1.2.1">Clarified use of "application groups".<a href="#appendix-B.4-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.3">
-            <p id="appendix-B.3-1.3.1">Revised use of protocols and transport profiles with Broker and KDC.<a href="#appendix-B.3-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.3">
+            <p id="appendix-B.4-1.3.1">Revised use of protocols and transport profiles with Broker and KDC.<a href="#appendix-B.4-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.4">
-            <p id="appendix-B.3-1.4.1">Revised overview of the profile and its security associations.<a href="#appendix-B.3-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.4">
+            <p id="appendix-B.4-1.4.1">Revised overview of the profile and its security associations.<a href="#appendix-B.4-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.5">
-            <p id="appendix-B.3-1.5.1">Revised presentation of authorization flow.<a href="#appendix-B.3-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.5">
+            <p id="appendix-B.4-1.5.1">Revised presentation of authorization flow.<a href="#appendix-B.4-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.6">
-            <p id="appendix-B.3-1.6.1">Subscribers cannot be anonymous anymore.<a href="#appendix-B.3-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.6">
+            <p id="appendix-B.4-1.6.1">Subscribers cannot be anonymous anymore.<a href="#appendix-B.4-1.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.7">
-            <p id="appendix-B.3-1.7.1">Revised scope definition.<a href="#appendix-B.3-1.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.7">
+            <p id="appendix-B.4-1.7.1">Revised scope definition.<a href="#appendix-B.4-1.7.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.8">
-            <p id="appendix-B.3-1.8.1">Revised Join Response.<a href="#appendix-B.3-1.8.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.8">
+            <p id="appendix-B.4-1.8.1">Revised Join Response.<a href="#appendix-B.4-1.8.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.9">
-            <p id="appendix-B.3-1.9.1">Revised COSE countersignature, COSE encrypt objects.<a href="#appendix-B.3-1.9.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.9">
+            <p id="appendix-B.4-1.9.1">Revised COSE countersignature, COSE encrypt objects.<a href="#appendix-B.4-1.9.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.10">
-            <p id="appendix-B.3-1.10.1">Further clarifications, fixes and editorial improvements.<a href="#appendix-B.3-1.10.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.10">
+            <p id="appendix-B.4-1.10.1">Further clarifications, fixes and editorial improvements.<a href="#appendix-B.4-1.10.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
