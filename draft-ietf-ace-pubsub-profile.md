@@ -658,7 +658,7 @@ If the group rekeying is performed due to one or multiple Clients joining the gr
 
 ~~~~~~~~~~~ aasvg
   Publisher                            Broker                       Subscriber
-      | -- 0.03 PUT ps/data/1bd0d6d ---> |                                |                             
+      | -- 0.03 PUT ps/data/1bd0d6d ---> |                                |
       |                                  |                                |
       | <----- 2.01 Created ------------ |                                |
       |                                  |<-- 0.01 GET /ps/data/1bd0d6d --|
@@ -1003,6 +1003,14 @@ capabilities as specified in the "COSE Algorithms" registry {{IANA.cose_algorith
 # Document Updates # {#sec-document-updates}
 
 {:removeinrfc}
+
+## Version -09 to -10 ## {#sec-09-10}
+
+* More details on the scope format.
+
+* Improved examples.
+
+* Clarifications and editorial improvements.
 
 ## Version -08 to -09 ## {#sec-08-09}
 
