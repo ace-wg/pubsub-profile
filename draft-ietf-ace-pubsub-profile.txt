@@ -1619,14 +1619,13 @@ Table of Contents
 
    Even though access tokens have expiration times, an access token may
    need to be revoked before its expiration time (see
-   [I-D.draft-ietf-ace-revoked-token-notification] for a list of
-   possible circumstances).  Clients can be excluded from future
-   publications through re-keying for a certain topic.  This could be
-   set up to happen on a regular basis, for certain applications.  How
-   this could be done is out of scope for this work.  The method
-   described in [I-D.draft-ietf-ace-revoked-token-notification] MAY be
-   used to allow an Authorization Server to notify the KDC about revoked
-   access tokens.
+   [I-D.ietf-ace-revoked-token-notification] for a list of possible
+   circumstances).  Clients can be excluded from future publications
+   through re-keying for a certain topic.  This could be set up to
+   happen on a regular basis, for certain applications.  How this could
+   be done is out of scope for this work.  The method described in
+   [I-D.ietf-ace-revoked-token-notification] MAY be used to allow an
+   Authorization Server to notify the KDC about revoked access tokens.
 
    The Broker is only trusted with verifying that the Publisher is
    authorized to publish, but is not trusted with the publications
@@ -1908,15 +1907,6 @@ Table of Contents
 
 9.2.  Informative References
 
-   [I-D.draft-ietf-ace-revoked-token-notification]
-              Tiloca, M., Palombini, F., Echeverria, S., and G. Lewis,
-              "Notification of Revoked Access Tokens in the
-              Authentication and Authorization for Constrained
-              Environments (ACE) Framework", Work in Progress, Internet-
-              Draft, draft-ietf-ace-revoked-token-notification-07, 27
-              May 2024, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-ace-revoked-token-notification-07>.
-
    [I-D.ietf-ace-edhoc-oscore-profile]
               Selander, G., Mattsson, J. P., Tiloca, M., and R. Höglund,
               "Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object
@@ -1933,6 +1923,15 @@ Table of Contents
               Draft, draft-ietf-ace-key-groupcomm-oscore-16, 6 March
               2023, <https://datatracker.ietf.org/doc/html/draft-ietf-
               ace-key-groupcomm-oscore-16>.
+
+   [I-D.ietf-ace-revoked-token-notification]
+              Tiloca, M., Palombini, F., Echeverria, S., and G. Lewis,
+              "Notification of Revoked Access Tokens in the
+              Authentication and Authorization for Constrained
+              Environments (ACE) Framework", Work in Progress, Internet-
+              Draft, draft-ietf-ace-revoked-token-notification-07, 27
+              May 2024, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-ace-revoked-token-notification-07>.
 
    [I-D.ietf-cose-cbor-encoded-cert]
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
@@ -2184,9 +2183,9 @@ Appendix A.  Requirements on Application Profiles
 
 Appendix B.  Document Updates
 
-B.1.  Version -09 to -10
-
    This section is to be removed before publishing as an RFC.
+
+B.1.  Version -09 to -10
 
    *  More details on the scope format.
 
