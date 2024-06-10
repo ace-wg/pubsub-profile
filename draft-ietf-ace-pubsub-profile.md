@@ -671,8 +671,9 @@ Publisher                         Broker                    Subscriber
 |                                   |    Observe:0                   |
 |                                   |                                |
 |                                   +------ 2.05 Content ----------->|
+|                                   |       Observe: 10001           |
 |                                   |                                |
-+-- 0.04 DELETE /ps/data/1bd0d6d -->|       Observe: 10001           |
++-- 0.04 DELETE /ps/data/1bd0d6d -->|                                |
 |                                   |                                |
 |<---- 2.02 Deleted ----------------+                                |
 |                                   |                                |
