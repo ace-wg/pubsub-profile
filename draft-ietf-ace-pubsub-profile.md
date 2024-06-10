@@ -5,6 +5,7 @@ title: Publish-Subscribe Profile for Authentication and Authorization for Constr
 abbrev: ACE Pub-sub Profile
 docname: draft-ietf-ace-pubsub-profile-latest
 
+ipr: trust200902
 area: Security
 wg: ACE Working Group
 kw: Internet-Draft
@@ -67,7 +68,7 @@ informative:
   RFC9431:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-ace-edhoc-oscore-profile:
-  I-D.draft-ietf-ace-revoked-token-notification:
+  I-D.ietf-ace-revoked-token-notification:
   I-D.ietf-ace-key-groupcomm-oscore:
   MQTT-OASIS-Standard-v5:
     title: "OASIS Standard MQTT Version 5.0"
@@ -784,7 +785,7 @@ All the security considerations in {{I-D.ietf-ace-key-groupcomm}} apply.
 
 In the profile described above, the Publishers and Subscribers use asymmetric cryptography, which would make the message exchange quite heavy for small constrained devices. Moreover, all Subscribers must be able to access the public keys of all the Publishers to a specific topic to verify the publications.
 
- Even though access tokens have expiration times, an access token may need to be revoked before its expiration time (see {{I-D.draft-ietf-ace-revoked-token-notification}} for a list of possible circumstances). Clients can be excluded from future publications through re-keying for a certain topic. This could be set up to happen on a regular basis, for certain applications. How this could be done is out of scope for this work. The method described in {{I-D.draft-ietf-ace-revoked-token-notification}} MAY be used to allow an Authorization Server to notify the KDC about revoked access tokens.
+ Even though access tokens have expiration times, an access token may need to be revoked before its expiration time (see {{I-D.ietf-ace-revoked-token-notification}} for a list of possible circumstances). Clients can be excluded from future publications through re-keying for a certain topic. This could be set up to happen on a regular basis, for certain applications. How this could be done is out of scope for this work. The method described in {{I-D.ietf-ace-revoked-token-notification}} MAY be used to allow an Authorization Server to notify the KDC about revoked access tokens.
 
 The Broker is only trusted with verifying that the Publisher is authorized to publish, but is not trusted with the publications itself, which it cannot read nor modify.
 
@@ -1001,7 +1002,6 @@ capabilities as specified in the "COSE Algorithms" registry {{IANA.cose_algorith
 *  OPT15: Optionally, specify if Clients must or should support any of the parameters defined as optional in {{I-D.ietf-ace-key-groupcomm}}: no.
 
 # Document Updates # {#sec-document-updates}
-
 {:removeinrfc}
 
 ## Version -09 to -10 ## {#sec-09-10}
@@ -1075,7 +1075,7 @@ capabilities as specified in the "COSE Algorithms" registry {{IANA.cose_algorith
 * Further clarifications, fixes and editorial improvements.
 
 # Acknowledgments
-{:unnumbered}
+{:numbered="false"}
 
 The authors wish to thank {{{Ari Keränen}}}, {{{John Preuß Mattsson}}}, {{{Jim Schaad}}}, {{{Ludwig Seitz}}}, and {{{Göran Selander}}} for the useful discussion and reviews that helped shape this document.
 
