@@ -117,6 +117,8 @@ Table of Contents
      9.1.  Normative References
      9.2.  Informative References
    Appendix A.  Requirements on Application Profiles
+     A.1.  Mandatory-to-Address Requirements
+     A.2.  Optional-to-Address Requirements
    Appendix B.  Document Updates
      B.1.  Version -09 to -10
      B.2.  Version -08 to -09
@@ -2052,13 +2054,17 @@ Appendix A.  Requirements on Application Profiles
    This section lists how this application profile of ACE addresses the
    requirements defined in Appendix A of [I-D.ietf-ace-key-groupcomm].
 
-   *  REQ1: Specify the format and encoding of 'scope': see
-      Section 3.4.1.
+A.1.  Mandatory-to-Address Requirements
+
+   *  REQ1: Specify the format and encoding of 'scope'.  This includes
+      defining the set of possible roles and their identifiers, as well
+      as the corresponding encoding to use in the scope entries
+      according to the used scope format: see Section 3.4.1.
 
    *  REQ2: If the AIF format of 'scope' is used, register its specific
       instance of "Toid" and "Tperm" as Media Type parameters and a
       corresponding Content-Format, as per the guidelines in [RFC9237]:
-      see Section 8.4.
+      see Section 8.4 and Section 8.5.
 
    *  REQ3: If used, specify the acceptable values for 'sign_alg':
       values from the "Value" column of the "COSE Algorithms" registry
@@ -2070,18 +2076,18 @@ Appendix A.  Requirements on Application Profiles
       [IANA.cose_algorithms].
 
    *  REQ5: If used, specify the acceptable values for
-      'sign_key_parameters': its format and value are the same of the
-      COSE capabilities array for the COSE key type of the keys used
-      with the algorithm indicated in 'sign_alg', as specified for that
-      key type in the "Capabilities" column of the "COSE Key Types"
-      registry [IANA.cose_key-type].
+      'sign_key_parameters': format and values from the COSE key type
+      capabilities as specified in the "COSE Key Types" registry
+      [IANA.cose_key-type].
 
    *  REQ6: Specify the acceptable formats for authentication
       credentials and, if used, the acceptable values for 'cred_fmt':
       acceptable formats explicitly provide the public key as well as
       the comprehensive set of information related to the public key
-      algorithm.  Takes value from the "Label" column of the "COSE
-      Header Parameters" registry [IANA.cose_header-parameters].
+      algorithm (see Section 3.6 and Section 4.1.2).  Consistent
+      acceptable values for 'cred_fmt' are taken from the "Label" column
+      of the "COSE Header Parameters" registry
+      [IANA.cose_header-parameters].
 
    *  REQ7: If the value of the GROUPNAME URI path and the group name in
       the access token scope (gname) are not required to coincide,
@@ -2090,11 +2096,11 @@ Appendix A.  Requirements on Application Profiles
 
    *  REQ8: Define whether the KDC has an authentication credential and
       if this has to be provided through the 'kdc_cred' parameter:
-      optional, see Section 4.1.2 of this document.
+      optional, see Section 4.1.2.
 
    *  REQ9: Specify if any part of the KDC interface as defined in
       [I-D.ietf-ace-key-groupcomm] is not supported by the KDC: some are
-      left optional, see Section 4 of this document.
+      left optional, see Section 4.
 
    *  REQ10: Register a Resource Type for the group-membership resource,
       which is used to discover the correct URL for sending a Join
@@ -2137,10 +2143,12 @@ Appendix A.  Requirements on Application Profiles
       Group_PubSub_Keying_Material, see Section 4.1.2.
 
    *  REQ19: Specify and register the application profile identifier:
-      coap_group_pubsub_app, see Section 4.1.2 and Section 8.2.
+      coap_group_pubsub_app (see Section 4.1.2 and Section 8.2) and
+      mqtt_pubsub_app (see Section 6 and Section 8.2).
 
    *  REQ20: If used, specify the format and content of 'group_policies'
-      and its entries.  Specify the policies default values: ToDo.
+      and its entries.  Specify the policies default values: not
+      applicable.
 
    *  REQ21: Specify the approaches used to compute and verify the PoP
       evidence to include in 'kdc_cred_verify', and which of those
@@ -2149,17 +2157,20 @@ Appendix A.  Requirements on Application Profiles
       used for computing the PoP evidence: see Section 4.1.2.
 
    *  REQ22: Specify the communication protocol that the members of the
-      group must use: CoAP [RFC7252], and for Pub-Sub communication
-      [I-D.ietf-core-coap-pubsub].
+      group must use: CoAP [RFC7252], used for Pub-Sub communications as
+      defined in [I-D.ietf-core-coap-pubsub].
 
    *  REQ23: Specify the security protocol the group members must use to
       protect their communication.  This must provide encryption,
-      integrity and replay protection: a symmetric COSE Key is used to
-      create a COSE_Encrypt0 object with an AEAD algorithm specified by
-      the KDC.
+      integrity, and replay protection: Publishers in a group use a
+      symmetric group key to protect published topic data as a
+      COSE_Encrypt0 object, per the AEAD algorithm specified by the KDC.
+      A Publisher also produces a COSE countersignature of the
+      COSE_Encrypt0 object by using its private key, per the signature
+      algorithm specified by the KDC.
 
    *  REQ24: Specify how the communication is secured between Client and
-      KDC.  Optionally, specify transport profile of ACE [RFC9200] to
+      KDC.  Optionally, specify a transport profile of ACE [RFC9200] to
       use between Client and KDC: ACE transport profile such as for DTLS
       [RFC9202] or OSCORE [RFC9203].
 
@@ -2171,32 +2182,34 @@ Appendix A.  Requirements on Application Profiles
 
    *  REQ27: Specify the format of newly-generated individual keying
       material for group members, or of the information to derive it,
-      and corresponding CBOR label: not applicable.
+      and corresponding CBOR label: TBD.
 
    *  REQ28: Specify which CBOR tag is used for identifying the
       semantics of binary scopes, or register a new CBOR tag if a
       suitable one does not exist already: see Section 3.5 and
-      Section 8.5 of this document.
+      Section 8.5.
 
    *  REQ29: Categorize newly defined parameters according to the same
       criteria of Section 8 of [I-D.ietf-ace-key-groupcomm]: a Publisher
       Client MUST support 'group_SenderId' in 'key'; see Section 4.1.2.
 
-   *  REQ30: Define whether Clients must, should or may support the
+   *  REQ30: Define whether Clients must, should, or may support the
       conditional parameters defined in Section 8 of
       [I-D.ietf-ace-key-groupcomm], and under which circumstances: a
       Publisher Client MUST support the client_cred', 'cnonce', and
-      'client_cred_verify' parameters; see Section 4.1.1.  A Publisher
-      Client that provides the token to the KDC, through the authz-info
-      endpoint, MUST support the parameter 'kdcchallenge'; see
-      Section 3.6.
+      'client_cred_verify' parameters (see Section 4.1.1).  A Publisher
+      Client that provides the access token to the KDC through the
+      authz-info endpoint MUST support the parameter 'kdcchallenge' (see
+      Section 3.6).
+
+A.2.  Optional-to-Address Requirements
 
    *  OPT1: Optionally, if the textual format of 'scope' is used,
       specify CBOR values to use for abbreviating the role identifiers
-      in the group: no.
+      in the group: not applicable.
 
    *  OPT2: Optionally, specify the additional parameters used in the
-      exchange of Token Transfer Request and Response: no.
+      exchange of Token Transfer Request and Response: none are defined.
 
    *  OPT3: Optionally, specify the negotiation of parameter values for
       signature algorithm and signature keys, if 'sign_info' is not
@@ -2219,7 +2232,7 @@ Appendix A.  Requirements on Application Profiles
    *  OPT8: Optionally, specify the behavior of the handler in case of
       failure to retrieve an authentication credential for the specific
       node: The KDC MUST reply with a 4.00 (Bad Request) error response
-      to the Join Request; see Section 4.1.3.
+      to the Join Request (see Section 4.1.3).
 
    *  OPT9: Optionally, define a default group rekeying scheme, to refer
       to in case the 'rekeying_scheme' parameter is not included in the
@@ -2236,19 +2249,15 @@ Appendix A.  Requirements on Application Profiles
 
    *  OPT12: Optionally, specify for the KDC to perform group rekeying
       (together or instead of renewing individual keying material) when
-      receiving a Key Renewal Request: ToDo.
+      receiving a Key Renewal Request: see Section 4.2.4.
 
    *  OPT13: Optionally, specify how the identifier of a group member's
       authentication credential is included in requests sent to other
       group members: no.
 
    *  OPT14: Optionally, specify additional information to include in
-      rekeying messages for the "Point-to-Point" group rekeying scheme:
-      ToDo.
-
-   *  OPT15: Optionally, specify if Clients must or should support any
-      of the parameters defined as optional in
-      [I-D.ietf-ace-key-groupcomm]: no.
+      rekeying messages for the "Point-to-Point" group rekeying scheme
+      (see Section 6.1 of [I-D.ietf-ace-key-groupcomm]): no.
 
 Appendix B.  Document Updates
 
@@ -2263,6 +2272,9 @@ B.1.  Version -09 to -10
    *  Improved security considerations.
 
    *  Revised IANA considerations.
+
+   *  Aligned the list of profile requirements with draft-ietf-ace-key-
+      groupcomm.
 
    *  Clarifications and editorial improvements.
 
