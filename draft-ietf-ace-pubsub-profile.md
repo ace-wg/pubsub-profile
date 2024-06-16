@@ -449,7 +449,7 @@ In order to enable secure group communication for the Pub-Sub Clients, the KDC p
 
 The use of these resources follows what is defined in {{I-D.ietf-ace-key-groupcomm}}, and only additions or modifications to that specification are defined in this document.
 
-Consistent with what is defined in {{I-D.ietf-ace-key-groupcomm}}, some error responses from the KDC can convey error-specific information according to the problem-details format specified in {{RFC9290}}.
+Consistent with what is defined in {{Section 4.1.2 of I-D.ietf-ace-key-groupcomm}}, some error responses from the KDC can convey error-specific information according to the problem-details format specified in {{RFC9290}}.
 
 ## Joining a Security Group {#join}
 
@@ -535,39 +535,41 @@ In case of success, the KDC responds with a Join Response, whose payload formatt
 
 - 'gkty': this field specifies the key type "Group_PubSub_Keying_Material" (REQ18) registered in {{iana-ace-groupcomm-key}} for the 'key' parameter.
 
-- 'key': The keying material for group communication specified in this field includes the following parameters (REQ17):
+- 'key': this field specifies the keying material to use for secure communication in the group (REQ17). This field has as value a CBOR map that includes the following parameters.
 
-   * 'cred_fmt', specifying the format of authentication credentials used in the group. This parameter takes its value from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}}.
+   * 'group_key': this parameter is identified by the CBOR unsigned integer 0 used as map key. Its value is a COSE\_Key object as defined in {{RFC9052}} and conveying the group key to use in the security group.
 
-     At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC7925}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Further formats may be available in the future, and would be acceptable to use as long as they comply with the criteria defined above (REQ6).
+     The COSE\_Key object MUST contain the following parameters:
 
-   * 'sign_alg', specifying the Signature Algorithm used to sign messages in the group. This parameter takes values from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
+     - 'kty', with value 4 (Symmetric).
 
-   * 'sign_params', specifying the parameters of the Signature Algorithm. This parameter is a CBOR array, which includes the following two elements:
+     - 'alg', with value the identifier of the AEAD algorithm used in the security group. The value is taken from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
 
-      - 'sign_alg_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
+     - 'Base IV', with value the Base Initialization Vector (Base IV) to use in the security group with this group key.
 
-      - 'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{IANA.cose_key-type}}.
+     - 'k', with value the symmetric encryption key to use as group key.
 
-   * 'group_key', specifying a COSE\_Key object as defined in {{RFC9052}} and conveying the group key to use in the security group. The COSE\_Key object MUST contain the following parameters:
+     - 'kid', with value the identifier of the COSE\_Key object, hence of the group key.
 
-      - 'kty', with value 4 (Symmetric).
+       This value is used as Group Identifier (Gid) of the security group, as long as the present key is used as group key in the security group.
 
-      - 'alg', with value the identifier of the AEAD algorithm used in the security group. The value is taken from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
-
-      - 'Base IV', with value the Base Initialization Vector (Base IV) to use in the security group with this group key.
-
-      - 'k', with value the symmetric encryption key to use as group key.
-
-      - 'kid', with value the identifier of the COSE\_Key object, hence of the group key.
-
-         This value is used as Group Identifier (Gid) of the security group, as long as the present key is used as group key in the security group.
-
-   * 'group_SenderId', specifying the Client's Sender ID encoded as a CBOR byte string. This field MUST be included if the Client is joining the security group as a Publisher, and MUST NOT be included otherwise. A Publisher Client MUST support the 'group\_SenderId' parameter (REQ29).
+   * 'group_SenderId': this parameter is identified by the CBOR unsigned integer 1 used as map key. Its value is the Client's Sender ID encoded as a CBOR byte string. This parameter MUST be included if the Client is joining the security group as a Publisher, and MUST NOT be included otherwise. A Publisher Client MUST support the 'group\_SenderId' parameter (REQ29).
 
       The Sender ID MUST be unique within the security group. The KDC MUST only assign an available Sender ID that has not been used in the security group since the last time when the current Gid value was assigned to the group (i.e., since the latest group rekeying, see {{rekeying}}). The KDC MUST NOT assign a Sender ID to the joining node if the node is not joining the group as a Publisher.
 
       The Sender ID can be short in length. Its maximum length in bytes is the length in bytes of the AEAD nonce for the AEAD algorithm, minus 6. This means that, when using AES-CCM-16-64-128 as AEAD algorithm in the security group, the maximum length of Sender IDs is 7 bytes.
+
+   * 'cred_fmt': this parameter is identified by the CBOR unsigned integer 2 used as map key. Its value specifies the format of authentication credentials used in the group, and is taken from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}}.
+
+     At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC7925}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Further formats may be available in the future, and would be acceptable to use as long as they comply with the criteria defined above (REQ6).
+
+   * 'sign_alg': this parameter is identified by the CBOR unsigned integer 3 used as map key. Its value specifies the Signature Algorithm used to sign messages in the group, and is taken from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
+
+   * 'sign_params': this parameter is identified by the CBOR unsigned integer 4 used as map key. Its value specifies the parameters of the Signature Algorithm, as is encoded as a CBOR array including the following two elements:
+
+      - 'sign_alg_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
+
+      - 'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{IANA.cose_key-type}}.
 
 - 'num', specifying the version number of the keying material specified in the 'key' field. The initial value of the version number MUST be set to 0 upon creating the group (REQ16).
 
@@ -619,7 +621,7 @@ The CBOR map MAY include the 'kdcchallenge' parameter. If present, this paramete
 
 Upon receiving the Join Response, if 'kdc_cred' is present but the Client cannot verify the PoP evidence, the Client MUST stop processing the Join Response and MAY send a new Join Request to the KDC.
 
-The KDC MUST return a 5.03 (Service Unavailable) response to a Client that sends a Join Request to join the security group as Publisher, in case there are currently no Sender IDs available to assign.
+The KDC MUST return a 5.03 (Service Unavailable) response to a Client that sends a Join Request to join the security group as Publisher, in case there are currently no Sender IDs available to assign. The response MUST have Content-Format set to application/concise-problem-details+cbor and is formatted as defined in {{Section 4.1.2 of I-D.ietf-ace-key-groupcomm}}. Within the Custom Problem Detail entry 'ace-groupcomm-error', the value of the 'error-id' field MUST be set to 4 ("No available node identifiers").
 
 ## Other Group Operations through the KDC
 
@@ -627,37 +629,87 @@ The KDC MUST return a 5.03 (Service Unavailable) response to a Client that sends
 
 * '/ace-group': All Clients can send a FETCH request to retrieve a set of group names associated with their group identifiers specified in the request payload. Each element of the CBOR array 'gid' is a CBOR byte string (REQ13), which encodes the Gid of the group (see {{join-response}}) for which the group name and the URI to the group-membership resource are provided in the returned response.
 
-* '/ace-group/GROUPNAME':  All Clients can use GET requests to retrieve the symmetric group keying material of the group with the name GROUPNAME. The value of the GROUPNAME URI path and the group name in the access token scope ('gname') MUST coincide.
+* '/ace-group/GROUPNAME':  All group member Clients can send a GET request to retrieve the symmetric group keying material of the group with the name GROUPNAME. The value of the GROUPNAME URI path and the group name in the access token scope ('gname') MUST coincide.
+
+  The KDC processes the Key Distribution Request according to {{Section 4.3.2 of I-D.ietf-ace-key-groupcomm}}. The Key Distribution Response is formatted as defined in {{Section 4.3.2 of I-D.ietf-ace-key-groupcomm}}, with the following additions.
+
+  * The 'key' field is formatted as defined in {{join-response}} of this document, with the difference that it does not include the 'group_SenderId' parameter.
+
+  * The 'exi' field MUST be present.
+
+  * The 'ace_groupcomm_profile' field MUST be present and has value "coap_group_pubsub_app".
+
+  Upon receiving the Key Distribution Response, the requesting group member retrieves the updated security parameters and group keying material. If they differ from the currently stored ones, then the group member uses the received one as group keying material to protect/unprotect published topic data hereafter.
 
 * '/ace-group/GROUPNAME/creds': The KDC acts as a repository of authentication credentials for the Publishers that are member of the security group with name GROUPNAME. The members of the group that are Subscribers can send GET/FETCH requests to this resource in order to retrieve the authentication credentials of all or a subset of the group members that are Publishers. The KDC silently ignores the Sender IDs included in the 'get_creds' parameter of the request that are not associated with any current Publisher group member (REQ26).
 
-   The response from the KDC MAY omit the parameter 'peer\_roles', since: i) each authentication credential conveyed in the 'creds' parameter is associated with a Client authorized to be Publisher in the group; and ii) it is irrelevant whether such a Client was also authorized to be Subscriber in the group. If 'creds' is not present, 'peer\_roles' MUST NOT be present.
+  The response from the KDC MAY omit the parameter 'peer\_roles', since: i) each authentication credential conveyed in the 'creds' parameter is associated with a Client authorized to be Publisher in the group; and ii) it is irrelevant whether such a Client was also authorized to be Subscriber in the group. If 'creds' is not present, 'peer\_roles' MUST NOT be present.
 
 * '/ace-group/GROUPNAME/num': All group member Clients can send a GET request to this resource in order to retrieve the current version number for the symmetric group keying material of the group with name GROUPNAME.
 
 * '/ace-group/GROUPNAME/kdc-cred': All group member Clients can send a GET request to this resource in order to retrieve the current authentication credential of the KDC.
 
+### Obtaining Latest Group Keying Material and Sender ID
+
+If a group member wants to retrieve the latest group keying material as well as its Sender ID that it has in group (if Publisher), it sends a Key Distribution Request to the KDC.
+
+That is, it sends a CoAP GET request to the endpoint /ace-group/GROUPNAME/nodes/NODENAME at the KDC.
+
+The KDC processes the Key Distribution Request according to {{Section 4.8.1 of I-D.ietf-ace-key-groupcomm}}. The Key Distribution Response is formatted as defined in {{Section 4.8.1 of I-D.ietf-ace-key-groupcomm}}, with the following additions.
+
+* The 'key' field is formatted as defined in {{join-response}} of this document. If the requesting group member is not a Publisher Client, then the 'key' field does not include the 'group_SenderId' parameter.
+
+* The 'exi' field MUST be present.
+
+Upon receiving the Key Distribution Response, the group member retrieves the updated security parameters, group keying material, and Sender ID (if the 'key' field includes the 'group_SenderId' parameter). If they differ from the currently stored ones, then the group member uses the received one as group keying material to protect/unprotect published topic data hereafter.
+
+### Requesting a New Sender ID ## {#sec-key-renewal-request}
+
+A Publisher group member with node name NODENAME may at some point exhaust its Sender Sequence Numbers used for protecting its published topic data (see {{oscon}}).
+
+When this happens, the Publisher MUST send a Key Renewal Request message to the KDC, as per {{Section 4.8.2.1 of I-D.ietf-ace-key-groupcomm}}. That is, it sends a CoAP PUT request to the endpoint /ace-group/GROUPNAME/nodes/NODENAME at the KDC.
+
+Upon receiving the Key Renewal Request, the KDC processes it as defined in {{Section 4.8.2 of I-D.ietf-ace-key-groupcomm}}, with the addition that the KDC takes one of the following actions.
+
+* The KDC rekeys the group. That is, the KDC generates new group keying material for that group (see {{rekeying}}), and replies to the Publisher with a group rekeying message as defined in {{rekeying}}, providing the new group keying material. Then, the KDC rekeys the rest of the group, as discussed in {{rekeying}}.
+
+  The KDC SHOULD perform a group rekeying only if already scheduled to occur shortly, e.g., according to an application-specific rekeying period or scheduling, or as a reaction to a recent change in the group membership. In any other case, the KDC SHOULD NOT rekey the OSCORE group when receiving a Key Renewal Request (OPT12).
+
+* The KDC determines and assigns a new Sender ID for the Publisher, and replies with a Key Renewal Response formatted as defined in {{Section 4.8.2 of I-D.ietf-ace-key-groupcomm}}. The CBOR Map in the response payload includes only the parameter 'group_SenderId' registered in {{Section 16.3 of I-D.ietf-ace-key-groupcomm-oscore}}, and specifies the new Sender ID of the Publisher encoded as a CBOR byte string.
+
+  The KDC MUST assign a new Sender ID that has not been used in the group since the latest time when the current Gid value was assigned to the group (i.e., since the latest group rekeying, see {{rekeying}}).
+
+  The KDC MUST return a 5.03 (Service Unavailable) response in case there are currently no Sender IDs available to assign in the group. The response MUST have Content-Format set to application/concise-problem-details+cbor and is formatted as defined in {{Section 4.1.2 of I-D.ietf-ace-key-groupcomm}}. Within the Custom Problem Detail entry 'ace-groupcomm-error', the value of the 'error-id' field MUST be set to 4 ("No available node identifiers").
+
 ### Updating Authentication Credentials
 
-A Publisher with node name NODENAME can contact the KDC to upload a new authentication credential to use in the security group with name GROUPNAME, and replace the currently stored one. To this end, the Publisher sends a CoAP POST request to its associated sub-resource /ace-group/GROUPNAME/nodes/NODENAME/cred at the KDC.
+A Publisher group member with node name NODENAME can contact the KDC to upload a new authentication credential to use in the security group with name GROUPNAME, and replace the currently stored one. To this end, the Publisher sends a CoAP POST request to its associated sub-resource /ace-group/GROUPNAME/nodes/NODENAME/cred at the KDC (see {{Section 4.9.1 of I-D.ietf-ace-key-groupcomm}}).
 
 Following a successful processing of the request, the KDC replaces the stored authentication credential of this Client for the group GROUPNAME with the one specified in the request.
 
-### Removal from a Group
+### Leaving a Group ## {#sec-group-leaving}
 
-A Client with node name NODENAME can actively request to leave the security group with name GROUPNAME. To this end, the Client sends a CoAP DELETE request to the associated sub-resource /ace-group/GROUPNAME/nodes/NODENAME at the KDC. The KDC can also remove a group member due to any of the reasons described in {{Section 5 of I-D.ietf-ace-key-groupcomm}}.
+A group member with node name NODENAME can actively request to leave the security group with name GROUPNAME. To this end, the Client sends a CoAP DELETE request to the associated sub-resource /ace-group/GROUPNAME/nodes/NODENAME at the KDC (see {{Section 4.8.3 of I-D.ietf-ace-key-groupcomm}}).
+
+The KDC can also remove a group member due to any of the reasons described in {{Section 5 of I-D.ietf-ace-key-groupcomm}}.
 
 ### Rekeying a Group {#rekeying}
 
-The KDC MUST trigger a group rekeying as described in {{Section 6 of I-D.ietf-ace-key-groupcomm}} due to a change in the group membership or to the current group keying material approaching its expiration time. The KDC MAY trigger regularly scheduled update of the group keying material.
+The KDC MUST trigger a group rekeying as described in {{Section 6 of I-D.ietf-ace-key-groupcomm}}, upon a change in the group membership or due to the current group keying material approaching its expiration time. In addition, the KDC MAY trigger regularly scheduled update of the group keying material.
 
-Upon generating the new group keying material and before starting its distribution, the KDC MUST increment the version number of the group keying material. The KDC MUST preserve the current value of the Sender ID of each member in that group. The KDC MUST also generate a new Group Identifier (Gid) for the group, and use it as identifier of the new group key provided through the group rekeying and hereafter to Clients (re-)joining the security group (see {{join-response}}).
+Upon generating the new group keying material and before starting its distribution, the KDC MUST increment the version number of the group keying material. The KDC MUST also generate a new Group Identifier (Gid) for the group, and use it as identifier of the new group key when providing it to the current group members through the group rekeying, and to Clients (re-)joining the security group hereafter (see {{join-response}}). When rekeying the group, the KDC MUST preserve the current value of the Sender ID of each member in that group.
 
-The default rekeying scheme is Point-to-Point (see {{Section 6.1 of I-D.ietf-ace-key-groupcomm}}), where the KDC individually targets each node to rekey, using the pairwise secure communication association with that node.
+The default rekeying scheme is "Point-to-Point" (see {{Section 6.1 of I-D.ietf-ace-key-groupcomm}}), where the KDC individually targets each node to rekey, using the pairwise secure communication association with that node.
 
-If the group rekeying is performed due to one or multiple Clients joining the group as Publishers, then a rekeying message includes the Sender IDs and authentication credentials that those clients are going to use in the group. This information is specified by means of the parameters 'creds' and 'peer_identifiers', like done in the Join Response message. In the same spirit, the 'peer_roles' parameter MAY be omitted.
+In particular, a group rekeying message MUST have Content-Format set to application/ace-groupcomm+cbor and have the same format used for the Join Response message defined in {{join-response}}, with the following differences:
 
-# PubSub Protected Communication (C) {#protected_communication}
+* Within the 'key' field, only the parameter 'group_key' is present.
+
+* The fields 'kdc_cred' ,'kdc_nonce', 'kdc_cred_verify', and 'group_rekeying' are not present.
+
+* The fields 'creds' and 'peer_identifiers' SHOULD be present, if the group rekeying is performed due to one or multiple Clients joining the group as Publishers. Following the same semantics used in the Join Response message, the two parameters specify the authentication credential and Sender ID of such Clients. Like in the Join Response message, the 'peer_roles' parameter MAY be omitted.
+
+# PubSub Protected Communication {#protected_communication}
 
 In the diagram shown in {{pubsub-3}}, (D) corresponds to the publication on a topic at the Broker, by using a CoAP PUT request. The Publisher protects the published topic data end-to-end for the Subscribers by using COSE ({{RFC9052}}{{RFC9053}}{{RFC9338}}), as detailed in {{oscon}}.
 
@@ -727,6 +779,8 @@ The 'unprotected' field MUST include:
 * The 'Partial IV' parameter, with value set to the current Sender Sequence Number of the Publisher. All leading bytes of value zero SHALL be removed when encoding the Partial IV, except in the case of Partial IV value 0, which is encoded to the byte string 0x00.
 
    The Publisher MUST initialize the Sender Sequence Number to 0 upon joining the security group, and MUST reset it to 0 upon receiving a new group key as result of a group rekeying (see {{rekeying}}). The Publisher MUST increment its Sender Sequence Number value by 1, after having completed an encryption operation by means of the current group key.
+
+   When the Publisher exhausts its Sender Sequence Numbers, the Publisher MUST NOT protect further topic data by using the current group key while still retaining its current Sender ID, and MUST send a Key Renewal Request message to the KDC (see {{sec-key-renewal-request}}). This will result in the KDC rekeying the group and distributing a new group key, or in the KDC providing the Publisher with a new Sender ID. The Publisher MUST reset its Sender Sequence Number to 0 upon receiving a new Sender ID from the KDC.
 
 * The 'Countersignature version 2' parameter, specifying the countersignature of the COSE\_Encrypt0 object. In particular:
 
@@ -998,7 +1052,7 @@ This section lists how this application profile of ACE addresses the requirement
 
 * REQ26: Specify policies at the KDC to handle ids that are not included in 'get_creds': see {{query}}.
 
-* REQ27: Specify the format of newly-generated individual keying material for group members, or of the information to derive it, and corresponding CBOR label: TBD.
+* REQ27: Specify the format of newly-generated individual keying material for group members, or of the information to derive it, and corresponding CBOR label: see {{sec-key-renewal-request}}.
 
 * REQ28: Specify which CBOR tag is used for identifying the semantics of binary scopes, or register a new CBOR tag if a suitable one does not exist already: see {{as-response}} and {{content_formats}}.
 
@@ -1030,7 +1084,7 @@ This section lists how this application profile of ACE addresses the requirement
 
 * OPT11: Optionally, specify policies that instruct Clients to retain messages and for how long, if they are unsuccessfully decrypted: no.
 
-* OPT12: Optionally, specify for the KDC to perform group rekeying (together or instead of renewing individual keying material) when receiving a Key Renewal Request: see {{rekeying}}.
+* OPT12: Optionally, specify for the KDC to perform group rekeying (together or instead of renewing individual keying material) when receiving a Key Renewal Request: the KDC SHOULD NOT perform a group rekeying, unless already scheduled to occur shortly (see {{sec-key-renewal-request}}).
 
 * OPT13: Optionally, specify how the identifier of a group member's authentication credential is included in requests sent to other group members: no.
 
@@ -1042,6 +1096,12 @@ This section lists how this application profile of ACE addresses the requirement
 ## Version -09 to -10 ## {#sec-09-10}
 
 * More details on the scope format.
+
+* More details in the encoding of the 'key' parameter in the Join Response.
+
+* More details on exchanges between group members and KDC.
+
+* More details on the rekeying process and rekeying messages.
 
 * Improved examples.
 
