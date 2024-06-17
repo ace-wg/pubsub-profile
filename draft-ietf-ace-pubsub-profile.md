@@ -693,11 +693,21 @@ A group member with node name NODENAME can actively request to leave the securit
 
 The KDC can also remove a group member due to any of the reasons described in {{Section 5 of I-D.ietf-ace-key-groupcomm}}.
 
-### Rekeying a Group {#rekeying}
+# Group Rekeying Process {#rekeying}
 
-The KDC MUST trigger a group rekeying as described in {{Section 6 of I-D.ietf-ace-key-groupcomm}}, upon a change in the group membership or due to the current group keying material approaching its expiration time. In addition, the KDC MAY trigger regularly scheduled update of the group keying material.
+Rekeying a group consists in the KDC generating and distributing a new symmetric key, which is used as group key from then on to protect the publication of topic data with COSE (see {{oscon}}).
 
-Upon generating the new group keying material and before starting its distribution, the KDC MUST increment the version number of the group keying material. The KDC MUST also generate a new Group Identifier (Gid) for the group, and use it as identifier of the new group key when providing it to the current group members through the group rekeying, and to Clients (re-)joining the security group hereafter (see {{join-response}}). When rekeying the group, the KDC MUST preserve the current value of the Sender ID of each member in that group.
+The KDC MUST trigger a group rekeying as described in {{Section 6 of I-D.ietf-ace-key-groupcomm}}, upon a change in the group membership or due to the current group keying material approaching its expiration time. In addition, the KDC MAY perform regularly scheduled group rekeying executions.
+
+Upon generating the new group key and before starting its distribution:
+
+* The KDC MUST increment the version number of the group keying material.
+
+* The KDC MUST generate a new Group Identifier (Gid) for the group. This is used as identifier of the new group key, when providing it to the current group members through the group rekeying, and to Clients (re-)joining the security group hereafter (see {{join-response}}).
+
+  That is, the value of the new Gid is specified by the 'kid' parameter of the COSE\_Key Object that is used to encode the new group key.
+
+When rekeying the group, the KDC MUST preserve the current value of the Sender ID of each member in that group.
 
 The default rekeying scheme is "Point-to-Point" (see {{Section 6.1 of I-D.ietf-ace-key-groupcomm}}), where the KDC individually targets each node to rekey, using the pairwise secure communication association with that node.
 
@@ -709,7 +719,7 @@ In particular, a group rekeying message MUST have Content-Format set to applicat
 
 * The fields 'creds' and 'peer_identifiers' SHOULD be present, if the group rekeying is performed due to one or multiple Clients joining the group as Publishers. Following the same semantics used in the Join Response message, the two parameters specify the authentication credential and Sender ID of such Clients. Like in the Join Response message, the 'peer_roles' parameter MAY be omitted.
 
-# PubSub Protected Communication {#protected_communication}
+# Pub-Sub Protected Communication {#protected_communication}
 
 In the diagram shown in {{pubsub-3}}, (D) corresponds to the publication on a topic at the Broker, by using a CoAP PUT request. The Publisher protects the published topic data end-to-end for the Subscribers by using COSE ({{RFC9052}}{{RFC9053}}{{RFC9338}}), as detailed in {{oscon}}.
 
@@ -754,7 +764,7 @@ Publisher                         Broker                    Subscriber
 ~~~~~~~~~~~
 {: #flow title="Example of Secure Pub-Sub Communication using CoAP" artwork-align="center"}
 
-## Using COSE to Protect the Published Content {#oscon}
+## Using COSE to Protect the Published Topic Data {#oscon}
 
 The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (see {{Section 4.3 of I-D.ietf-core-coap-pubsub}}). Specifically, the Publisher creates a COSE\_Encrypt0 object {{RFC9052}}{{RFC9053}} by means of the COSE Key currently used as group key. The encryption algorithm and Base IV to use are specified by the 'alg' and 'Base IV' parameters of the COSE Key, together with its key identifier in the 'kid' parameter.
 
