@@ -2623,8 +2623,21 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
         <h3 id="name-replay-checks">
 <a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-replay-checks" class="section-name selfRef">Replay Checks</a>
         </h3>
-<p id="section-6.3-1">This section defines how a Subscriber Client checks whether the topic data conveyed in a received message from the Broker is a replay.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
-<p id="section-6.3-2">TBD<a href="#section-6.3-2" class="pilcrow">¶</a></p>
+<p id="section-6.3-1">In order to protect from replay of published topic data, every Subscriber maintains a Replay Window for each different Publisher in the same group. It is <span class="bcp14">RECOMMENDED</span> that the Replay Window has a default size of 32.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.3-2">Upon receiving a topic data published by a given Publisher P, the Subscriber retrieves the Sender ID of P conveyed as 'kid' in the 'Countersignature version 2' parameter of the COSE_Encrypt0 object (see <a href="#oscon" class="auto internal xref">Section 6.1</a>), and determines the Replay Window W_P associated with P.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
+<p id="section-6.3-3">The Subcriber <span class="bcp14">MUST</span> verify that, according to W_P, the Sender Sequence Number SN_P specified by the 'Partial IV' parameter of the COSE_Encrypt0 object has not been received before from P.<a href="#section-6.3-3" class="pilcrow">¶</a></p>
+<p id="section-6.3-4">If the verification above fails, the Subscriber <span class="bcp14">MUST</span> stop processing the COSE_Encrypt0 object conveying the topic data. If the value of SN_P is strictly smaller than the currently smallest value in W_P, then the Subscriber <span class="bcp14">MUST</span> stop processing the COSE_Encrypt0 object.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
+<p id="section-6.3-5">If the verification above succeeds, the Subscriber proceeds with processing the COSE_Encrypt0 object, by verifying the countersignature from P using P's public key as well as by decrypting the COSE_Encrypt0 object using the group key. If both operations succeed, the Subscriber updates W_P as follows:<a href="#section-6.3-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.3-6.1">
+            <p id="section-6.3-6.1.1">If SN_P is strictly greater than the currently largest value in W_P, then W_P is updated in order to set SN_P as its largest value.<a href="#section-6.3-6.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.3-6.2">
+            <p id="section-6.3-6.2.1">SN_P is marked to denote that it has been received.<a href="#section-6.3-6.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-6.3-7">The operation of validating the 'Partial IV' and updating the Replay Window <span class="bcp14">MUST</span> be atomic.<a href="#section-6.3-7" class="pilcrow">¶</a></p>
+<p id="section-6.3-8">Upon installing a new group key (e.g., due to a group rekeying performed by the KDC, see <a href="#rekeying" class="auto internal xref">Section 5</a>) or upon receiving published topic data from a given Publisher for the first time, the Subscriber initializes the Replay Window corresponding to that Publisher, i.e., the smallest value of the Replay Window is set to 0.<a href="#section-6.3-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3198,19 +3211,22 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
             <p id="appendix-B.1-1.4.1">More details on the rekeying process and rekeying messages.<a href="#appendix-B.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.5">
-            <p id="appendix-B.1-1.5.1">Improved examples.<a href="#appendix-B.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.5.1">Defined replay checks at the Subscriber.<a href="#appendix-B.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.6">
-            <p id="appendix-B.1-1.6.1">Improved security considerations.<a href="#appendix-B.1-1.6.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.6.1">Improved examples.<a href="#appendix-B.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.7">
-            <p id="appendix-B.1-1.7.1">Revised IANA considerations.<a href="#appendix-B.1-1.7.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.7.1">Improved security considerations.<a href="#appendix-B.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.8">
-            <p id="appendix-B.1-1.8.1">Aligned the list of profile requirements with draft-ietf-ace-key-groupcomm.<a href="#appendix-B.1-1.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.8.1">Revised IANA considerations.<a href="#appendix-B.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.9">
-            <p id="appendix-B.1-1.9.1">Clarifications and editorial improvements.<a href="#appendix-B.1-1.9.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.9.1">Aligned the list of profile requirements with draft-ietf-ace-key-groupcomm.<a href="#appendix-B.1-1.9.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.10">
+            <p id="appendix-B.1-1.10.1">Clarifications and editorial improvements.<a href="#appendix-B.1-1.10.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
