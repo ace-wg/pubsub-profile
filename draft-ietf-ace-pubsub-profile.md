@@ -856,9 +856,23 @@ The construction above only supports AEAD algorithms that use nonces with length
 
 ## Replay Checks # {#ssec-replay-checks}
 
-This section defines how a Subscriber Client checks whether the topic data conveyed in a received message from the Broker is a replay.
+In order to protect from replay of published topic data, every Subscriber maintains a Replay Window for each different Publisher in the same group. It is RECOMMENDED that the Replay Window has a default size of 32.
 
-TBD
+Upon receiving a topic data published by a given Publisher P, the Subscriber retrieves the Sender ID of P conveyed as 'kid' in the 'Countersignature version 2' parameter of the COSE_Encrypt0 object (see {{oscon}}), and determines the Replay Window W_P associated with P.
+
+The Subcriber MUST verify that, according to W_P, the Sender Sequence Number SN_P specified by the 'Partial IV' parameter of the COSE_Encrypt0 object has not been received before from P.
+
+If the verification above fails, the Subscriber MUST stop processing the COSE_Encrypt0 object conveying the topic data. If the value of SN_P is strictly smaller than the currently smallest value in W_P, then the Subscriber MUST stop processing the COSE_Encrypt0 object.
+
+If the verification above succeeds, the Subscriber proceeds with processing the COSE_Encrypt0 object, by verifying the countersignature from P using P's public key as well as by decrypting the COSE_Encrypt0 object using the group key. If both operations succeed, the Subscriber updates W_P as follows:
+
+* If SN_P is strictly greater than the currently largest value in W_P, then W_P is updated in order to set SN_P as its largest value.
+
+* SN_P is marked to denote that it has been received.
+
+The operation of validating the 'Partial IV' and updating the Replay Window MUST be atomic.
+
+Upon installing a new group key (e.g., due to a group rekeying performed by the KDC, see {{rekeying}}) or upon receiving published topic data from a given Publisher for the first time, the Subscriber initializes the Replay Window corresponding to that Publisher, i.e., the smallest value of the Replay Window is set to 0.
 
 # Applicability to the MQTT Pub-Sub Profile {#mqtt-pubsub}
 
@@ -1112,6 +1126,8 @@ This section lists how this application profile of ACE addresses the requirement
 * More details on exchanges between group members and KDC.
 
 * More details on the rekeying process and rekeying messages.
+
+* Defined replay checks at the Subscriber.
 
 * Improved examples.
 
