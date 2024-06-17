@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 18 December 2024                              Brunel University
+Expires: 19 December 2024                              Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                            16 June 2024
+                                                            17 June 2024
 
 
    Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 December 2024.
+   This Internet-Draft will expire on 19 December 2024.
 
 Copyright Notice
 
@@ -101,23 +101,23 @@ Table of Contents
        4.2.3.  Requesting a New Sender ID
        4.2.4.  Updating Authentication Credentials
        4.2.5.  Leaving a Group
-       4.2.6.  Rekeying a Group
-   5.  PubSub Protected Communication
-     5.1.  Using COSE to Protect the Published Content
-     5.2.  AEAD Nonce
-     5.3.  Replay Checks
-   6.  Applicability to the MQTT Pub-Sub Profile
-   7.  Security Considerations
-   8.  IANA Considerations
-     8.1.  ACE Groupcomm Key Types
-     8.2.  ACE Groupcomm Profiles
-     8.3.  CoRE Resource Type
-     8.4.  AIF Media-Type Sub-Parameters
-     8.5.  CoAP Content-Formats
-     8.6.  TLS Exporter Labels
-   9.  References
-     9.1.  Normative References
-     9.2.  Informative References
+   5.  Group Rekeying Process
+   6.  Pub-Sub Protected Communication
+     6.1.  Using COSE to Protect the Published Topic Data
+     6.2.  AEAD Nonce
+     6.3.  Replay Checks
+   7.  Applicability to the MQTT Pub-Sub Profile
+   8.  Security Considerations
+   9.  IANA Considerations
+     9.1.  ACE Groupcomm Key Types
+     9.2.  ACE Groupcomm Profiles
+     9.3.  CoRE Resource Type
+     9.4.  AIF Media-Type Sub-Parameters
+     9.5.  CoAP Content-Formats
+     9.6.  TLS Exporter Labels
+   10. References
+     10.1.  Normative References
+     10.2.  Informative References
    Appendix A.  Requirements on Application Profiles
      A.1.  Mandatory-to-Address Requirements
      A.2.  Optional-to-Address Requirements
@@ -171,7 +171,7 @@ Table of Contents
    own private key.
 
    While this profile focuses on the Pub-Sub architecture for CoAP,
-   Section 6 of this document describes how this profile can be
+   Section 7 of this document describes how this profile can be
    applicable to MQTT [MQTT-OASIS-Standard-v5].  Similar adaptations can
    also extend to further transport protocols and Pub-Sub architectures.
 
@@ -535,7 +535,7 @@ Table of Contents
       The name of the security group is encoded as a CBOR text string.
 
    Furthermore, the Resource Type (rt=) Link Target Attribute value
-   "core.ps.gm" is registered in Section 8.3 (REQ10), and can be used to
+   "core.ps.gm" is registered in Section 9.3 (REQ10), and can be used to
    describe group-membership resources at KDC, e.g., by using a link-
    format document [RFC6690].  As an alternative to the discovery
    approach defined above and provided by the Broker, applications can
@@ -734,13 +734,13 @@ Table of Contents
    Section 7 of [I-D.ietf-ace-key-groupcomm] for the 'scope' claim of
    the access token.  In such a case, the AS MUST use the CBOR tag with
    tag number TAG_NUMBER, associated with the CoAP Content-Format CF_ID
-   for the media type application/aif+cbor registered in Section 8.5 of
+   for the media type application/aif+cbor registered in Section 9.5 of
    this document (REQ28).
 
    Note to RFC Editor: In the previous paragraph, please replace
    "TAG_NUMBER" with the CBOR tag number computed as TN(ct) in
    Section 4.3 of [RFC9277], where ct is the ID assigned to the CoAP
-   Content-Format registered in Section 8.5 of this document.  Then,
+   Content-Format registered in Section 9.5 of this document.  Then,
    please replace "CF_ID" with the ID assigned to that CoAP Content-
    Format.  Finally, please delete this paragraph.
 
@@ -1041,7 +1041,7 @@ Table of Contents
       joining node and the KDC, using an empty context value (i.e., a
       context value of zero-length), 32 as length value in bytes, and
       the exporter label "EXPORTER-ACE-Sign-Challenge-pubsub-app"
-      defined in Section 8.6 of this document.
+      defined in Section 9.6 of this document.
 
    *  If the provisioning of the access token to the KDC has relied on
       the DTLS profile of ACE [RFC9202], and the access token was
@@ -1054,7 +1054,7 @@ Table of Contents
       joining node and the KDC, using an empty 'context_value' (i.e., a
       'context_value' of zero length), 32 as 'key_length' in bytes, and
       the exporter label "EXPORTER-ACE-Sign-Challenge-pubsub-app"
-      defined in Section 8.6 of this document.
+      defined in Section 9.6 of this document.
 
    *  If the Join Request is a retry in response to an error response
       from the KDC, which included a new 'kdcchallenge' parameter, then
@@ -1090,7 +1090,7 @@ Table of Contents
    per Section 4.3.1 of [I-D.ietf-ace-key-groupcomm]:
 
    *  'gkty': this field specifies the key type
-      "Group_PubSub_Keying_Material" (REQ18) registered in Section 8.1
+      "Group_PubSub_Keying_Material" (REQ18) registered in Section 9.1
       for the 'key' parameter.
 
    *  'key': this field specifies the keying material to use for secure
@@ -1135,7 +1135,7 @@ Table of Contents
          KDC MUST only assign an available Sender ID that has not been
          used in the security group since the last time when the current
          Gid value was assigned to the group (i.e., since the latest
-         group rekeying, see Section 4.2.6).  The KDC MUST NOT assign a
+         group rekeying, see Section 5).  The KDC MUST NOT assign a
          Sender ID to the joining node if the node is not joining the
          group as a Publisher.
 
@@ -1191,7 +1191,7 @@ Table of Contents
 
    *  'ace-groupcomm-profile', which MUST be present and has value
       "coap_group_pubsub_app" (PROFILE_TBD), which is registered in
-      Section 8.2 (REQ19).
+      Section 9.2 (REQ19).
 
    *  'creds', which MUST be present if the 'get_creds' parameter was
       present in the Join Request, and MUST NOT be present otherwise.
@@ -1255,8 +1255,8 @@ Table of Contents
    If the application requires backward security, the KDC MUST generate
    updated security parameters and group keying material, and provide it
    to the current group members upon the new node's joining (see
-   Section 4.2.6).  In such a case, the joining node is not able to
-   access secure communication in the Pub-Sub group prior its joining.
+   Section 5).  In such a case, the joining node is not able to access
+   secure communication in the Pub-Sub group prior its joining.
 
    Upon receiving the Join Response, the joining node retrieves the
    KDC's authentication credential from the 'kdc_cred' parameter.  The
@@ -1412,7 +1412,7 @@ Table of Contents
 
    A Publisher group member with node name NODENAME may at some point
    exhaust its Sender Sequence Numbers used for protecting its published
-   topic data (see Section 5.1).
+   topic data (see Section 6.1).
 
    When this happens, the Publisher MUST send a Key Renewal Request
    message to the KDC, as per Section 4.8.2.1 of
@@ -1424,10 +1424,10 @@ Table of Contents
    addition that the KDC takes one of the following actions.
 
    *  The KDC rekeys the group.  That is, the KDC generates new group
-      keying material for that group (see Section 4.2.6), and replies to
-      the Publisher with a group rekeying message as defined in
-      Section 4.2.6, providing the new group keying material.  Then, the
-      KDC rekeys the rest of the group, as discussed in Section 4.2.6.
+      keying material for that group (see Section 5), and replies to the
+      Publisher with a group rekeying message as defined in Section 5,
+      providing the new group keying material.  Then, the KDC rekeys the
+      rest of the group, as discussed in Section 5.
 
       The KDC SHOULD perform a group rekeying only if already scheduled
       to occur shortly, e.g., according to an application-specific
@@ -1447,7 +1447,7 @@ Table of Contents
       The KDC MUST assign a new Sender ID that has not been used in the
       group since the latest time when the current Gid value was
       assigned to the group (i.e., since the latest group rekeying, see
-      Section 4.2.6).
+      Section 5).
 
       The KDC MUST return a 5.03 (Service Unavailable) response in case
       there are currently no Sender IDs available to assign in the
@@ -1482,22 +1482,36 @@ Table of Contents
    The KDC can also remove a group member due to any of the reasons
    described in Section 5 of [I-D.ietf-ace-key-groupcomm].
 
-4.2.6.  Rekeying a Group
+5.  Group Rekeying Process
+
+   Rekeying a group consists in the KDC generating and distributing a
+   new symmetric key, which is used as group key from then on to protect
+   the publication of topic data with COSE (see Section 6.1).
 
    The KDC MUST trigger a group rekeying as described in Section 6 of
    [I-D.ietf-ace-key-groupcomm], upon a change in the group membership
    or due to the current group keying material approaching its
-   expiration time.  In addition, the KDC MAY trigger regularly
-   scheduled update of the group keying material.
+   expiration time.  In addition, the KDC MAY perform regularly
+   scheduled group rekeying executions.
 
-   Upon generating the new group keying material and before starting its
-   distribution, the KDC MUST increment the version number of the group
-   keying material.  The KDC MUST also generate a new Group Identifier
-   (Gid) for the group, and use it as identifier of the new group key
-   when providing it to the current group members through the group
-   rekeying, and to Clients (re-)joining the security group hereafter
-   (see Section 4.1.2).  When rekeying the group, the KDC MUST preserve
-   the current value of the Sender ID of each member in that group.
+   Upon generating the new group key and before starting its
+   distribution:
+
+   *  The KDC MUST increment the version number of the group keying
+      material.
+
+   *  The KDC MUST generate a new Group Identifier (Gid) for the group.
+      This is used as identifier of the new group key, when providing it
+      to the current group members through the group rekeying, and to
+      Clients (re-)joining the security group hereafter (see
+      Section 4.1.2).
+
+      That is, the value of the new Gid is specified by the 'kid'
+      parameter of the COSE_Key Object that is used to encode the new
+      group key.
+
+   When rekeying the group, the KDC MUST preserve the current value of
+   the Sender ID of each member in that group.
 
    The default rekeying scheme is "Point-to-Point" (see Section 6.1 of
    [I-D.ietf-ace-key-groupcomm]), where the KDC individually targets
@@ -1522,12 +1536,12 @@ Table of Contents
       the Join Response message, the 'peer_roles' parameter MAY be
       omitted.
 
-5.  PubSub Protected Communication
+6.  Pub-Sub Protected Communication
 
    In the diagram shown in Figure 7, (D) corresponds to the publication
    on a topic at the Broker, by using a CoAP PUT request.  The Publisher
    protects the published topic data end-to-end for the Subscribers by
-   using COSE ([RFC9052][RFC9053][RFC9338]), as detailed in Section 5.1.
+   using COSE ([RFC9052][RFC9053][RFC9338]), as detailed in Section 6.1.
 
    In the same diagram, (E) corresponds to the subscription of a
    Subscriber to the same topic, by means of a CoAP GET request with the
@@ -1580,7 +1594,7 @@ Table of Contents
 
        Figure 8: Example of Secure Pub-Sub Communication using CoAP
 
-5.1.  Using COSE to Protect the Published Content
+6.1.  Using COSE to Protect the Published Topic Data
 
    The Publisher uses the symmetric COSE Key received from the KDC to
    protect the payload of the Publish operation (see Section 4.3 of
@@ -1637,7 +1651,7 @@ Table of Contents
 
       The Publisher MUST initialize the Sender Sequence Number to 0 upon
       joining the security group, and MUST reset it to 0 upon receiving
-      a new group key as result of a group rekeying (see Section 4.2.6).
+      a new group key as result of a group rekeying (see Section 5).
       The Publisher MUST increment its Sender Sequence Number value by
       1, after having completed an encryption operation by means of the
       current group key.
@@ -1689,7 +1703,7 @@ Table of Contents
    The 'ciphertext' field specifies the ciphertext computed over the
    topic data to publish.  The ciphertext is computed as defined in
    [RFC9052][RFC9053], by using the current group key as encryption key,
-   the AEAD Nonce computed as defined in Section 5.2, the topic data to
+   the AEAD Nonce computed as defined in Section 6.2, the topic data to
    publish as plaintext, and the Enc_structure populated as follows:
 
    *  'context' takes "Encrypt0".
@@ -1699,7 +1713,7 @@ Table of Contents
 
    *  'external_aad is not supplied.
 
-5.2.  AEAD Nonce
+6.2.  AEAD Nonce
 
    This section defines how to generate the AEAD nonce used for
    encrypting and decrypting the COSE_Encrypt0 object protecting the
@@ -1746,8 +1760,8 @@ Table of Contents
 
    *  Since Publisher's Sender IDs are unique within the security group
       and they are not reassigned until a group rekeying occurs (see
-      Section 4.1.2 and Section 4.2.6), two Publisher Clients cannot
-      share the same tuple (S, padded ID_PIV) by construction.
+      Section 4.1.2 and Section 5), two Publisher Clients cannot share
+      the same tuple (S, padded ID_PIV) by construction.
 
    *  Since a Publisher increments by 1 its Sender Sequence Number after
       each use that it makes of the current group key, the Publisher
@@ -1758,14 +1772,14 @@ Table of Contents
       with the same group key, nor any two Publishers use the same AEAD
       nonce with the same group key.
 
-5.3.  Replay Checks
+6.3.  Replay Checks
 
    This section defines how a Subscriber Client checks whether the topic
    data conveyed in a received message from the Broker is a replay.
 
    TBD
 
-6.  Applicability to the MQTT Pub-Sub Profile
+7.  Applicability to the MQTT Pub-Sub Profile
 
    This section describes how this profile can be applicable to the MQTT
    protocol [MQTT-OASIS-Standard-v5].
@@ -1784,7 +1798,7 @@ Table of Contents
 
    In the Join Response from the KDC to a Client (see Section 4.1.2),
    the 'ace-groupcomm-profile' parameter has value "mqtt_pubsub_app",
-   which is registered in Section 8.2.
+   which is registered in Section 9.2.
 
    Both Publishers and Subscribers MUST authorise to the Broker with
    their respective tokens, as described in [RFC9431].  A Publisher
@@ -1795,7 +1809,7 @@ Table of Contents
    Broker forwards all PUBLISH messages to all authorised Subscribers,
    including the retained messages.
 
-7.  Security Considerations
+8.  Security Considerations
 
    Security considerations for this profile are inherited from
    [I-D.ietf-ace-key-groupcomm], the ACE framework for Authentication
@@ -1844,14 +1858,14 @@ Table of Contents
    topic, by appropriately re-keying the group associated with the topic
    in question.
 
-8.  IANA Considerations
+9.  IANA Considerations
 
    Note to RFC Editor: Please replace "[RFC-XXXX]" with the RFC number
    of this document and delete this paragraph.
 
    This document has the following actions for IANA.
 
-8.1.  ACE Groupcomm Key Types
+9.1.  ACE Groupcomm Key Types
 
    IANA is asked to register the following entry in the "ACE Groupcomm
    Key Types" registry defined in Section 11.8 of
@@ -1861,14 +1875,14 @@ Table of Contents
 
    *  Key Type Value: GROUPCOMM_KEY_TBD
 
-   *  Profile: coap_group_pubsub_app or mqtt_pubsub_app (Section 8.2 of
+   *  Profile: coap_group_pubsub_app or mqtt_pubsub_app (Section 9.2 of
       [RFC-XXXX]).
 
    *  Description: Encoded as described in Section 4.1.2 of [RFC-XXXX].
 
    *  References: [RFC9052], [RFC9053], [RFC-XXXX]
 
-8.2.  ACE Groupcomm Profiles
+9.2.  ACE Groupcomm Profiles
 
    IANA is asked to register the following entries in the "ACE Groupcomm
    Profiles" registry defined in Section 11.9 of
@@ -1897,7 +1911,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-8.3.  CoRE Resource Type
+9.3.  CoRE Resource Type
 
    IANA is asked to register the following entry in the "Resource Type
    (rt=) Link Target Attribute Values" registry within the "Constrained
@@ -1912,7 +1926,7 @@ Table of Contents
    Clients can use this resource type to discover a group membership
    resource at the KDC.
 
-8.4.  AIF Media-Type Sub-Parameters
+9.4.  AIF Media-Type Sub-Parameters
 
    For the media-types application/aif+cbor and application/aif+json
    defined in Section 5.1 of [RFC9237], IANA is requested to register
@@ -1939,7 +1953,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-8.5.  CoAP Content-Formats
+9.5.  CoAP Content-Formats
 
    IANA is asked to register the following entries to the "CoAP Content-
    Formats" registry within the "Constrained RESTful Environments (CoRE)
@@ -1964,7 +1978,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-8.6.  TLS Exporter Labels
+9.6.  TLS Exporter Labels
 
    IANA is asked to register the following entry to the "TLS Exporter
    Labels" registry defined in Section 6 of [RFC5705] and updated in
@@ -1978,9 +1992,9 @@ Table of Contents
 
    *  Reference: Section 4.1.1.2 of [RFC-XXXX]
 
-9.  References
+10.  References
 
-9.1.  Normative References
+10.1.  Normative References
 
    [I-D.ietf-ace-key-groupcomm]
               Palombini, F. and M. Tiloca, "Key Provisioning for Group
@@ -2113,7 +2127,7 @@ Table of Contents
               DOI 10.17487/RFC9338, December 2022,
               <https://www.rfc-editor.org/rfc/rfc9338>.
 
-9.2.  Informative References
+10.2.  Informative References
 
    [I-D.ietf-ace-edhoc-oscore-profile]
               Selander, G., Mattsson, J. P., Tiloca, M., and R. Höglund,
@@ -2201,7 +2215,7 @@ A.1.  Mandatory-to-Address Requirements
    *  REQ2: If the AIF format of 'scope' is used, register its specific
       instance of "Toid" and "Tperm" as Media Type parameters and a
       corresponding Content-Format, as per the guidelines in [RFC9237]:
-      see Section 8.4 and Section 8.5.
+      see Section 9.4 and Section 9.5.
 
    *  REQ3: If used, specify the acceptable values for 'sign_alg':
       values from the "Value" column of the "COSE Algorithms" registry
@@ -2242,7 +2256,7 @@ A.1.  Mandatory-to-Address Requirements
    *  REQ10: Register a Resource Type for the group-membership resource,
       which is used to discover the correct URL for sending a Join
       Request to the KDC: the Resource Type (rt=) Link Target Attribute
-      value "core.ps.gm" is registered in Section Section 8.3.
+      value "core.ps.gm" is registered in Section Section 9.3.
 
    *  REQ11: Define what specific actions (e.g., CoAP methods) are
       allowed on each resource provided by the KDC interface, depending
@@ -2274,14 +2288,14 @@ A.1.  Mandatory-to-Address Requirements
 
    *  REQ17: Specify the format of the 'key' parameter and register a
       corresponding entry in the "ACE Groupcomm Key Types" IANA
-      registry: see Section 4.1.2 and Section 8.1.
+      registry: see Section 4.1.2 and Section 9.1.
 
    *  REQ18: Specify the acceptable values of the 'gkty' parameter:
       Group_PubSub_Keying_Material, see Section 4.1.2.
 
    *  REQ19: Specify and register the application profile identifier:
-      coap_group_pubsub_app (see Section 4.1.2 and Section 8.2) and
-      mqtt_pubsub_app (see Section 6 and Section 8.2).
+      coap_group_pubsub_app (see Section 4.1.2 and Section 9.2) and
+      mqtt_pubsub_app (see Section 7 and Section 9.2).
 
    *  REQ20: If used, specify the format and content of 'group_policies'
       and its entries.  Specify the policies default values: not
@@ -2324,7 +2338,7 @@ A.1.  Mandatory-to-Address Requirements
    *  REQ28: Specify which CBOR tag is used for identifying the
       semantics of binary scopes, or register a new CBOR tag if a
       suitable one does not exist already: see Section 3.5 and
-      Section 8.5.
+      Section 9.5.
 
    *  REQ29: Categorize newly defined parameters according to the same
       criteria of Section 8 of [I-D.ietf-ace-key-groupcomm]: a Publisher
