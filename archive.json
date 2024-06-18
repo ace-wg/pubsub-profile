@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-06-16T00:55:50.135023+00:00",
+  "timestamp": "2024-06-18T00:52:22.762131+00:00",
   "repo": "ace-wg/pubsub-profile",
   "labels": [
     {
@@ -917,15 +917,15 @@
       "id": "I_kwDODl78ds5A-YP0",
       "title": "Define a rekeying approach",
       "url": "https://github.com/ace-wg/pubsub-profile/issues/24",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ciseng",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": " Is there any plan about defining a rekeying approach in this\r\ndocument? I think that a basic point-to-point approach can be pretty\r\nmuch like the one defined in Section 20 of KGO, although filling the\r\n'key' parameter as defined in this document. It might actually be even\r\nsimpler as to the provided content, since you may not need to provide\r\nadditional information to support a recovery for group members that have\r\nmissed a rekeying instance, like KGO has to do.\r\n\r\n\r\n[CS: I think we should]\r\n ",
       "createdAt": "2021-12-28T19:44:29Z",
-      "updatedAt": "2021-12-28T19:54:51Z",
-      "closedAt": null,
+      "updatedAt": "2024-06-16T21:11:12Z",
+      "closedAt": "2024-06-16T21:11:11Z",
       "comments": [
         {
           "author": "ciseng",
@@ -933,6 +933,13 @@
           "body": "==>MT\r\nPlease, see also the new Section 6 \"Group Rekeying Process\" in the Editor's copy of ace-key-groupcomm, which considers also guidelines for a point-to-point rekeying scheme.\r\n\r\nThis is supposed to be minimally supported by a KDC, which can however opt for a more advanced scheme to be indicated in the Joining Response (see Section 4.3.1 \"POST Handler\" in the Editor's copy of ace-key-groupcomm).\r\n<==",
           "createdAt": "2021-12-28T19:54:51Z",
           "updatedAt": "2021-12-28T19:54:51Z"
+        },
+        {
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed and closed by https://github.com/ace-wg/pubsub-profile/commit/11b8902396d98feb140e1a461cd8d773ddda0213",
+          "createdAt": "2024-06-16T21:11:12Z",
+          "updatedAt": "2024-06-16T21:11:12Z"
         }
       ]
     },
