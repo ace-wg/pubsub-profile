@@ -12,11 +12,11 @@
        This document defines an application profile of the Authentication and Authorization for Constrained Environments (ACE) framework, to enable secure group communication in the Publish-Subscribe (Pub-Sub) architecture for the Constrained Application Protocol (CoAP) [draft-ietf-core-coap-pubsub], where Publishers and Subscribers communicate through a Broker. This profile relies on protocol-specific transport profiles of ACE to achieve communication security, server authentication, and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 access token. This document specifies the provisioning and enforcement of authorization information for Clients to act as Publishers and/or Subscribers, as well as the provisioning of keying material and security parameters that Clients use for protecting their communications end-to-end through the Broker. 
        Note to RFC Editor: Please replace "[draft-ietf-core-coap-pubsub]" with the RFC number of that document and delete this paragraph. 
     ' name="description">
-<meta content="xml2rfc 3.21.0" name="generator">
+<meta content="xml2rfc 3.22.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-ace-pubsub-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.21.0
+  xml2rfc 3.22.0
     Python 3.12.3
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
@@ -26,9 +26,8 @@
     platformdirs 4.2.2
     pycountry 22.3.5
     PyYAML 6.0.1
-    requests 2.31.0
+    requests 2.32.3
     setuptools 69.5.1
-    six 1.16.0
     wcwidth 0.2.13
 -->
 <link href="draft-ietf-ace-pubsub-profile.xml" rel="alternate" type="application/rfc+xml">
@@ -1028,11 +1027,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ACE Pub-Sub Profile</td>
-<td class="right">June 2024</td>
+<td class="right">July 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Palombini, et al.</td>
-<td class="center">Expires 19 December 2024</td>
+<td class="center">Expires 7 January 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1045,12 +1044,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-pubsub-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-06-17" class="published">17 June 2024</time>
+<time datetime="2024-07-06" class="published">6 July 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-12-19">19 December 2024</time></dd>
+<dd class="expires"><time datetime="2025-01-07">7 January 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1104,7 +1103,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 December 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1193,19 +1192,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-other-group-operations-thro" class="internal xref">Other Group Operations through the KDC</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
-                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="auto internal xref">4.2.1</a>.  <a href="#name-querying-for-group-informat" class="internal xref">Querying for Group Information</a></p>
+                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="auto internal xref">4.2.1</a>.  <a href="#name-obtaining-latest-informatio" class="internal xref">Obtaining Latest Information on the Group, Group Keying Material, and Sender ID</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.2">
-                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-obtaining-latest-group-keyi" class="internal xref">Obtaining Latest Group Keying Material and Sender ID</a></p>
+                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-requesting-a-new-sender-id" class="internal xref">Requesting a New Sender ID</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.3">
-                    <p id="section-toc.1-1.4.2.2.2.3.1"><a href="#section-4.2.3" class="auto internal xref">4.2.3</a>.  <a href="#name-requesting-a-new-sender-id" class="internal xref">Requesting a New Sender ID</a></p>
+                    <p id="section-toc.1-1.4.2.2.2.3.1"><a href="#section-4.2.3" class="auto internal xref">4.2.3</a>.  <a href="#name-updating-authentication-cre" class="internal xref">Updating Authentication Credentials</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.4">
-                    <p id="section-toc.1-1.4.2.2.2.4.1"><a href="#section-4.2.4" class="auto internal xref">4.2.4</a>.  <a href="#name-updating-authentication-cre" class="internal xref">Updating Authentication Credentials</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.5">
-                    <p id="section-toc.1-1.4.2.2.2.5.1"><a href="#section-4.2.5" class="auto internal xref">4.2.5</a>.  <a href="#name-leaving-a-group" class="internal xref">Leaving a Group</a></p>
+                    <p id="section-toc.1-1.4.2.2.2.4.1"><a href="#section-4.2.4" class="auto internal xref">4.2.4</a>.  <a href="#name-leaving-a-group" class="internal xref">Leaving a Group</a></p>
 </li>
                 </ul>
 </li>
@@ -2232,104 +2228,101 @@ At the time of writing this specification, acceptable formats of authentication 
         </h3>
 <div id="query">
 <section id="section-4.2.1">
-          <h4 id="name-querying-for-group-informat">
-<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-querying-for-group-informat" class="section-name selfRef">Querying for Group Information</a>
+          <h4 id="name-obtaining-latest-informatio">
+<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-obtaining-latest-informatio" class="section-name selfRef">Obtaining Latest Information on the Group, Group Keying Material, and Sender ID</a>
           </h4>
+<p id="section-4.2.1-1">A Client can access the following resources at the KDC, in order to retrieve latest information about the group or the group keying material.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.2.1-1.1">
-              <p id="section-4.2.1-1.1.1">'/ace-group': All Clients can send a FETCH request to retrieve a set of group names associated with their group identifiers specified in the request payload. Each element of the CBOR array 'gid' is a CBOR byte string (REQ13), which encodes the Gid of the group (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>) for which the group name and the URI to the group-membership resource are provided in the returned response.<a href="#section-4.2.1-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.2.1-2.1">
+              <p id="section-4.2.1-2.1.1">'/ace-group': All Clients can send a FETCH request to retrieve a set of group names associated with their group identifiers specified in the request payload. Each element of the CBOR array 'gid' is a CBOR byte string (REQ13), which encodes the Gid of the group (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>) for which the group name and the URI to the group-membership resource are provided in the returned response.<a href="#section-4.2.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.2.1-1.2">
-              <p id="section-4.2.1-1.2.1">'/ace-group/GROUPNAME':  All group member Clients can send a GET request to retrieve the symmetric group keying material of the group with the name GROUPNAME. The value of the GROUPNAME URI path and the group name in the access token scope ('gname') <span class="bcp14">MUST</span> coincide.<a href="#section-4.2.1-1.2.1" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-1.2.2">
-The KDC processes the Key Distribution Request according to <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.3.2" class="relref">Section 4.3.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. The Key Distribution Response is formatted as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.3.2" class="relref">Section 4.3.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, with the following additions.<a href="#section-4.2.1-1.2.2" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.2.1-2.2">
+              <p id="section-4.2.1-2.2.1">'/ace-group/GROUPNAME':  All group member Clients can send a GET request to retrieve the symmetric group keying material of the group with the name GROUPNAME. The value of the GROUPNAME URI path and the group name in the access token scope ('gname') <span class="bcp14">MUST</span> coincide.<a href="#section-4.2.1-2.2.1" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-2.2.2">
+The KDC processes the Key Distribution Request according to <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.3.2" class="relref">Section 4.3.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. The Key Distribution Response is formatted as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.3.2" class="relref">Section 4.3.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, with the following additions.<a href="#section-4.2.1-2.2.2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.2.1-1.2.3.1">
-                  <p id="section-4.2.1-1.2.3.1.1">The 'key' field is formatted as defined in <a href="#join-response" class="auto internal xref">Section 4.1.2</a> of this document, with the difference that it does not include the 'group_SenderId' parameter.<a href="#section-4.2.1-1.2.3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.2.1-2.2.3.1">
+                  <p id="section-4.2.1-2.2.3.1.1">The 'key' field is formatted as defined in <a href="#join-response" class="auto internal xref">Section 4.1.2</a> of this document, with the difference that it does not include the 'group_SenderId' parameter.<a href="#section-4.2.1-2.2.3.1.1" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-4.2.1-1.2.3.2">
-                  <p id="section-4.2.1-1.2.3.2.1">The 'exi' field <span class="bcp14">MUST</span> be present.<a href="#section-4.2.1-1.2.3.2.1" class="pilcrow">¶</a></p>
+                <li class="normal" id="section-4.2.1-2.2.3.2">
+                  <p id="section-4.2.1-2.2.3.2.1">The 'exi' field <span class="bcp14">MUST</span> be present.<a href="#section-4.2.1-2.2.3.2.1" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-4.2.1-1.2.3.3">
-                  <p id="section-4.2.1-1.2.3.3.1">The 'ace_groupcomm_profile' field <span class="bcp14">MUST</span> be present and has value "coap_group_pubsub_app".<a href="#section-4.2.1-1.2.3.3.1" class="pilcrow">¶</a></p>
+                <li class="normal" id="section-4.2.1-2.2.3.3">
+                  <p id="section-4.2.1-2.2.3.3.1">The 'ace_groupcomm_profile' field <span class="bcp14">MUST</span> be present and has value "coap_group_pubsub_app".<a href="#section-4.2.1-2.2.3.3.1" class="pilcrow">¶</a></p>
 </li>
               </ul>
-<p id="section-4.2.1-1.2.4">
-Upon receiving the Key Distribution Response, the requesting group member retrieves the updated security parameters and group keying material. If they differ from the currently stored ones, then the group member uses the received one as group keying material to protect/unprotect published topic data hereafter.<a href="#section-4.2.1-1.2.4" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-2.2.4">
+Upon receiving the Key Distribution Response, the requesting group member retrieves the updated security parameters and group keying material. If they differ from the currently stored ones, then the group member uses the received one as group keying material to protect/unprotect published topic data hereafter.<a href="#section-4.2.1-2.2.4" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.2.1-1.3">
-              <p id="section-4.2.1-1.3.1">'/ace-group/GROUPNAME/creds': The KDC acts as a repository of authentication credentials for the Publishers that are member of the security group with name GROUPNAME. The members of the group that are Subscribers can send GET/FETCH requests to this resource in order to retrieve the authentication credentials of all or a subset of the group members that are Publishers. The KDC silently ignores the Sender IDs included in the 'get_creds' parameter of the request that are not associated with any current Publisher group member (REQ26).<a href="#section-4.2.1-1.3.1" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-1.3.2">
-The response from the KDC <span class="bcp14">MAY</span> omit the parameter 'peer_roles', since: i) each authentication credential conveyed in the 'creds' parameter is associated with a Client authorized to be Publisher in the group; and ii) it is irrelevant whether such a Client was also authorized to be Subscriber in the group. If 'creds' is not present, 'peer_roles' <span class="bcp14">MUST NOT</span> be present.<a href="#section-4.2.1-1.3.2" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.2.1-2.3">
+              <p id="section-4.2.1-2.3.1">'/ace-group/GROUPNAME/creds': The KDC acts as a repository of authentication credentials for the Publishers that are member of the security group with name GROUPNAME. The members of the group that are Subscribers can send GET/FETCH requests to this resource in order to retrieve the authentication credentials of all or a subset of the group members that are Publishers. The KDC silently ignores the Sender IDs included in the 'get_creds' parameter of the request that are not associated with any current Publisher group member (REQ26).<a href="#section-4.2.1-2.3.1" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-2.3.2">
+The response from the KDC <span class="bcp14">MAY</span> omit the parameter 'peer_roles', since: i) each authentication credential conveyed in the 'creds' parameter is associated with a Client authorized to be Publisher in the group; and ii) it is irrelevant whether such a Client was also authorized to be Subscriber in the group. If 'creds' is not present, 'peer_roles' <span class="bcp14">MUST NOT</span> be present.<a href="#section-4.2.1-2.3.2" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.2.1-1.4">
-              <p id="section-4.2.1-1.4.1">'/ace-group/GROUPNAME/num': All group member Clients can send a GET request to this resource in order to retrieve the current version number for the symmetric group keying material of the group with name GROUPNAME.<a href="#section-4.2.1-1.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.2.1-2.4">
+              <p id="section-4.2.1-2.4.1">'/ace-group/GROUPNAME/num': All group member Clients can send a GET request to this resource in order to retrieve the current version number for the symmetric group keying material of the group with name GROUPNAME.<a href="#section-4.2.1-2.4.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.2.1-1.5">
-              <p id="section-4.2.1-1.5.1">'/ace-group/GROUPNAME/kdc-cred': All group member Clients can send a GET request to this resource in order to retrieve the current authentication credential of the KDC.<a href="#section-4.2.1-1.5.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.2.1-2.5">
+              <p id="section-4.2.1-2.5.1">'/ace-group/GROUPNAME/kdc-cred': All group member Clients can send a GET request to this resource in order to retrieve the current authentication credential of the KDC.<a href="#section-4.2.1-2.5.1" class="pilcrow">¶</a></p>
 </li>
-          </ul>
-</section>
-</div>
-<div id="obtaining-latest-group-keying-material-and-sender-id">
-<section id="section-4.2.2">
-          <h4 id="name-obtaining-latest-group-keyi">
-<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-obtaining-latest-group-keyi" class="section-name selfRef">Obtaining Latest Group Keying Material and Sender ID</a>
-          </h4>
-<p id="section-4.2.2-1">If a group member wants to retrieve the latest group keying material as well as its Sender ID that it has in group (if Publisher), it sends a Key Distribution Request to the KDC.<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.2-2">That is, it sends a CoAP GET request to the endpoint /ace-group/GROUPNAME/nodes/NODENAME at the KDC.<a href="#section-4.2.2-2" class="pilcrow">¶</a></p>
-<p id="section-4.2.2-3">The KDC processes the Key Distribution Request according to <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.8.1" class="relref">Section 4.8.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. The Key Distribution Response is formatted as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.8.1" class="relref">Section 4.8.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, with the following additions.<a href="#section-4.2.2-3" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.2.1-2.6">
+              <p id="section-4.2.1-2.6.1">'/ace-group/GROUPNAME/nodes/NODENAME: A group member can send a Key Distribution to the KDC by sending a GET request to this resource to retrieve the latest group keying material as well as its Sender ID that it has in group (if Publisher).<a href="#section-4.2.1-2.6.1" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-2.6.2">
+The KDC processes the Key Distribution Request according to <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.8.1" class="relref">Section 4.8.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. The Key Distribution Response is formatted as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.8.1" class="relref">Section 4.8.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, with the following additions.<a href="#section-4.2.1-2.6.2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.2.2-4.1">
-              <p id="section-4.2.2-4.1.1">The 'key' field is formatted as defined in <a href="#join-response" class="auto internal xref">Section 4.1.2</a> of this document. If the requesting group member is not a Publisher Client, then the 'key' field does not include the 'group_SenderId' parameter.<a href="#section-4.2.2-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.2.1-2.6.3.1">
+                  <p id="section-4.2.1-2.6.3.1.1">The 'key' field is formatted as defined in <a href="#join-response" class="auto internal xref">Section 4.1.2</a> of this document. If the requesting group member is not a Publisher Client, then the 'key' field does not include the 'group_SenderId' parameter.<a href="#section-4.2.1-2.6.3.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.2.2-4.2">
-              <p id="section-4.2.2-4.2.1">The 'exi' field <span class="bcp14">MUST</span> be present.<a href="#section-4.2.2-4.2.1" class="pilcrow">¶</a></p>
+                <li class="normal" id="section-4.2.1-2.6.3.2">
+                  <p id="section-4.2.1-2.6.3.2.1">The 'exi' field <span class="bcp14">MUST</span> be present.<a href="#section-4.2.1-2.6.3.2.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+<p id="section-4.2.1-2.6.4">
+Upon receiving the Key Distribution Response, the group member retrieves the updated security parameters, group keying material, and Sender ID (if the 'key' field includes the 'group_SenderId' parameter). If they differ from the currently stored ones, then the group member uses the received one as group keying material to protect/unprotect published topic data hereafter.<a href="#section-4.2.1-2.6.4" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-4.2.2-5">Upon receiving the Key Distribution Response, the group member retrieves the updated security parameters, group keying material, and Sender ID (if the 'key' field includes the 'group_SenderId' parameter). If they differ from the currently stored ones, then the group member uses the received one as group keying material to protect/unprotect published topic data hereafter.<a href="#section-4.2.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-key-renewal-request">
-<section id="section-4.2.3">
+<section id="section-4.2.2">
           <h4 id="name-requesting-a-new-sender-id">
-<a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-requesting-a-new-sender-id" class="section-name selfRef">Requesting a New Sender ID</a>
+<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-requesting-a-new-sender-id" class="section-name selfRef">Requesting a New Sender ID</a>
           </h4>
-<p id="section-4.2.3-1">A Publisher group member with node name NODENAME may at some point exhaust its Sender Sequence Numbers used for protecting its published topic data (see <a href="#oscon" class="auto internal xref">Section 6.1</a>).<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.3-2">When this happens, the Publisher <span class="bcp14">MUST</span> send a Key Renewal Request message to the KDC, as per <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.8.2.1" class="relref">Section 4.8.2.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. That is, it sends a CoAP PUT request to the endpoint /ace-group/GROUPNAME/nodes/NODENAME at the KDC.<a href="#section-4.2.3-2" class="pilcrow">¶</a></p>
-<p id="section-4.2.3-3">Upon receiving the Key Renewal Request, the KDC processes it as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.8.2" class="relref">Section 4.8.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, with the addition that the KDC takes one of the following actions.<a href="#section-4.2.3-3" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-1">A Publisher group member with node name NODENAME may at some point exhaust its Sender Sequence Numbers used for protecting its published topic data (see <a href="#oscon" class="auto internal xref">Section 6.1</a>).<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-2">When this happens, the Publisher <span class="bcp14">MUST</span> send a Key Renewal Request message to the KDC, as per <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.8.2.1" class="relref">Section 4.8.2.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. That is, it sends a CoAP PUT request to the endpoint /ace-group/GROUPNAME/nodes/NODENAME at the KDC.<a href="#section-4.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-3">Upon receiving the Key Renewal Request, the KDC processes it as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.8.2" class="relref">Section 4.8.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>, with the addition that the KDC takes one of the following actions.<a href="#section-4.2.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.2.3-4.1">
-              <p id="section-4.2.3-4.1.1">The KDC rekeys the group. That is, the KDC generates new group keying material for that group (see <a href="#rekeying" class="auto internal xref">Section 5</a>), and replies to the Publisher with a group rekeying message as defined in <a href="#rekeying" class="auto internal xref">Section 5</a>, providing the new group keying material. Then, the KDC rekeys the rest of the group, as discussed in <a href="#rekeying" class="auto internal xref">Section 5</a>.<a href="#section-4.2.3-4.1.1" class="pilcrow">¶</a></p>
-<p id="section-4.2.3-4.1.2">
-The KDC <span class="bcp14">SHOULD</span> perform a group rekeying only if already scheduled to occur shortly, e.g., according to an application-specific rekeying period or scheduling, or as a reaction to a recent change in the group membership. In any other case, the KDC <span class="bcp14">SHOULD NOT</span> rekey the OSCORE group when receiving a Key Renewal Request (OPT12).<a href="#section-4.2.3-4.1.2" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.2.2-4.1">
+              <p id="section-4.2.2-4.1.1">The KDC rekeys the group. That is, the KDC generates new group keying material for that group (see <a href="#rekeying" class="auto internal xref">Section 5</a>), and replies to the Publisher with a group rekeying message as defined in <a href="#rekeying" class="auto internal xref">Section 5</a>, providing the new group keying material. Then, the KDC rekeys the rest of the group, as discussed in <a href="#rekeying" class="auto internal xref">Section 5</a>.<a href="#section-4.2.2-4.1.1" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-4.1.2">
+The KDC <span class="bcp14">SHOULD</span> perform a group rekeying only if already scheduled to occur shortly, e.g., according to an application-specific rekeying period or scheduling, or as a reaction to a recent change in the group membership. In any other case, the KDC <span class="bcp14">SHOULD NOT</span> rekey the OSCORE group when receiving a Key Renewal Request (OPT12).<a href="#section-4.2.2-4.1.2" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.2.3-4.2">
-              <p id="section-4.2.3-4.2.1">The KDC determines and assigns a new Sender ID for the Publisher, and replies with a Key Renewal Response formatted as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.8.2" class="relref">Section 4.8.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. The CBOR Map in the response payload includes only the parameter 'group_SenderId' registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-16#section-16.3" class="relref">Section 16.3</a> of [<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span>, and specifies the new Sender ID of the Publisher encoded as a CBOR byte string.<a href="#section-4.2.3-4.2.1" class="pilcrow">¶</a></p>
-<p id="section-4.2.3-4.2.2">
-The KDC <span class="bcp14">MUST</span> assign a new Sender ID that has not been used in the group since the latest time when the current Gid value was assigned to the group (i.e., since the latest group rekeying, see <a href="#rekeying" class="auto internal xref">Section 5</a>).<a href="#section-4.2.3-4.2.2" class="pilcrow">¶</a></p>
-<p id="section-4.2.3-4.2.3">
-The KDC <span class="bcp14">MUST</span> return a 5.03 (Service Unavailable) response in case there are currently no Sender IDs available to assign in the group. The response <span class="bcp14">MUST</span> have Content-Format set to application/concise-problem-details+cbor and is formatted as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.1.2" class="relref">Section 4.1.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. Within the Custom Problem Detail entry 'ace-groupcomm-error', the value of the 'error-id' field <span class="bcp14">MUST</span> be set to 4 ("No available node identifiers").<a href="#section-4.2.3-4.2.3" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-4.2.2-4.2">
+              <p id="section-4.2.2-4.2.1">The KDC determines and assigns a new Sender ID for the Publisher, and replies with a Key Renewal Response formatted as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.8.2" class="relref">Section 4.8.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. The CBOR Map in the response payload includes only the parameter 'group_SenderId' registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-16#section-16.3" class="relref">Section 16.3</a> of [<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span>, and specifies the new Sender ID of the Publisher encoded as a CBOR byte string.<a href="#section-4.2.2-4.2.1" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-4.2.2">
+The KDC <span class="bcp14">MUST</span> assign a new Sender ID that has not been used in the group since the latest time when the current Gid value was assigned to the group (i.e., since the latest group rekeying, see <a href="#rekeying" class="auto internal xref">Section 5</a>).<a href="#section-4.2.2-4.2.2" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-4.2.3">
+The KDC <span class="bcp14">MUST</span> return a 5.03 (Service Unavailable) response in case there are currently no Sender IDs available to assign in the group. The response <span class="bcp14">MUST</span> have Content-Format set to application/concise-problem-details+cbor and is formatted as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.1.2" class="relref">Section 4.1.2</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>. Within the Custom Problem Detail entry 'ace-groupcomm-error', the value of the 'error-id' field <span class="bcp14">MUST</span> be set to 4 ("No available node identifiers").<a href="#section-4.2.2-4.2.3" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
 </div>
 <div id="updating-authentication-credentials">
-<section id="section-4.2.4">
+<section id="section-4.2.3">
           <h4 id="name-updating-authentication-cre">
-<a href="#section-4.2.4" class="section-number selfRef">4.2.4. </a><a href="#name-updating-authentication-cre" class="section-name selfRef">Updating Authentication Credentials</a>
+<a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-updating-authentication-cre" class="section-name selfRef">Updating Authentication Credentials</a>
           </h4>
-<p id="section-4.2.4-1">A Publisher group member with node name NODENAME can contact the KDC to upload a new authentication credential to use in the security group with name GROUPNAME, and replace the currently stored one. To this end, the Publisher sends a CoAP POST request to its associated sub-resource /ace-group/GROUPNAME/nodes/NODENAME/cred at the KDC (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.9.1" class="relref">Section 4.9.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>).<a href="#section-4.2.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.4-2">Following a successful processing of the request, the KDC replaces the stored authentication credential of this Client for the group GROUPNAME with the one specified in the request.<a href="#section-4.2.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.3-1">A Publisher group member with node name NODENAME can contact the KDC to upload a new authentication credential to use in the security group with name GROUPNAME, and replace the currently stored one. To this end, the Publisher sends a CoAP POST request to its associated sub-resource /ace-group/GROUPNAME/nodes/NODENAME/cred at the KDC (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.9.1" class="relref">Section 4.9.1</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>).<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.3-2">Following a successful processing of the request, the KDC replaces the stored authentication credential of this Client for the group GROUPNAME with the one specified in the request.<a href="#section-4.2.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-group-leaving">
-<section id="section-4.2.5">
+<section id="section-4.2.4">
           <h4 id="name-leaving-a-group">
-<a href="#section-4.2.5" class="section-number selfRef">4.2.5. </a><a href="#name-leaving-a-group" class="section-name selfRef">Leaving a Group</a>
+<a href="#section-4.2.4" class="section-number selfRef">4.2.4. </a><a href="#name-leaving-a-group" class="section-name selfRef">Leaving a Group</a>
           </h4>
-<p id="section-4.2.5-1">A group member with node name NODENAME can actively request to leave the security group with name GROUPNAME. To this end, the Client sends a CoAP DELETE request to the associated sub-resource /ace-group/GROUPNAME/nodes/NODENAME at the KDC (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.8.3" class="relref">Section 4.8.3</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>).<a href="#section-4.2.5-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.5-2">The KDC can also remove a group member due to any of the reasons described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-5" class="relref">Section 5</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-4.2.5-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.4-1">A group member with node name NODENAME can actively request to leave the security group with name GROUPNAME. To this end, the Client sends a CoAP DELETE request to the associated sub-resource /ace-group/GROUPNAME/nodes/NODENAME at the KDC (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-4.8.3" class="relref">Section 4.8.3</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>).<a href="#section-4.2.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.4-2">The KDC can also remove a group member due to any of the reasons described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-19#section-5" class="relref">Section 5</a> of [<a href="#I-D.ietf-ace-key-groupcomm" class="cite xref">I-D.ietf-ace-key-groupcomm</a>]</span>.<a href="#section-4.2.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2419,7 +2412,7 @@ That is, the value of the new Gid is specified by the 'kid' parameter of the COS
         </figcaption></figure>
 </div>
 <p id="section-6-4"><a href="#flow" class="auto internal xref">Figure 8</a> provides a more detailed example of such a secure Pub-Sub communication. All the messages exchanged between a Client and the Broker are protected with the secure communication association between that Client and the Broker.<a href="#section-6-4" class="pilcrow">¶</a></p>
-<p id="section-6-5">In addition, COSE is used to protect end-to-end the published topic data, which is conveyed in a PUT request to the topic-data resource at the Broker and in a 2.05 (Content) response from that resource.<a href="#section-6-5" class="pilcrow">¶</a></p>
+<p id="section-6-5">In addition, COSE is used to protect end-to-end the published topic data, which is conveyed in a PUT request to the topic-data resource at the Broker and in a 2.05 (Content) response from that resource. The example also shows a delete operation, where the Publisher deletes the topic-data resource by sending a CoAP DELETE request to the URI of that resource. In case of success, the Broker replies with a 2.02 (Deleted) response. Consequently, the Broker also unsubscribes all the Clients subscribed to that topic-data resource, by removing them from the list of observers and sending them a final 4.04 (Not Found) response as per <span><a href="https://rfc-editor.org/rfc/rfc7641#section-3.2" class="relref">Section 3.2</a> of [<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>.<a href="#section-6-5" class="pilcrow">¶</a></p>
 <span id="name-example-of-secure-pub-sub-c"></span><div id="flow">
 <figure id="figure-8">
         <div id="section-6-6.1">
@@ -2509,7 +2502,7 @@ That is, the value of the new Gid is specified by the 'kid' parameter of the COS
 <p id="section-6.1-10.2.2">
 The Publisher <span class="bcp14">MUST</span> initialize the Sender Sequence Number to 0 upon joining the security group, and <span class="bcp14">MUST</span> reset it to 0 upon receiving a new group key as result of a group rekeying (see <a href="#rekeying" class="auto internal xref">Section 5</a>). The Publisher <span class="bcp14">MUST</span> increment its Sender Sequence Number value by 1, after having completed an encryption operation by means of the current group key.<a href="#section-6.1-10.2.2" class="pilcrow">¶</a></p>
 <p id="section-6.1-10.2.3">
-When the Publisher exhausts its Sender Sequence Numbers, the Publisher <span class="bcp14">MUST NOT</span> protect further topic data by using the current group key while still retaining its current Sender ID, and <span class="bcp14">MUST</span> send a Key Renewal Request message to the KDC (see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.3</a>). This will result in the KDC rekeying the group and distributing a new group key, or in the KDC providing the Publisher with a new Sender ID. The Publisher <span class="bcp14">MUST</span> reset its Sender Sequence Number to 0 upon receiving a new Sender ID from the KDC.<a href="#section-6.1-10.2.3" class="pilcrow">¶</a></p>
+When the Publisher exhausts its Sender Sequence Numbers, the Publisher <span class="bcp14">MUST NOT</span> protect further topic data by using the current group key while still retaining its current Sender ID, and <span class="bcp14">MUST</span> send a Key Renewal Request message to the KDC (see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.2</a>). This will result in the KDC rekeying the group and distributing a new group key, or in the KDC providing the Publisher with a new Sender ID. The Publisher <span class="bcp14">MUST</span> reset its Sender Sequence Number to 0 upon receiving a new Sender ID from the KDC.<a href="#section-6.1-10.2.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-6.1-10.3">
             <p id="section-6.1-10.3.1">The 'Countersignature version 2' parameter, specifying the countersignature of the COSE_Encrypt0 object. In particular:<a href="#section-6.1-10.3.1" class="pilcrow">¶</a></p>
@@ -2994,7 +2987,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <dd class="break"></dd>
 <dt id="I-D.ietf-ace-revoked-token-notification">[I-D.ietf-ace-revoked-token-notification]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Echeverria, S.</span>, and <span class="refAuthor">G. Lewis</span>, <span class="refTitle">"Notification of Revoked Access Tokens in the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-revoked-token-notification-07</span>, <time datetime="2024-05-27" class="refDate">27 May 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-revoked-token-notification-07">https://datatracker.ietf.org/doc/html/draft-ietf-ace-revoked-token-notification-07</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Echeverria, S.</span>, and <span class="refAuthor">G. Lewis</span>, <span class="refTitle">"Notification of Revoked Access Tokens in the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-revoked-token-notification-08</span>, <time datetime="2024-06-24" class="refDate">24 June 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-revoked-token-notification-08">https://datatracker.ietf.org/doc/html/draft-ietf-ace-revoked-token-notification-08</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-cose-cbor-encoded-cert">[I-D.ietf-cose-cbor-encoded-cert]</dt>
         <dd>
@@ -3119,7 +3112,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
             <p id="appendix-A.1-1.26.1">REQ26: Specify policies at the KDC to handle ids that are not included in 'get_creds': see <a href="#query" class="auto internal xref">Section 4.2.1</a>.<a href="#appendix-A.1-1.26.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.27">
-            <p id="appendix-A.1-1.27.1">REQ27: Specify the format of newly-generated individual keying material for group members, or of the information to derive it, and corresponding CBOR label: see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.3</a>.<a href="#appendix-A.1-1.27.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.27.1">REQ27: Specify the format of newly-generated individual keying material for group members, or of the information to derive it, and corresponding CBOR label: see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.2</a>.<a href="#appendix-A.1-1.27.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.28">
             <p id="appendix-A.1-1.28.1">REQ28: Specify which CBOR tag is used for identifying the semantics of binary scopes, or register a new CBOR tag if a suitable one does not exist already: see <a href="#as-response" class="auto internal xref">Section 3.5</a> and <a href="#content_formats" class="auto internal xref">Section 9.5</a>.<a href="#appendix-A.1-1.28.1" class="pilcrow">¶</a></p>
@@ -3173,7 +3166,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
             <p id="appendix-A.2-1.11.1">OPT11: Optionally, specify policies that instruct Clients to retain messages and for how long, if they are unsuccessfully decrypted: no.<a href="#appendix-A.2-1.11.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.12">
-            <p id="appendix-A.2-1.12.1">OPT12: Optionally, specify for the KDC to perform group rekeying (together or instead of renewing individual keying material) when receiving a Key Renewal Request: the KDC <span class="bcp14">SHOULD NOT</span> perform a group rekeying, unless already scheduled to occur shortly (see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.3</a>).<a href="#appendix-A.2-1.12.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.12.1">OPT12: Optionally, specify for the KDC to perform group rekeying (together or instead of renewing individual keying material) when receiving a Key Renewal Request: the KDC <span class="bcp14">SHOULD NOT</span> perform a group rekeying, unless already scheduled to occur shortly (see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.2</a>).<a href="#appendix-A.2-1.12.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.13">
             <p id="appendix-A.2-1.13.1">OPT13: Optionally, specify how the identifier of a group member's authentication credential is included in requests sent to other group members: no.<a href="#appendix-A.2-1.13.1" class="pilcrow">¶</a></p>

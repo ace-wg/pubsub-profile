@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 19 December 2024                              Brunel University
+Expires: 7 January 2025                                Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                            17 June 2024
+                                                             6 July 2024
 
 
    Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 December 2024.
+   This Internet-Draft will expire on 7 January 2025.
 
 Copyright Notice
 
@@ -96,11 +96,11 @@ Table of Contents
        4.1.2.  Join Response
        4.1.3.  Join Error Handling
      4.2.  Other Group Operations through the KDC
-       4.2.1.  Querying for Group Information
-       4.2.2.  Obtaining Latest Group Keying Material and Sender ID
-       4.2.3.  Requesting a New Sender ID
-       4.2.4.  Updating Authentication Credentials
-       4.2.5.  Leaving a Group
+       4.2.1.  Obtaining Latest Information on the Group, Group Keying
+               Material, and Sender ID
+       4.2.2.  Requesting a New Sender ID
+       4.2.3.  Updating Authentication Credentials
+       4.2.4.  Leaving a Group
    5.  Group Rekeying Process
    6.  Pub-Sub Protected Communication
      6.1.  Using COSE to Protect the Published Topic Data
@@ -1318,7 +1318,12 @@ Table of Contents
 
 4.2.  Other Group Operations through the KDC
 
-4.2.1.  Querying for Group Information
+4.2.1.  Obtaining Latest Information on the Group, Group Keying
+        Material, and Sender ID
+
+   A Client can access the following resources at the KDC, in order to
+   retrieve latest information about the group or the group keying
+   material.
 
    *  '/ace-group': All Clients can send a FETCH request to retrieve a
       set of group names associated with their group identifiers
@@ -1380,35 +1385,31 @@ Table of Contents
       a GET request to this resource in order to retrieve the current
       authentication credential of the KDC.
 
-4.2.2.  Obtaining Latest Group Keying Material and Sender ID
+   *  '/ace-group/GROUPNAME/nodes/NODENAME: A group member can send a
+      Key Distribution to the KDC by sending a GET request to this
+      resource to retrieve the latest group keying material as well as
+      its Sender ID that it has in group (if Publisher).
 
-   If a group member wants to retrieve the latest group keying material
-   as well as its Sender ID that it has in group (if Publisher), it
-   sends a Key Distribution Request to the KDC.
+      The KDC processes the Key Distribution Request according to
+      Section 4.8.1 of [I-D.ietf-ace-key-groupcomm].  The Key
+      Distribution Response is formatted as defined in Section 4.8.1 of
+      [I-D.ietf-ace-key-groupcomm], with the following additions.
 
-   That is, it sends a CoAP GET request to the endpoint /ace-
-   group/GROUPNAME/nodes/NODENAME at the KDC.
+      -  The 'key' field is formatted as defined in Section 4.1.2 of
+         this document.  If the requesting group member is not a
+         Publisher Client, then the 'key' field does not include the
+         'group_SenderId' parameter.
 
-   The KDC processes the Key Distribution Request according to
-   Section 4.8.1 of [I-D.ietf-ace-key-groupcomm].  The Key Distribution
-   Response is formatted as defined in Section 4.8.1 of
-   [I-D.ietf-ace-key-groupcomm], with the following additions.
+      -  The 'exi' field MUST be present.
 
-   *  The 'key' field is formatted as defined in Section 4.1.2 of this
-      document.  If the requesting group member is not a Publisher
-      Client, then the 'key' field does not include the 'group_SenderId'
-      parameter.
+      Upon receiving the Key Distribution Response, the group member
+      retrieves the updated security parameters, group keying material,
+      and Sender ID (if the 'key' field includes the 'group_SenderId'
+      parameter).  If they differ from the currently stored ones, then
+      the group member uses the received one as group keying material to
+      protect/unprotect published topic data hereafter.
 
-   *  The 'exi' field MUST be present.
-
-   Upon receiving the Key Distribution Response, the group member
-   retrieves the updated security parameters, group keying material, and
-   Sender ID (if the 'key' field includes the 'group_SenderId'
-   parameter).  If they differ from the currently stored ones, then the
-   group member uses the received one as group keying material to
-   protect/unprotect published topic data hereafter.
-
-4.2.3.  Requesting a New Sender ID
+4.2.2.  Requesting a New Sender ID
 
    A Publisher group member with node name NODENAME may at some point
    exhaust its Sender Sequence Numbers used for protecting its published
@@ -1458,7 +1459,7 @@ Table of Contents
       'error-id' field MUST be set to 4 ("No available node
       identifiers").
 
-4.2.4.  Updating Authentication Credentials
+4.2.3.  Updating Authentication Credentials
 
    A Publisher group member with node name NODENAME can contact the KDC
    to upload a new authentication credential to use in the security
@@ -1471,7 +1472,7 @@ Table of Contents
    the stored authentication credential of this Client for the group
    GROUPNAME with the one specified in the request.
 
-4.2.5.  Leaving a Group
+4.2.4.  Leaving a Group
 
    A group member with node name NODENAME can actively request to leave
    the security group with name GROUPNAME.  To this end, the Client
@@ -1572,6 +1573,13 @@ Table of Contents
    In addition, COSE is used to protect end-to-end the published topic
    data, which is conveyed in a PUT request to the topic-data resource
    at the Broker and in a 2.05 (Content) response from that resource.
+   The example also shows a delete operation, where the Publisher
+   deletes the topic-data resource by sending a CoAP DELETE request to
+   the URI of that resource.  In case of success, the Broker replies
+   with a 2.02 (Deleted) response.  Consequently, the Broker also
+   unsubscribes all the Clients subscribed to that topic-data resource,
+   by removing them from the list of observers and sending them a final
+   4.04 (Not Found) response as per Section 3.2 of [RFC7641].
 
   Publisher                         Broker                    Subscriber
   |                                   |                                |
@@ -1659,7 +1667,7 @@ Table of Contents
       When the Publisher exhausts its Sender Sequence Numbers, the
       Publisher MUST NOT protect further topic data by using the current
       group key while still retaining its current Sender ID, and MUST
-      send a Key Renewal Request message to the KDC (see Section 4.2.3).
+      send a Key Renewal Request message to the KDC (see Section 4.2.2).
       This will result in the KDC rekeying the group and distributing a
       new group key, or in the KDC providing the Publisher with a new
       Sender ID.  The Publisher MUST reset its Sender Sequence Number to
@@ -2187,9 +2195,9 @@ Table of Contents
               "Notification of Revoked Access Tokens in the
               Authentication and Authorization for Constrained
               Environments (ACE) Framework", Work in Progress, Internet-
-              Draft, draft-ietf-ace-revoked-token-notification-07, 27
-              May 2024, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-ace-revoked-token-notification-07>.
+              Draft, draft-ietf-ace-revoked-token-notification-08, 24
+              June 2024, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-ace-revoked-token-notification-08>.
 
    [I-D.ietf-cose-cbor-encoded-cert]
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
@@ -2369,7 +2377,7 @@ A.1.  Mandatory-to-Address Requirements
 
    *  REQ27: Specify the format of newly-generated individual keying
       material for group members, or of the information to derive it,
-      and corresponding CBOR label: see Section 4.2.3.
+      and corresponding CBOR label: see Section 4.2.2.
 
    *  REQ28: Specify which CBOR tag is used for identifying the
       semantics of binary scopes, or register a new CBOR tag if a
@@ -2438,7 +2446,7 @@ A.2.  Optional-to-Address Requirements
       (together or instead of renewing individual keying material) when
       receiving a Key Renewal Request: the KDC SHOULD NOT perform a
       group rekeying, unless already scheduled to occur shortly (see
-      Section 4.2.3).
+      Section 4.2.2).
 
    *  OPT13: Optionally, specify how the identifier of a group member's
       authentication credential is included in requests sent to other
