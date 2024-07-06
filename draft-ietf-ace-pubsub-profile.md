@@ -651,7 +651,7 @@ A Client can access the following resources at the KDC, in order to retrieve lat
 
 * '/ace-group/GROUPNAME/kdc-cred': All group member Clients can send a GET request to this resource in order to retrieve the current authentication credential of the KDC.
 
-* '/ace-group/GROUPNAME/nodes/NODENAME: A group member can send a Key Distribution to the KDC by sending a GET request to this resource to retrieve the latest group keying material as well as its Sender ID that it has in group (if Publisher).
+* '/ace-group/GROUPNAME/nodes/NODENAME': A group member can send a Key Distribution to the KDC by sending a GET request to this resource to retrieve the latest group keying material as well as its Sender ID that it has in the group (if Publisher).
 
   The KDC processes the Key Distribution Request according to {{Section 4.8.1 of I-D.ietf-ace-key-groupcomm}}. The Key Distribution Response is formatted as defined in {{Section 4.8.1 of I-D.ietf-ace-key-groupcomm}}, with the following additions.
 
