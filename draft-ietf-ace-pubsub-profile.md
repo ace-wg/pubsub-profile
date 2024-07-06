@@ -625,7 +625,9 @@ The KDC MUST return a 5.03 (Service Unavailable) response to a Client that sends
 
 ## Other Group Operations through the KDC
 
-### Querying for Group Information {#query}
+### Obtaining Latest Information on the Group, Group Keying Material, and Sender ID {#query}
+
+A Client can access the following resources at the KDC, in order to retrieve latest information about the group or the group keying material.
 
 * '/ace-group': All Clients can send a FETCH request to retrieve a set of group names associated with their group identifiers specified in the request payload. Each element of the CBOR array 'gid' is a CBOR byte string (REQ13), which encodes the Gid of the group (see {{join-response}}) for which the group name and the URI to the group-membership resource are provided in the returned response.
 
@@ -649,19 +651,15 @@ The KDC MUST return a 5.03 (Service Unavailable) response to a Client that sends
 
 * '/ace-group/GROUPNAME/kdc-cred': All group member Clients can send a GET request to this resource in order to retrieve the current authentication credential of the KDC.
 
-### Obtaining Latest Group Keying Material and Sender ID
+* '/ace-group/GROUPNAME/nodes/NODENAME: A group member can send a Key Distribution to the KDC by sending a GET request to this resource to retrieve the latest group keying material as well as its Sender ID that it has in group (if Publisher).
 
-If a group member wants to retrieve the latest group keying material as well as its Sender ID that it has in group (if Publisher), it sends a Key Distribution Request to the KDC.
+  The KDC processes the Key Distribution Request according to {{Section 4.8.1 of I-D.ietf-ace-key-groupcomm}}. The Key Distribution Response is formatted as defined in {{Section 4.8.1 of I-D.ietf-ace-key-groupcomm}}, with the following additions.
 
-That is, it sends a CoAP GET request to the endpoint /ace-group/GROUPNAME/nodes/NODENAME at the KDC.
+  * The 'key' field is formatted as defined in {{join-response}} of this document. If the requesting group member is not a Publisher Client, then the 'key' field does not include the 'group_SenderId' parameter.
 
-The KDC processes the Key Distribution Request according to {{Section 4.8.1 of I-D.ietf-ace-key-groupcomm}}. The Key Distribution Response is formatted as defined in {{Section 4.8.1 of I-D.ietf-ace-key-groupcomm}}, with the following additions.
+  * The 'exi' field MUST be present.
 
-* The 'key' field is formatted as defined in {{join-response}} of this document. If the requesting group member is not a Publisher Client, then the 'key' field does not include the 'group_SenderId' parameter.
-
-* The 'exi' field MUST be present.
-
-Upon receiving the Key Distribution Response, the group member retrieves the updated security parameters, group keying material, and Sender ID (if the 'key' field includes the 'group_SenderId' parameter). If they differ from the currently stored ones, then the group member uses the received one as group keying material to protect/unprotect published topic data hereafter.
+  Upon receiving the Key Distribution Response, the group member retrieves the updated security parameters, group keying material, and Sender ID (if the 'key' field includes the 'group_SenderId' parameter). If they differ from the currently stored ones, then the group member uses the received one as group keying material to protect/unprotect published topic data hereafter.
 
 ### Requesting a New Sender ID ## {#sec-key-renewal-request}
 
@@ -740,7 +738,7 @@ In the same diagram, (E) corresponds to the subscription of a Subscriber to the 
 
 {{flow}} provides a more detailed example of such a secure Pub-Sub communication. All the messages exchanged between a Client and the Broker are protected with the secure communication association between that Client and the Broker.
 
-In addition, COSE is used to protect end-to-end the published topic data, which is conveyed in a PUT request to the topic-data resource at the Broker and in a 2.05 (Content) response from that resource.
+In addition, COSE is used to protect end-to-end the published topic data, which is conveyed in a PUT request to the topic-data resource at the Broker and in a 2.05 (Content) response from that resource. The example also shows a delete operation, where the Publisher deletes the topic-data resource by sending a CoAP DELETE request to the URI of that resource. In case of success, the Broker replies with a 2.02 (Deleted) response. Consequently, the Broker also unsubscribes all the Clients subscribed to that topic-data resource, by removing them from the list of observers and sending them a final 4.04 (Not Found) response as per {{Section 3.2 of RFC7641}}.
 
 ~~~~~~~~~~~ aasvg
 Publisher                         Broker                    Subscriber
