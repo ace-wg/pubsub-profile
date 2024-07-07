@@ -1,0 +1,1036 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2024-07-07T00:56:57.984946+00:00",
+  "repo": "ace-wg/pubsub-profile",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 2,
+      "id": "MDU6SXNzdWU4NTIzNzczMDI=",
+      "title": "Architectural Change",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/2",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Discussion in the draft text:\r\nPoint 1: \r\nJim: One of the things that I am not currently happy with is that you are looking at AS1 and AS2 as being independent appliers of access control logic without any communication between them.  I think that AS1 needs the ability to give policy to AS2 on a topic after it has been created and before any subscribers get keys.  In the case they are co-resident this is trivial, in other cases it may not be.\r\n\r\nFrancesca: AS1 and AS2 have in my mind clearly separated functions. There is some coordination involved of course (to gain knowledge of the policies), but I think that how this is dealt with is application specific. For example, there could be some node distributing those (they do not need to talk to each other directly). Added some generic considerations at the end of the section.\r\n\r\n CS: Agree with Jim that this can be dealt better. Will present a different architecture in the IETF 110 meeting.\r\n\r\nPoint 2: \r\nJim:  It is not clear to me that your allocation of roles to AS1 and\r\nAS2 I correct.  If you have a second publisher, does it need to talk to both\r\nAS1 and AS2 or just to AS2?  Is this really an AS1 controls creation of topics and AS2 controls publishing and subscribing to topics?  If the publisher loses its membership in the group for any reason, should it be able to publish willy-nilly anyway?  I.e. should AS2 be able to \"revoke\" the publishers right to publish?\r\n\r\nFP: A second publisher would need to talk to both AS1 and AS2. As I intended, AS1 controls who can publish to (or create) a topic on a broker, AS2 more generally controls who can decrypt the content of the publication.\r\n\"Losing the membership\" can mean \"not being able to access (read or write) the content of the publication\", in which case AS2 should revoke the node's rights or it can mean \"not allowed to publish on the broker\" (maybe it is still allowed to subscribe to the topic), in which case AS1 should revoke the node's right. Both revocations are not specified for now.\r\n\r\nCS: I think AS controls who can encrypt as well as decrypt. So, if pub1 got revoked, is  it revoked in AS1 or in AS2? Who needs to send which information to whom? ",
+      "createdAt": "2021-04-07T12:51:38Z",
+      "updatedAt": "2021-12-29T20:11:57Z",
+      "closedAt": "2021-12-29T20:11:56Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Presented in IETF 110 - Decision was to switch to the new proposal. Planned for the next update of the draft, once the current MQTT branch is merged. ",
+          "createdAt": "2021-04-07T12:52:31Z",
+          "updatedAt": "2021-04-07T12:52:31Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This has been written up, needs to be reviewed. ",
+          "createdAt": "2021-06-03T18:00:18Z",
+          "updatedAt": "2021-06-03T18:00:18Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think this is now generally accepted as the way forward. ",
+          "createdAt": "2021-12-29T20:11:56Z",
+          "updatedAt": "2021-12-29T20:11:56Z"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "MDU6SXNzdWU4NTIzODA0MzY=",
+      "title": "Revocation",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/3",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim: Is there any expectation that the broker should be notified\r\non a \"revocation\" of a publisher's right to publish?  (As opposed to the right just expiring.)  There is no need to enforce subscribers right to subscribe since a key roll over means that they are getting gibberish.\r\n\r\nFP: Yes, the broker should be notified of revocation. This is not specified here, and I think this is a general topic that the framework should address: no profile deals with revocations so far, as far as I can tell. Some additional content on revocation is in the ace-key-groupcomm doc.",
+      "createdAt": "2021-04-07T12:55:06Z",
+      "updatedAt": "2022-09-07T08:26:29Z",
+      "closedAt": "2022-09-07T08:26:29Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Added to the security considerations: Even though Access Tokens have expiration times, an Access Token may\r\n   need to be revoked before its expiration time (see\r\n   [I-D.draft-ietf-ace-revoked-token-notification-02] for a list of\r\n   possible circumstances).  Subscribers can be excluded from future\r\n   publications through re-keying for a certain topic.  This could be\r\n   set up to happen on a regular basis, for certain applications.  How\r\n   this could be done is out of scope for this work.  In the case when\r\n   publishers, for CoAP-supporting brokers and clients, the method\r\n   described in [I-D.draft-ietf-ace-revoked-token-notification-02] MAY\r\n   be used to allow an Authorization Server to notify Clients and\r\n   Resource Servers (i.e., registered devices) about revoked Access\r\n   Tokens",
+          "createdAt": "2022-09-07T08:15:35Z",
+          "updatedAt": "2022-09-07T08:25:01Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "MDU6SXNzdWU4NTIzODE1OTk=",
+      "title": "Changes to the scope format - AIF",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/4",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Scope explanation should be changed as scope is now using the AIF and is defined differently MQTT.",
+      "createdAt": "2021-04-07T12:56:30Z",
+      "updatedAt": "2021-12-28T19:04:16Z",
+      "closedAt": "2021-12-28T19:04:16Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This has been added, but needs to be reviewed. ",
+          "createdAt": "2021-06-03T17:59:37Z",
+          "updatedAt": "2021-06-03T17:59:37Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think this is fine - Marco's review didn't have comments.",
+          "createdAt": "2021-12-28T19:04:16Z",
+          "updatedAt": "2021-12-28T19:04:16Z"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "MDU6SXNzdWU4NTIzODQ3OTU=",
+      "title": "AS discovery",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/5",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Regarding AS discovery:\r\nJim: I don't' think that the returned info on the first request is going to be the same for publishers and subscribers.  Not sure what this should really look like.\r\n The broker _may_ send this info to both pub and sub, and then the subscriber could just discard the AS it does not need (AS1). Or the sub could know what AS to contact from a different exchange.\r\nCigdem: I think this will go away with the new architecture. \r\n\r\n\r\n\r\n\r\n",
+      "createdAt": "2021-04-07T13:00:13Z",
+      "updatedAt": "2021-06-03T17:59:15Z",
+      "closedAt": "2021-06-03T17:59:15Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This has gone with the new architecture, which has a single AS. ",
+          "createdAt": "2021-06-03T17:59:15Z",
+          "updatedAt": "2021-06-03T17:59:15Z"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "MDU6SXNzdWU4NTIzODU3NTY=",
+      "title": "Supporting clients that do both pub and sub",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/6",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "It doesn't look like clients can have both roles - need to check the use of the scope field during the join request. ",
+      "createdAt": "2021-04-07T13:01:17Z",
+      "updatedAt": "2021-12-29T21:05:04Z",
+      "closedAt": "2021-12-29T21:05:04Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "In the current write-up, this is better supported. Maybe give an example?",
+          "createdAt": "2021-06-03T17:58:43Z",
+          "updatedAt": "2021-06-03T17:58:43Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Publisher or Subscriber Clients is referred to as Client in short.\r\nA Client can act both as a publisher and a subscriber, publishing to some topics, \r\nand subscribing to others. However, for the simplicity of presentation, this profile\r\ndescribes Publisher and Subscriber clients separately.",
+          "createdAt": "2021-12-29T21:05:04Z",
+          "updatedAt": "2021-12-29T21:05:04Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "MDU6SXNzdWU4NTIzODc0NDU=",
+      "title": "Protected content - multiple publishers",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/7",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Jim: Need to talk about how to deal with multiple publishers - are you assigning different keys or are you using different IV sections? Need to ensure that you don't have an error from using the same key/iv pair.\r\nDo you want to talk about coordination of the observer number and the iv of a message?\r\n\r\n\r\nFrancesca: Right, the key is the same (\"key\" in previous sections), but the IV is different. Added Base IV in the COSE_Key in previous section, and partial IV in the COSE_Key. Added TODO for sending Partial IV range for each publisher.\r\nObverver number?\r\n",
+      "createdAt": "2021-04-07T13:03:11Z",
+      "updatedAt": "2023-03-11T20:46:59Z",
+      "closedAt": "2023-03-11T20:46:59Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@fpalombini  how is this planned to be fixed. The document describes  as the same Base IV is returned for joining responses? How do we take care of : \"If the same key is used for\r\n      multiple senders, then the application needs to provide for a\r\n      method of dividing the IV space up between the senders.  This\r\n      could be done by providing a different base point to start from or\r\n      a different Partial IV to start with and restricting the number of\r\n      messages to be sent before rekeying.\"",
+          "createdAt": "2022-09-07T08:55:35Z",
+          "updatedAt": "2022-09-07T08:55:35Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Similarly not clear to me, how we address: \"A new IV must be used for each message if the same key is used.  The\r\n   IV can be modified in a predictable manner, a random manner, or an\r\n   unpredictable manner (i.e., encrypting a counter).\r\n\r\n   The IV used for a key can also be generated from the same HKDF\r\n   functionality as the key is generated.  If HKDF is used for\r\n   generating the IV, the algorithm identifier is set to \"IV-\r\n   GENERATION\".\"",
+          "createdAt": "2022-09-07T08:58:17Z",
+          "updatedAt": "2022-09-07T08:58:17Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We adopted a sender ID approach, partial IV is sequence number, the same Base IV. ",
+          "createdAt": "2023-03-11T20:46:56Z",
+          "updatedAt": "2023-03-11T20:46:56Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "MDU6SXNzdWU4NTI0MzkwNTA=",
+      "title": "CNF return value for the key",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/8",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Original discussion in text:\r\nJim: Why not use the cnf return value for the key?  Also there is no reason to make it a bstr rather than a map.\r\n\r\n Francesca: I did not use the cnf because of the following reasoning: the key is not used to authenticate the client (pub or sub) to the rs (broker), it is not a pop-key related to a token (no token). For subs, there are both cnf and key parameter (see {{fig-resp2-as2}}). Also, see the example on https://tools.ietf.org/html/draft-seitz-ace-oauth-authz-00#section-6.5 (token-less exchange).\r\n OK, Changed to map.\r\n",
+      "createdAt": "2021-04-07T13:58:08Z",
+      "updatedAt": "2022-09-07T09:58:46Z",
+      "closedAt": "2022-09-07T09:58:46Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think this looks like resolved in the text. ",
+          "createdAt": "2021-04-07T13:58:23Z",
+          "updatedAt": "2021-04-07T13:58:23Z"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "MDU6SXNzdWU4NTI0NDAxMjQ=",
+      "title": "signers_key element ",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/9",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Original discussion in the text:\r\nJim: need to define a signers_keys element which returns all of the signing keys.  Defined as an array of keys.  Return other signers for multiple publishers\r\n\r\nFrancesca: Are you sure this comment should be in this section? To a subscriber, yes, the set of all signers keys are returned (see {{subs-profile}} section: \"The AS2 response contains a \"cnf\" parameter whose value is set to a COSE Key Set, (Section 7 of {{RFC8152}}) i.e. an array of COSE Keys, which contains the public keys of all authorized Publishers...\"). If you did mean it for publishers, I don't see why.\r\n",
+      "createdAt": "2021-04-07T13:59:16Z",
+      "updatedAt": "2021-12-29T21:07:40Z",
+      "closedAt": "2021-12-29T21:07:40Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think this was resolved. ",
+          "createdAt": "2021-04-07T13:59:24Z",
+          "updatedAt": "2021-04-07T13:59:24Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "I_kwDODl78ds5A9WmV",
+      "title": "References",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/10",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Marco Review]\r\nPlease, replace references to RFC 8152 with references to\r\ndraft-ietf-cose-rfc8152bis-algs and I-draft-ietf-cose-rfc8152bis-struct.",
+      "createdAt": "2021-12-28T11:31:44Z",
+      "updatedAt": "2023-03-11T20:45:32Z",
+      "closedAt": "2023-03-11T20:45:31Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* After \"(CoAP)\", please add a reference to RFC 7252.",
+          "createdAt": "2021-12-28T12:25:00Z",
+          "updatedAt": "2021-12-28T12:25:00Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Please, add a reference to draft-ietf-cose-countersign , and specify\r\nthat you are using the structure COSE_Countesignature.\r\n\r\n    As a related point, the value 7 used for 'countersign' in Figure 12\r\nis going to be deprecated [6], so it'll need to be updated later on.\r\n\r\n    [6]\r\nhttps://datatracker.ietf.org/doc/html/draft-ietf-cose-countersign-05#section-5.2\r\n\r\n[CS: Will revise] ",
+          "createdAt": "2021-12-28T19:30:57Z",
+          "updatedAt": "2021-12-28T19:30:57Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@fpalombini  Why are we using cosignatures? and not just COSE_Signature for the publisher to sign the content?",
+          "createdAt": "2022-09-07T10:14:03Z",
+          "updatedAt": "2022-09-07T10:14:03Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This is all done.",
+          "createdAt": "2023-03-11T20:45:31Z",
+          "updatedAt": "2023-03-11T20:45:31Z"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "I_kwDODl78ds5A9cCQ",
+      "title": "Review Groupcomm Interface ",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/11",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Marco Review]\r\nThis draft is basically using only the ace-group/GROUPNAME resource at\r\nthe KDC defined in KG, and only its POST handler for joining a group.\r\nWill this draft describe/mention also how the rest of the KDC interface\r\nis used by the pub-sub clients?",
+      "createdAt": "2021-12-28T12:05:44Z",
+      "updatedAt": "2022-09-12T12:57:04Z",
+      "closedAt": "2022-09-12T12:57:04Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Additional Comments]\r\nPlease consider the classification and profile guidelines now in Section 4.1 \"Interface at the KDC\" and Section 4.1.1 \"Operations Supported by Clients\" from the Editor's copy of ace-key-groupcomm.\r\n\r\nIn particular, a profile can declare some resources/operations as not needed to be supported by the KDC. Also, operations from a Client point of view follows a more fine-grained classification, that can be made stricter or extended in profiles.\r\n\r\nThese aspects are captured by mandatory-to-address profile requirements, some of which (and further related ones) are newly introduced following review comments to ace-key-groupcomm.",
+          "createdAt": "2021-12-28T12:07:41Z",
+          "updatedAt": "2021-12-28T12:07:41Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This is done with the new section in Section 4. ",
+          "createdAt": "2022-09-12T12:57:04Z",
+          "updatedAt": "2022-09-12T12:57:04Z"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "I_kwDODl78ds5A9cuA",
+      "title": "Rewording suggestions",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/12",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Marco Review]\r\n* Proposed expansion of the last sentence:\r\n\r\n    \"... it describes the use of application layer security to protect\r\nthe content that pub-sub clients exchange by communicating through the\r\nbroker.\"\r\n\r\n[Cigdem]\r\n\r\n    \"... it describes the use of application layer security to protect\r\nthe content of the pub-sub client message exchange through the\r\nbroker.\"\r\n",
+      "createdAt": "2021-12-28T12:10:12Z",
+      "updatedAt": "2022-12-16T22:22:13Z",
+      "closedAt": "2022-12-16T22:22:13Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\nWhile it is mentioned later in Section 1, I think that the abstract\r\nshould already mention that this profile covers both CoAP and MQTT.\r\n\r\n[Cigdem] - added\r\nThe profile covers pub-sub scenarios using\r\neither the Constrained Application Protocol (CoAP) {{I-D.ietf-core-coap-pubsub}} or the\r\nMessage Queue Telemetry Transport (MQTT) {{MQTT-OASIS-Standard-v5}} protocol.",
+          "createdAt": "2021-12-28T12:14:58Z",
+          "updatedAt": "2021-12-28T12:14:58Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\n\"This document defines a way to authorize pub-sub clients using the\r\nACE framework ...\".\r\n\r\n     Please, clarify what they are authorized to do. Conceptually, it\r\nshould be about joining a security group that uses certain key material\r\nand is associated to one or more topics (application groups).\r\nPractically, this should mean being authorized to getting access to the\r\nbroker and to obtaining the key material for protecting the topic\r\ncontent exchanged through the broker.\r\n\r\n* \"... for protecting the communication between them\".\r\n\r\n    I would emphasize that it is about protecting the content, exhanged\r\nby communicating through the broker (see also the related comment above\r\nfor the Abstract).\r\n\r\n[Cigdem: Reworded as\r\nThis document defines a way to authorize pub-sub clients using the ACE framework {{I-D.ietf-ace-oauth-authz}} to obtain the keys for protecting the content of their pub-sub messages when communicating through the broker.]",
+          "createdAt": "2021-12-28T12:21:33Z",
+          "updatedAt": "2021-12-28T12:22:10Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\nI suggest to expand as follows: Note that both publishers and\r\nsubscribers use the same pub-sub communication protocol and the same\r\ntransport profile of ACE in their interaction with the broker. The same\r\nprofile of ACE is also used in the interaction with the KDC\r\n\r\n[Cigdem]\r\nYes, except the KDC bit. For the KDC regardless of MQTT or CoAP, the CoAP profile is used as it is what is supported by the KDC. (KDC doesn't speak MQTT like the MQTT broker, which is the resource server)\r\n\r\nAdded:\r\nNote that both publishers and subscribers use the same pub-sub communication protocol and the same transport profile of ACE in their interaction with the broker. However, all clients need to use CoAP when communicating to the KDC.",
+          "createdAt": "2021-12-28T18:23:06Z",
+          "updatedAt": "2021-12-28T18:23:06Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\nCaption of Figure 1: s/Authorization Servers/Authorization Server\r\n\r\n[Cigdem]\r\nDone. Added Key Distribution Center instead.",
+          "createdAt": "2021-12-28T18:23:32Z",
+          "updatedAt": "2021-12-28T18:23:32Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\n\r\n\"... so that RS can authorize the Clients ...\"\r\n\r\nWell, the AS is the one authorizing the Clients. I think you mean\r\n\"... so that RS can assert the Clients to be authorized ...\"\r\n\r\n[Cigdem] - changed to:\r\nso that RS can verify that the Clients are authorized",
+          "createdAt": "2021-12-28T18:23:58Z",
+          "updatedAt": "2021-12-28T18:23:58Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* I suggest to move the following points out of the last paragraph, and\r\ninstead have them after \"... to as Client in short.\"\r\n\r\n    - The broker acts as ACE RS.\r\n    - The broker corresponds to the Dispatcher in KG.\r\n\r\n[Cigdem] - Added after the suggested location:\r\nThe Broker acts as the ACE RS, and also corresponds to the Dispatcher in {{I-D.ietf-ace-key-groupcomm}}).",
+          "createdAt": "2021-12-28T18:30:24Z",
+          "updatedAt": "2021-12-28T18:30:24Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco -Review]\r\n* The last sentences can be expanded for clarity, e.g.: \"... the Broker\r\nMAY accept subscriptions from unauthorised Subscribers. In this case, a\r\nSubscriber client can skip setting up Security Association 1 with the\r\nBroker, before subscribing to topics of interest at the Broker.\"\r\n[Cigdem] - Added:\r\nconnect to it as an anonymous client to subscribe to topics of interest at the Broker.",
+          "createdAt": "2021-12-28T18:32:29Z",
+          "updatedAt": "2021-12-28T18:32:29Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\nConsistently with the first paragraph, the section title can be\r\n\"Authorising to the KDC and the Broker\".\r\n\r\n[Cigdem]\r\nDone",
+          "createdAt": "2021-12-28T18:34:59Z",
+          "updatedAt": "2021-12-28T18:34:59Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\n* About 'scope', s/the topic identifier/the topic identifiers\r\n[Cigdem]\r\nDone",
+          "createdAt": "2021-12-28T18:35:42Z",
+          "updatedAt": "2021-12-28T18:35:42Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\nSection 3.2\r\n* s/'profile' is set/the 'ace_profile' claim is set  (two occurrences)\r\n\r\n[Cigdem - Done]",
+          "createdAt": "2021-12-28T18:47:08Z",
+          "updatedAt": "2021-12-28T18:47:08Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\n\r\n[Section 4.1]\r\n\r\n* By using 'sign_info' during the Token post, the client cannot ask for\r\nthe public keys already, but only for the format of public keys used in\r\nthe group.\r\n\r\n[CS: Will revise those parts more carefully]\r\n\r\n[CS fixed to -  format of public keys]",
+          "createdAt": "2021-12-28T18:50:15Z",
+          "updatedAt": "2021-12-28T18:50:15Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* \"The KDC verifies that the Client is authorized to access the topic\r\nwith the requested role.\"\r\n\r\n    Well, the KDC is in a trust relation with the AS issuing the posted\r\nToken (and only following a successful check of a Token request against\r\nstored access policies). So, at this stage on the KDC, isn't this just\r\nabout verifying that the Token is valid?\r\n\r\n\r\n[CS: Yes, the language used is weird, what is meant is the KDC verifies the token]\r\n\r\n[CS: Changed to: The KDC verifies the token to check of the Client is authorized to access the topic ]",
+          "createdAt": "2021-12-28T18:51:44Z",
+          "updatedAt": "2021-12-28T18:51:44Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\n[Section 4.2]\r\n\r\n* Considering its content and the examples, the section can be renamed\r\nas \"Join Request and Join Response\".\r\n\r\n[Cigdem: Done]",
+          "createdAt": "2021-12-28T18:53:07Z",
+          "updatedAt": "2021-12-28T18:53:07Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\n[Section 4.2]\r\n* The content-format of the Joining Request is\r\n\"application/ace-groupcomm+cbor\". That's the \"namespace\" where these new\r\nACE Groupcomm parameters have been registered, see Section 7 of KG.\r\n\r\n[Cigdem: Fixed]",
+          "createdAt": "2021-12-28T18:57:42Z",
+          "updatedAt": "2021-12-28T18:57:42Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\n[Section 4.2]\r\n* As to 'scope', here it is not \"as defined earlier\". In comparison with\r\nthe format defined earlier, it specifies only one scope entry, i.e. the\r\none indicating the exact topic for which the client wants to obtain the\r\nkey material with this Joining Request. This is also defined in Section\r\n4.1.2.1 of KG.\r\n\r\n\r\n[Cigdem - Fixed to:]\r\n'scope' parameter set to the specific group that the Client is attempting to join, i.e., the group name, and the roles it wishes to have in the group. This value corresponds to one scope entry, as defined in {{auth-request}}.",
+          "createdAt": "2021-12-28T19:02:13Z",
+          "updatedAt": "2021-12-28T19:02:13Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\n* \"The Subscriber MUST have access to the public keys of all the\r\nPublishers; this MAY be achieved ... using \"pub\" as the 'role_filter' ...\"\r\n\r\n    Why do you need the filtering feature here? It would still work, but\r\nbased on the previous sentence in the same paragraph, the KDC has\r\navailable to provide only public keys of publishers anyway. So, asking\r\nfor all the public keys in the group with 'get_pub_keys' encoding the\r\nCBOR simple value Null will return only the public keys of publishers by\r\nconstruction.\r\n[CS: That's true, will revise]\r\n\r\n[CS: fixed]",
+          "createdAt": "2021-12-28T19:11:29Z",
+          "updatedAt": "2021-12-28T19:11:29Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* s/The KDC response to Joining Response/The KDC replies with a Joining\r\nResponse\r\n\r\n[CS: Done]\r\n ",
+          "createdAt": "2021-12-28T19:13:59Z",
+          "updatedAt": "2021-12-28T19:13:59Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* The fields of the joining response are defined in Section 4.1.2.1 of\r\nKG (not in its Section 4.2).\r\n\r\n[CS: It seems it is in 4.3.1 now]",
+          "createdAt": "2021-12-28T19:16:20Z",
+          "updatedAt": "2021-12-28T19:16:20Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* The content-format of the Joining Response is\r\n\"application/ace-groupcomm+cbor\".\r\n\r\n[CS: Fixed]",
+          "createdAt": "2021-12-28T19:16:47Z",
+          "updatedAt": "2021-12-28T19:16:47Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* When describing 'key', \"defined by the AS2\" is mentioned for both\r\n'alg' and 'Base IV'. I guess this is a remnant from previous versions of\r\nthe draft having both AS1 and AS2.\r\n\r\n[CS: Fixed to AS]",
+          "createdAt": "2021-12-28T19:18:03Z",
+          "updatedAt": "2021-12-28T19:18:03Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* \"... public keys of all authorized signing members ...\", which means\r\njust the publishers, right?\r\n\r\n[CS: yes, changed to publishers]",
+          "createdAt": "2021-12-28T19:19:34Z",
+          "updatedAt": "2021-12-28T19:19:34Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* Based on a comment above on which public keys the KDC actually stores,\r\nFigure 8 may have 'get_pub_keys' simply encoding the CBOR simple value Null.\r\n\r\n[CS: Done]",
+          "createdAt": "2021-12-28T19:24:21Z",
+          "updatedAt": "2021-12-28T19:24:21Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* s/is protected with COSE/is protected with COSE by the publisher (two\r\noccurrences)\r\n\r\n[CS: Done]",
+          "createdAt": "2021-12-28T19:26:05Z",
+          "updatedAt": "2021-12-28T19:26:05Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Section 5.1]\r\n\r\n* s/COSE_Encrypt0/COSE_Encrypt0 object\r\n\r\n[CS: Done]",
+          "createdAt": "2021-12-28T19:29:10Z",
+          "updatedAt": "2021-12-28T19:29:10Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* \"The protected Headers ... MAY contain the kid parameter, ...\"\r\n\r\n    It is optional for the KDC to provide one in the Joining Response,\r\nbut I guess that if one is provided, then it MUST be included in the\r\nprotected header.\r\n\r\n[Revised as: MUST contain the kid parameter if it was provided in the\r\nJoining Response",
+          "createdAt": "2021-12-28T19:32:50Z",
+          "updatedAt": "2021-12-28T19:32:50Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\"For implementation simplicity, it is RECOMMENDED that the ACE\r\ntransport profile used and this specification use the same format of\r\n\"scope\".\r\n\r\n    Is this actually meaningful and enforceable?\r\n\r\n    The format of scope is related to the application that the Client\r\nand the RS want to run. In fact, these _application_ profiles for group\r\ncommunication are defining formats to use for scope, in Tokens used to\r\naccess resources related to such applications.\r\n\r\n    In other words, I think the format of scope is orthogonal to the\r\nused transport profile, that basically does not care (and should not). I\r\nalso can't find anything suggesting otherwise in the ACE framework [7]\r\nor in the DTLS and OSCORE profiles.\r\n\r\n    Unless I'm missing something, it's probably just fine to remove the\r\nsentence.\r\n\r\n    [7]\r\nhttps://datatracker.ietf.org/doc/html/draft-ietf-ace-oauth-authz-45#appendix-C\r\n\r\n[CS: I think this was triggered by MQTT-TLS Profile providing a scope format to be used \r\nin access tokens, and it would be useful the scope format is used towards KDC. But, it may not\r\nbe necessary at the end.  Removed]",
+          "createdAt": "2021-12-28T19:36:07Z",
+          "updatedAt": "2021-12-28T19:36:07Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\nSection 7 \r\n\"... by the same entity having control of the topic, i.e. KDC.\"\r\n\r\n    Perhaps here you mean \"... by the same entity having control of the\r\nkey material for that topic, i.e. KDC.\"\r\n\r\n[CS: Yes] ",
+          "createdAt": "2021-12-28T19:42:43Z",
+          "updatedAt": "2021-12-28T19:42:43Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Section 8.2]\r\n\r\n* Shouldn't the field \"Profile\" indicate both coap_pubsub_app and\r\nmqtt_pubsub_app ?\r\n\r\n\r\n[CS: Yes] ",
+          "createdAt": "2021-12-28T19:46:12Z",
+          "updatedAt": "2021-12-28T19:46:12Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "== Nits ==\r\n\r\n[Section 3.2]\r\n\r\ns/data model is described/data model described\r\n\r\n[Section 4.2]\r\n\r\ns/singature/signature\r\n\r\n[Section 6.2]\r\ns/To be able join/To be able to join\r\n\r\nAppendix A]\r\n\r\ns/Specity/Specify\r\n\r\ns/tranport/transport",
+          "createdAt": "2021-12-28T19:50:16Z",
+          "updatedAt": "2021-12-28T19:50:16Z"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "id": "I_kwDODl78ds5A-RmJ",
+      "title": "Switch from single token to two tokens for KDC and Broker respectively",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/13",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "* About 'audience', it cannot be an array, but only a single text\r\nstring, see [1]. If you want to keep a single Token intended to both KDC\r\nand broker, then you neeed to rely on a single audience value that both\r\nthe KDC and the broker recognize as valid. A possible way can rely on\r\nthe KDC identifier and the broker identifier separated by a well-known\r\nand unambiguous separator.\r\n\r\n[1]\r\nhttps://datatracker.ietf.org/doc/html/draft-ietf-ace-oauth-authz-45#section-5.8.5\r\n\r\n[CS: My bad, was thinking here a JWT, where  in the general case, the \"aud\" value is an array of case-sensitive strings.\r\nBut I think we won't be able to keep a single token, but will have to use multiple tokens, once for KDC and one for Broker, where the Client will have to make two calls two /token to the AS for two different audiences. Since the AS is the same, we do not think there will be an issue of policy mix-ups, and hence this should be all cleaner.] \r\n\r\n[CS - switched to two tokens scenario]\r\n",
+      "createdAt": "2021-12-28T18:41:21Z",
+      "updatedAt": "2022-09-12T12:57:27Z",
+      "closedAt": "2022-09-12T12:57:27Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* More generally about using a single Token intended to both KDC and\r\nbroker, that requires additional security when protecting the Token, as\r\nper [2].\r\n\r\n    First, you would need the AS to also protect the Token with an\r\nasymmetric signature, that both the KDC and the broker have to verify\r\nusing the AS' public key. See the second paragraph of [2].\r\n\r\n    Second, since the same Token is targeting multiple Resource Servers\r\nas part of a broader audience, you cannot have a same single secret used\r\nas symmetric PoP key, see the third paragraph of [2]. This seems to\r\nlimit the use of the DTLS profile to its aymmetric mode only, and to\r\nrule out the use of the OSCORE profile.\r\n\r\n    I don't see an obvious way out, other than reverting to two separate\r\nTokens, i.e. one to post to the KDC and one to post to the broker.\r\n\r\n    [2]\r\nhttps://datatracker.ietf.org/doc/html/draft-ietf-ace-oauth-authz-45#section-6.1\r\n\r\n[CS: Yes, because of all these, we will most probably just go for two tokens esp. when ACE defaults\r\nto symmetric crypto.] ",
+          "createdAt": "2021-12-28T18:42:11Z",
+          "updatedAt": "2021-12-28T18:42:11Z"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "id": "I_kwDODl78ds5A-R2M",
+      "title": "mapping from application to security groups",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/14",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Scope mapping]\r\n* If a single Token is used for both the KDC and the broker, one\r\nadditional clarification is probably required.\r\n\r\n    Since the 'scope' claim in Token indicates names of application\r\ngroups, posting the the Token to the broker indicates which topics the\r\nclient is authorized to publish/subscribe to.\r\n\r\n    However, what does it mean when posted to the KDC? I suppose it\r\nauthorizes the pub-sub client to obtain from the KDC the key material\r\nfor any security group associated to any of the application groups\r\nmentioned in the Token.\r\n\r\n    Note that the 'scope' parameter of the Joining Request to the KDC\r\nspecifies the name of the security group for which the key material is\r\nrequested. So, the KDC will need a kind of internal mapping from names\r\nof application groups (in the Token) to names of security groups (in the\r\n'scope' of the Joining Request). Even in the simple (and most common)\r\ncase where only one security group is associated to an application\r\ngroup, the two names might differ and it's up to the client to know both\r\nof them in advance --- through pre-configuration, discovery, etc.\r\n\r\n[CS: yes, some kind of internal mapping from scopes to security groups would be needed. \r\nThis possibly answers my previous question to groupcomm Why KDC would keep a different naming for \r\ngroups :) ] \r\n\r\n==>MT\r\nRight, although, as above, this is probably going to be moot when two distinct Access Tokens are used, separately for the KDC and the Broker.\r\n\r\nThen, the Access Token to be consumed by the KDC would have a scope indicating security groups (just as per ace-key-groupcomm), while the Access Token to be consumed by the Broker would have a scope indicating application groups.\r\n\r\nThe access policies configured at the AS have to be such that, following the Authorization Request/Response exchange, a Client can successfully access all the security groups associated to the application groups in question.\r\n<==",
+      "createdAt": "2021-12-28T18:43:45Z",
+      "updatedAt": "2023-03-11T20:44:55Z",
+      "closedAt": "2023-03-11T20:44:55Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[CS - \r\n\r\nI am still not clear where this association needs to be kept, i.e., the client will be requesting some scopes - application scopes, but would it need to know the mapping to security groups and ask the token accordingly. \r\n\r\nOr, the client always askes application groups in scope, AS grants those based on policies - AS policies are always on application scopes, and the KDC keeps the mapping?]\r\n\r\n",
+          "createdAt": "2021-12-28T18:45:27Z",
+          "updatedAt": "2021-12-28T18:45:27Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[General discussion]\r\n* \"An application group has relevance at the application level - for\r\nexample, in MQTT an application group could denote all topics stored\r\nunder \"\"home/lights/\".\"\r\n\r\n    For what is worth, I thought of one exact topic to be one\r\napplication group. So, in the example above, \"home/lights/\" can be seen\r\na reasoned collection of related application groups, but not as an\r\napplication group itself.\r\n\r\n[That's not how I see it in MQTT context - the broker may be hosting multiple topics, \r\nand home/lights/* maybe one application group that all the group members should be aware of. \r\nand then there could be other sub-groups home/lights/kitchen/* etc.]\r\n\r\n==>MT\r\nI see, so it's actually an application group that can comprise multiple associated pub-sub topics, and application groups can be further organized into a hierarchy. I think it's worth clarifying this, possibly with examples.\r\n<==",
+          "createdAt": "2021-12-28T19:38:25Z",
+          "updatedAt": "2021-12-28T19:53:07Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Scope mapping]\r\n* \"... the client needs to discover the (application group, security\r\ngroup) association. In MQTT, $SYS/ ... can be used by the broker for\r\nthis purpose.\"\r\n\r\n    The security group here is related to the key material used to\r\nprotect the content with COSE, which is competence of the KDC. That key\r\nmaterial is intended for the security group members, which do not\r\ninclude the broker.\r\n\r\n    Hence, unless the KDC and the broker are components of a same system\r\nunder the same authority, I would have expected the broker to have no\r\nidea of how the application groups it manages are related to the\r\nsecurity groups that the KDC manages.\r\n\r\n    I would rather expect the KDC to be aware of such associations, e.g.\r\nby learning about them when the security groups are actually created on\r\nit. The KDC can later on advertise these associations. For the Group\r\nOSCORE case targeted in KGO, this can happen through a Resource\r\nDirectory, as discussed in [8] and using the approach defined in [9].\r\n\r\n    [8] https://datatracker.ietf.org/doc/draft-ietf-ace-oscore-gm-admin/\r\n\r\n    [9] https://datatracker.ietf.org/doc/draft-tiloca-core-oscore-discovery/\r\n\r\n[CS: OK, I agree - I did not see how KDC can support this, so put it under Broker, but\r\nI acknowledge that this has several shortcomings. Will look into OSCORE impl.] ",
+          "createdAt": "2021-12-28T19:39:15Z",
+          "updatedAt": "2021-12-28T19:39:15Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* \"Client computes the corresponding security groups ...\"\r\n\r\n    Do you mean \"Client considers ...\" ?\r\n[CS: Nope, it definitely needs to compute. If the client plans to subscribe to \r\nhome/lights/* but home/lights/kitchen/* is one security group, and home/lights/bathroom/*\r\nis one security group, it needs to ask for these two scopes in the token\r\nand it needs to subscribe to these separately etc.]\r\n\r\n==>MT\r\nOk, I probably got confused by the exact word \"compute\" and thought of something else. Based on your explanation, I guess it should be intended as \"determine\".\r\n<==",
+          "createdAt": "2021-12-28T19:39:41Z",
+          "updatedAt": "2021-12-28T19:53:29Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* \"RS validates the PUBLISH message by checking the topic's security\r\ngroup association and the stored token.\"\r\n\r\n    Even having the broker aware of the association (application group,\r\nsecurity group) as defined in the draft, how does this validation work?\r\n\r\n[CS: This will be revised - if the complexity falls on the client, learning information from KDC, these problems\r\nshould go away. But note that when a client makes a PUBLISH or SUBSCRIBE request, the Broker\r\nchecks if it can accept the request by checking the Topic Name/Topic Filter against the stored token scopes.]\r\n\r\n==>MT\r\nSure, which is consistent with the Broker storing an Access Token that expresses a scope about application groups (not about security groups).\r\n<==",
+          "createdAt": "2021-12-28T19:40:09Z",
+          "updatedAt": "2021-12-28T19:54:00Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "   - The protected message targets a resource at the broker associated\r\nto the application group.\r\n    - By assumption, the broker knows the security group(s) associated\r\nto the application group.\r\n    - From the broker's point of view, the Token specifies the\r\napplication group.\r\n\r\n    I understand checking whether the request to the broker targets a\r\ntopic resource (an application group) where the client is authorized to\r\npublish as per the Token. But how does the mentioned validation involve\r\nchecking that the request is also related to the security group?\r\n\r\n[CS: We will move away \r\nfrom this scheme. We will make the Broker agnostic to security groups, and \r\nlet the Client ask with proper topic filter matching the scope in the token (ie. which consequently matches the security group).]",
+          "createdAt": "2021-12-28T19:40:58Z",
+          "updatedAt": "2021-12-28T19:40:58Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "  Also, is that actually important for the broker, which by the way\r\ndoes not have the key material of the security group?\r\n\r\n[CS: Well the Broker only cares it only accepts Publishers/Subscribers publish/subscribe\r\nto their authorised topics]\r\n\r\n==>MT\r\nRight, which are application groups :-) (see above)\r\n<==",
+          "createdAt": "2021-12-28T19:41:23Z",
+          "updatedAt": "2021-12-28T19:54:30Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This is revised as:\r\n\"It must be noted that for pub-sub brokers, the scope represents pub-sub topics i.e., the application group. On the other hand, for the KDC, the scope represents\r\nthe security group. If there is a one-to-one mapping between the application group\r\nand the security group, the client uses the same scope for both requests.\r\nIf there is not a one-to-one mapping, the correct policies regarding both\r\nsets of scopes MUST be available to the AS.   \r\nTo be able to join the right security group associated with requested application groups (i.e., pub-sub topics), the client The client MUST ask for the correct\r\nscopes in its Authorization Requests. How the client discovers the (application group, security group) association is out of scope of this document.\"\r\n\r\n-Check if KDC can be configured as well for clients to learn about these associations. \r\nToDo: Check OSCORE Groups with the CoRE Resource Directory to see if it applies.",
+          "createdAt": "2021-12-29T20:29:15Z",
+          "updatedAt": "2021-12-29T20:33:00Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "It is expected that there is one-to-one mapping; otherwise, the application defines, out fo the scope of the document. ",
+          "createdAt": "2023-03-11T20:44:49Z",
+          "updatedAt": "2023-03-11T20:44:49Z"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "id": "I_kwDODl78ds5A-Tzi",
+      "title": "Client's public key CANNOT be formatted as a COSE_Key",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/15",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Marco Review]\r\n\r\n* \"... Client's public key formatted as a COSE_Key\"\r\n\r\n    In KG, there has been a change about the format of public keys used\r\nin a group.\r\n\r\n    Pure COSE Keys are not admitted anymore, due to their limitations to\r\nrepresent identities or other metadata. This is aligned with\r\ncorresponding changes done for the same reasons in draft-ietf-lake-edhoc\r\nand draft-ietf-core-oscore-groupcomm .\r\n\r\n    The format of public keys used in the group and indicated in the\r\nparameter 'pub_key_enc' now takes value from the \"COSE Header\r\nParameters\" registry, for which some entries are under pending registration.\r\n\r\n    The easiest way to \"somehow still use COSE Keys\" is to use the\r\npublic key format Unprotected CWT Claim Set (UCCS) [3], including a COSE\r\nKey as value of its 'cnf' claim. Please, see an example below. You can\r\nfind some more detail on this point in Sections 6.1 and 6.4 of KGO.\r\n\r\n{                                              /UCCS/\r\n   2 : \"42-50-31-FF-EF-37-32-39\",               /sub/\r\n   8 : {                                        /cnf/\r\n     1 : {                                      /COSE_Key/\r\n       1 : 1,                                   /alg/\r\n       3: -8,                                   /kty/\r\n      -1 : 6,                                   /crv/\r\n      -2 : h'C6EC665E817BD064340E7C24BB93A11E   /x/\r\n             8EC0735CE48790F9C458F7FA340B8CA3'\r\n     }\r\n   }\r\n}\r\n\r\n    [3] https://datatracker.ietf.org/doc/draft-ietf-rats-uccs/\r\n\r\n\r\n[CS: Will look into aligning with the current drafts] ",
+      "createdAt": "2021-12-28T19:03:14Z",
+      "updatedAt": "2023-03-11T20:44:07Z",
+      "closedAt": "2023-03-11T20:44:07Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Marco Review]\r\n\r\n* \"Note that the alg parameter in the 'client_cred' COSE_Key ...\"\r\n\r\n    See the comment above about the format of public keys not using pure\r\nCOSE Keys anymore.\r\n\r\n[CS: Will revise, thanks]\r\n",
+          "createdAt": "2021-12-28T19:12:10Z",
+          "updatedAt": "2021-12-28T19:12:10Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* \"... formatted as COSE_Keys ...\"\r\n\r\n     See the comment above about the format of public keys not using\r\npure COSE Keys anymore.\r\n\r\n\r\n[CS: Yep, will revise]",
+          "createdAt": "2021-12-28T19:19:54Z",
+          "updatedAt": "2021-12-28T19:19:54Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* Figure 6 and Figure 9 will need to be revised based on the comment\r\nabove about the format of public keys not using pure COSE Keys anymore.\r\n\r\n[CS: Added to the to-do list]",
+          "createdAt": "2021-12-28T19:21:15Z",
+          "updatedAt": "2021-12-28T19:21:15Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The text from groupcomm key oscore adopted for the client credentials.",
+          "createdAt": "2023-03-11T20:44:00Z",
+          "updatedAt": "2023-03-11T20:44:00Z"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "I_kwDODl78ds5A-UAe",
+      "title": "TODO: Check 'cnonce'\"",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/16",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Marco - Review]\r\n* On expectable actions around \"TODO: Check 'cnonce'\", you may also want\r\nto look at Sections 6.2.1 and 6.3 of KGO.\r\n\r\n[CS: Will do]",
+      "createdAt": "2021-12-28T19:05:04Z",
+      "updatedAt": "2022-12-16T22:41:51Z",
+      "closedAt": "2022-12-16T22:41:51Z",
+      "comments": []
+    },
+    {
+      "number": 17,
+      "id": "I_kwDODl78ds5A-Vjk",
+      "title": "Explain KDC Joining Response better",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/17",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "* Before defining the format of the Joining Response, it's good to\r\nintroduce the symmetric key as generated by the KDC, later provided to\r\nall the clients joining the group, and what it is used for.\r\n\r\n\r\n[CS: +1]",
+      "createdAt": "2021-12-28T19:18:44Z",
+      "updatedAt": "2024-03-13T10:54:18Z",
+      "closedAt": "2024-03-13T10:54:18Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Added one more line regarding key usage. ",
+          "createdAt": "2023-03-11T20:41:56Z",
+          "updatedAt": "2023-03-11T20:41:56Z"
+        },
+        {
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This was addressed in version -07 of the draft.",
+          "createdAt": "2024-03-13T10:54:18Z",
+          "updatedAt": "2024-03-13T10:54:18Z"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "I_kwDODl78ds5A-Vyo",
+      "title": "Fix \"For Subscriber Clients, the Joining Response MUST contain the 'pub_keys' parameter.\"",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/18",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "* \"... For Subscriber Clients, the Joining Response MUST contain the\r\n'pub_keys' parameter.\"\r\n\r\n     Why? Even if the client did not ask for them in the Joining\r\nRequest? The sub-resource at ace-group/GROUPNAME/pub-key allows for a\r\nlater retrieval, possibly spreading the provisioning of public keys in\r\ndifferent exchanges through filtering.\r\n\r\n     If you really want what you're saying here, it might be just easier\r\nto say upfront for the Joining Request that Subscriber Clients MUST\r\ninclude 'get_pub_keys' --- While that uses a MAY at the moment.\r\n\r\n\r\n[CS: I am not sure about this MUST either, it was in the draft with these conditions, and I did \r\nnot question until now. I will check with Francesca]",
+      "createdAt": "2021-12-28T19:20:51Z",
+      "updatedAt": "2023-03-11T20:36:14Z",
+      "closedAt": "2023-03-11T20:36:14Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This is fixed to if the get_creds is present",
+          "createdAt": "2022-09-12T13:42:59Z",
+          "updatedAt": "2022-09-12T13:42:59Z"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "I_kwDODl78ds5A-V_a",
+      "title": "Figure 6 -  Fix - client provided kid - ",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/19",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Marco Review]\r\n* The public key of Figure 6 (in 'client_cred') and of Figure 9 (in\r\n'pub_keys') includes also the 'kid' header parameter. This is not\r\nmentioned earlier in the text describing the Joining Request and Joining\r\nResponse.\r\n\r\n    In particular for 'client_cred' in the Joining Request, this gives\r\nthe impression that it is up to the client to self-assign a 'kid' value\r\nto its own public key. This can later result in collisions, i.e. two\r\npublishers may have a public key with the same 'kid' value. Later on,\r\nthis in turn puts a subscriber at least in a situation where it might\r\nhave to try verifying a message signature using different public keys,\r\nuntil the right one is used.\r\n\r\n    I think it's better that the KDC exclusively determines these\r\nidentifiers, as uniquely associated not only to the public key for its\r\nretrieval but also to the corresponding publisher client. As to the\r\nactual provisioning of these identifiers, there are two ways:\r\n\r\n    a) The one currently used in the Joining Response, where that\r\nidentifier is the value of the 'kid' header parameter; or, as I believe\r\na better option,\r\n\r\n    b) The separate 'peer_identifiers' parameter defined in Section\r\n4.1.2.1 of KG.\r\n\r\n    In either case, I think it's fine later on in Section 5.1 to have a\r\npublished message specifying in the 'kid' COSE parameter the identifier\r\nto use for retrieving the right public key.\r\n\r\n[CS: Will need to think about this - but yes, it needs fixing]  ",
+      "createdAt": "2021-12-28T19:22:40Z",
+      "updatedAt": "2024-03-13T10:54:26Z",
+      "closedAt": "2024-03-13T10:54:25Z",
+      "comments": [
+        {
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This was addressed in version -07 of the draft.",
+          "createdAt": "2024-03-13T10:54:25Z",
+          "updatedAt": "2024-03-13T10:54:25Z"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "I_kwDODl78ds5A-WeO",
+      "title": "Fix Figure 11 to add observe",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/20",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Marco Review]\r\n Figure 11 and the following paragraph should show/mention that, when\r\nusing CoAP, Observe (RFC 7641) is used together with GET in order to\r\neffectively subscribe. See also [4].\r\n\r\n[4]\r\nhttps://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-09#section-4.4",
+      "createdAt": "2021-12-28T19:27:01Z",
+      "updatedAt": "2022-12-16T22:53:03Z",
+      "closedAt": "2022-12-16T22:53:03Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Done. Added: The (E) message is the subscription of the Subscriber, and uses a CoAP\r\nGET with the Observe option set to 0 (zero) {{I-D.ietf-core-coap-pubsub}}. \r\nAlso Observe added to the figure.",
+          "createdAt": "2022-12-16T22:53:03Z",
+          "updatedAt": "2022-12-16T22:53:03Z"
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "id": "I_kwDODl78ds5A-Wpt",
+      "title": "Reordering sections",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/21",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "* I think it can be better to swap this current Section 5 with the\r\ncurrent Section 6. Even though separately for the CoAP and MQTT case,\r\nSection 6 covers the Token posting at the broker, which happens before\r\nthe actual pub-sub communication described in Section 5.\r\n\r\n\r\n[CS: Let me think about this but I think you are right]",
+      "createdAt": "2021-12-28T19:28:22Z",
+      "updatedAt": "2022-12-16T22:53:28Z",
+      "closedAt": "2022-12-16T22:53:28Z",
+      "comments": []
+    },
+    {
+      "number": 22,
+      "id": "I_kwDODl78ds5A-W24",
+      "title": "In order to encrypt the message, how do you build the AEAD nonce",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/22",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "* I suppose the empty string for the 'external_aad' applies to both the\r\nencryption and the signing process. Correct?\r\n\r\n[CS: That was my understanding]\r\n \r\n\r\n* In order to encrypt the message, how do you build the AEAD nonce?\r\n\r\n    All the group members have the same Base IV received in the Joining\r\nResponse, and clearly they are not expected to synchronize with one\r\nanother about their individual message counter used as Partial IV.\r\nHence, the basic Message IV construction constisting in xoring the Base\r\nIV with the zero-padded Partial IV yields the risk of reusing the same\r\n(nonce, key) pair.\r\n\r\n    If the KDC exclusively assigns the identifiers for public keys and\r\ngroup members (see comment above), it should work to build the AEAD\r\nnonce in a similar way like OSCORE does, see [5].\r\n\r\n    That would also mean having a quite smaller Partial IV in the\r\nunprotected header of the COSE_Encrypt0 object, while now in Figure 12\r\nit consistently has a size of 7 bytes as expected for the AEAD nonce by\r\nAES-CCM-64-64-128.\r\n\r\n    [5] https://datatracker.ietf.org/doc/html/rfc8613#section-5.2\r\n\r\n[CS: I need to have Francesca's opinion on this, as I have not contributed here.] ",
+      "createdAt": "2021-12-28T19:30:21Z",
+      "updatedAt": "2024-03-13T10:54:35Z",
+      "closedAt": "2024-03-13T10:54:34Z",
+      "comments": [
+        {
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This was addressed in version -08 of the draft.",
+          "createdAt": "2024-03-13T10:54:35Z",
+          "updatedAt": "2024-03-13T10:54:35Z"
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "id": "I_kwDODl78ds5A-YLD",
+      "title": "Fix Security Considerations",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/23",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Marco Review]\r\n* The second paragraph seems to mix together authorization to publish\r\nand source-authentication of messages.\r\n\r\n    If it is not critical that only authorized publishers can publish,\r\nthen the broker might not necessarily enforce access control on\r\npublishers. That is, a publication request would be accepted and\r\nprocessed even if there was no posted Token supporting this operation.\r\n\r\n    Instead, not using an additional signature and relying only on\r\nintegrity-protected encryption based on group key material, is about: i)\r\naccepting that subscribers cannot be able to precisely identify the\r\nactual publisher that has sent a message to the group; and ii) accepting\r\nthat any group member (subscribers included) can modify content\r\npublished by the actual publisher, in case communications between the\r\nbroker and the subscribers are not protected.\r\n\r\n\r\n[CS: Will check with Francesca, but I agree with you. I think what she describes is that if it's only symmetric crypto\r\nand no publisher authorisation (i.e.,  it is not checked who is allowed to publish), subscribers can \r\nturn into publishers being able to protect the content of the message acceptable to the group.]",
+      "createdAt": "2021-12-28T19:43:39Z",
+      "updatedAt": "2022-12-16T22:59:35Z",
+      "closedAt": "2022-12-16T22:59:35Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "* \"Subscribers can be excluded from future publications through\r\nre-keying for a certain topic. ... How this could be done is out of\r\nscope for this work.\"\r\n\r\n     Doesn't the same hold for publishers too?\r\n[CS: Will clarify with Francesca. But I do agree. I think she thought the publishers would know the content of \r\ntheir messages anyway]",
+          "createdAt": "2021-12-28T19:44:01Z",
+          "updatedAt": "2021-12-28T19:44:01Z"
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "id": "I_kwDODl78ds5A-YP0",
+      "title": "Define a rekeying approach",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/24",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": " Is there any plan about defining a rekeying approach in this\r\ndocument? I think that a basic point-to-point approach can be pretty\r\nmuch like the one defined in Section 20 of KGO, although filling the\r\n'key' parameter as defined in this document. It might actually be even\r\nsimpler as to the provided content, since you may not need to provide\r\nadditional information to support a recovery for group members that have\r\nmissed a rekeying instance, like KGO has to do.\r\n\r\n\r\n[CS: I think we should]\r\n ",
+      "createdAt": "2021-12-28T19:44:29Z",
+      "updatedAt": "2024-06-16T21:11:12Z",
+      "closedAt": "2024-06-16T21:11:11Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "==>MT\r\nPlease, see also the new Section 6 \"Group Rekeying Process\" in the Editor's copy of ace-key-groupcomm, which considers also guidelines for a point-to-point rekeying scheme.\r\n\r\nThis is supposed to be minimally supported by a KDC, which can however opt for a more advanced scheme to be indicated in the Joining Response (see Section 4.3.1 \"POST Handler\" in the Editor's copy of ace-key-groupcomm).\r\n<==",
+          "createdAt": "2021-12-28T19:54:51Z",
+          "updatedAt": "2021-12-28T19:54:51Z"
+        },
+        {
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed and closed by https://github.com/ace-wg/pubsub-profile/commit/11b8902396d98feb140e1a461cd8d773ddda0213",
+          "createdAt": "2024-06-16T21:11:12Z",
+          "updatedAt": "2024-06-16T21:11:12Z"
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "id": "I_kwDODl78ds5A-Yi0",
+      "title": "Appendix A Fix Groupcomm Requirements",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/25",
+      "state": "CLOSED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "* The list of requirements has been greatly revised and extended in\r\nAppendix A of KG, with new mandatory and optional requirements. So this\r\nlist will need to be re-aligned with the list in KG, and parts of this\r\ndocument will need to be revised/extended to say how the updated set of\r\nrequirements is fulfilled\r\n\r\n[CS: Will do] ",
+      "createdAt": "2021-12-28T19:47:28Z",
+      "updatedAt": "2022-12-16T23:21:25Z",
+      "closedAt": "2022-12-16T23:21:25Z",
+      "comments": [
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "==>MT\r\nNote that, following the review comments to ace-key-groupcomm, the list of requirements has been extended and the requirements have been renumbered.\r\n",
+          "createdAt": "2021-12-28T19:55:16Z",
+          "updatedAt": "2021-12-28T19:55:16Z"
+        },
+        {
+          "author": "ciseng",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Updated to the current version.",
+          "createdAt": "2022-12-16T23:21:25Z",
+          "updatedAt": "2022-12-16T23:21:25Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTg4MTcxMTUy",
+      "title": "Mqtt v2",
+      "url": "https://github.com/ace-wg/pubsub-profile/pull/1",
+      "state": "MERGED",
+      "author": "ciseng",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Have added the MQTT section. \r\nAdded when necessary, references to MQTT.\r\nMade some minor wording revisions. ",
+      "createdAt": "2021-03-09T15:55:42Z",
+      "updatedAt": "2021-06-03T17:44:13Z",
+      "baseRepository": "ace-wg/pubsub-profile",
+      "baseRefName": "master",
+      "baseRefOid": "01696e1fc3eabbe45db67c731cce65bb55328c20",
+      "headRepository": "ace-wg/pubsub-profile",
+      "headRefName": "mqtt-v2",
+      "headRefOid": "e7e79c04c8141f53273feeb3f779579df793b3ca",
+      "closedAt": "2021-04-07T13:51:17Z",
+      "mergedAt": "2021-04-07T13:51:17Z",
+      "mergedBy": "ciseng",
+      "mergeCommit": {
+        "oid": "5a00435572877b287eeeb0ecd9e6d992b9ef779d"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 26,
+      "id": "PR_kwDODl78ds5yAY7E",
+      "title": "Changes including Example of a delete exchange",
+      "url": "https://github.com/ace-wg/pubsub-profile/pull/26",
+      "state": "MERGED",
+      "author": "marco-tiloca-sics",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-06-10T17:14:04Z",
+      "updatedAt": "2024-06-10T17:14:17Z",
+      "baseRepository": "ace-wg/pubsub-profile",
+      "baseRefName": "master",
+      "baseRefOid": "d1cb3bc35b8c49c31f2a3bc4e519be08fe1e08d3",
+      "headRepository": "ace-wg/pubsub-profile",
+      "headRefName": "hackathon",
+      "headRefOid": "6ca1883b70d62828a9c7a8ee6de3883df6ba4bb4",
+      "closedAt": "2024-06-10T17:14:16Z",
+      "mergedAt": "2024-06-10T17:14:16Z",
+      "mergedBy": "marco-tiloca-sics",
+      "mergeCommit": {
+        "oid": "2f77cbca5f9689a630b0b0e577dc8ce8e67a131c"
+      },
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
