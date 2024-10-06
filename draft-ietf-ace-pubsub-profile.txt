@@ -1557,8 +1557,9 @@ Table of Contents
    Broker are protected with the secure communication association
    between that Client and the Broker.  In addition, COSE is used to
    protect end-to-end the published topic data, which is conveyed in a
-   PUT request to the topic-data resource at the Broker and in a 2.05
-   (Content) response from that resource.
+   PUT request from the Publisher to the topic-data resource at the
+   Broker and in a 2.05 (Content) response from that resource to a
+   Subscriber.
 
    The example also shows a delete operation, where the Publisher
    deletes the topic-data resource by sending a CoAP DELETE request to
