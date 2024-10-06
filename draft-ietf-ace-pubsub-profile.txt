@@ -122,10 +122,11 @@ Table of Contents
      A.1.  Mandatory-to-Address Requirements
      A.2.  Optional-to-Address Requirements
    Appendix B.  Document Updates
-     B.1.  Version -09 to -10
-     B.2.  Version -08 to -09
-     B.3.  Version -07 to -08
-     B.4.  Version -06 to -07
+     B.1.  Version -10 to -11
+     B.2.  Version -09 to -10
+     B.3.  Version -08 to -09
+     B.4.  Version -07 to -08
+     B.5.  Version -06 to -07
    Acknowledgments
    Authors' Addresses
 
@@ -146,12 +147,12 @@ Table of Contents
    group of Publishers and Subscribers securely communicate through a
    Broker using CoAP.
 
-   Building on the message formats and processing defined in
-   [I-D.ietf-ace-key-groupcomm], this document specifies the
-   provisioning and enforcement of authorization information for Clients
-   to act as Publishers and/or Subscribers at the Broker, as well as the
-   provisioning of keying material and security parameters that Clients
-   use for protecting end-to-end their communications via the Broker.
+   Building on the message formats and processing defined in [RFC9594],
+   this document specifies the provisioning and enforcement of
+   authorization information for Clients to act as Publishers and/or
+   Subscribers at the Broker, as well as the provisioning of keying
+   material and security parameters that Clients use for protecting end-
+   to-end their communications via the Broker.
 
    In order to protect the Pub-Sub operations at the Broker as well as
    the provisioning of keying material and security parameters, this
@@ -195,11 +196,10 @@ Table of Contents
       express authorization information.
 
    *  The terms and concept related to the message formats and
-      processing specified in [I-D.ietf-ace-key-groupcomm], for
-      provisioning and renewing keying material in group communication
-      scenarios.  These include the abbreviations REQx and OPTx denoting
-      the numbered mandatory-to-address and optional-to-address
-      requirements, respectively.
+      processing specified in [RFC9594], for provisioning and renewing
+      keying material in group communication scenarios.  These include
+      the abbreviations REQx and OPTx denoting the numbered mandatory-
+      to-address and optional-to-address requirements, respectively.
 
    *  The terms and concepts described in CDDL [RFC8610], CBOR
       [RFC8949], and COSE [RFC9052][RFC9053][RFC9338].
@@ -234,12 +234,11 @@ Table of Contents
 
 2.  Application Profile Overview
 
-   This document describes how to use [RFC9200] and
-   [I-D.ietf-ace-key-groupcomm] to perform authentication,
-   authorization, and key distribution operations as overviewed in
-   Section 2 of [I-D.ietf-ace-key-groupcomm], where the considered group
-   is the security group composed of the Pub-Sub clients that exchange
-   end-to-end protected content through the Broker.
+   This document describes how to use [RFC9200] and [RFC9594] to perform
+   authentication, authorization, and key distribution operations as
+   overviewed in Section 2 of [RFC9594], where the considered group is
+   the security group composed of the Pub-Sub clients that exchange end-
+   to-end protected content through the Broker.
 
    Pub-Sub clients communicate within their application groups, each of
    which is mapped to a topic.  Depending on the application, a topic
@@ -257,13 +256,12 @@ Table of Contents
    Subscriber Clients separately.
 
    Both Publishers and Subscribers act as ACE Clients.  The Broker acts
-   as an ACE RS, and corresponds to the Dispatcher in
-   [I-D.ietf-ace-key-groupcomm].  The Key Distribution Center (KDC) also
-   acts as an ACE RS, and builds on what is defined for the KDC in
-   [I-D.ietf-ace-key-groupcomm].  From a high-level point of view, the
-   Clients interact with the KDC in order to join security groups,
-   thereby obtaining the group keying material to protect end-to-end and
-   verify the content published in the associated topics.
+   as an ACE RS, and corresponds to the Dispatcher in [RFC9594].  The
+   Key Distribution Center (KDC) also acts as an ACE RS, and builds on
+   what is defined for the KDC in [RFC9594].  From a high-level point of
+   view, the Clients interact with the KDC in order to join security
+   groups, thereby obtaining the group keying material to protect end-
+   to-end and verify the content published in the associated topics.
 
                           +---------------+   +--------------+
                           | Authorization |   |     Key      |
@@ -327,8 +325,7 @@ Table of Contents
    KDC to join a security group, after which the Client obtains from the
    KDC the keying material to use for communicating with the other group
    members.  This builds on the process for joining security groups with
-   ACE, as defined in [I-D.ietf-ace-key-groupcomm] and further specified
-   in this document.
+   ACE, as defined in [RFC9594] and further specified in this document.
 
    In addition, this profile allows an anonymous Client to perform some
    of the discovery operations defined in Section 2.3 of
@@ -411,8 +408,7 @@ Table of Contents
        (rekeying), e.g., due to a membership change in the group.
 
    Appendix A lists the specifications on this application profile of
-   ACE, based on the requirements defined in Appendix A of
-   [I-D.ietf-ace-key-groupcomm].
+   ACE, based on the requirements defined in Appendix A of [RFC9594].
 
 3.  Getting Authorisation to Join a Pub-Sub security group (A)
 
@@ -557,11 +553,11 @@ Table of Contents
    group keying material for protecting end-to-end and verifying the
    content of exchanged messages on the associated Pub-Sub topics.
 
-   This section builds on Section 3 of [I-D.ietf-ace-key-groupcomm] and
-   defines only additions or modifications to that specification.
+   This section builds on Section 3 of [RFC9594] and defines only
+   additions or modifications to that specification.
 
    Both Authorisation Requests include the following fields (see
-   Section 3.1 of [I-D.ietf-ace-key-groupcomm]):
+   Section 3.1 of [RFC9594]):
 
    *  'scope': Optional.  If present, it specifies the following
       information, depending on the specifically targeted audience.
@@ -591,8 +587,8 @@ Table of Contents
 
 3.4.1.  Format of Scope
 
-   Building on Section 3.1 of [I-D.ietf-ace-key-groupcomm], this section
-   defines the exact format and encoding of scope used in this profile.
+   Building on Section 3.1 of [RFC9594], this section defines the exact
+   format and encoding of scope used in this profile.
 
    To this end, this profile uses the Authorization Information Format
    (AIF) [RFC9237] (REQ1).  With reference to the generic AIF model
@@ -716,8 +712,8 @@ Table of Contents
 3.5.  Authorisation response
 
    The AS responds with an Authorization Response as defined in
-   Section 5.8.2 of [RFC9200] and Section 3.2 of
-   [I-D.ietf-ace-key-groupcomm], with the following additions:
+   Section 5.8.2 of [RFC9200] and Section 3.2 of [RFC9594], with the
+   following additions:
 
    *  In the Authorization Response, the AS MUST include the
       'expires_in' parameter.  Other means for the AS to specify the
@@ -731,11 +727,11 @@ Table of Contents
       entry, encoded as specified in Section 3.4.
 
    Furthermore, the AS MAY use the extended format of scope defined in
-   Section 7 of [I-D.ietf-ace-key-groupcomm] for the 'scope' claim of
-   the access token.  In such a case, the AS MUST use the CBOR tag with
-   tag number TAG_NUMBER, associated with the CoAP Content-Format CF_ID
-   for the media type application/aif+cbor registered in Section 9.5 of
-   this document (REQ28).
+   Section 7 of [RFC9594] for the 'scope' claim of the access token.  In
+   such a case, the AS MUST use the CBOR tag with tag number TAG_NUMBER,
+   associated with the CoAP Content-Format CF_ID for the media type
+   application/aif+cbor registered in Section 9.5 of this document
+   (REQ28).
 
    Note to RFC Editor: In the previous paragraph, please replace
    "TAG_NUMBER" with the CBOR tag number computed as TN(ct) in
@@ -751,16 +747,15 @@ Table of Contents
 3.6.  Token Transfer to KDC
 
    The Client transfers its access token to the KDC using one of the
-   methods defined in the Section 3.3 of [I-D.ietf-ace-key-groupcomm].
-   This typically includes sending a POST request to the authz-info
-   endpoint.  However, if the DTLS transport profile of ACE [RFC9202] is
-   used and the Client uses a symmetric proof-of-possession key in the
-   DTLS handshake, the Client MAY provide the access token to the KDC in
-   the "psk_identity" field of the DTLS ClientKeyExchange message when
-   using DTLS 1.2 [RFC6347], or in the "identity" field of a PskIdentity
-   within the PreSharedKeyExtension of the ClientHello message when
-   using DTLS 1.3 [RFC9147].  In addition to that, the following
-   applies.
+   methods defined in the Section 3.3 of [RFC9594].  This typically
+   includes sending a POST request to the authz-info endpoint.  However,
+   if the DTLS transport profile of ACE [RFC9202] is used and the Client
+   uses a symmetric proof-of-possession key in the DTLS handshake, the
+   Client MAY provide the access token to the KDC in the "psk_identity"
+   field of the DTLS ClientKeyExchange message when using DTLS 1.2
+   [RFC6347], or in the "identity" field of a PskIdentity within the
+   PreSharedKeyExtension of the ClientHello message when using DTLS 1.3
+   [RFC9147].  In addition to that, the following applies.
 
    In the Token Transfer Response to the Publishers, i.e., the Clients
    whose scope of the access token includes the "Publish" permission for
@@ -769,9 +764,9 @@ Table of Contents
    generated by the KDC, and is RECOMMENDED to be an 8-byte long random
    nonce.  Later when joining the group, the Publisher can use the
    'kdcchallenge' as part of proving possession of its private key (see
-   [I-D.ietf-ace-key-groupcomm]).  If a Publisher provides the access
-   token to the KDC through an authz-info endpoint, the Client MUST
-   support the parameter 'kdcchallenge'.
+   [RFC9594]).  If a Publisher provides the access token to the KDC
+   through an authz-info endpoint, the Client MUST support the parameter
+   'kdcchallenge'.
 
    If 'sign_info' is included in the Token Transfer Request, the KDC
    SHOULD include the 'sign_info' parameter in the Token Transfer
@@ -862,7 +857,7 @@ Table of Contents
    | /ace-group/GROUPNAME/nodes/     | REQUIRED.       | GET, DELETE   |
    | NODENAME                        | Contains the    | (All          |
    |                                 | group keying    | Clients).     |
-   |                                 | material for    | PUT           |
+   |                                 | material for    | POST          |
    |                                 | that group      | (Publishers). |
    |                                 | member          |               |
    |                                 | NODENAME in     |               |
@@ -898,14 +893,13 @@ Table of Contents
 
                        Table 1: Resources at the KDC
 
-   The use of these resources follows what is defined in
-   [I-D.ietf-ace-key-groupcomm], and only additions or modifications to
-   that specification are defined in this document.
+   The use of these resources follows what is defined in [RFC9594], and
+   only additions or modifications to that specification are defined in
+   this document.
 
-   Consistent with what is defined in Section 4.1.2 of
-   [I-D.ietf-ace-key-groupcomm], some error responses from the KDC can
-   convey error-specific information according to the problem-details
-   format specified in [RFC9290].
+   Consistent with what is defined in Section 4.1.2 of [RFC9594], some
+   error responses from the KDC can convey error-specific information
+   according to the problem-details format specified in [RFC9290].
 
 4.1.  Joining a Security Group
 
@@ -923,9 +917,8 @@ Table of Contents
    published topic data.
 
    The message exchange between the joining node and the KDC follows
-   what is defined in Section 4.3.1.1 of [I-D.ietf-ace-key-groupcomm],
-   and only additions or modifications to that specification are defined
-   in this document.
+   what is defined in Section 4.3.1.1 of [RFC9594], and only additions
+   or modifications to that specification are defined in this document.
 
                    Client                              KDC
                       |                                 |
@@ -940,12 +933,11 @@ Table of Contents
 
    After establishing a secure communication association with the KDC,
    the Client sends a Join Request to the KDC as described in
-   Section 4.3 of [I-D.ietf-ace-key-groupcomm].  More specifically, the
-   Client sends a POST request to the /ace-group/GROUPNAME endpoint,
-   with Content-Format "application/ace-groupcomm+cbor".  The payload
-   contains the following information formatted as a CBOR map, which
-   MUST be encoded as defined in Section 4.3.1 of
-   [I-D.ietf-ace-key-groupcomm]:
+   Section 4.3 of [RFC9594].  More specifically, the Client sends a POST
+   request to the /ace-group/GROUPNAME endpoint, with Content-Format
+   "application/ace-groupcomm+cbor".  The payload contains the following
+   information formatted as a CBOR map, which MUST be encoded as defined
+   in Section 4.3.1 of [RFC9594]:
 
    *  'scope': It MUST be present and specify the group that the Client
       is attempting to join, i.e., the group name, and the permissions
@@ -1066,8 +1058,7 @@ Table of Contents
 4.1.2.  Join Response
 
    On receiving the Join Request, the KDC processes it as defined in
-   Section 4.3.1 of [I-D.ietf-ace-key-groupcomm], and returns a success
-   or error response.
+   Section 4.3.1 of [RFC9594], and returns a success or error response.
 
    If the 'client_cred' parameter is present, the KDC verifies the
    signature in the 'client_cred_verify' parameter.  As PoP input, the
@@ -1087,7 +1078,7 @@ Table of Contents
 
    In case of success, the KDC responds with a Join Response, whose
    payload formatted as a CBOR map MUST contain the following fields as
-   per Section 4.3.1 of [I-D.ietf-ace-key-groupcomm]:
+   per Section 4.3.1 of [RFC9594]:
 
    *  'gkty': this field specifies the key type
       "Group_PubSub_Keying_Material" (REQ18) registered in Section 9.1
@@ -1228,9 +1219,8 @@ Table of Contents
 
    *  'group_rekeying', which MAY be omitted if the KDC uses the "Point-
       to-Point" group rekeying scheme registered in Section 11.13 of
-      [I-D.ietf-ace-key-groupcomm] as the default rekeying scheme in the
-      group (OPT9).  In any other case, the 'group_rekeying' parameter
-      MUST be included.
+      [RFC9594] as the default rekeying scheme in the group (OPT9).  In
+      any other case, the 'group_rekeying' parameter MUST be included.
 
    After sending a successful Join Response, the KDC adds the Client to
    the list of current members of the security group, if that Client is
@@ -1312,9 +1302,9 @@ Table of Contents
    case there are currently no Sender IDs available to assign.  The
    response MUST have Content-Format set to application/concise-problem-
    details+cbor and is formatted as defined in Section 4.1.2 of
-   [I-D.ietf-ace-key-groupcomm].  Within the Custom Problem Detail entry
-   'ace-groupcomm-error', the value of the 'error-id' field MUST be set
-   to 4 ("No available node identifiers").
+   [RFC9594].  Within the Custom Problem Detail entry 'ace-groupcomm-
+   error', the value of the 'error-id' field MUST be set to 4 ("No
+   available node identifiers").
 
 4.2.  Other Group Operations through the KDC
 
@@ -1340,9 +1330,9 @@ Table of Contents
       coincide.
 
       The KDC processes the Key Distribution Request according to
-      Section 4.3.2 of [I-D.ietf-ace-key-groupcomm].  The Key
-      Distribution Response is formatted as defined in Section 4.3.2 of
-      [I-D.ietf-ace-key-groupcomm], with the following additions.
+      Section 4.3.2 of [RFC9594].  The Key Distribution Response is
+      formatted as defined in Section 4.3.2 of [RFC9594], with the
+      following additions.
 
       -  The 'key' field is formatted as defined in Section 4.1.2 of
          this document, with the difference that it does not include the
@@ -1391,9 +1381,9 @@ Table of Contents
       its Sender ID that it has in the group (if Publisher).
 
       The KDC processes the Key Distribution Request according to
-      Section 4.8.1 of [I-D.ietf-ace-key-groupcomm].  The Key
-      Distribution Response is formatted as defined in Section 4.8.1 of
-      [I-D.ietf-ace-key-groupcomm], with the following additions.
+      Section 4.8.1 of [RFC9594].  The Key Distribution Response is
+      formatted as defined in Section 4.8.1 of [RFC9594], with the
+      following additions.
 
       -  The 'key' field is formatted as defined in Section 4.1.2 of
          this document.  If the requesting group member is not a
@@ -1416,13 +1406,13 @@ Table of Contents
    topic data (see Section 6.1).
 
    When this happens, the Publisher MUST send a Key Renewal Request
-   message to the KDC, as per Section 4.8.2.1 of
-   [I-D.ietf-ace-key-groupcomm].  That is, it sends a CoAP PUT request
-   to the endpoint /ace-group/GROUPNAME/nodes/NODENAME at the KDC.
+   message to the KDC, as per Section 4.8.2.1 of [RFC9594].  That is, it
+   sends a CoAP POST request to the endpoint /ace-group/GROUPNAME/nodes/
+   NODENAME at the KDC.
 
    Upon receiving the Key Renewal Request, the KDC processes it as
-   defined in Section 4.8.2 of [I-D.ietf-ace-key-groupcomm], with the
-   addition that the KDC takes one of the following actions.
+   defined in Section 4.8.2 of [RFC9594], with the addition that the KDC
+   takes one of the following actions.
 
    *  The KDC rekeys the group.  That is, the KDC generates new group
       keying material for that group (see Section 5), and replies to the
@@ -1439,11 +1429,10 @@ Table of Contents
 
    *  The KDC determines and assigns a new Sender ID for the Publisher,
       and replies with a Key Renewal Response formatted as defined in
-      Section 4.8.2 of [I-D.ietf-ace-key-groupcomm].  The CBOR Map in
-      the response payload includes only the parameter 'group_SenderId'
-      registered in Section 16.3 of [I-D.ietf-ace-key-groupcomm-oscore],
-      and specifies the new Sender ID of the Publisher encoded as a CBOR
-      byte string.
+      Section 4.8.2 of [RFC9594].  The CBOR Map in the response payload
+      includes only the parameter 'group_SenderId' registered in
+      Section 16.3 of [I-D.ietf-ace-key-groupcomm-oscore], and specifies
+      the new Sender ID of the Publisher encoded as a CBOR byte string.
 
       The KDC MUST assign a new Sender ID that has not been used in the
       group since the latest time when the current Gid value was
@@ -1454,10 +1443,9 @@ Table of Contents
       there are currently no Sender IDs available to assign in the
       group.  The response MUST have Content-Format set to application/
       concise-problem-details+cbor and is formatted as defined in
-      Section 4.1.2 of [I-D.ietf-ace-key-groupcomm].  Within the Custom
-      Problem Detail entry 'ace-groupcomm-error', the value of the
-      'error-id' field MUST be set to 4 ("No available node
-      identifiers").
+      Section 4.1.2 of [RFC9594].  Within the Custom Problem Detail
+      entry 'ace-groupcomm-error', the value of the 'error-id' field
+      MUST be set to 4 ("No available node identifiers").
 
 4.2.3.  Updating Authentication Credentials
 
@@ -1466,7 +1454,7 @@ Table of Contents
    group with name GROUPNAME, and replace the currently stored one.  To
    this end, the Publisher sends a CoAP POST request to its associated
    sub-resource /ace-group/GROUPNAME/nodes/NODENAME/cred at the KDC (see
-   Section 4.9.1 of [I-D.ietf-ace-key-groupcomm]).
+   Section 4.9.1 of [RFC9594]).
 
    Following a successful processing of the request, the KDC replaces
    the stored authentication credential of this Client for the group
@@ -1478,10 +1466,10 @@ Table of Contents
    the security group with name GROUPNAME.  To this end, the Client
    sends a CoAP DELETE request to the associated sub-resource /ace-
    group/GROUPNAME/nodes/NODENAME at the KDC (see Section 4.8.3 of
-   [I-D.ietf-ace-key-groupcomm]).
+   [RFC9594]).
 
    The KDC can also remove a group member due to any of the reasons
-   described in Section 5 of [I-D.ietf-ace-key-groupcomm].
+   described in Section 5 of [RFC9594].
 
 5.  Group Rekeying Process
 
@@ -1490,10 +1478,10 @@ Table of Contents
    the publication of topic data with COSE (see Section 6.1).
 
    The KDC MUST trigger a group rekeying as described in Section 6 of
-   [I-D.ietf-ace-key-groupcomm], upon a change in the group membership
-   or due to the current group keying material approaching its
-   expiration time.  In addition, the KDC MAY perform regularly
-   scheduled group rekeying executions.
+   [RFC9594], upon a change in the group membership or due to the
+   current group keying material approaching its expiration time.  In
+   addition, the KDC MAY perform regularly scheduled group rekeying
+   executions.
 
    Upon generating the new group key and before starting its
    distribution:
@@ -1515,9 +1503,8 @@ Table of Contents
    the Sender ID of each member in that group.
 
    The default rekeying scheme is "Point-to-Point" (see Section 6.1 of
-   [I-D.ietf-ace-key-groupcomm]), where the KDC individually targets
-   each node to rekey, using the pairwise secure communication
-   association with that node.
+   [RFC9594]), where the KDC individually targets each node to rekey,
+   using the pairwise secure communication association with that node.
 
    In particular, a group rekeying message MUST have Content-Format set
    to application/ace-groupcomm+cbor and have the same format used for
@@ -1605,7 +1592,7 @@ Table of Contents
 6.1.  Using COSE to Protect the Published Topic Data
 
    The Publisher uses the symmetric COSE Key received from the KDC to
-   protect the payload of the Publish operation (see Section 4.3 of
+   protect the payload of the Publish operation (see Section 3.2.1 of
    [I-D.ietf-core-coap-pubsub]).  Specifically, the Publisher creates a
    COSE_Encrypt0 object [RFC9052][RFC9053] by means of the COSE Key
    currently used as group key.  The encryption algorithm and Base IV to
@@ -1856,9 +1843,9 @@ Table of Contents
 8.  Security Considerations
 
    Security considerations for this profile are inherited from
-   [I-D.ietf-ace-key-groupcomm], the ACE framework for Authentication
-   and Authorization [RFC9200], and the specific transport profile of
-   ACE signalled by the AS, such as [RFC9202] and [RFC9203].
+   [RFC9594], the ACE framework for Authentication and Authorization
+   [RFC9200], and the specific transport profile of ACE signalled by the
+   AS, such as [RFC9202] and [RFC9203].
 
    The following security considerations also apply for this profile.
 
@@ -1912,8 +1899,7 @@ Table of Contents
 9.1.  ACE Groupcomm Key Types
 
    IANA is asked to register the following entry in the "ACE Groupcomm
-   Key Types" registry defined in Section 11.8 of
-   [I-D.ietf-ace-key-groupcomm].
+   Key Types" registry defined in Section 11.8 of [RFC9594].
 
    *  Name: Group_PubSub_Keying_Material
 
@@ -1929,8 +1915,7 @@ Table of Contents
 9.2.  ACE Groupcomm Profiles
 
    IANA is asked to register the following entries in the "ACE Groupcomm
-   Profiles" registry defined in Section 11.9 of
-   [I-D.ietf-ace-key-groupcomm].
+   Profiles" registry defined in Section 11.9 of [RFC9594].
 
    *  Name: coap_group_pubsub_app
 
@@ -2039,13 +2024,6 @@ Table of Contents
 10.  References
 
 10.1.  Normative References
-
-   [I-D.ietf-ace-key-groupcomm]
-              Palombini, F. and M. Tiloca, "Key Provisioning for Group
-              Communication using ACE", Work in Progress, Internet-
-              Draft, draft-ietf-ace-key-groupcomm-19, 30 April 2024,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-
-              groupcomm-19>.
 
    [I-D.ietf-core-coap-pubsub]
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
@@ -2171,6 +2149,12 @@ Table of Contents
               DOI 10.17487/RFC9338, December 2022,
               <https://www.rfc-editor.org/rfc/rfc9338>.
 
+   [RFC9594]  Palombini, F. and M. Tiloca, "Key Provisioning for Group
+              Communication Using Authentication and Authorization for
+              Constrained Environments (ACE)", RFC 9594,
+              DOI 10.17487/RFC9594, September 2024,
+              <https://www.rfc-editor.org/rfc/rfc9594>.
+
 10.2.  Informative References
 
    [I-D.ietf-ace-edhoc-oscore-profile]
@@ -2247,7 +2231,7 @@ Table of Contents
 Appendix A.  Requirements on Application Profiles
 
    This section lists how this application profile of ACE addresses the
-   requirements defined in Appendix A of [I-D.ietf-ace-key-groupcomm].
+   requirements defined in Appendix A of [RFC9594].
 
 A.1.  Mandatory-to-Address Requirements
 
@@ -2294,13 +2278,13 @@ A.1.  Mandatory-to-Address Requirements
       optional, see Section 4.1.2.
 
    *  REQ9: Specify if any part of the KDC interface as defined in
-      [I-D.ietf-ace-key-groupcomm] is not supported by the KDC: some are
-      left optional, see Section 4.
+      [RFC9594] is not supported by the KDC: some are left optional, see
+      Section 4.
 
    *  REQ10: Register a Resource Type for the group-membership resource,
       which is used to discover the correct URL for sending a Join
       Request to the KDC: the Resource Type (rt=) Link Target Attribute
-      value "core.ps.gm" is registered in Section Section 9.3.
+      value "core.ps.gm" is registered in Section 9.3.
 
    *  REQ11: Define what specific actions (e.g., CoAP methods) are
       allowed on each resource provided by the KDC interface, depending
@@ -2385,17 +2369,16 @@ A.1.  Mandatory-to-Address Requirements
       Section 9.5.
 
    *  REQ29: Categorize newly defined parameters according to the same
-      criteria of Section 8 of [I-D.ietf-ace-key-groupcomm]: a Publisher
-      Client MUST support 'group_SenderId' in 'key'; see Section 4.1.2.
+      criteria of Section 8 of [RFC9594]: a Publisher Client MUST
+      support 'group_SenderId' in 'key'; see Section 4.1.2.
 
    *  REQ30: Define whether Clients must, should, or may support the
-      conditional parameters defined in Section 8 of
-      [I-D.ietf-ace-key-groupcomm], and under which circumstances: a
-      Publisher Client MUST support the client_cred', 'cnonce', and
-      'client_cred_verify' parameters (see Section 4.1.1).  A Publisher
-      Client that provides the access token to the KDC through the
-      authz-info endpoint MUST support the parameter 'kdcchallenge' (see
-      Section 3.6).
+      conditional parameters defined in Section 8 of [RFC9594], and
+      under which circumstances: a Publisher Client MUST support the
+      client_cred', 'cnonce', and 'client_cred_verify' parameters (see
+      Section 4.1.1).  A Publisher Client that provides the access token
+      to the KDC through the authz-info endpoint MUST support the
+      parameter 'kdcchallenge' (see Section 3.6).
 
 A.2.  Optional-to-Address Requirements
 
@@ -2432,7 +2415,7 @@ A.2.  Optional-to-Address Requirements
    *  OPT9: Optionally, define a default group rekeying scheme, to refer
       to in case the 'rekeying_scheme' parameter is not included in the
       Join Response: the "Point-to-Point" rekeying scheme registered in
-      Section 11.12 of [I-D.ietf-ace-key-groupcomm].
+      Section 11.13 of [RFC9594].
 
    *  OPT10: Optionally, specify the functionalities implemented at the
       'control_group_uri' resource hosted at the Client, including
@@ -2454,13 +2437,21 @@ A.2.  Optional-to-Address Requirements
 
    *  OPT14: Optionally, specify additional information to include in
       rekeying messages for the "Point-to-Point" group rekeying scheme
-      (see Section 6.1 of [I-D.ietf-ace-key-groupcomm]): no.
+      (see Section 6.1 of [RFC9594]): no.
 
 Appendix B.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-B.1.  Version -09 to -10
+B.1.  Version -10 to -11
+
+   *  The request for a new Sender ID uses the method POST.
+
+   *  Updated references.
+
+   *  Clarifications and editorial improvements.
+
+B.2.  Version -09 to -10
 
    *  More details on the scope format.
 
@@ -2484,7 +2475,7 @@ B.1.  Version -09 to -10
 
    *  Clarifications and editorial improvements.
 
-B.2.  Version -08 to -09
+B.3.  Version -08 to -09
 
    *  Improved terminology section.
 
@@ -2507,7 +2498,7 @@ B.2.  Version -08 to -09
 
    *  Clarification and editorial improvements.
 
-B.3.  Version -07 to -08
+B.4.  Version -07 to -08
 
    *  Revised presentation of the scope format.
 
@@ -2526,7 +2517,7 @@ B.3.  Version -07 to -08
 
    *  Clarifications and editorial improvements.
 
-B.4.  Version -06 to -07
+B.5.  Version -06 to -07
 
    *  Revised abstract and introduction.
 
