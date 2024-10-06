@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 7 January 2025                                Brunel University
+Expires: 9 April 2025                                  Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                             6 July 2024
+                                                          6 October 2024
 
 
    Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 January 2025.
+   This Internet-Draft will expire on 9 April 2025.
 
 Copyright Notice
 
@@ -1568,11 +1568,11 @@ Table of Contents
    Figure 8 provides a more detailed example of such a secure Pub-Sub
    communication.  All the messages exchanged between a Client and the
    Broker are protected with the secure communication association
-   between that Client and the Broker.
+   between that Client and the Broker.  In addition, COSE is used to
+   protect end-to-end the published topic data, which is conveyed in a
+   PUT request to the topic-data resource at the Broker and in a 2.05
+   (Content) response from that resource.
 
-   In addition, COSE is used to protect end-to-end the published topic
-   data, which is conveyed in a PUT request to the topic-data resource
-   at the Broker and in a 2.05 (Content) response from that resource.
    The example also shows a delete operation, where the Publisher
    deletes the topic-data resource by sending a CoAP DELETE request to
    the URI of that resource.  In case of success, the Broker replies
@@ -2057,15 +2057,15 @@ Table of Contents
 
    [IANA.cose_algorithms]
               IANA, "COSE Algorithms",
-              <http://www.iana.org/assignments/cose>.
+              <https://www.iana.org/assignments/cose>.
 
    [IANA.cose_header-parameters]
               IANA, "COSE Header Parameters",
-              <http://www.iana.org/assignments/cose>.
+              <https://www.iana.org/assignments/cose>.
 
    [IANA.cose_key-type]
               IANA, "COSE Key Types",
-              <http://www.iana.org/assignments/cose>.
+              <https://www.iana.org/assignments/cose>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -2179,9 +2179,9 @@ Table of Contents
               Security for Constrained Environments (OSCORE) Profile for
               Authentication and Authorization for Constrained
               Environments (ACE)", Work in Progress, Internet-Draft,
-              draft-ietf-ace-edhoc-oscore-profile-04, 4 March 2024,
+              draft-ietf-ace-edhoc-oscore-profile-05, 8 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              edhoc-oscore-profile-04>.
+              edhoc-oscore-profile-05>.
 
    [I-D.ietf-ace-key-groupcomm-oscore]
               Tiloca, M., Park, J., and F. Palombini, "Key Management
@@ -2195,17 +2195,17 @@ Table of Contents
               "Notification of Revoked Access Tokens in the
               Authentication and Authorization for Constrained
               Environments (ACE) Framework", Work in Progress, Internet-
-              Draft, draft-ietf-ace-revoked-token-notification-08, 24
-              June 2024, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-ace-revoked-token-notification-08>.
+              Draft, draft-ietf-ace-revoked-token-notification-09, 22
+              September 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-revoked-token-notification-09>.
 
    [I-D.ietf-cose-cbor-encoded-cert]
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-09, 4 March 2024,
+              ietf-cose-cbor-encoded-cert-11, 8 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-09>.
+              cbor-encoded-cert-11>.
 
    [MQTT-OASIS-Standard-v5]
               Banks, A., Briggs, E., Borgendale, K., and R. Gupta,
