@@ -35,7 +35,6 @@ normative:
   IANA.cose_algorithms:
   IANA.cose_key-type:
   IANA.cose_header-parameters:
-  RFC2119:
   RFC5705:
   RFC6347:
   RFC6690:
@@ -43,7 +42,6 @@ normative:
   RFC7252:
   RFC7641:
   RFC7925:
-  RFC8174:
   RFC8392:
   RFC8446:
   RFC8447:
@@ -736,7 +734,7 @@ In the same diagram, (E) corresponds to the subscription of a Subscriber to the 
 ~~~~~~~~~~~~~
 {: #pubsub-3 title="Secure Pub-Sub Communication between Publisher and Subscriber" artwork-align="center"}
 
-{{flow}} provides a more detailed example of such a secure Pub-Sub communication. All the messages exchanged between a Client and the Broker are protected with the secure communication association between that Client and the Broker. In addition, COSE is used to protect end-to-end the published topic data, which is conveyed in a PUT request to the topic-data resource at the Broker and in a 2.05 (Content) response from that resource. 
+{{flow}} provides a more detailed example of such a secure Pub-Sub communication. All the messages exchanged between a Client and the Broker are protected with the secure communication association between that Client and the Broker. In addition, COSE is used to protect end-to-end the published topic data, which is conveyed in a PUT request to the topic-data resource at the Broker and in a 2.05 (Content) response from that resource.
 
 The example also shows a delete operation, where the Publisher deletes the topic-data resource by sending a CoAP DELETE request to the URI of that resource. In case of success, the Broker replies with a 2.02 (Deleted) response. Consequently, the Broker also unsubscribes all the Clients subscribed to that topic-data resource, by removing them from the list of observers and sending them a final 4.04 (Not Found) response as per {{Section 3.2 of RFC7641}}.
 
