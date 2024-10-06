@@ -3039,85 +3039,85 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-A.1-1.1">
-            <p id="appendix-A.1-1.1.1">REQ1: Specify the format and encoding of 'scope'. This includes defining the set of possible roles and their identifiers, as well as the corresponding encoding to use in the scope entries according to the used scope format: see <a href="#scope" class="auto internal xref">Section 3.4.1</a>.<a href="#appendix-A.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.1.1">REQ1: Specify the format and encoding of scope. This includes defining the set of possible roles and their identifiers, as well as the corresponding encoding to use in the scope entries according to the used scope format: see <a href="#scope" class="auto internal xref">Section 3.4.1</a>.<a href="#appendix-A.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.2">
-            <p id="appendix-A.1-1.2.1">REQ2: If the AIF format of 'scope' is used, register its specific instance of "Toid" and "Tperm" as Media Type parameters and a corresponding Content-Format, as per the guidelines in <span>[<a href="#RFC9237" class="cite xref">RFC9237</a>]</span>: see <a href="#aif" class="auto internal xref">Section 9.4</a> and <a href="#content_formats" class="auto internal xref">Section 9.5</a>.<a href="#appendix-A.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.2.1">REQ2: If scope uses AIF, register its specific instance of "Toid" and "Tperm" as media type parameters and a corresponding Content-Format, as per the guidelines in <span>[<a href="#RFC9237" class="cite xref">RFC9237</a>]</span>: see <a href="#aif" class="auto internal xref">Section 9.4</a> and <a href="#content_formats" class="auto internal xref">Section 9.5</a>.<a href="#appendix-A.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.3">
-            <p id="appendix-A.1-1.3.1">REQ3: If used, specify the acceptable values for 'sign_alg': values from the "Value" column of the "COSE Algorithms" registry <span>[<a href="#IANA.cose_algorithms" class="cite xref">IANA.cose_algorithms</a>]</span>.<a href="#appendix-A.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.3.1">REQ3: If used, specify the acceptable values for the 'sign_alg' parameter: values from the "Value" column of the "COSE Algorithms" registry <span>[<a href="#IANA.cose_algorithms" class="cite xref">IANA.cose_algorithms</a>]</span>.<a href="#appendix-A.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.4">
-            <p id="appendix-A.1-1.4.1">REQ4: If used, specify the acceptable values for 'sign_parameters': format and values from the COSE algorithm capabilities as specified in the "COSE Algorithms" registry <span>[<a href="#IANA.cose_algorithms" class="cite xref">IANA.cose_algorithms</a>]</span>.<a href="#appendix-A.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.4.1">REQ4: If used, specify the acceptable values and structure for the 'sign_parameters' parameter: values and structure from the COSE algorithm capabilities as specified in the "COSE Algorithms" registry <span>[<a href="#IANA.cose_algorithms" class="cite xref">IANA.cose_algorithms</a>]</span>.<a href="#appendix-A.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.5">
-            <p id="appendix-A.1-1.5.1">REQ5: If used, specify the acceptable values for 'sign_key_parameters': format and values from the COSE key type capabilities as specified in the "COSE Key Types" registry <span>[<a href="#IANA.cose_key-type" class="cite xref">IANA.cose_key-type</a>]</span>.<a href="#appendix-A.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.5.1">REQ5: If used, specify the acceptable values and structure for the 'sign_key_parameters' parameter: values and structure from the COSE key type capabilities as specified in the "COSE Key Types" registry <span>[<a href="#IANA.cose_key-type" class="cite xref">IANA.cose_key-type</a>]</span>.<a href="#appendix-A.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.6">
-            <p id="appendix-A.1-1.6.1">REQ6: Specify the acceptable formats for authentication credentials and, if used, the acceptable values for 'cred_fmt': acceptable formats explicitly provide the public key as well as the comprehensive set of information related to the public key algorithm (see <a href="#token-post" class="auto internal xref">Section 3.6</a> and <a href="#join-response" class="auto internal xref">Section 4.1.2</a>). Consistent acceptable values for 'cred_fmt' are taken from the "Label" column of the "COSE Header Parameters" registry <span>[<a href="#IANA.cose_header-parameters" class="cite xref">IANA.cose_header-parameters</a>]</span>.<a href="#appendix-A.1-1.6.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.6.1">REQ6: Specify the acceptable formats for authentication credentials and, if applicable, the acceptable values for the 'cred_fmt' parameter: acceptable formats explicitly provide the public key as well as the comprehensive set of information related to the public key algorithm (see <a href="#token-post" class="auto internal xref">Section 3.6</a> and <a href="#join-response" class="auto internal xref">Section 4.1.2</a>). Consistent acceptable values for 'cred_fmt' are taken from the "Label" column of the "COSE Header Parameters" registry <span>[<a href="#IANA.cose_header-parameters" class="cite xref">IANA.cose_header-parameters</a>]</span>.<a href="#appendix-A.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.7">
-            <p id="appendix-A.1-1.7.1">REQ7: If the value of the GROUPNAME URI path and the group name in the access token scope (gname) are not required to coincide, specify the mechanism to map the GROUPNAME value in the URI to the group name: not applicable; a perfect matching is required.<a href="#appendix-A.1-1.7.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.7.1">REQ7: If the value of the GROUPNAME URI path and the group name in the access token scope ('gname') are not required to coincide, specify the mechanism to map the GROUPNAME value in the URI to the group name: not applicable; a perfect matching is required.<a href="#appendix-A.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.8">
-            <p id="appendix-A.1-1.8.1">REQ8: Define whether the KDC has an authentication credential and if this has to be provided through the 'kdc_cred' parameter: optional, see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>.<a href="#appendix-A.1-1.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.8.1">REQ8: Define whether the KDC has an authentication credential as required for the correct group operation and if this has to be provided through the 'kdc_cred' parameter: optional, see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>.<a href="#appendix-A.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.9">
             <p id="appendix-A.1-1.9.1">REQ9: Specify if any part of the KDC interface as defined in <span>[<a href="#RFC9594" class="cite xref">RFC9594</a>]</span> is not supported by the KDC: some are left optional, see <a href="#kdc-interface" class="auto internal xref">Section 4</a>.<a href="#appendix-A.1-1.9.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.10">
-            <p id="appendix-A.1-1.10.1">REQ10: Register a Resource Type for the group-membership resource, which is used to discover the correct URL for sending a Join Request to the KDC: the Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in <a href="#core_rt" class="auto internal xref">Section 9.3</a>.<a href="#appendix-A.1-1.10.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.10.1">REQ10: Register a Resource Type for the group-membership resources, which is used to discover the correct URL for sending a Join Request to the KDC: the Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in <a href="#core_rt" class="auto internal xref">Section 9.3</a>.<a href="#appendix-A.1-1.10.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.11">
-            <p id="appendix-A.1-1.11.1">REQ11: Define what specific actions (e.g., CoAP methods) are allowed on each resource provided by the KDC interface, depending on whether the Client is a current group member; the roles that a Client is authorized to take as per the obtained access token; and the roles that the Client has as current group member: see <a href="#kdc-interface" class="auto internal xref">Section 4</a> of this document.<a href="#appendix-A.1-1.11.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.11.1">REQ11: Define what specific actions (e.g., CoAP methods) are allowed on each resource accessible through the KDC interface, depending on: whether the Client is a current group member; the roles that a Client is authorized to take as per the obtained access token; and the roles that the Client has as a current group member: see <a href="#kdc-interface" class="auto internal xref">Section 4</a> of this document.<a href="#appendix-A.1-1.11.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.12">
             <p id="appendix-A.1-1.12.1">REQ12: Categorize possible newly defined operations for Clients into primary operations expected to be minimally supported and secondary operations, and provide accompanying considerations: none added.<a href="#appendix-A.1-1.12.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.13">
-            <p id="appendix-A.1-1.13.1">REQ13: Specify the encoding of group identifier: CBOR byte string, with value used also to identify the current group key used in the security group (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>).<a href="#appendix-A.1-1.13.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.13.1">REQ13: Specify the encoding of group identifiers: CBOR byte string, with value used also to identify the current group key used in the security group (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>).<a href="#appendix-A.1-1.13.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.14">
-            <p id="appendix-A.1-1.14.1">REQ14: Specify the approaches used to compute and verify the PoP evidence to include in 'client_cred_verify', and which of those approaches is used in which case: see <a href="#pop" class="auto internal xref">Section 4.1.1.2</a>.<a href="#appendix-A.1-1.14.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.14.1">REQ14: Specify the approaches used to compute and verify the PoP evidence to include in the 'client_cred_verify' parameter and which of those approaches is used in which case: see <a href="#pop" class="auto internal xref">Section 4.1.1.2</a>.<a href="#appendix-A.1-1.14.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.15">
-            <p id="appendix-A.1-1.15.1">REQ15: Specify how the nonce N_S is generated, if the token is not provided to the KDC through the Token Transfer Request to the authz-info endpoint (e.g., if it is used directly to validate TLS instead): see <a href="#pop" class="auto internal xref">Section 4.1.1.2</a>.<a href="#appendix-A.1-1.15.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.15.1">REQ15: Specify how the nonce N_S is generated, if the access token is not provided to the KDC through the Token Transfer Request sent to the /authz-info endpoint (e.g., the access token is instead transferred during the establishment of a secure communication association): see <a href="#pop" class="auto internal xref">Section 4.1.1.2</a>.<a href="#appendix-A.1-1.15.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.16">
-            <p id="appendix-A.1-1.16.1">REQ16: Define the initial value of the 'num' parameter: the initial value <span class="bcp14">MUST</span> be set to 0 (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>).<a href="#appendix-A.1-1.16.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.16.1">REQ16: Define the initial value of the version number for the group keying material: the initial value <span class="bcp14">MUST</span> be set to 0 (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>).<a href="#appendix-A.1-1.16.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.17">
-            <p id="appendix-A.1-1.17.1">REQ17: Specify the format of the 'key' parameter and register a corresponding entry in the "ACE Groupcomm Key Types" IANA registry: see <a href="#join-response" class="auto internal xref">Section 4.1.2</a> and <a href="#iana-ace-groupcomm-key" class="auto internal xref">Section 9.1</a>.<a href="#appendix-A.1-1.17.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.17.1">REQ17: Specify the format of the group keying material that is conveyed in the 'key' parameter: see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>.<a href="#appendix-A.1-1.17.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.18">
-            <p id="appendix-A.1-1.18.1">REQ18: Specify the acceptable values of the 'gkty' parameter: Group_PubSub_Keying_Material, see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>.<a href="#appendix-A.1-1.18.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.18.1">REQ18: Specify the acceptable values of the 'gkty' parameter. For each of them, register a corresponding entry in the "ACE Groupcomm Key Types" IANA registry if such an entry does not exist already: Group_PubSub_Keying_Material, see <a href="#join-response" class="auto internal xref">Section 4.1.2</a> and <a href="#iana-ace-groupcomm-key" class="auto internal xref">Section 9.1</a>.<a href="#appendix-A.1-1.18.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.19">
             <p id="appendix-A.1-1.19.1">REQ19: Specify and register the application profile identifier: coap_group_pubsub_app (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a> and <a href="#iana-profile" class="auto internal xref">Section 9.2</a>) and mqtt_pubsub_app (see <a href="#mqtt-pubsub" class="auto internal xref">Section 7</a> and <a href="#iana-profile" class="auto internal xref">Section 9.2</a>).<a href="#appendix-A.1-1.19.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.20">
-            <p id="appendix-A.1-1.20.1">REQ20: If used, specify the format and content of 'group_policies' and its entries. Specify the policies default values: not applicable.<a href="#appendix-A.1-1.20.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.20.1">REQ20: If used, specify the format and default values of the entries of the CBOR map to include in the 'group_policies' parameter: not applicable.<a href="#appendix-A.1-1.20.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.21">
-            <p id="appendix-A.1-1.21.1">REQ21: Specify the approaches used to compute and verify the PoP evidence to include in 'kdc_cred_verify', and which of those approaches is used in which case. If external signature verifiers are supported, specify how those provide a nonce to the KDC to be used for computing the PoP evidence: see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>.<a href="#appendix-A.1-1.21.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.21.1">REQ21: Specify the approaches used to compute and verify the PoP evidence to include in the 'kdc_cred_verify' parameter and which of those approaches is used in which case. If external signature verifiers are supported, specify how those provide a nonce to the KDC to be used for computing the PoP evidence: see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>.<a href="#appendix-A.1-1.21.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.22">
-            <p id="appendix-A.1-1.22.1">REQ22: Specify the communication protocol that the members of the group must use: CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, used for Pub-Sub communications as defined in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>.<a href="#appendix-A.1-1.22.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.22.1">REQ22: Specify the communication protocol that members of the group use to communicate with each other (e.g., CoAP for group communication): CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, used for Pub-Sub communications as defined in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>.<a href="#appendix-A.1-1.22.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.23">
-            <p id="appendix-A.1-1.23.1">REQ23: Specify the security protocol the group members must use to protect their communication. This must provide encryption, integrity, and replay protection: Publishers in a group use a symmetric group key to protect published topic data as a COSE_Encrypt0 object, per the AEAD algorithm specified by the KDC. A Publisher also produces a COSE countersignature of the COSE_Encrypt0 object by using its private key, per the signature algorithm specified by the KDC.<a href="#appendix-A.1-1.23.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.23.1">REQ23: Specify the security protocol that members of the group use to protect the group communication (e.g., Group OSCORE). This must provide encryption, integrity, and replay protection: Publishers in a group use a symmetric group key to protect published topic data as a COSE_Encrypt0 object, per the AEAD algorithm specified by the KDC. A Publisher also produces a COSE countersignature of the COSE_Encrypt0 object by using its private key, per the signature algorithm specified by the KDC.<a href="#appendix-A.1-1.23.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.24">
-            <p id="appendix-A.1-1.24.1">REQ24: Specify how the communication is secured between Client and KDC. Optionally, specify a transport profile of ACE <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> to use between Client and KDC: ACE transport profile such as for DTLS <span>[<a href="#RFC9202" class="cite xref">RFC9202</a>]</span> or OSCORE <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span>.<a href="#appendix-A.1-1.24.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.24.1">REQ24: Specify how the communication is secured between the Client and the KDC. Optionally, specify a transport profile of ACE <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> to use between the Client and the KDC: ACE transport profile such as for DTLS <span>[<a href="#RFC9202" class="cite xref">RFC9202</a>]</span> or OSCORE <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span>.<a href="#appendix-A.1-1.24.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.25">
-            <p id="appendix-A.1-1.25.1">REQ25: Specify the format of the identifiers of group members: the Sender ID defined in <a href="#join-response" class="auto internal xref">Section 4.1.2</a>.<a href="#appendix-A.1-1.25.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.25.1">REQ25: Specify the format of the node identifiers of group members: the Sender ID defined in <a href="#join-response" class="auto internal xref">Section 4.1.2</a>.<a href="#appendix-A.1-1.25.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.26">
-            <p id="appendix-A.1-1.26.1">REQ26: Specify policies at the KDC to handle ids that are not included in 'get_creds': see <a href="#query" class="auto internal xref">Section 4.2.1</a>.<a href="#appendix-A.1-1.26.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.26.1">REQ26: Specify policies at the KDC to handle node identifiers that are included in the 'get_creds' parameter but are not associated with any current group member: see <a href="#query" class="auto internal xref">Section 4.2.1</a>.<a href="#appendix-A.1-1.26.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.27">
-            <p id="appendix-A.1-1.27.1">REQ27: Specify the format of newly-generated individual keying material for group members, or of the information to derive it, and corresponding CBOR label: see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.2</a>.<a href="#appendix-A.1-1.27.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.27.1">REQ27: Specify the format of (newly generated) individual keying material for group members or of the information to derive such keying material, as well as the corresponding CBOR map key that has to be registered in the "ACE Groupcomm Parameters" registry: see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.2</a>.<a href="#appendix-A.1-1.27.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.28">
             <p id="appendix-A.1-1.28.1">REQ28: Specify which CBOR tag is used for identifying the semantics of binary scopes, or register a new CBOR tag if a suitable one does not exist already: see <a href="#as-response" class="auto internal xref">Section 3.5</a> and <a href="#content_formats" class="auto internal xref">Section 9.5</a>.<a href="#appendix-A.1-1.28.1" class="pilcrow">¶</a></p>
@@ -3126,7 +3126,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
             <p id="appendix-A.1-1.29.1">REQ29: Categorize newly defined parameters according to the same criteria of <span><a href="https://rfc-editor.org/rfc/rfc9594#section-8" class="relref">Section 8</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>: a Publisher Client <span class="bcp14">MUST</span> support 'group_SenderId' in 'key'; see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>.<a href="#appendix-A.1-1.29.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.30">
-            <p id="appendix-A.1-1.30.1">REQ30: Define whether Clients must, should, or may support the conditional parameters defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-8" class="relref">Section 8</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, and under which circumstances: a Publisher Client <span class="bcp14">MUST</span> support the client_cred', 'cnonce', and 'client_cred_verify' parameters (see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>). A Publisher Client that provides the access token to the KDC through the authz-info endpoint <span class="bcp14">MUST</span> support the parameter 'kdcchallenge' (see <a href="#token-post" class="auto internal xref">Section 3.6</a>).<a href="#appendix-A.1-1.30.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.30.1">REQ30: Define whether Clients must, should, or may support the conditional parameters defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-8" class="relref">Section 8</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span> and under which circumstances: a Publisher Client <span class="bcp14">MUST</span> support the client_cred', 'cnonce', and 'client_cred_verify' parameters (see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>). A Publisher Client that provides the access token to the KDC through the authz-info endpoint <span class="bcp14">MUST</span> support the parameter 'kdcchallenge' (see <a href="#token-post" class="auto internal xref">Section 3.6</a>).<a href="#appendix-A.1-1.30.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -3138,46 +3138,46 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-A.2-1.1">
-            <p id="appendix-A.2-1.1.1">OPT1: Optionally, if the textual format of 'scope' is used, specify CBOR values to use for abbreviating the role identifiers in the group: not applicable.<a href="#appendix-A.2-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.1.1">OPT1: Optionally, if the textual format of scope is used, specify CBOR values to use for abbreviating the role identifiers in the group: not applicable.<a href="#appendix-A.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.2">
             <p id="appendix-A.2-1.2.1">OPT2: Optionally, specify the additional parameters used in the exchange of Token Transfer Request and Response: none are defined.<a href="#appendix-A.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.3">
-            <p id="appendix-A.2-1.3.1">OPT3: Optionally, specify the negotiation of parameter values for signature algorithm and signature keys, if 'sign_info' is not used: see <a href="#token-post" class="auto internal xref">Section 3.6</a>.<a href="#appendix-A.2-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.3.1">OPT3: Optionally, specify the negotiation of parameter values for signature algorithm and signature keys, if the 'sign_info' parameter is not used: see <a href="#token-post" class="auto internal xref">Section 3.6</a>.<a href="#appendix-A.2-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.4">
             <p id="appendix-A.2-1.4.1">OPT4: Optionally, specify possible or required payload formats for specific error cases: see <a href="#join-error" class="auto internal xref">Section 4.1.3</a>.<a href="#appendix-A.2-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.5">
-            <p id="appendix-A.2-1.5.1">OPT5: Optionally, specify additional identifiers of error types, as values of the 'error-id' field within the Custom Problem Detail entry 'ace-groupcomm-error': no.<a href="#appendix-A.2-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.5.1">OPT5: Optionally, specify additional identifiers of error types as values of the 'error-id' field within the Custom Problem Detail entry 'ace-groupcomm-error': no.<a href="#appendix-A.2-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.6">
-            <p id="appendix-A.2-1.6.1">OPT6: Optionally, specify the encoding of 'creds_repo' if the default is not used: no.<a href="#appendix-A.2-1.6.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.6.1">OPT6: Optionally, specify the encoding of the 'creds_repo' parameter if the default one is not used: no.<a href="#appendix-A.2-1.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.7">
-            <p id="appendix-A.2-1.7.1">OPT7: Optionally, specify the functionalities implemented at the 'control_uri' resource hosted at the Client, including message exchange encoding and other details: no.<a href="#appendix-A.2-1.7.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.7.1">OPT7: Optionally, specify the functionalities implemented at the resource hosted by the Client at the URI indicated in the 'control_uri' parameter, including the encoding of exchanged messages and other details: no.<a href="#appendix-A.2-1.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.8">
-            <p id="appendix-A.2-1.8.1">OPT8: Optionally, specify the behavior of the handler in case of failure to retrieve an authentication credential for the specific node: The KDC <span class="bcp14">MUST</span> reply with a 4.00 (Bad Request) error response to the Join Request (see <a href="#join-error" class="auto internal xref">Section 4.1.3</a>).<a href="#appendix-A.2-1.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.8.1">OPT8: Optionally, specify the behavior of the POST handler of group-membership resources, for the case when it fails to retrieve an authentication credential for the specific Client: The KDC <span class="bcp14">MUST</span> reply with a 4.00 (Bad Request) error response to the Join Request (see <a href="#join-error" class="auto internal xref">Section 4.1.3</a>).<a href="#appendix-A.2-1.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.9">
-            <p id="appendix-A.2-1.9.1">OPT9: Optionally, define a default group rekeying scheme, to refer to in case the 'rekeying_scheme' parameter is not included in the Join Response: the "Point-to-Point" rekeying scheme registered in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-11.13" class="relref">Section 11.13</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>.<a href="#appendix-A.2-1.9.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.9.1">OPT9: Optionally, define a default group rekeying scheme to refer to in case the 'rekeying_scheme' parameter is not included in the Join Response: the "Point-to-Point" rekeying scheme registered in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-11.13" class="relref">Section 11.13</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>.<a href="#appendix-A.2-1.9.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.10">
-            <p id="appendix-A.2-1.10.1">OPT10: Optionally, specify the functionalities implemented at the 'control_group_uri' resource hosted at the Client, including message exchange encoding and other details: no.<a href="#appendix-A.2-1.10.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.10.1">OPT10: Optionally, specify the functionalities implemented at the resource hosted by the Client at the URI indicated in the 'control_group_uri' parameter, including the encoding of exchanged messages and other details: no.<a href="#appendix-A.2-1.10.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.11">
-            <p id="appendix-A.2-1.11.1">OPT11: Optionally, specify policies that instruct Clients to retain messages and for how long, if they are unsuccessfully decrypted: no.<a href="#appendix-A.2-1.11.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.11.1">OPT11: Optionally, specify policies that instruct Clients to retain messages and for how long, if those are unsuccessfully decrypted: no.<a href="#appendix-A.2-1.11.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.12">
-            <p id="appendix-A.2-1.12.1">OPT12: Optionally, specify for the KDC to perform group rekeying (together or instead of renewing individual keying material) when receiving a Key Renewal Request: the KDC <span class="bcp14">SHOULD NOT</span> perform a group rekeying, unless already scheduled to occur shortly (see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.2</a>).<a href="#appendix-A.2-1.12.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.12.1">OPT12: Optionally, specify for the KDC to perform a group rekeying when receiving a Key Renewal Request, together with or instead of renewing individual keying material: the KDC <span class="bcp14">SHOULD NOT</span> perform a group rekeying, unless already scheduled to occur shortly (see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.2</a>).<a href="#appendix-A.2-1.12.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.13">
             <p id="appendix-A.2-1.13.1">OPT13: Optionally, specify how the identifier of a group member's authentication credential is included in requests sent to other group members: no.<a href="#appendix-A.2-1.13.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.14">
-            <p id="appendix-A.2-1.14.1">OPT14: Optionally, specify additional information to include in rekeying messages for the "Point-to-Point" group rekeying scheme (see <span><a href="https://rfc-editor.org/rfc/rfc9594#section-6.1" class="relref">Section 6.1</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>): no.<a href="#appendix-A.2-1.14.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.14.1">OPT14: Optionally, specify additional information to include in rekeying messages for the "Point-to-Point" group rekeying scheme (see <span><a href="https://rfc-editor.org/rfc/rfc9594#section-6" class="relref">Section 6</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>): no.<a href="#appendix-A.2-1.14.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -3200,10 +3200,13 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
             <p id="appendix-B.1-1.1.1">The request for a new Sender ID uses the method POST.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.2">
-            <p id="appendix-B.1-1.2.1">Updated references.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.2.1">Aligned requirement formulation with that in RFC 9594.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.3">
-            <p id="appendix-B.1-1.3.1">Clarifications and editorial improvements.<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.3.1">Updated references.<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.4">
+            <p id="appendix-B.1-1.4.1">Clarifications and editorial improvements.<a href="#appendix-B.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
