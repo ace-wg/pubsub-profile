@@ -387,7 +387,7 @@ The following CDDL {{RFC8610}} notation defines a scope entry that uses the AIF-
 
    pubsub-perm-details = &(
     Admin: 0,
-    AppGroup: 1
+    AppGroup: 1,
     Publish: 2,
     Read: 3,
     Delete: 4
