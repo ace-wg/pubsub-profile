@@ -631,7 +631,7 @@ The CBOR map MAY include the 'kdcchallenge' parameter. If present, this paramete
 
 Upon receiving the Join Response, if 'kdc_cred' is present but the Client cannot verify the PoP evidence, the Client MUST stop processing the Join Response and MAY send a new Join Request to the KDC.
 
-The KDC MUST return a 5.03 (Service Unavailable) response to a Client that sends a Join Request to join the security group as Publisher, in case there are currently no Sender IDs available to assign. The response MUST have Content-Format set to application/concise-problem-details+cbor and is formatted as defined in {{Section 4.1.2 of RFC9594}}. Within the Custom Problem Detail entry 'ace-groupcomm-error', the value of the 'error-id' field MUST be set to 4 ("No available node identifiers").
+The KDC MUST return a 5.03 (Service Unavailable) response to a Client that sends a Join Request to join the security group as Publisher, in case there are currently no Sender IDs available to assign. The response MUST have Content-Format set to application/concise-problem-details+cbor and is formatted as defined in {{Section 4.1.2 of RFC9594}}. Within the Custom Problem Detail entry 'ace-groupcomm-error', the value of the 'error-id' field MUST be set to 4 ("No available individual keying material").
 
 ## Other Group Operations through the KDC
 
@@ -687,7 +687,7 @@ Upon receiving the Key Renewal Request, the KDC processes it as defined in {{Sec
 
   The KDC MUST assign a new Sender ID that has not been used in the group since the latest time when the current Gid value was assigned to the group (i.e., since the latest group rekeying, see {{rekeying}}).
 
-  The KDC MUST return a 5.03 (Service Unavailable) response in case there are currently no Sender IDs available to assign in the group. The response MUST have Content-Format set to application/concise-problem-details+cbor and is formatted as defined in {{Section 4.1.2 of RFC9594}}. Within the Custom Problem Detail entry 'ace-groupcomm-error', the value of the 'error-id' field MUST be set to 4 ("No available node identifiers").
+  The KDC MUST return a 5.03 (Service Unavailable) response in case there are currently no Sender IDs available to assign in the group. The response MUST have Content-Format set to application/concise-problem-details+cbor and is formatted as defined in {{Section 4.1.2 of RFC9594}}. Within the Custom Problem Detail entry 'ace-groupcomm-error', the value of the 'error-id' field MUST be set to 4 ("No available individual keying material").
 
 ### Updating Authentication Credentials
 
@@ -1134,6 +1134,8 @@ This section lists how this application profile of ACE addresses the requirement
 * Recommended /ps/TOPICNAME as path ot topic resources at the Broker.
 
 * The request for a new Sender ID uses the method POST.
+
+* Fixed description of ACE Group Error with identifier 4.
 
 * Aligned requirement formulation with that in RFC 9594.
 
