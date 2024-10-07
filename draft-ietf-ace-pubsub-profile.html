@@ -2665,7 +2665,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
       <h2 id="name-security-considerations">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-8-1">Security considerations for this profile are inherited from <span>[<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, the ACE framework for Authentication and Authorization <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>, and the specific transport profile of ACE signalled by the AS, such as <span>[<a href="#RFC9202" class="cite xref">RFC9202</a>]</span> and <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-1">Security considerations for this profile are inherited from <span>[<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, the ACE framework for Authentication and Authorization <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>, and the specific transport profile of ACE used, such as <span>[<a href="#RFC9202" class="cite xref">RFC9202</a>]</span> and <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">The following security considerations also apply for this profile.<a href="#section-8-2" class="pilcrow">¶</a></p>
 <p id="section-8-3">Consistent with the intended group-confidentiality model, each Client in a security group is able to decrypt the data published in the topic(s) associated with that group, by using the symmetric group key that is shared with all the other group members.<a href="#section-8-3" class="pilcrow">¶</a></p>
 <p id="section-8-4">At the same time, source authentication of the published topic data is achieved by means of a digital signature, which the Publisher of the data in question computes with its private key and embeds in the published data. This ensures integrity of the published topic data as well as its origin, thus preventing a group member from impersonating another one.<a href="#section-8-4" class="pilcrow">¶</a></p>
@@ -2728,7 +2728,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
             <p id="section-9.2-2.4.1">Reference: [RFC-XXXX]<a href="#section-9.2-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-9.2-3"></p>
+<p id="section-9.2-3"><br></p>
 <ul class="normal">
 <li class="normal" id="section-9.2-4.1">
             <p id="section-9.2-4.1.1">Name: mqtt_pubsub_app<a href="#section-9.2-4.1.1" class="pilcrow">¶</a></p>
@@ -2785,7 +2785,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
             <p id="section-9.4-2.4.1">Reference: [RFC-XXXX]<a href="#section-9.4-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-9.4-3"></p>
+<p id="section-9.4-3"><br></p>
 <ul class="normal">
 <li class="normal" id="section-9.4-4.1">
             <p id="section-9.4-4.1.1">Parameter: Tperm<a href="#section-9.4-4.1.1" class="pilcrow">¶</a></p>
@@ -2822,7 +2822,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
             <p id="section-9.5-2.4.1">Reference: [RFC-XXXX]<a href="#section-9.5-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-9.5-3"></p>
+<p id="section-9.5-3"><br></p>
 <ul class="normal">
 <li class="normal" id="section-9.5-4.1">
             <p id="section-9.5-4.1.1">Content Type: application/aif+json;Toid="pubsub-topic",Tperm="pubsub-perm"<a href="#section-9.5-4.1.1" class="pilcrow">¶</a></p>

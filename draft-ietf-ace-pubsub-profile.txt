@@ -1872,8 +1872,8 @@ Table of Contents
 
    Security considerations for this profile are inherited from
    [RFC9594], the ACE framework for Authentication and Authorization
-   [RFC9200], and the specific transport profile of ACE signalled by the
-   AS, such as [RFC9202] and [RFC9203].
+   [RFC9200], and the specific transport profile of ACE used, such as
+   [RFC9202] and [RFC9203].
 
    The following security considerations also apply for this profile.
 
@@ -1957,6 +1957,7 @@ Table of Contents
    *  Reference: [RFC-XXXX]
 
 
+
    *  Name: mqtt_pubsub_app
 
    *  Description: Application profile to provision keying material for
@@ -2001,6 +2002,7 @@ Table of Contents
    *  Reference: [RFC-XXXX]
 
 
+
    *  Parameter: Tperm
 
    *  Name: pubsub-perm
@@ -2024,6 +2026,7 @@ Table of Contents
    *  ID: 294 (suggested)
 
    *  Reference: [RFC-XXXX]
+
 
 
    *  Content Type: application/aif+json;Toid="pubsub-
