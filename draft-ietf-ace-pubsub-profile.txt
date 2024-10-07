@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 9 April 2025                                  Brunel University
+Expires: 10 April 2025                                 Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                          6 October 2024
+                                                          7 October 2024
 
 
    Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 April 2025.
+   This Internet-Draft will expire on 10 April 2025.
 
 Copyright Notice
 
@@ -945,7 +945,7 @@ Table of Contents
       corresponds to one scope entry, as defined in Section 3.4.1.
 
    *  'get_creds': It MAY be present if the Client wishes to join as a
-      Subcriber and wants to retrieve the public keys of all the
+      Subscriber and wants to retrieve the public keys of all the
       Publishers upon joining.  Otherwise, this parameter MUST NOT be
       present.  If the parameter is present, the parameter MUST encode
       the CBOR simple value null (0xf6).  Note that the parameter
@@ -1781,8 +1781,8 @@ Table of Contents
    (see Section 6.1), and determines the Replay Window W_P associated
    with P.
 
-   The Subcriber MUST verify that, according to W_P, the Sender Sequence
-   Number SN_P specified by the 'Partial IV' parameter of the
+   The Subscriber MUST verify that, according to W_P, the Sender
+   Sequence Number SN_P specified by the 'Partial IV' parameter of the
    COSE_Encrypt0 object has not been received before from P.
 
    If the verification above fails, the Subscriber MUST stop processing
@@ -1881,7 +1881,7 @@ Table of Contents
 
    Access tokens might have to be revoked before their expiration time.
    [I-D.ietf-ace-revoked-token-notification] provides a list of possible
-   circumstances where this can heppen, and specifies a method that an
+   circumstances where this can happen, and specifies a method that an
    Authorization Server can use in order to notify the KDC, the Broker,
    and the Clients about pertaining access tokens that have been revoked
    but are not expired yet.
