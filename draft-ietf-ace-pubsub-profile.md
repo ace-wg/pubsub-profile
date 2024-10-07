@@ -473,7 +473,7 @@ After establishing a secure communication association with the KDC, the Client s
 
 * 'scope': It MUST be present and specify the group that the Client is attempting to join, i.e., the group name, and the permissions that the Client wishes to have in the group. This value corresponds to one scope entry, as defined in {{scope}}.
 
-* 'get_creds': It MAY be present if the Client wishes to join as a Subcriber and wants to retrieve the public keys of all the Publishers upon joining. Otherwise, this parameter MUST NOT be present. If the parameter is present, the parameter MUST encode the CBOR simple value `null` (0xf6). Note that the parameter 'role_filter' is not necessary, as the KDC returns the authentication credentials of Publishers by default.
+* 'get_creds': It MAY be present if the Client wishes to join as a Subscriber and wants to retrieve the public keys of all the Publishers upon joining. Otherwise, this parameter MUST NOT be present. If the parameter is present, the parameter MUST encode the CBOR simple value `null` (0xf6). Note that the parameter 'role_filter' is not necessary, as the KDC returns the authentication credentials of Publishers by default.
 
 * 'client\_cred': The use of this parameter is detailed in {{client_cred}}.
 
@@ -856,7 +856,7 @@ In order to protect from replay of published topic data, every Subscriber mainta
 
 Upon receiving a topic data published by a given Publisher P, the Subscriber retrieves the Sender ID of P conveyed as 'kid' in the 'Countersignature version 2' parameter of the COSE_Encrypt0 object (see {{oscon}}), and determines the Replay Window W_P associated with P.
 
-The Subcriber MUST verify that, according to W_P, the Sender Sequence Number SN_P specified by the 'Partial IV' parameter of the COSE_Encrypt0 object has not been received before from P.
+The Subscriber MUST verify that, according to W_P, the Sender Sequence Number SN_P specified by the 'Partial IV' parameter of the COSE_Encrypt0 object has not been received before from P.
 
 If the verification above fails, the Subscriber MUST stop processing the COSE_Encrypt0 object conveying the topic data. If the value of SN_P is strictly smaller than the currently smallest value in W_P, then the Subscriber MUST stop processing the COSE_Encrypt0 object.
 
@@ -898,7 +898,7 @@ The Broker is only trusted with verifying that a Publisher is authorized to publ
 
 With respect to the reusage of nonces for Proof-of-Possession input, the same considerations apply as in {{I-D.ietf-ace-key-groupcomm-oscore}}.
 
-Access tokens might have to be revoked before their expiration time. {{I-D.ietf-ace-revoked-token-notification}} provides a list of possible circumstances where this can heppen, and specifies a method that an Authorization Server can use in order to notify the KDC, the Broker, and the Clients about pertaining access tokens that have been revoked but are not expired yet.
+Access tokens might have to be revoked before their expiration time. {{I-D.ietf-ace-revoked-token-notification}} provides a list of possible circumstances where this can happen, and specifies a method that an Authorization Server can use in order to notify the KDC, the Broker, and the Clients about pertaining access tokens that have been revoked but are not expired yet.
 
 Clients can be excluded from future communications related to a topic, by appropriately re-keying the group associated with the topic in question.
 
