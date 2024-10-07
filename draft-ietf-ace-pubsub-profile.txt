@@ -89,7 +89,7 @@ Table of Contents
      3.4.  Authorisation Request/Response for the KDC and the Broker
        3.4.1.  Format of Scope
      3.5.  Authorisation response
-     3.6.  Token Transfer to KDC
+     3.6.  Token Transfer to the KDC
    4.  Client Group Communication Interface at the KDC
      4.1.  Joining a Security Group
        4.1.1.  Join Request
@@ -532,8 +532,8 @@ Table of Contents
 
    Furthermore, the Resource Type (rt=) Link Target Attribute value
    "core.ps.gm" is registered in Section 9.3 (REQ10), and can be used to
-   describe group-membership resources at KDC, e.g., by using a link-
-   format document [RFC6690].  As an alternative to the discovery
+   describe group-membership resources at the KDC, e.g., by using a
+   link-format document [RFC6690].  As an alternative to the discovery
    approach defined above and provided by the Broker, applications can
    use this common resource type to discover links to group-membership
    resources at the KDC for joining security groups associated with Pub-
@@ -744,7 +744,7 @@ Table of Contents
    semantics defined for this application profile in Section 3.4.1 of
    this document.
 
-3.6.  Token Transfer to KDC
+3.6.  Token Transfer to the KDC
 
    The Client transfers its access token to the KDC using one of the
    methods defined in the Section 3.3 of [RFC9594].  This typically
