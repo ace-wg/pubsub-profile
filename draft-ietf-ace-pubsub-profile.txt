@@ -699,7 +699,7 @@ Table of Contents
 
          pubsub-perm-details = &(
           Admin: 0,
-          AppGroup: 1
+          AppGroup: 1,
           Publish: 2,
           Read: 3,
           Delete: 4
