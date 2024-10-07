@@ -227,40 +227,40 @@ In summary, this profile specifies the following functionalities.
 {{message-flow}} provides a high level overview of the message flow for a Client getting authorisation to join a group. Square brackets denote optional steps. The message flow is expanded in the subsequent sections.
 
 ~~~~~~~~~~~ aasvg
-Client                                            Broker    AS   KDC
-  |                                                  |       |    |
-  |[<-------- Discovery of Topic Resource --------->]|       |    |
-  |                                                  |       |    |
-  |[--------------- Resource Request -------------->]|       |    |
-  |[<--------------- AS Information ----------------]|       |    |
-  |                                                  |       |    |
-  |                                                  |       |    |
-  +----- Authorisation Request (Audience: Broker) ---------->|    |
-  |<---- Authorisation Response (Audience: Broker) ----------+    |
-  |                                                  |       |    |
-  |                                                  |       |    |
-  +------ Upload of authorisation information ------>|       |    |
-  |<----- Establishment of secure association ------>|       |    |
-  |                                                  |       |    |
-  |                                                  |       |    |
-  |[<-- Discovery of KDC and name of sec. group --->]|       |    |
-  |                                                  |       |    |
-  |                                                  |       |    |
-  +------- Authorisation Request (Audience: KDC) ----------->|    |
-  |<------ Authorisation Response (Audience: KDC) -----------+    |
-  |                                                  |       |    |
-  |                                                  |       |    |
-  +--------- Upload of authorisation information ---------------->|
-  |<-------- Establishment of secure association ---------------->|
-  |                                                  |       |    |
-  |                                                  |       |    |
-  +----- Request to join the security group for the topic ------->|
-  |<------- Keying material for the security group ---------------+
-  |                                                  |       |    |
-  |                                                  |       |    |
-  +--------------- Resource Request ---------------->|       |    |
-  |     (Publication/Subscription to the topic)      |       |    |
-  |                                                  |       |    |
+Client                                                Broker    AS  KDC
+ |                                                      |       |    |
+ |[<---------- Discovery of Topic Resource ----------->]|       |    |
+ |                                                      |       |    |
+ |[----------------- Resource Request ---------------->]|       |    |
+ |[<----------------- AS Information ------------------]|       |    |
+ |                                                      |       |    |
+ |                                                      |       |    |
+ +------- Authorisation Request (Audience: Broker) ------------>|    |
+ |<------ Authorisation Response (Audience: Broker) ------------+    |
+ |                                                      |       |    |
+ |                                                      |       |    |
+ +-------- Upload of authorisation information -------->|       |    |
+ |<------- Establishment of secure association -------->|       |    |
+ |                                                      |       |    |
+ |                                                      |       |    |
+ |[<-- Discovery of KDC and name of security group --->]|       |    |
+ |                                                      |       |    |
+ |                                                      |       |    |
+ +--------- Authorisation Request (Audience: KDC) ------------->|    |
+ |<-------- Authorisation Response (Audience: KDC) -------------+    |
+ |                                                      |       |    |
+ |                                                      |       |    |
+ +----------- Upload of authorisation information ------------------>|
+ |<---------- Establishment of secure association ------------------>|
+ |                                                      |       |    |
+ |                                                      |       |    |
+ +------- Request to join the security group for the topic --------->|
+ |<---------- Keying material for the security group ----------------+
+ |                                                      |       |    |
+ |                                                      |       |    |
+ +----------------- Resource Request ------------------>|       |    |
+ |       (Publication/Subscription to the topic)        |       |    |
+ |                                                      |       |    |
 ~~~~~~~~~~~
 {: #message-flow title="Authorisation Flow" artwork-align="center"}
 
