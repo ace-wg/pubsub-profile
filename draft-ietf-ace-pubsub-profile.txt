@@ -1329,7 +1329,7 @@ Table of Contents
    details+cbor and is formatted as defined in Section 4.1.2 of
    [RFC9594].  Within the Custom Problem Detail entry 'ace-groupcomm-
    error', the value of the 'error-id' field MUST be set to 4 ("No
-   available node identifiers").
+   available individual keying material").
 
 4.2.  Other Group Operations through the KDC
 
@@ -1470,7 +1470,7 @@ Table of Contents
       concise-problem-details+cbor and is formatted as defined in
       Section 4.1.2 of [RFC9594].  Within the Custom Problem Detail
       entry 'ace-groupcomm-error', the value of the 'error-id' field
-      MUST be set to 4 ("No available node identifiers").
+      MUST be set to 4 ("No available individual keying material").
 
 4.2.3.  Updating Authentication Credentials
 
@@ -2489,6 +2489,8 @@ B.1.  Version -10 to -11
       Broker.
 
    *  The request for a new Sender ID uses the method POST.
+
+   *  Fixed description of ACE Group Error with identifier 4.
 
    *  Aligned requirement formulation with that in RFC 9594.
 
