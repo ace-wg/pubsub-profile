@@ -900,7 +900,7 @@ Both Publishers and Subscribers MUST authorise to the Broker with their respecti
 
 # Security Considerations
 
-Security considerations for this profile are inherited from {{RFC9594}}, the ACE framework for Authentication and Authorization {{RFC9200}}, and the specific transport profile of ACE signalled by the AS, such as {{RFC9202}} and {{RFC9203}}.
+Security considerations for this profile are inherited from {{RFC9594}}, the ACE framework for Authentication and Authorization {{RFC9200}}, and the specific transport profile of ACE used, such as {{RFC9202}} and {{RFC9203}}.
 
 The following security considerations also apply for this profile.
 
@@ -950,7 +950,7 @@ IANA is asked to register the following entries in the "ACE Groupcomm Profiles" 
 
 * Reference: {{&SELF}}
 
-&nbsp;
+<br>
 
 * Name: mqtt_pubsub_app
 
@@ -984,7 +984,7 @@ For the media-types application/aif+cbor and application/aif+json defined in {{S
 
 * Reference: {{&SELF}}
 
-&nbsp;
+<br>
 
 * Parameter: Tperm
 
@@ -1006,7 +1006,7 @@ IANA is asked to register the following entries to the "CoAP Content-Formats" re
 
 * Reference: {{&SELF}}
 
-&nbsp;
+<br>
 
 * Content Type: application/aif+json;Toid="pubsub-topic",Tperm="pubsub-perm"
 
