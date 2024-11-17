@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-14T01:00:38.840848+00:00",
+  "timestamp": "2024-11-17T01:07:52.711121+00:00",
   "repo": "ace-wg/pubsub-profile",
   "labels": [
     {
@@ -973,6 +973,22 @@
           "updatedAt": "2022-12-16T23:21:25Z"
         }
       ]
+    },
+    {
+      "number": 27,
+      "id": "I_kwDODl78ds6egT9j",
+      "title": "Alternative N_S generation: the DTLS profile also admits TLS, per RFC 9430",
+      "url": "https://github.com/ace-wg/pubsub-profile/issues/27",
+      "state": "OPEN",
+      "author": "marco-tiloca-sics",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In  Section 4.1.1.2:\r\n\r\n* Add the following new paragraph at the end of the second bullet point:\r\n\r\n  > The same as above holds if TLS 1.2 [RFC5246] was used instead of DTLS 1.2, as per [RFC9430].\r\n\r\n* Add the following new paragraph at the end of the third bullet point:\r\n\r\n  > The same as above holds if TLS 1.3 [RFC8446] was used instead of DTLS 1.3, as per [RFC9430].",
+      "createdAt": "2024-11-14T15:56:39Z",
+      "updatedAt": "2024-11-14T15:56:39Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
