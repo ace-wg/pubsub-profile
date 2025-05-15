@@ -11,9 +11,9 @@ Expires: 16 November 2025                              Brunel University
                                                              15 May 2025
 
 
-   Publish-Subscribe Profile for Authentication and Authorization for
+CoAP Publish-Subscribe Profile for Authentication and Authorization for
                      Constrained Environments (ACE)
-                  draft-ietf-ace-pubsub-profile-latest
+               draft-ietf-ace-coap-pubsub-profile-latest
 
 Abstract
 
@@ -106,18 +106,17 @@ Table of Contents
      6.1.  Using COSE to Protect the Published Topic Data
      6.2.  AEAD Nonce
      6.3.  Replay Checks
-   7.  Applicability to the MQTT Pub-Sub Profile
-   8.  Security Considerations
-   9.  IANA Considerations
-     9.1.  ACE Groupcomm Key Types
-     9.2.  ACE Groupcomm Profiles
-     9.3.  CoRE Resource Type
-     9.4.  AIF Media-Type Sub-Parameters
-     9.5.  CoAP Content-Formats
-     9.6.  TLS Exporter Labels
-   10. References
-     10.1.  Normative References
-     10.2.  Informative References
+   7.  Security Considerations
+   8.  IANA Considerations
+     8.1.  ACE Groupcomm Key Types
+     8.2.  ACE Groupcomm Profiles
+     8.3.  CoRE Resource Type
+     8.4.  AIF Media-Type Sub-Parameters
+     8.5.  CoAP Content-Formats
+     8.6.  TLS Exporter Labels
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Appendix A.  Requirements on Application Profiles
      A.1.  Mandatory-to-Address Requirements
      A.2.  Optional-to-Address Requirements
@@ -170,11 +169,6 @@ Table of Contents
    particular, source authentication of published content is achieved by
    means of the corresponding Publisher signing such content with its
    own private key.
-
-   While this profile focuses on the Pub-Sub architecture for CoAP,
-   Section 7 of this document describes how this profile can be
-   applicable to MQTT [MQTT-OASIS-Standard-v5].  Similar adaptations can
-   also extend to further transport protocols and Pub-Sub architectures.
 
 1.1.  Terminology
 
@@ -289,9 +283,7 @@ Table of Contents
    interacting with the Broker and participating in Pub-Sub
    communications.  When using the profile defined in this document,
    such a protocol MUST be CoAP [RFC7252], which is used as described in
-   [I-D.ietf-core-coap-pubsub].  What is specified in this document can
-   apply to other protocols for Pub-Sub communications such as MQTT
-   [MQTT-OASIS-Standard-v5], or to further transport protocols.
+   [I-D.ietf-core-coap-pubsub]. .
 
    All Publishers and Subscribers MUST use CoAP when communicating with
    the KDC.
@@ -548,7 +540,7 @@ Table of Contents
       The name of the security group is encoded as a CBOR text string.
 
    Furthermore, the Resource Type (rt=) Link Target Attribute value
-   "core.ps.gm" is registered in Section 9.3 (REQ10), and can be used to
+   "core.ps.gm" is registered in Section 8.3 (REQ10), and can be used to
    describe group-membership resources at the KDC, e.g., by using a
    link-format document [RFC6690].  As an alternative to the discovery
    approach defined above and provided by the Broker, applications can
@@ -750,13 +742,13 @@ Table of Contents
    Section 7 of [RFC9594] for the 'scope' claim of the access token.  In
    such a case, the AS MUST use the CBOR tag with tag number TAG_NUMBER,
    associated with the CoAP Content-Format CF_ID for the media type
-   application/aif+cbor registered in Section 9.5 of this document
+   application/aif+cbor registered in Section 8.5 of this document
    (REQ28).
 
    Note to RFC Editor: In the previous paragraph, please replace
    "TAG_NUMBER" with the CBOR tag number computed as TN(ct) in
    Section 4.3 of [RFC9277], where ct is the ID assigned to the CoAP
-   Content-Format registered in Section 9.5 of this document.  Then,
+   Content-Format registered in Section 8.5 of this document.  Then,
    please replace "CF_ID" with the ID assigned to that CoAP Content-
    Format.  Finally, please delete this paragraph.
 
@@ -1056,7 +1048,7 @@ Table of Contents
       joining node and the KDC, using an empty context value (i.e., a
       context value of zero-length), 32 as length value in bytes, and
       the exporter label "EXPORTER-ACE-Sign-Challenge-pubsub-app"
-      defined in Section 9.6 of this document.
+      defined in Section 8.6 of this document.
 
    *  If the provisioning of the access token to the KDC has relied on
       the DTLS profile of ACE [RFC9202], and the access token was
@@ -1069,7 +1061,7 @@ Table of Contents
       joining node and the KDC, using an empty 'context_value' (i.e., a
       'context_value' of zero length), 32 as 'key_length' in bytes, and
       the exporter label "EXPORTER-ACE-Sign-Challenge-pubsub-app"
-      defined in Section 9.6 of this document.
+      defined in Section 8.6 of this document.
 
    *  If the Join Request is a retry in response to an error response
       from the KDC, which included a new 'kdcchallenge' parameter, then
@@ -1106,7 +1098,7 @@ Table of Contents
    fields as per Section 4.3.1 of [RFC9594]:
 
    *  'gkty': this field specifies the key type
-      "Group_PubSub_Keying_Material" (REQ18) registered in Section 9.1
+      "Group_PubSub_Keying_Material" (REQ18) registered in Section 8.1
       for the 'key' parameter.
 
    *  'key': this field specifies the keying material to use for secure
@@ -1207,7 +1199,7 @@ Table of Contents
 
    *  'ace-groupcomm-profile', which MUST be present and has value
       "coap_group_pubsub_app" (PROFILE_TBD), which is registered in
-      Section 9.2 (REQ19).
+      Section 8.2 (REQ19).
 
    *  'creds', which MUST be present if the 'get_creds' parameter was
       present in the Join Request, and MUST NOT be present otherwise.
@@ -1838,37 +1830,7 @@ Table of Contents
    initializes the Replay Window corresponding to that Publisher, i.e.,
    the smallest value of the Replay Window is set to 0.
 
-7.  Applicability to the MQTT Pub-Sub Profile
-
-   This section describes how this profile can be applicable to the MQTT
-   protocol [MQTT-OASIS-Standard-v5].
-
-   The MQTT clients would go through steps similar to those performed by
-   the CoAP clients, and the payload of the MQTT PUBLISH messages is
-   protected using COSE.  The MQTT clients need to use CoAP for
-   communicating with the KDC, in order to join security groups and be
-   part of the pairwise rekeying initiated by the KDC.
-
-   The discovery of the AS is defined in Section 2.4.1 of [RFC9431] for
-   MQTT v5 clients, and it is not supported for MQTT v3 clients. $SYS/
-   has been widely adopted as a prefix to topics that contain server-
-   specific information or control APIs, and may be used for discovering
-   topics and the KDC.
-
-   In the Join Response from the KDC to a Client (see Section 4.1.2),
-   the 'ace-groupcomm-profile' parameter has value "mqtt_pubsub_app",
-   which is registered in Section 9.2.
-
-   Both Publishers and Subscribers MUST authorise to the Broker with
-   their respective tokens, as described in [RFC9431].  A Publisher
-   sends PUBLISH messages for a given topic and protects the payload
-   with the corresponding key for the associated security group.  A
-   Subscriber may send SUBSCRIBE messages with one or multiple topic
-   filters.  A topic filter may correspond to multiple topics.  The
-   Broker forwards all PUBLISH messages to all authorised Subscribers,
-   including the retained messages.
-
-8.  Security Considerations
+7.  Security Considerations
 
    Security considerations for this profile are inherited from
    [RFC9594], the ACE framework for Authentication and Authorization
@@ -1917,14 +1879,14 @@ Table of Contents
    topic, by appropriately re-keying the group associated with the topic
    in question.
 
-9.  IANA Considerations
+8.  IANA Considerations
 
    Note to RFC Editor: Please replace "[RFC-XXXX]" with the RFC number
    of this document and delete this paragraph.
 
    This document has the following actions for IANA.
 
-9.1.  ACE Groupcomm Key Types
+8.1.  ACE Groupcomm Key Types
 
    IANA is asked to register the following entry in the "ACE Groupcomm
    Key Types" registry defined in Section 11.8 of [RFC9594].
@@ -1933,14 +1895,13 @@ Table of Contents
 
    *  Key Type Value: GROUPCOMM_KEY_TBD
 
-   *  Profile: coap_group_pubsub_app or mqtt_pubsub_app (Section 9.2 of
-      [RFC-XXXX]).
+   *  Profile: coap_group_pubsub_app (Section 8.2 of [RFC-XXXX]).
 
    *  Description: Encoded as described in Section 4.1.2 of [RFC-XXXX].
 
    *  References: [RFC9052], [RFC9053], [RFC-XXXX]
 
-9.2.  ACE Groupcomm Profiles
+8.2.  ACE Groupcomm Profiles
 
    IANA is asked to register the following entries in the "ACE Groupcomm
    Profiles" registry defined in Section 11.9 of [RFC9594].
@@ -1956,20 +1917,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-
-
-   *  Name: mqtt_pubsub_app
-
-   *  Description: Application profile to provision keying material for
-      participating in group communication based on the Pub-Sub MQTT
-      protocol MQTT protocol [MQTT-OASIS-Standard-v5] and protected with
-      COSE [RFC9052][RFC9053][RFC9338].
-
-   *  CBOR Value: TBD
-
-   *  Reference: [RFC-XXXX]
-
-9.3.  CoRE Resource Type
+8.3.  CoRE Resource Type
 
    IANA is asked to register the following entry in the "Resource Type
    (rt=) Link Target Attribute Values" registry within the "Constrained
@@ -1984,7 +1932,7 @@ Table of Contents
    Clients can use this resource type to discover a group membership
    resource at the KDC.
 
-9.4.  AIF Media-Type Sub-Parameters
+8.4.  AIF Media-Type Sub-Parameters
 
    For the media-types application/aif+cbor and application/aif+json
    defined in Section 5.1 of [RFC9237], IANA is requested to register
@@ -2012,7 +1960,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-9.5.  CoAP Content-Formats
+8.5.  CoAP Content-Formats
 
    IANA is asked to register the following entries to the "CoAP Content-
    Formats" registry within the "Constrained RESTful Environments (CoRE)
@@ -2038,7 +1986,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-9.6.  TLS Exporter Labels
+8.6.  TLS Exporter Labels
 
    IANA is asked to register the following entry to the "TLS Exporter
    Labels" registry defined in Section 6 of [RFC5705] and updated in
@@ -2052,9 +2000,9 @@ Table of Contents
 
    *  Reference: Section 4.1.1.2 of [RFC-XXXX]
 
-10.  References
+9.  References
 
-10.1.  Normative References
+9.1.  Normative References
 
    [I-D.ietf-core-coap-pubsub]
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
@@ -2186,7 +2134,7 @@ Table of Contents
               DOI 10.17487/RFC9594, September 2024,
               <https://www.rfc-editor.org/rfc/rfc9594>.
 
-10.2.  Informative References
+9.2.  Informative References
 
    [I-D.ietf-ace-edhoc-oscore-profile]
               Selander, G., Mattsson, J. P., Tiloca, M., and R. Höglund,
@@ -2224,12 +2172,6 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
               cbor-encoded-cert-13>.
 
-   [MQTT-OASIS-Standard-v5]
-              Banks, A., Briggs, E., Borgendale, K., and R. Gupta,
-              "OASIS Standard MQTT Version 5.0", 2017,
-              <http://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-
-              v5.0-os.html>.
-
    [RFC8259]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", STD 90, RFC 8259,
               DOI 10.17487/RFC8259, December 2017,
@@ -2254,13 +2196,6 @@ Table of Contents
               DOI 10.17487/RFC9203, August 2022,
               <https://www.rfc-editor.org/rfc/rfc9203>.
 
-   [RFC9431]  Sengul, C. and A. Kirby, "Message Queuing Telemetry
-              Transport (MQTT) and Transport Layer Security (TLS)
-              Profile of Authentication and Authorization for
-              Constrained Environments (ACE) Framework", RFC 9431,
-              DOI 10.17487/RFC9431, July 2023,
-              <https://www.rfc-editor.org/rfc/rfc9431>.
-
 Appendix A.  Requirements on Application Profiles
 
    This section lists how this application profile of ACE addresses the
@@ -2275,8 +2210,8 @@ A.1.  Mandatory-to-Address Requirements
 
    *  REQ2: If scope uses AIF, register its specific instance of "Toid"
       and "Tperm" as media type parameters and a corresponding Content-
-      Format, as per the guidelines in [RFC9237]: see Section 9.4 and
-      Section 9.5.
+      Format, as per the guidelines in [RFC9237]: see Section 8.4 and
+      Section 8.5.
 
    *  REQ3: If used, specify the acceptable values for the 'sign_alg'
       parameter: values from the "Value" column of the "COSE Algorithms"
@@ -2318,7 +2253,7 @@ A.1.  Mandatory-to-Address Requirements
    *  REQ10: Register a Resource Type for the group-membership
       resources, which is used to discover the correct URL for sending a
       Join Request to the KDC: the Resource Type (rt=) Link Target
-      Attribute value "core.ps.gm" is registered in Section 9.3.
+      Attribute value "core.ps.gm" is registered in Section 8.3.
 
    *  REQ11: Define what specific actions (e.g., CoAP methods) are
       allowed on each resource accessible through the KDC interface,
@@ -2357,11 +2292,11 @@ A.1.  Mandatory-to-Address Requirements
    *  REQ18: Specify the acceptable values of the 'gkty' parameter.  For
       each of them, register a corresponding entry in the "ACE Groupcomm
       Key Types" IANA registry if such an entry does not exist already:
-      Group_PubSub_Keying_Material, see Section 4.1.2 and Section 9.1.
+      Group_PubSub_Keying_Material, see Section 4.1.2 and Section 8.1.
 
    *  REQ19: Specify and register the application profile identifier:
-      coap_group_pubsub_app (see Section 4.1.2 and Section 9.2) and
-      mqtt_pubsub_app (see Section 7 and Section 9.2).
+      coap_group_pubsub_app (see Section 4.1.2 and Section 8.2) (see
+      Section 8.2).
 
    *  REQ20: If used, specify the format and default values of the
       entries of the CBOR map to include in the 'group_policies'
@@ -2408,7 +2343,7 @@ A.1.  Mandatory-to-Address Requirements
    *  REQ28: Specify which CBOR tag is used for identifying the
       semantics of binary scopes, or register a new CBOR tag if a
       suitable one does not exist already: see Section 3.5 and
-      Section 9.5.
+      Section 8.5.
 
    *  REQ29: Categorize newly defined parameters according to the same
       criteria of Section 8 of [RFC9594]: a Publisher Client MUST
