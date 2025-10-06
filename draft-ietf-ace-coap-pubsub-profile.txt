@@ -1866,11 +1866,11 @@ Table of Contents
    [I-D.ietf-ace-key-groupcomm-oscore].
 
    Access tokens might have to be revoked before their expiration time.
-   [I-D.ietf-ace-revoked-token-notification] provides a list of possible
-   circumstances where this can happen, and specifies a method that an
-   Authorization Server can use in order to notify the KDC, the Broker,
-   and the Clients about pertaining access tokens that have been revoked
-   but are not expired yet.
+   [RFC9770] provides a list of possible circumstances where this can
+   happen, and specifies a method that an Authorization Server can use
+   in order to notify the KDC, the Broker, and the Clients about
+   pertaining access tokens that have been revoked but are not expired
+   yet.
 
    Clients can be excluded from future communications related to a
    topic, by appropriately re-keying the group associated with the topic
@@ -2152,15 +2152,6 @@ Table of Contents
               August 2025, <https://datatracker.ietf.org/doc/html/draft-
               ietf-ace-key-groupcomm-oscore-18>.
 
-   [I-D.ietf-ace-revoked-token-notification]
-              Tiloca, M., Palombini, F., Echeverria, S., and G. Lewis,
-              "Notification of Revoked Access Tokens in the
-              Authentication and Authorization for Constrained
-              Environments (ACE) Framework", Work in Progress, Internet-
-              Draft, draft-ietf-ace-revoked-token-notification-09, 22
-              September 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-revoked-token-notification-09>.
-
    [I-D.ietf-cose-cbor-encoded-cert]
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
@@ -2192,6 +2183,13 @@ Table of Contents
               for Constrained Environments (ACE) Framework", RFC 9203,
               DOI 10.17487/RFC9203, August 2022,
               <https://www.rfc-editor.org/rfc/rfc9203>.
+
+   [RFC9770]  Tiloca, M., Palombini, F., Echeverria, S., and G. Lewis,
+              "Notification of Revoked Access Tokens in the
+              Authentication and Authorization for Constrained
+              Environments (ACE) Framework", RFC 9770,
+              DOI 10.17487/RFC9770, June 2025,
+              <https://www.rfc-editor.org/rfc/rfc9770>.
 
 Appendix A.  Requirements on Application Profiles
 
@@ -2422,15 +2420,17 @@ Appendix B.  Document Updates
 
 B.1.  Version -00 to -01
 
+   *  Updated references.
+
    *  Editorial improvements.
 
 B.2.  Version -00
 
-   *  Imported content from draft-ietf-ace-pubsub-profile-11
+   *  Imported content from draft-ietf-ace-pubsub-profile-11.
 
-   *  Removed content about MQTT
+   *  Removed content about MQTT.
 
-   *  New document title
+   *  New document title.
 
 Acknowledgments
 

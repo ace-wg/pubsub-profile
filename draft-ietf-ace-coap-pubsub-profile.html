@@ -2667,7 +2667,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <p id="section-7-5">To this end, both Publishers and Subscribers rely on asymmetric cryptography, while Subscribers must be able to access the public keys of all the Publishers to a specific topic in order to verify the signature over the published topic data. This might make the message exchange quite heavy for small constrained devices.<a href="#section-7-5" class="pilcrow">¶</a></p>
 <p id="section-7-6">The Broker is only trusted with verifying that a Publisher is authorised to publish on a certain topic, and with distributing that data only to the Subscribers authorised to obtain it. However, the Broker is not trusted with the published data in itself, which the Broker cannot read or modify as it does not have access to the group key required for decrypting the data.<a href="#section-7-6" class="pilcrow">¶</a></p>
 <p id="section-7-7">With respect to the reusage of nonces for Proof-of-Possession input, the same considerations apply as in <span>[<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span>.<a href="#section-7-7" class="pilcrow">¶</a></p>
-<p id="section-7-8">Access tokens might have to be revoked before their expiration time. <span>[<a href="#I-D.ietf-ace-revoked-token-notification" class="cite xref">I-D.ietf-ace-revoked-token-notification</a>]</span> provides a list of possible circumstances where this can happen, and specifies a method that an Authorization Server can use in order to notify the KDC, the Broker, and the Clients about pertaining access tokens that have been revoked but are not expired yet.<a href="#section-7-8" class="pilcrow">¶</a></p>
+<p id="section-7-8">Access tokens might have to be revoked before their expiration time. <span>[<a href="#RFC9770" class="cite xref">RFC9770</a>]</span> provides a list of possible circumstances where this can happen, and specifies a method that an Authorization Server can use in order to notify the KDC, the Broker, and the Clients about pertaining access tokens that have been revoked but are not expired yet.<a href="#section-7-8" class="pilcrow">¶</a></p>
 <p id="section-7-9">Clients can be excluded from future communications related to a topic, by appropriately re-keying the group associated with the topic in question.<a href="#section-7-9" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2979,10 +2979,6 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
         <dd>
 <span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Key Management for Group Object Security for Constrained RESTful Environments (Group OSCORE) Using Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-18</span>, <time datetime="2025-08-28" class="refDate">28 August 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-18">https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-18</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="I-D.ietf-ace-revoked-token-notification">[I-D.ietf-ace-revoked-token-notification]</dt>
-        <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Echeverria, S.</span>, and <span class="refAuthor">G. Lewis</span>, <span class="refTitle">"Notification of Revoked Access Tokens in the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-revoked-token-notification-09</span>, <time datetime="2024-09-22" class="refDate">22 September 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-revoked-token-notification-09">https://datatracker.ietf.org/doc/html/draft-ietf-ace-revoked-token-notification-09</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="I-D.ietf-cose-cbor-encoded-cert">[I-D.ietf-cose-cbor-encoded-cert]</dt>
         <dd>
 <span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, and <span class="refAuthor">M. Furuhed</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-15</span>, <time datetime="2025-08-18" class="refDate">18 August 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-15">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-15</a>&gt;</span>. </dd>
@@ -3000,8 +2996,12 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <span class="refAuthor">Gerdes, S.</span>, <span class="refAuthor">Bergmann, O.</span>, <span class="refAuthor">Bormann, C.</span>, <span class="refAuthor">Selander, G.</span>, and <span class="refAuthor">L. Seitz</span>, <span class="refTitle">"Datagram Transport Layer Security (DTLS) Profile for Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="seriesInfo">RFC 9202</span>, <span class="seriesInfo">DOI 10.17487/RFC9202</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9202">https://www.rfc-editor.org/rfc/rfc9202</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9203">[RFC9203]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Seitz, L.</span>, <span class="refAuthor">Selander, G.</span>, and <span class="refAuthor">M. Gunnarsson</span>, <span class="refTitle">"The Object Security for Constrained RESTful Environments (OSCORE) Profile of the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="seriesInfo">RFC 9203</span>, <span class="seriesInfo">DOI 10.17487/RFC9203</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9203">https://www.rfc-editor.org/rfc/rfc9203</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9770">[RFC9770]</dt>
+      <dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Echeverria, S.</span>, and <span class="refAuthor">G. Lewis</span>, <span class="refTitle">"Notification of Revoked Access Tokens in the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="seriesInfo">RFC 9770</span>, <span class="seriesInfo">DOI 10.17487/RFC9770</span>, <time datetime="2025-06" class="refDate">June 2025</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9770">https://www.rfc-editor.org/rfc/rfc9770</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -3179,7 +3179,10 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-B.1-1.1">
-            <p id="appendix-B.1-1.1.1">Editorial improvements.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.1.1">Updated references.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.2">
+            <p id="appendix-B.1-1.2.1">Editorial improvements.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -3191,13 +3194,13 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-B.2-1.1">
-            <p id="appendix-B.2-1.1.1">Imported content from draft-ietf-ace-pubsub-profile-11<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.2-1.1.1">Imported content from draft-ietf-ace-pubsub-profile-11.<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.2-1.2">
-            <p id="appendix-B.2-1.2.1">Removed content about MQTT<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.2-1.2.1">Removed content about MQTT.<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.2-1.3">
-            <p id="appendix-B.2-1.3.1">New document title<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.2-1.3.1">New document title.<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
