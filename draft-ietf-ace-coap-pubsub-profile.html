@@ -12,23 +12,23 @@
        This document defines an application profile of the Authentication and Authorization for Constrained Environments (ACE) framework, to enable secure group communication in the Publish-Subscribe (Pub-Sub) architecture for the Constrained Application Protocol (CoAP) [draft-ietf-core-coap-pubsub], where Publishers and Subscribers communicate through a Broker. This profile relies on protocol-specific transport profiles of ACE to achieve communication security, server authentication, and proof-of-possession for a key owned by the Client and bound to an OAuth 2.0 access token. This document specifies the provisioning and enforcement of authorization information for Clients to act as Publishers and/or Subscribers, as well as the provisioning of keying material and security parameters that Clients use for protecting their communications end-to-end through the Broker. 
        Note to RFC Editor: Please replace "[draft-ietf-core-coap-pubsub]" with the RFC number of that document and delete this paragraph. 
     ' name="description">
-<meta content="xml2rfc 3.28.1" name="generator">
+<meta content="xml2rfc 3.30.2" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-ace-coap-pubsub-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.28.1
-    Python 3.12.10
+  xml2rfc 3.30.2
+    Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
-    lxml 5.3.0
-    platformdirs 4.3.7
+    lxml 5.3.1
+    platformdirs 4.4.0
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.3
-    setuptools 70.3.0
-    wcwidth 0.2.13
+    requests 2.32.5
+    setuptools 80.9.0
+    wcwidth 0.2.14
 -->
 <link href="draft-ietf-ace-coap-pubsub-profile.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1047,11 +1047,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ACE CoAP Pub-Sub Profile</td>
-<td class="right">May 2025</td>
+<td class="right">October 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Palombini, et al.</td>
-<td class="center">Expires 16 November 2025</td>
+<td class="center">Expires 9 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-coap-pubsub-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-05-15" class="published">15 May 2025</time>
+<time datetime="2025-10-06" class="published">6 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-11-16">16 November 2025</time></dd>
+<dd class="expires"><time datetime="2026-04-09">9 April 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1123,7 +1123,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 16 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 9 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1296,19 +1296,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-document-updates" class="internal xref">Document Updates</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
-                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-version-10-to-11" class="internal xref">Version -10 to -11</a></p>
+                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
-                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-version-09-to-10" class="internal xref">Version -09 to -10</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.3">
-                <p id="section-toc.1-1.11.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-version-08-to-09" class="internal xref">Version -08 to -09</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.4">
-                <p id="section-toc.1-1.11.2.4.1"><a href="#appendix-B.4" class="auto internal xref">B.4</a>.  <a href="#name-version-07-to-08" class="internal xref">Version -07 to -08</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.5">
-                <p id="section-toc.1-1.11.2.5.1"><a href="#appendix-B.5" class="auto internal xref">B.5</a>.  <a href="#name-version-06-to-07" class="internal xref">Version -06 to -07</a></p>
+                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-version-00" class="internal xref">Version -00</a></p>
 </li>
             </ul>
 </li>
@@ -2325,7 +2316,7 @@ Upon receiving the Key Distribution Response, the group member retrieves the upd
 The KDC <span class="bcp14">SHOULD</span> perform a group rekeying only if already scheduled to occur shortly, e.g., according to an application-specific rekeying period or scheduling, or as a reaction to a recent change in the group membership. In any other case, the KDC <span class="bcp14">SHOULD NOT</span> rekey the OSCORE group when receiving a Key Renewal Request (OPT12).<a href="#section-4.2.2-4.1.2" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.2.2-4.2">
-              <p id="section-4.2.2-4.2.1">The KDC determines and assigns a new Sender ID for the Publisher, and replies with a Key Renewal Response formatted as defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.8.2" class="relref">Section 4.8.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>. The CBOR Map in the response payload includes only the parameter 'group_SenderId' registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-17#section-16.3" class="relref">Section 16.3</a> of [<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span>, and specifies the new Sender ID of the Publisher encoded as a CBOR byte string.<a href="#section-4.2.2-4.2.1" class="pilcrow">¶</a></p>
+              <p id="section-4.2.2-4.2.1">The KDC determines and assigns a new Sender ID for the Publisher, and replies with a Key Renewal Response formatted as defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.8.2" class="relref">Section 4.8.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>. The CBOR Map in the response payload includes only the parameter 'group_SenderId' registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-18#section-16.3" class="relref">Section 16.3</a> of [<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span>, and specifies the new Sender ID of the Publisher encoded as a CBOR byte string.<a href="#section-4.2.2-4.2.1" class="pilcrow">¶</a></p>
 <p id="section-4.2.2-4.2.2">
 The KDC <span class="bcp14">MUST</span> assign a new Sender ID that has not been used in the group since the latest time when the current Gid value was assigned to the group (i.e., since the latest group rekeying, see <a href="#rekeying" class="auto internal xref">Section 5</a>).<a href="#section-4.2.2-4.2.2" class="pilcrow">¶</a></p>
 <p id="section-4.2.2-4.2.3">
@@ -2982,11 +2973,11 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <dl class="references">
 <dt id="I-D.ietf-ace-edhoc-oscore-profile">[I-D.ietf-ace-edhoc-oscore-profile]</dt>
         <dd>
-<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Tiloca, M.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for Constrained Environments (OSCORE) Profile for Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-edhoc-oscore-profile-07</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-edhoc-oscore-profile-07">https://datatracker.ietf.org/doc/html/draft-ietf-ace-edhoc-oscore-profile-07</a>&gt;</span>. </dd>
+<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Tiloca, M.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for Constrained Environments (OSCORE) Profile for Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-edhoc-oscore-profile-08</span>, <time datetime="2025-07-07" class="refDate">7 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-edhoc-oscore-profile-08">https://datatracker.ietf.org/doc/html/draft-ietf-ace-edhoc-oscore-profile-08</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-ace-key-groupcomm-oscore">[I-D.ietf-ace-key-groupcomm-oscore]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Key Management for Group Object Security for Constrained RESTful Environments (Group OSCORE) Using Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-17</span>, <time datetime="2025-04-11" class="refDate">11 April 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-17">https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-17</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Key Management for Group Object Security for Constrained RESTful Environments (Group OSCORE) Using Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-18</span>, <time datetime="2025-08-28" class="refDate">28 August 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-18">https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-18</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-ace-revoked-token-notification">[I-D.ietf-ace-revoked-token-notification]</dt>
         <dd>
@@ -2994,7 +2985,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <dd class="break"></dd>
 <dt id="I-D.ietf-cose-cbor-encoded-cert">[I-D.ietf-cose-cbor-encoded-cert]</dt>
         <dd>
-<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, and <span class="refAuthor">M. Furuhed</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-13</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-13">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-13</a>&gt;</span>. </dd>
+<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, and <span class="refAuthor">M. Furuhed</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-15</span>, <time datetime="2025-08-18" class="refDate">18 August 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-15">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-15</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8259">[RFC8259]</dt>
         <dd>
@@ -3181,179 +3172,32 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-document-updates" class="section-name selfRef">Document Updates</a>
       </h2>
 <p id="appendix-B-1">This section is to be removed before publishing as an RFC.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<div id="sec-10-11">
+<div id="sec-00-01">
 <section id="appendix-B.1">
-        <h3 id="name-version-10-to-11">
-<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-10-to-11" class="section-name selfRef">Version -10 to -11</a>
+        <h3 id="name-version-00-to-01">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-B.1-1.1">
-            <p id="appendix-B.1-1.1.1">Recommended /ps/TOPICNAME as path ot topic resources at the Broker.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.1-1.2">
-            <p id="appendix-B.1-1.2.1">The request for a new Sender ID uses the method POST.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.1-1.3">
-            <p id="appendix-B.1-1.3.1">Fixed description of ACE Group Error with identifier 4.<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.1-1.4">
-            <p id="appendix-B.1-1.4.1">Aligned requirement formulation with that in RFC 9594.<a href="#appendix-B.1-1.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.1-1.5">
-            <p id="appendix-B.1-1.5.1">Updated references.<a href="#appendix-B.1-1.5.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.1-1.6">
-            <p id="appendix-B.1-1.6.1">Clarifications and editorial improvements.<a href="#appendix-B.1-1.6.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.1.1">Editorial improvements.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
-<div id="sec-09-10">
+<div id="sec-00">
 <section id="appendix-B.2">
-        <h3 id="name-version-09-to-10">
-<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-version-09-to-10" class="section-name selfRef">Version -09 to -10</a>
+        <h3 id="name-version-00">
+<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-version-00" class="section-name selfRef">Version -00</a>
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-B.2-1.1">
-            <p id="appendix-B.2-1.1.1">More details on the scope format.<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.2-1.1.1">Imported content from draft-ietf-ace-pubsub-profile-11<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.2-1.2">
-            <p id="appendix-B.2-1.2.1">More details in the encoding of the 'key' parameter in the Join Response.<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.2-1.2.1">Removed content about MQTT<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.2-1.3">
-            <p id="appendix-B.2-1.3.1">More details on exchanges between group members and KDC.<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.2-1.4">
-            <p id="appendix-B.2-1.4.1">More details on the rekeying process and rekeying messages.<a href="#appendix-B.2-1.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.2-1.5">
-            <p id="appendix-B.2-1.5.1">Defined replay checks at the Subscriber.<a href="#appendix-B.2-1.5.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.2-1.6">
-            <p id="appendix-B.2-1.6.1">Improved examples.<a href="#appendix-B.2-1.6.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.2-1.7">
-            <p id="appendix-B.2-1.7.1">Improved security considerations.<a href="#appendix-B.2-1.7.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.2-1.8">
-            <p id="appendix-B.2-1.8.1">Revised IANA considerations.<a href="#appendix-B.2-1.8.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.2-1.9">
-            <p id="appendix-B.2-1.9.1">Aligned the list of profile requirements with draft-ietf-ace-key-groupcomm.<a href="#appendix-B.2-1.9.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.2-1.10">
-            <p id="appendix-B.2-1.10.1">Clarifications and editorial improvements.<a href="#appendix-B.2-1.10.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="sec-08-09">
-<section id="appendix-B.3">
-        <h3 id="name-version-08-to-09">
-<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-version-08-to-09" class="section-name selfRef">Version -08 to -09</a>
-        </h3>
-<ul class="normal">
-<li class="normal" id="appendix-B.3-1.1">
-            <p id="appendix-B.3-1.1.1">Improved terminology section.<a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.3-1.2">
-            <p id="appendix-B.3-1.2.1">Generalized scope format for future, admin-related extensions.<a href="#appendix-B.3-1.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.3-1.3">
-            <p id="appendix-B.3-1.3.1">Improved definition of permissions in the format of scope.<a href="#appendix-B.3-1.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.3-1.4">
-            <p id="appendix-B.3-1.4.1">Clarified alternative computing of N_S Challenge when DTLS is used.<a href="#appendix-B.3-1.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.3-1.5">
-            <p id="appendix-B.3-1.5.1">Use of the parameter 'exi' in the Join Response.<a href="#appendix-B.3-1.5.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.3-1.6">
-            <p id="appendix-B.3-1.6.1">Use of RFC 9290 instead of the custom format of error responses.<a href="#appendix-B.3-1.6.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.3-1.7">
-            <p id="appendix-B.3-1.7.1">Fixed construction of the COSE_Encrypt0 object.<a href="#appendix-B.3-1.7.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.3-1.8">
-            <p id="appendix-B.3-1.8.1">Fixed use of the resource type "core.ps.gm".<a href="#appendix-B.3-1.8.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.3-1.9">
-            <p id="appendix-B.3-1.9.1">Updated formulation of profile requirements.<a href="#appendix-B.3-1.9.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.3-1.10">
-            <p id="appendix-B.3-1.10.1">Clarification and editorial improvements.<a href="#appendix-B.3-1.10.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="sec-07-08">
-<section id="appendix-B.4">
-        <h3 id="name-version-07-to-08">
-<a href="#appendix-B.4" class="section-number selfRef">B.4. </a><a href="#name-version-07-to-08" class="section-name selfRef">Version -07 to -08</a>
-        </h3>
-<ul class="normal">
-<li class="normal" id="appendix-B.4-1.1">
-            <p id="appendix-B.4-1.1.1">Revised presentation of the scope format.<a href="#appendix-B.4-1.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.4-1.2">
-            <p id="appendix-B.4-1.2.1">Revised presentation of the Join Request-Response exchange.<a href="#appendix-B.4-1.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.4-1.3">
-            <p id="appendix-B.4-1.3.1">The 'cnonce' parameter must be present in the Join Request.<a href="#appendix-B.4-1.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.4-1.4">
-            <p id="appendix-B.4-1.4.1">The 'kid' of the group key is used as Group Identifier.<a href="#appendix-B.4-1.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.4-1.5">
-            <p id="appendix-B.4-1.5.1">Relaxed inclusion of the 'peer_roles' parameter.<a href="#appendix-B.4-1.5.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.4-1.6">
-            <p id="appendix-B.4-1.6.1">More detailed description of the encryption and signing operations.<a href="#appendix-B.4-1.6.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.4-1.7">
-            <p id="appendix-B.4-1.7.1">Defined construction of the AEAD nonce.<a href="#appendix-B.4-1.7.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.4-1.8">
-            <p id="appendix-B.4-1.8.1">Clarifications and editorial improvements.<a href="#appendix-B.4-1.8.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
-<div id="sec-06-07">
-<section id="appendix-B.5">
-        <h3 id="name-version-06-to-07">
-<a href="#appendix-B.5" class="section-number selfRef">B.5. </a><a href="#name-version-06-to-07" class="section-name selfRef">Version -06 to -07</a>
-        </h3>
-<ul class="normal">
-<li class="normal" id="appendix-B.5-1.1">
-            <p id="appendix-B.5-1.1.1">Revised abstract and introduction.<a href="#appendix-B.5-1.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.5-1.2">
-            <p id="appendix-B.5-1.2.1">Clarified use of "application groups".<a href="#appendix-B.5-1.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.5-1.3">
-            <p id="appendix-B.5-1.3.1">Revised use of protocols and transport profiles with Broker and KDC.<a href="#appendix-B.5-1.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.5-1.4">
-            <p id="appendix-B.5-1.4.1">Revised overview of the profile and its security associations.<a href="#appendix-B.5-1.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.5-1.5">
-            <p id="appendix-B.5-1.5.1">Revised presentation of authorization flow.<a href="#appendix-B.5-1.5.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.5-1.6">
-            <p id="appendix-B.5-1.6.1">Subscribers cannot be anonymous anymore.<a href="#appendix-B.5-1.6.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.5-1.7">
-            <p id="appendix-B.5-1.7.1">Revised scope definition.<a href="#appendix-B.5-1.7.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.5-1.8">
-            <p id="appendix-B.5-1.8.1">Revised Join Response.<a href="#appendix-B.5-1.8.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.5-1.9">
-            <p id="appendix-B.5-1.9.1">Revised COSE countersignature, COSE encrypt objects.<a href="#appendix-B.5-1.9.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.5-1.10">
-            <p id="appendix-B.5-1.10.1">Further clarifications, fixes and editorial improvements.<a href="#appendix-B.5-1.10.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.2-1.3.1">New document title<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

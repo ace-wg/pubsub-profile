@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 16 November 2025                              Brunel University
+Expires: 9 April 2026                                  Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                             15 May 2025
+                                                          6 October 2025
 
 
 CoAP Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 November 2025.
+   This Internet-Draft will expire on 9 April 2026.
 
 Copyright Notice
 
@@ -121,11 +121,8 @@ Table of Contents
      A.1.  Mandatory-to-Address Requirements
      A.2.  Optional-to-Address Requirements
    Appendix B.  Document Updates
-     B.1.  Version -10 to -11
-     B.2.  Version -09 to -10
-     B.3.  Version -08 to -09
-     B.4.  Version -07 to -08
-     B.5.  Version -06 to -07
+     B.1.  Version -00 to -01
+     B.2.  Version -00
    Acknowledgments
    Authors' Addresses
 
@@ -2142,18 +2139,18 @@ Table of Contents
               Security for Constrained Environments (OSCORE) Profile for
               Authentication and Authorization for Constrained
               Environments (ACE)", Work in Progress, Internet-Draft,
-              draft-ietf-ace-edhoc-oscore-profile-07, 3 March 2025,
+              draft-ietf-ace-edhoc-oscore-profile-08, 7 July 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              edhoc-oscore-profile-07>.
+              edhoc-oscore-profile-08>.
 
    [I-D.ietf-ace-key-groupcomm-oscore]
               Tiloca, M. and F. Palombini, "Key Management for Group
               Object Security for Constrained RESTful Environments
               (Group OSCORE) Using Authentication and Authorization for
               Constrained Environments (ACE)", Work in Progress,
-              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-17, 11
-              April 2025, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-ace-key-groupcomm-oscore-17>.
+              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-18, 28
+              August 2025, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-ace-key-groupcomm-oscore-18>.
 
    [I-D.ietf-ace-revoked-token-notification]
               Tiloca, M., Palombini, F., Echeverria, S., and G. Lewis,
@@ -2168,9 +2165,9 @@ Table of Contents
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-13, 3 March 2025,
+              ietf-cose-cbor-encoded-cert-15, 18 August 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-13>.
+              cbor-encoded-cert-15>.
 
    [RFC8259]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", STD 90, RFC 8259,
@@ -2423,109 +2420,17 @@ Appendix B.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-B.1.  Version -10 to -11
+B.1.  Version -00 to -01
 
-   *  Recommended /ps/TOPICNAME as path ot topic resources at the
-      Broker.
+   *  Editorial improvements.
 
-   *  The request for a new Sender ID uses the method POST.
+B.2.  Version -00
 
-   *  Fixed description of ACE Group Error with identifier 4.
+   *  Imported content from draft-ietf-ace-pubsub-profile-11
 
-   *  Aligned requirement formulation with that in RFC 9594.
+   *  Removed content about MQTT
 
-   *  Updated references.
-
-   *  Clarifications and editorial improvements.
-
-B.2.  Version -09 to -10
-
-   *  More details on the scope format.
-
-   *  More details in the encoding of the 'key' parameter in the Join
-      Response.
-
-   *  More details on exchanges between group members and KDC.
-
-   *  More details on the rekeying process and rekeying messages.
-
-   *  Defined replay checks at the Subscriber.
-
-   *  Improved examples.
-
-   *  Improved security considerations.
-
-   *  Revised IANA considerations.
-
-   *  Aligned the list of profile requirements with draft-ietf-ace-key-
-      groupcomm.
-
-   *  Clarifications and editorial improvements.
-
-B.3.  Version -08 to -09
-
-   *  Improved terminology section.
-
-   *  Generalized scope format for future, admin-related extensions.
-
-   *  Improved definition of permissions in the format of scope.
-
-   *  Clarified alternative computing of N_S Challenge when DTLS is
-      used.
-
-   *  Use of the parameter 'exi' in the Join Response.
-
-   *  Use of RFC 9290 instead of the custom format of error responses.
-
-   *  Fixed construction of the COSE_Encrypt0 object.
-
-   *  Fixed use of the resource type "core.ps.gm".
-
-   *  Updated formulation of profile requirements.
-
-   *  Clarification and editorial improvements.
-
-B.4.  Version -07 to -08
-
-   *  Revised presentation of the scope format.
-
-   *  Revised presentation of the Join Request-Response exchange.
-
-   *  The 'cnonce' parameter must be present in the Join Request.
-
-   *  The 'kid' of the group key is used as Group Identifier.
-
-   *  Relaxed inclusion of the 'peer_roles' parameter.
-
-   *  More detailed description of the encryption and signing
-      operations.
-
-   *  Defined construction of the AEAD nonce.
-
-   *  Clarifications and editorial improvements.
-
-B.5.  Version -06 to -07
-
-   *  Revised abstract and introduction.
-
-   *  Clarified use of "application groups".
-
-   *  Revised use of protocols and transport profiles with Broker and
-      KDC.
-
-   *  Revised overview of the profile and its security associations.
-
-   *  Revised presentation of authorization flow.
-
-   *  Subscribers cannot be anonymous anymore.
-
-   *  Revised scope definition.
-
-   *  Revised Join Response.
-
-   *  Revised COSE countersignature, COSE encrypt objects.
-
-   *  Further clarifications, fixes and editorial improvements.
+   *  New document title
 
 Acknowledgments
 
