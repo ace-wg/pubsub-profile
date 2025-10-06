@@ -1896,7 +1896,7 @@ Table of Contents
 
    *  Name: Group_PubSub_Keying_Material
 
-   *  Key Type Value: GROUPCOMM_KEY_TBD
+   *  Key Type Value: GROUPCOMM_KEY_TBD (suggested value: 2)
 
    *  Profile: coap_group_pubsub_app (Section 8.2 of [RFC-XXXX]).
 
@@ -1916,7 +1916,7 @@ Table of Contents
       architecture [I-D.ietf-core-coap-pubsub] for CoAP [RFC7252] and
       protected with COSE [RFC9052][RFC9053][RFC9338].
 
-   *  CBOR Value: TBD
+   *  CBOR Value: TBD (suggested value: 2)
 
    *  Reference: [RFC-XXXX]
 
@@ -1969,8 +1969,8 @@ Table of Contents
    Formats" registry within the "Constrained RESTful Environments (CoRE)
    Parameters" registry group.
 
-   *  Content Type: application/aif+cbor;Toid="pubsub-
-      topic",Tperm="pubsub-perm"
+   *  Content Type: application/aif+cbor;toid=pubsub-topic;tperm=pubsub-
+      perm
 
    *  Content Coding: -
 
@@ -1980,8 +1980,8 @@ Table of Contents
 
 
 
-   *  Content Type: application/aif+json;Toid="pubsub-
-      topic",Tperm="pubsub-perm"
+   *  Content Type: application/aif+json;toid=pubsub-topic;tperm=pubsub-
+      perm
 
    *  Content Coding: -
 
@@ -2440,6 +2440,12 @@ B.1.  Version -00 to -01
 
    *  Clarified generation of N_S if TLS is used with the KDC instead of
       DTLS.
+
+   *  Updated IANA considerations:
+
+      -  Suggested values for IANA registrations.
+
+      -  Fixed content types in the CoAP Content-Formats registrations.
 
    *  Updated references.
 
