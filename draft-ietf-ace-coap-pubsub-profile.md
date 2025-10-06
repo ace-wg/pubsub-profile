@@ -1107,103 +1107,17 @@ This section lists how this application profile of ACE addresses the requirement
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
 
-## Version -10 to -11 ## {#sec-10-11}
+## Version -00 to -01 ## {#sec-00-01}
 
-* Recommended /ps/TOPICNAME as path ot topic resources at the Broker.
+* Editorial improvements.
 
-* The request for a new Sender ID uses the method POST.
+## Version -00 ## {#sec-00}
 
-* Fixed description of ACE Group Error with identifier 4.
+* Imported content from draft-ietf-ace-pubsub-profile-11
 
-* Aligned requirement formulation with that in RFC 9594.
+* Removed content about MQTT
 
-* Updated references.
-
-* Clarifications and editorial improvements.
-
-## Version -09 to -10 ## {#sec-09-10}
-
-* More details on the scope format.
-
-* More details in the encoding of the 'key' parameter in the Join Response.
-
-* More details on exchanges between group members and KDC.
-
-* More details on the rekeying process and rekeying messages.
-
-* Defined replay checks at the Subscriber.
-
-* Improved examples.
-
-* Improved security considerations.
-
-* Revised IANA considerations.
-
-* Aligned the list of profile requirements with draft-ietf-ace-key-groupcomm.
-
-* Clarifications and editorial improvements.
-
-## Version -08 to -09 ## {#sec-08-09}
-
-* Improved terminology section.
-
-* Generalized scope format for future, admin-related extensions.
-
-* Improved definition of permissions in the format of scope.
-
-* Clarified alternative computing of N_S Challenge when DTLS is used.
-
-* Use of the parameter 'exi' in the Join Response.
-
-* Use of RFC 9290 instead of the custom format of error responses.
-
-* Fixed construction of the COSE_Encrypt0 object.
-
-* Fixed use of the resource type "core.ps.gm".
-
-* Updated formulation of profile requirements.
-
-* Clarification and editorial improvements.
-
-## Version -07 to -08 ## {#sec-07-08}
-
-* Revised presentation of the scope format.
-
-* Revised presentation of the Join Request-Response exchange.
-
-* The 'cnonce' parameter must be present in the Join Request.
-
-* The 'kid' of the group key is used as Group Identifier.
-
-* Relaxed inclusion of the 'peer_roles' parameter.
-
-* More detailed description of the encryption and signing operations.
-
-* Defined construction of the AEAD nonce.
-
-* Clarifications and editorial improvements.
-
-## Version -06 to -07 ## {#sec-06-07}
-
-* Revised abstract and introduction.
-
-* Clarified use of "application groups".
-
-* Revised use of protocols and transport profiles with Broker and KDC.
-
-* Revised overview of the profile and its security associations.
-
-* Revised presentation of authorization flow.
-
-* Subscribers cannot be anonymous anymore.
-
-* Revised scope definition.
-
-* Revised Join Response.
-
-* Revised COSE countersignature, COSE encrypt objects.
-
-* Further clarifications, fixes and editorial improvements.
+* New document title
 
 # Acknowledgments
 {:numbered="false"}
