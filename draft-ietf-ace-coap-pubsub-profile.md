@@ -36,6 +36,7 @@ normative:
   IANA.cose_key-type:
   IANA.cose_header-parameters:
   I-D.ietf-core-coap-pubsub:
+  RFC5246:
   RFC5705:
   RFC6347:
   RFC6690:
@@ -56,6 +57,7 @@ normative:
   RFC9277:
   RFC9290:
   RFC9338:
+  RFC9430:
   RFC9594:
 
 informative:
@@ -507,11 +509,15 @@ The N\_S may be either of the following:
 
 * If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE {{RFC9202}}, and the access token was specified in the "psk_identity" field of the ClientKeyExchange message when using DTLS 1.2 {{RFC6347}}, then N\_S is an exporter value computed as defined in {{Section 4 of RFC5705}} (REQ15).
 
-   Specifically, N\_S is exported from the DTLS session between the joining node and the KDC, using an empty context value (i.e., a context value of zero-length), 32 as length value in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-pubsub-app" defined in {{tls_exporter}} of this document.
+  Specifically, N\_S is exported from the DTLS session between the joining node and the KDC, using an empty context value (i.e., a context value of zero-length), 32 as length value in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-pubsub-app" defined in {{tls_exporter}} of this document.
+
+  The same as above holds if TLS 1.2 {{RFC5246}} was used instead of DTLS 1.2, as per {{RFC9430}}.
 
 * If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE {{RFC9202}}, and the access token was specified in the "identity" field of a PskIdentity within the PreSharedKeyExtension of the ClientHello message when using DTLS 1.3 {{RFC9147}}, then N\_S is an exporter value computed as defined in {{Section 7.5 of RFC8446}} (REQ15).
 
-   Specifically, N\_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value' (i.e., a 'context_value' of zero length), 32 as 'key_length' in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-pubsub-app" defined in {{tls_exporter}} of this document.
+  Specifically, N\_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value' (i.e., a 'context_value' of zero length), 32 as 'key_length' in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-pubsub-app" defined in {{tls_exporter}} of this document.
+
+  The same as above holds if TLS 1.3 {{RFC8446}} was used instead of DTLS 1.3, as per {{RFC9430}}.
 
 * If the Join Request is a retry in response to an error response from the KDC, which included a new 'kdcchallenge' parameter, then N_S MUST be the new value from this parameter.
 
@@ -1108,6 +1114,8 @@ This section lists how this application profile of ACE addresses the requirement
 {:removeinrfc}
 
 ## Version -00 to -01 ## {#sec-00-01}
+
+* Clarified generation of N_S if TLS is used with the KDC instead of DTLS.
 
 * Updated references.
 
