@@ -35,6 +35,7 @@ normative:
   IANA.cose_algorithms:
   IANA.cose_key-type:
   IANA.cose_header-parameters:
+  I-D.ietf-core-coap-pubsub:
   RFC5705:
   RFC6347:
   RFC6690:
@@ -56,16 +57,15 @@ normative:
   RFC9290:
   RFC9338:
   RFC9594:
-  I-D.ietf-core-coap-pubsub:
 
 informative:
   RFC8613:
   RFC8259:
   RFC9202:
   RFC9203:
+  RFC9770:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-ace-edhoc-oscore-profile:
-  I-D.ietf-ace-revoked-token-notification:
   I-D.ietf-ace-key-groupcomm-oscore:
 
 entity:
@@ -901,7 +901,7 @@ The Broker is only trusted with verifying that a Publisher is authorised to publ
 
 With respect to the reusage of nonces for Proof-of-Possession input, the same considerations apply as in {{I-D.ietf-ace-key-groupcomm-oscore}}.
 
-Access tokens might have to be revoked before their expiration time. {{I-D.ietf-ace-revoked-token-notification}} provides a list of possible circumstances where this can happen, and specifies a method that an Authorization Server can use in order to notify the KDC, the Broker, and the Clients about pertaining access tokens that have been revoked but are not expired yet.
+Access tokens might have to be revoked before their expiration time. {{RFC9770}} provides a list of possible circumstances where this can happen, and specifies a method that an Authorization Server can use in order to notify the KDC, the Broker, and the Clients about pertaining access tokens that have been revoked but are not expired yet.
 
 Clients can be excluded from future communications related to a topic, by appropriately re-keying the group associated with the topic in question.
 
@@ -1109,15 +1109,17 @@ This section lists how this application profile of ACE addresses the requirement
 
 ## Version -00 to -01 ## {#sec-00-01}
 
+* Updated references.
+
 * Editorial improvements.
 
 ## Version -00 ## {#sec-00}
 
-* Imported content from draft-ietf-ace-pubsub-profile-11
+* Imported content from draft-ietf-ace-pubsub-profile-11.
 
-* Removed content about MQTT
+* Removed content about MQTT.
 
-* New document title
+* New document title.
 
 # Acknowledgments
 {:numbered="false"}
