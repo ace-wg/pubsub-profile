@@ -923,7 +923,7 @@ IANA is asked to register the following entry in the "ACE Groupcomm Key Types" r
 
 * Name: Group_PubSub_Keying_Material
 
-* Key Type Value: GROUPCOMM_KEY_TBD
+* Key Type Value: GROUPCOMM_KEY_TBD (suggested value: 2)
 
 * Profile: coap_group_pubsub_app ({{iana-profile}} of {{&SELF}}).
 
@@ -939,7 +939,7 @@ IANA is asked to register the following entries in the "ACE Groupcomm Profiles" 
 
 * Description: Application profile to provision keying material for participating in group communication based on the Pub-Sub architecture {{I-D.ietf-core-coap-pubsub}} for CoAP {{RFC7252}} and protected with COSE {{RFC9052}}{{RFC9053}}{{RFC9338}}.
 
-* CBOR Value: TBD
+* CBOR Value: TBD (suggested value: 2)
 
 * Reference: {{&SELF}}
 
@@ -982,7 +982,7 @@ For the media-types application/aif+cbor and application/aif+json defined in {{S
 
 IANA is asked to register the following entries to the "CoAP Content-Formats" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
 
-* Content Type: application/aif+cbor;Toid="pubsub-topic",Tperm="pubsub-perm"
+* Content Type: application/aif+cbor;toid=pubsub-topic;tperm=pubsub-perm
 
 * Content Coding: -
 
@@ -992,7 +992,7 @@ IANA is asked to register the following entries to the "CoAP Content-Formats" re
 
 <br>
 
-* Content Type: application/aif+json;Toid="pubsub-topic",Tperm="pubsub-perm"
+* Content Type: application/aif+json;toid=pubsub-topic;tperm=pubsub-perm
 
 * Content Coding: -
 
@@ -1116,6 +1116,12 @@ This section lists how this application profile of ACE addresses the requirement
 ## Version -00 to -01 ## {#sec-00-01}
 
 * Clarified generation of N_S if TLS is used with the KDC instead of DTLS.
+
+* Updated IANA considerations:
+
+  - Suggested values for IANA registrations.
+
+  - Fixed content types in the CoAP Content-Formats registrations.
 
 * Updated references.
 
