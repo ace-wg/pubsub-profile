@@ -1044,7 +1044,7 @@ Table of Contents
       Specifically, N_S is exported from the DTLS session between the
       joining node and the KDC, using an empty context value (i.e., a
       context value of zero-length), 32 as length value in bytes, and
-      the exporter label "EXPORTER-ACE-Sign-Challenge-pubsub-app"
+      the exporter label "EXPORTER-ACE-Sign-Challenge-coap-pubsub-app"
       defined in Section 8.6 of this document.
 
       The same as above holds if TLS 1.2 [RFC5246] was used instead of
@@ -1060,7 +1060,7 @@ Table of Contents
       Specifically, N_S is exported from the DTLS session between the
       joining node and the KDC, using an empty 'context_value' (i.e., a
       'context_value' of zero length), 32 as 'key_length' in bytes, and
-      the exporter label "EXPORTER-ACE-Sign-Challenge-pubsub-app"
+      the exporter label "EXPORTER-ACE-Sign-Challenge-coap-pubsub-app"
       defined in Section 8.6 of this document.
 
       The same as above holds if TLS 1.3 [RFC8446] was used instead of
@@ -1995,7 +1995,7 @@ Table of Contents
    Labels" registry defined in Section 6 of [RFC5705] and updated in
    Section 12 of [RFC8447].
 
-   *  Value: EXPORTER-ACE-Sign-Challenge-pubsub-app
+   *  Value: EXPORTER-ACE-Sign-Challenge-coap-pubsub-app
 
    *  DTLS-OK: Y
 
@@ -2444,6 +2444,8 @@ B.1.  Version -00 to -01
    *  Updated IANA considerations:
 
       -  Suggested values for IANA registrations.
+
+      -  Renamed TLS Exporter Label.
 
       -  Fixed content types in the CoAP Content-Formats registrations.
 
