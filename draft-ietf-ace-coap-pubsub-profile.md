@@ -509,13 +509,13 @@ The N\_S may be either of the following:
 
 * If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE {{RFC9202}}, and the access token was specified in the "psk_identity" field of the ClientKeyExchange message when using DTLS 1.2 {{RFC6347}}, then N\_S is an exporter value computed as defined in {{Section 4 of RFC5705}} (REQ15).
 
-  Specifically, N\_S is exported from the DTLS session between the joining node and the KDC, using an empty context value (i.e., a context value of zero-length), 32 as length value in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-pubsub-app" defined in {{tls_exporter}} of this document.
+  Specifically, N\_S is exported from the DTLS session between the joining node and the KDC, using an empty context value (i.e., a context value of zero-length), 32 as length value in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-pubsub-app" defined in {{tls_exporter}} of this document.
 
   The same as above holds if TLS 1.2 {{RFC5246}} was used instead of DTLS 1.2, as per {{RFC9430}}.
 
 * If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE {{RFC9202}}, and the access token was specified in the "identity" field of a PskIdentity within the PreSharedKeyExtension of the ClientHello message when using DTLS 1.3 {{RFC9147}}, then N\_S is an exporter value computed as defined in {{Section 7.5 of RFC8446}} (REQ15).
 
-  Specifically, N\_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value' (i.e., a 'context_value' of zero length), 32 as 'key_length' in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-pubsub-app" defined in {{tls_exporter}} of this document.
+  Specifically, N\_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value' (i.e., a 'context_value' of zero length), 32 as 'key_length' in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-pubsub-app" defined in {{tls_exporter}} of this document.
 
   The same as above holds if TLS 1.3 {{RFC8446}} was used instead of DTLS 1.3, as per {{RFC9430}}.
 
@@ -1004,7 +1004,7 @@ IANA is asked to register the following entries to the "CoAP Content-Formats" re
 
 IANA is asked to register the following entry to the "TLS Exporter Labels" registry defined in {{Section 6 of RFC5705}} and updated in {{Section 12 of RFC8447}}.
 
-* Value: EXPORTER-ACE-Sign-Challenge-pubsub-app
+* Value: EXPORTER-ACE-Sign-Challenge-coap-pubsub-app
 
 * DTLS-OK: Y
 
@@ -1120,6 +1120,8 @@ This section lists how this application profile of ACE addresses the requirement
 * Updated IANA considerations:
 
   - Suggested values for IANA registrations.
+
+  - Renamed TLS Exporter Label.
 
   - Fixed content types in the CoAP Content-Formats registrations.
 
