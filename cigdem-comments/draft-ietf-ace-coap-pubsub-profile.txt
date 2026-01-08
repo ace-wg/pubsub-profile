@@ -546,11 +546,11 @@ Table of Contents
    possible to specify within the representation of a topic resource, as
    originally defined in Section 3 of [I-D.ietf-core-coap-pubsub].  In
    particular, this profile defines the following two parameters that
-   the Broker can specify in a response from a topic resource (see
-   Section 2.5 of [I-D.ietf-core-coap-pubsub]).  Note that, when these
-   parameters are transported in their respective fields of the message
-   payload, the Content-Format "application/core-pubsub+cbor" defined in
-   [I-D.ietf-core-coap-pubsub] MUST be used.
+   the Broker can specify in a response to a request that targets a
+   topic resource (see Section 2.5 of [I-D.ietf-core-coap-pubsub]).
+   Note that, when these parameters are transported in their respective
+   fields of the message payload, the Content-Format "application/core-
+   pubsub+cbor" defined in [I-D.ietf-core-coap-pubsub] MUST be used.
 
    *  'kdc_uri', with value the URI of the group-membership resource at
       the KDC, where Clients can send a request to join the security
