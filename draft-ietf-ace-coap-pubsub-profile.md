@@ -539,7 +539,7 @@ The N\_S may be either of the following:
 
 * If the Join Request is a retry in response to an error response from the KDC, which included a new 'kdcchallenge' parameter, then N_S MUST be the new value from this parameter.
 
-It is up to applications to define how N_S is computed in further alternative settings.
+It is up to applications or future specifications to define how N_S is computed in further alternative settings.
 
 ### Join Response {#join-response}
 
