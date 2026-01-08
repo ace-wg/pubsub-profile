@@ -1966,7 +1966,7 @@ Table of Contents
    Broker cannot read or modify as it does not have access to the group
    key required for decrypting the data.
 
-   With respect to the reusage of nonces for proof-of-possession input,
+   With respect to the reuse of nonces for proof-of-possession input,
    the same considerations apply as in
    [I-D.ietf-ace-key-groupcomm-oscore], with the difference that the KDC
    of the present document is considered instead of the Group Manager
