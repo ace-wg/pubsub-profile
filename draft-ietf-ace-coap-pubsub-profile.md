@@ -933,7 +933,7 @@ To this end, both Publishers and Subscribers rely on asymmetric cryptography, wh
 
 The Broker is only trusted with verifying that a Publisher is authorised to publish on a certain topic and with distributing that data only to the Subscribers authorised to obtain it. However, the Broker is not trusted with the published data in itself, which the Broker cannot read or modify as it does not have access to the group key required for decrypting the data.
 
-With respect to the reusage of nonces for proof-of-possession input, the same considerations apply as in {{I-D.ietf-ace-key-groupcomm-oscore}}, with the difference that the KDC of the present document is considered instead of the Group Manager defined therein.
+With respect to the reuse of nonces for proof-of-possession input, the same considerations apply as in {{I-D.ietf-ace-key-groupcomm-oscore}}, with the difference that the KDC of the present document is considered instead of the Group Manager defined therein.
 
 Access tokens might have to be revoked before their expiration time. {{RFC9770}} provides a list of possible circumstances where this can happen, and it specifies a method that an Authorization Server can use in order to notify the KDC, the Broker, and the Clients about pertaining access tokens that have been revoked but are not expired yet.
 
