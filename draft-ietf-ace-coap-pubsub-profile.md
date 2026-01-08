@@ -210,7 +210,7 @@ In summary, this profile specifies the following functionalities.
 {{groupcomm_requirements}} compiles the list of requirements for this application profile of ACE and how they are fulfilled, consistently with the list of requirements defined in {{Section A of RFC9594}}.
 
 
-# Getting Authorisation to Join a Pub-Sub security group (A) {#authorisation}
+# Getting Authorisation to Join a Pub-Sub security group {#authorisation}
 
 {{message-flow}} provides a high level overview of the message flow for a Client getting authorisation to join a group. Square brackets denote optional steps. The message flow is expanded in the subsequent sections.
 
@@ -252,11 +252,17 @@ Client                                                Broker    AS  KDC
 ~~~~~~~~~~~
 {: #message-flow title="Authorisation Flow" artwork-align="center"}
 
-After a Client uploads to the Broker the authorisation information for participating in a Pub-Sub topic with name TOPICNAME (see {{auth-request}}), the Client can perform the optional discovery of the KDC and security group name at the Broker, by accessing the topic resource corresponding to the topic in question (see {{kdc-discovery}}).
+As shown in {{message-flow}}, after a Client obtains authorisation information for participating in a Pub-Sub topic with name TOPICNAME (see {{auth-request}} and {{as-response}}), the Client uploads that information to the Broker as per the specific transport profile of ACE used, e.g., {{RFC9202}} or {{RFC9203}}.
 
-In order to ensure that the Client can seamlessly access the right topic resource at the Broker, it is RECOMMENDED that a Broker implementing this application profile uses the path /ps/TOPICNAME to host the topic resource for the topic with name TOPICNAME.
+Following that, the Client can perform the optional discovery of the KDC and security group name at the Broker, by accessing the topic resource corresponding to the topic in question (see {{kdc-discovery}}).
 
-Alternatively, the Client might not know the right topic resource to target and thus would attempt to access different ones (e.g., based on the result of an early discovery of topic resources, see {{topic-discovery}}), until it finds the right one specifying TOPICNAME as value of the 'topic-name' parameter in the resource representation.
+In order to ensure that the Client can seamlessly access the right topic resource at the Broker, it is RECOMMENDED that a Broker implementing this application profile uses the path /ps/TOPICNAME to host the topic resource for the topic with name TOPICNAME. Alternatively, the Client might not know the right topic resource to target and thus would attempt to access different ones (e.g., based on the result of an early discovery of topic resources, see {{topic-discovery}}), until it finds the right one specifying TOPICNAME as value of the 'topic-name' parameter in the resource representation.
+
+Separately, after the Client obtains authorisation information for joining the security group at the KDC (see {{auth-request}} and {{as-response}}), the Client uploads that information to the KDC (see {{token-post}}). Following that, the Client can join the security group at the KDC and thus obtain the corresponding keying material (see {{join}}).
+
+Once the steps above have been completed, the Client can take part in the secure group communication for the topic TOPICNAME, e.g., by publishing data to the topic through a request targeting the topic-data resource at the Broker.
+
+Note that the overview in {{message-flow}} shows the specific sequence of steps where the Client: first associates with the Broker for participating in a topic; then discovers the KDC and the name of the security group through the Broker; and finally associates with the KDC, through which it joins the security group. However, if the Client is early aware about how to reach the KDC and about the name of the security group, the Client can instead: first associate with the KDC and join the security group, and then associate with the Broker for participating in the topic.
 
 Since {{RFC9200}} recommends the use of CoAP and CBOR, this document describes the exchanges assuming that CoAP and CBOR are used. However, using HTTP instead of CoAP is possible, by leveraging the corresponding parameters and methods. Analogously, JSON {{RFC8259}} can be used instead of CBOR, by relying on the conversion method specified in {{Sections 6.1 and 6.2 of RFC8949}}. In case JSON is used, the Content-Format of the message has to be specified accordingly. Exact definitions of these exchanges are out of scope for this document.
 
@@ -1134,6 +1140,12 @@ This section lists how this application profile of ACE addresses the requirement
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -01 to -02 ## {#sec-01-02}
+
+* Clarified high-level description of the authorisation flow.
+
+* Editorial fixes and improvements.
 
 ## Version -00 to -01 ## {#sec-00-01}
 
