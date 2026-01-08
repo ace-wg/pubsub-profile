@@ -441,7 +441,7 @@ This application profile does not define additional parameters to be used in the
 
 In order to enable secure group communication for the Pub-Sub Clients, the KDC provides the resources listed in {{tab-kdc-resources}}.
 
-The entry of each resource specifies the CoAP methods by means of which it is admitted to access that resource, for nodes with different roles in the group or as non members. Except for accessing the /ace-group resource with the FETCH method and the /ace-group/GROUPNAME resource with the POST method, all other operations are admitted only to current members of the security group with name GROUPNAME (REQ11).
+The entry of each resource specifies the CoAP methods by means of which it is admitted to access that resource, for nodes with different roles in the group or as non members. Except for accessing the /ace-group resource with the FETCH method (to retrieve security group names through their group identifiers) and the /ace-group/GROUPNAME resource with the POST method (to join the security group with name GROUPNAME), all other operations are admitted only to current members of the security group with name GROUPNAME (REQ11).
 
 Each resource is marked as REQUIRED or OPTIONAL to be hosted at the KDC (REQ9).
 
