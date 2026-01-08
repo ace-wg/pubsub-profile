@@ -663,7 +663,7 @@ A Client can access the following resources at the KDC, in order to retrieve lat
 
   * The 'ace_groupcomm_profile' field MUST be present and has value "coap_group_pubsub_app" (PROFILE_TBD).
 
-  Upon receiving the Key Distribution Response, the requesting group member retrieves the updated security parameters and group keying material. If they differ from the currently stored ones, then the group member uses the received one as group keying material to protect/unprotect published topic data thereafter.
+  Upon receiving the Key Distribution Response, the requesting group member retrieves the updated security parameters and group keying material. If they differ from the currently stored ones, then the group member uses the received ones thereafter for the security processing of published topic data, i.e., for encryption operations when acting as Publisher and for decryption operations when acting as Subscriber.
 
   This application profile does not specify policies that instruct group members to retain messages and for how long, if those messages are unsuccessfully decrypted (OPT11).
 
@@ -683,7 +683,7 @@ A Client can access the following resources at the KDC, in order to retrieve lat
 
   * The 'exi' field MUST be present.
 
-  Upon receiving the Key Distribution Response, the group member retrieves the updated security parameters, group keying material, and Sender ID (if the 'key' field includes the 'group_SenderId' parameter). If they differ from the currently stored ones, then the group member uses the received one as group keying material to protect/unprotect published topic data thereafter.
+  Upon receiving the Key Distribution Response, the group member retrieves the updated security parameters, group keying material, and Sender ID (if the 'key' field includes the 'group_SenderId' parameter). If they differ from the currently stored ones, then the group member uses the received ones thereafter for the security processing of published topic data, i.e., for encryption operations when acting as Publisher and for decryption operations when acting as Subscriber.
 
   This application profile does not specify policies that instruct group members to retain messages and for how long, if those messages are unsuccessfully decrypted (OPT11).
 
