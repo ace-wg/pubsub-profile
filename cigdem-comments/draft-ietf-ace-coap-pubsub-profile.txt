@@ -1133,8 +1133,8 @@ Table of Contents
       from the KDC, which included a new 'kdcchallenge' parameter, then
       N_S MUST be the new value from this parameter.
 
-   It is up to applications to define how N_S is computed in further
-   alternative settings.
+   It is up to applications or future specifications to define how N_S
+   is computed in further alternative settings.
 
 4.1.2.  Join Response
 
