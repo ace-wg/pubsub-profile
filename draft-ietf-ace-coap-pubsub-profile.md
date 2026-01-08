@@ -348,7 +348,7 @@ The object identifier ("Toid") is specialized as a CBOR data item specifying the
 
 The permission set ("Tperm") is specialized as a CBOR unsigned integer with value R, specifying the permissions that the Client wishes to have in the group indicated by "Toid".
 
-More specifically, the following applies when, as defined in this document, a scope entry includes a set of permissions for user-related operations performed by a pubsub Client.
+More specifically, the following applies when, as defined in this document, a scope entry includes a set of permissions for user-related operations performed by a Pub-Sub Client.
 
 * The object identifier ("Toid") is a CBOR text string, specifying the name of one application group (topic) or of the corresponding security group to which the scope entry pertains.
 
