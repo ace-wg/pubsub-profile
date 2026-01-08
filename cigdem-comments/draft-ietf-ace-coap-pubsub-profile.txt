@@ -1438,8 +1438,10 @@ Table of Contents
       Upon receiving the Key Distribution Response, the requesting group
       member retrieves the updated security parameters and group keying
       material.  If they differ from the currently stored ones, then the
-      group member uses the received one as group keying material to
-      protect/unprotect published topic data thereafter.
+      group member uses the received ones thereafter for the security
+      processing of published topic data, i.e., for encryption
+      operations when acting as Publisher and for decryption operations
+      when acting as Subscriber.
 
       This application profile does not specify policies that instruct
       group members to retain messages and for how long, if those
@@ -1492,8 +1494,10 @@ Table of Contents
       retrieves the updated security parameters, group keying material,
       and Sender ID (if the 'key' field includes the 'group_SenderId'
       parameter).  If they differ from the currently stored ones, then
-      the group member uses the received one as group keying material to
-      protect/unprotect published topic data thereafter.
+      the group member uses the received ones thereafter for the
+      security processing of published topic data, i.e., for encryption
+      operations when acting as Publisher and for decryption operations
+      when acting as Subscriber.
 
       This application profile does not specify policies that instruct
       group members to retain messages and for how long, if those

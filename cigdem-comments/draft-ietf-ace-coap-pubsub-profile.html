@@ -2287,7 +2287,7 @@ The KDC processes the Key Distribution Request according to <span><a href="https
 </li>
               </ul>
 <p id="section-4.2.1-2.2.4">
-Upon receiving the Key Distribution Response, the requesting group member retrieves the updated security parameters and group keying material. If they differ from the currently stored ones, then the group member uses the received one as group keying material to protect/unprotect published topic data thereafter.<a href="#section-4.2.1-2.2.4" class="pilcrow">¶</a></p>
+Upon receiving the Key Distribution Response, the requesting group member retrieves the updated security parameters and group keying material. If they differ from the currently stored ones, then the group member uses the received ones thereafter for the security processing of published topic data, i.e., for encryption operations when acting as Publisher and for decryption operations when acting as Subscriber.<a href="#section-4.2.1-2.2.4" class="pilcrow">¶</a></p>
 <p id="section-4.2.1-2.2.5">
 This application profile does not specify policies that instruct group members to retain messages and for how long, if those messages are unsuccessfully decrypted (OPT11).<a href="#section-4.2.1-2.2.5" class="pilcrow">¶</a></p>
 </li>
@@ -2315,7 +2315,7 @@ The KDC processes the Key Distribution Request according to <span><a href="https
 </li>
               </ul>
 <p id="section-4.2.1-2.6.4">
-Upon receiving the Key Distribution Response, the group member retrieves the updated security parameters, group keying material, and Sender ID (if the 'key' field includes the 'group_SenderId' parameter). If they differ from the currently stored ones, then the group member uses the received one as group keying material to protect/unprotect published topic data thereafter.<a href="#section-4.2.1-2.6.4" class="pilcrow">¶</a></p>
+Upon receiving the Key Distribution Response, the group member retrieves the updated security parameters, group keying material, and Sender ID (if the 'key' field includes the 'group_SenderId' parameter). If they differ from the currently stored ones, then the group member uses the received ones thereafter for the security processing of published topic data, i.e., for encryption operations when acting as Publisher and for decryption operations when acting as Subscriber.<a href="#section-4.2.1-2.6.4" class="pilcrow">¶</a></p>
 <p id="section-4.2.1-2.6.5">
 This application profile does not specify policies that instruct group members to retain messages and for how long, if those messages are unsuccessfully decrypted (OPT11).<a href="#section-4.2.1-2.6.5" class="pilcrow">¶</a></p>
 </li>
