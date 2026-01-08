@@ -207,7 +207,7 @@ In summary, this profile specifies the following functionalities.
 
 5. The KDC renews and redistributes the group keying material (rekeying), e.g., due to a membership change in the group.
 
-{{groupcomm_requirements}} lists the specifications on this application profile of ACE, based on the requirements defined in {{Section A of RFC9594}}.
+{{groupcomm_requirements}} compiles the list of requirements for this application profile of ACE and how they are fulfilled, consistently with the list of requirements defined in {{Section A of RFC9594}}.
 
 
 # Getting Authorisation to Join a Pub-Sub security group (A) {#authorisation}
