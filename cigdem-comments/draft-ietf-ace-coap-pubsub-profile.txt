@@ -464,7 +464,6 @@ Table of Contents
 
    Since [RFC9200] recommends the use of CoAP and CBOR, this document
    describes the exchanges assuming that CoAP and CBOR are used.
-
    However, using HTTP instead of CoAP is possible, by leveraging the
    corresponding parameters and methods.  Analogously, JSON [RFC8259]
    can be used instead of CBOR, by relying on the conversion method
