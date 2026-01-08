@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 10 April 2026                                 Brunel University
+Expires: 12 July 2026                                  Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                          7 October 2025
+                                                          8 January 2026
 
 
 CoAP Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,11 +61,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 April 2026.
+   This Internet-Draft will expire on 12 July 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -82,7 +82,7 @@ Table of Contents
    1.  Introduction
      1.1.  Terminology
    2.  Application Profile Overview
-   3.  Getting Authorisation to Join a Pub-Sub security group (A)
+   3.  Getting Authorisation to Join a Pub-Sub security group
      3.1.  Topic Discovery at the Broker (Optional)
      3.2.  AS Discovery at the Broker (Optional)
      3.3.  KDC Discovery at the Broker (Optional)
@@ -121,8 +121,9 @@ Table of Contents
      A.1.  Mandatory-to-Address Requirements
      A.2.  Optional-to-Address Requirements
    Appendix B.  Document Updates
-     B.1.  Version -00 to -01
-     B.2.  Version -00
+     B.1.  Version -01 to -02
+     B.2.  Version -00 to -01
+     B.3.  Version -00
    Acknowledgments
    Authors' Addresses
 
@@ -397,10 +398,11 @@ Table of Contents
    5.  The KDC renews and redistributes the group keying material
        (rekeying), e.g., due to a membership change in the group.
 
-   Appendix A lists the specifications on this application profile of
-   ACE, based on the requirements defined in Appendix A of [RFC9594].
+   Appendix A compiles the list of requirements for this application
+   profile of ACE and how they are fulfilled, consistently with the list
+   of requirements defined in Appendix A of [RFC9594].
 
-3.  Getting Authorisation to Join a Pub-Sub security group (A)
+3.  Getting Authorisation to Join a Pub-Sub security group
 
    Figure 3 provides a high level overview of the message flow for a
    Client getting authorisation to join a group.  Square brackets denote
@@ -444,9 +446,13 @@ Table of Contents
 
                       Figure 3: Authorisation Flow
 
-   After a Client uploads to the Broker the authorisation information
-   for participating in a Pub-Sub topic with name TOPICNAME (see
-   Section 3.4), the Client can perform the optional discovery of the
+   As shown in Figure 3, after a Client obtains authorisation
+   information for participating in a Pub-Sub topic with name TOPICNAME
+   (see Section 3.4 and Section 3.5), the Client uploads that
+   information to the Broker as per the specific transport profile of
+   ACE used, e.g., [RFC9202] or [RFC9203].
+
+   Following that, the Client can perform the optional discovery of the
    KDC and security group name at the Broker, by accessing the topic
    resource corresponding to the topic in question (see Section 3.3).
 
@@ -454,16 +460,36 @@ Table of Contents
    topic resource at the Broker, it is RECOMMENDED that a Broker
    implementing this application profile uses the path /ps/TOPICNAME to
    host the topic resource for the topic with name TOPICNAME.
-
    Alternatively, the Client might not know the right topic resource to
    target and thus would attempt to access different ones (e.g., based
    on the result of an early discovery of topic resources, see
    Section 3.1), until it finds the right one specifying TOPICNAME as
    value of the 'topic-name' parameter in the resource representation.
 
+   Separately, after the Client obtains authorisation information for
+   joining the security group at the KDC (see Section 3.4 and
+   Section 3.5), the Client uploads that information to the KDC (see
+   Section 3.6).  Following that, the Client can join the security group
+   at the KDC and thus obtain the corresponding keying material (see
+   Section 4.1).
+
+   Once the steps above have been completed, the Client can take part in
+   the secure group communication for the topic TOPICNAME, e.g., by
+   publishing data to the topic through a request targeting the topic-
+   data resource at the Broker.
+
+   Note that the overview in Figure 3 shows the specific sequence of
+   steps where the Client: first associates with the Broker for
+   participating in a topic; then discovers the KDC and the name of the
+   security group through the Broker; and finally associates with the
+   KDC, through which it joins the security group.  However, if the
+   Client is early aware about how to reach the KDC and about the name
+   of the security group, the Client can instead: first associate with
+   the KDC and join the security group, and then associate with the
+   Broker for participating in the topic.
+
    Since [RFC9200] recommends the use of CoAP and CBOR, this document
    describes the exchanges assuming that CoAP and CBOR are used.
-
    However, using HTTP instead of CoAP is possible, by leveraging the
    corresponding parameters and methods.  Analogously, JSON [RFC8259]
    can be used instead of CBOR, by relying on the conversion method
@@ -520,11 +546,11 @@ Table of Contents
    possible to specify within the representation of a topic resource, as
    originally defined in Section 3 of [I-D.ietf-core-coap-pubsub].  In
    particular, this profile defines the following two parameters that
-   the Broker can specify in a response from a topic resource (see
-   Section 2.5 of [I-D.ietf-core-coap-pubsub]).  Note that, when these
-   parameters are transported in their respective fields of the message
-   payload, the Content-Format "application/core-pubsub+cbor" defined in
-   [I-D.ietf-core-coap-pubsub] MUST be used.
+   the Broker can specify in a response to a request that targets a
+   topic resource (see Section 2.5 of [I-D.ietf-core-coap-pubsub]).
+   Note that, when these parameters are transported in their respective
+   fields of the message payload, the Content-Format "application/core-
+   pubsub+cbor" defined in [I-D.ietf-core-coap-pubsub] MUST be used.
 
    *  'kdc_uri', with value the URI of the group-membership resource at
       the KDC, where Clients can send a request to join the security
@@ -625,7 +651,7 @@ Table of Contents
 
    More specifically, the following applies when, as defined in this
    document, a scope entry includes a set of permissions for user-
-   related operations performed by a pubsub Client.
+   related operations performed by a Pub-Sub Client.
 
    *  The object identifier ("Toid") is a CBOR text string, specifying
       the name of one application group (topic) or of the corresponding
@@ -835,10 +861,11 @@ Table of Contents
    The entry of each resource specifies the CoAP methods by means of
    which it is admitted to access that resource, for nodes with
    different roles in the group or as non members.  Except for accessing
-   the /ace-group resource with the FETCH method and the /ace-group/
-   GROUPNAME resource with the POST method, all other operations are
-   admitted only to current members of the security group with name
-   GROUPNAME (REQ11).
+   the /ace-group resource with the FETCH method (to retrieve security
+   group names through their group identifiers) and the /ace-group/
+   GROUPNAME resource with the POST method (to join the security group
+   with name GROUPNAME), all other operations are admitted only to
+   current members of the security group with name GROUPNAME (REQ11).
 
    Each resource is marked as REQUIRED or OPTIONAL to be hosted at the
    KDC (REQ9).
@@ -1106,8 +1133,8 @@ Table of Contents
       from the KDC, which included a new 'kdcchallenge' parameter, then
       N_S MUST be the new value from this parameter.
 
-   It is up to applications to define how N_S is computed in further
-   alternative settings.
+   It is up to applications or future specifications to define how N_S
+   is computed in further alternative settings.
 
 4.1.2.  Join Response
 
@@ -1411,8 +1438,10 @@ Table of Contents
       Upon receiving the Key Distribution Response, the requesting group
       member retrieves the updated security parameters and group keying
       material.  If they differ from the currently stored ones, then the
-      group member uses the received one as group keying material to
-      protect/unprotect published topic data thereafter.
+      group member uses the received ones thereafter for the security
+      processing of published topic data, i.e., for encryption
+      operations when acting as Publisher and for decryption operations
+      when acting as Subscriber.
 
       This application profile does not specify policies that instruct
       group members to retain messages and for how long, if those
@@ -1465,8 +1494,10 @@ Table of Contents
       retrieves the updated security parameters, group keying material,
       and Sender ID (if the 'key' field includes the 'group_SenderId'
       parameter).  If they differ from the currently stored ones, then
-      the group member uses the received one as group keying material to
-      protect/unprotect published topic data thereafter.
+      the group member uses the received ones thereafter for the
+      security processing of published topic data, i.e., for encryption
+      operations when acting as Publisher and for decryption operations
+      when acting as Subscriber.
 
       This application profile does not specify policies that instruct
       group members to retain messages and for how long, if those
@@ -1493,12 +1524,15 @@ Table of Contents
       providing the new group keying material.  Then, the KDC rekeys the
       rest of the group, as discussed in Section 5.
 
-      The KDC SHOULD perform a group rekeying only if already scheduled
-      to occur shortly, e.g., according to an application-specific
-      rekeying period or scheduling, or as a reaction to a recent change
-      in the group membership.  In any other case, the KDC SHOULD NOT
-      rekey the OSCORE group when receiving a Key Renewal Request
-      (OPT12).
+      The KDC SHOULD perform a group rekeying if one is already
+      scheduled to occur within a time frame that is acceptably short,
+      as per application-specific policies at the KDC.  For instance, a
+      group rekeying could be already upcoming in accordance with an
+      application-specific rekeying period or scheduling, or as a
+      reaction to a recent change in the group membership.  If a group
+      rekeying is not already scheduled to occur within an acceptably
+      short time frame, the KDC SHOULD NOT rekey the group when
+      receiving a Key Renewal Request (OPT12).
 
    *  The KDC determines and assigns a new Sender ID for the Publisher
       (REQ27), and it replies with a Key Renewal Response formatted as
@@ -1700,8 +1734,8 @@ Table of Contents
    the Subscriber uses the 'kid' parameter from the 'Countersignature
    version 2' parameter within the 'unprotected' field of the
    COSE_Encrypt0 object, in order to retrieve the Publisher's public key
-   from the Broker or from its local storage.  Then, the Subscriber uses
-   that public key to verify the countersignature.
+   from the KDC (see Section 4.2.1) or from its local storage.  Then,
+   the Subscriber uses that public key to verify the countersignature.
 
    In case of successful verification, the Subscriber uses the 'kid'
    parameter from the 'unprotected' field of the COSE_Encrypt0 object,
@@ -2224,9 +2258,9 @@ Table of Contents
               Security for Constrained Environments (OSCORE) Profile for
               Authentication and Authorization for Constrained
               Environments (ACE)", Work in Progress, Internet-Draft,
-              draft-ietf-ace-edhoc-oscore-profile-08, 7 July 2025,
+              draft-ietf-ace-edhoc-oscore-profile-09, 20 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              edhoc-oscore-profile-08>.
+              edhoc-oscore-profile-09>.
 
    [I-D.ietf-ace-key-groupcomm-oscore]
               Tiloca, M. and F. Palombini, "Key Management for Group
@@ -2486,8 +2520,9 @@ A.2.  Optional-to-Address Requirements
 
    *  OPT12: Optionally, specify for the KDC to perform a group rekeying
       when receiving a Key Renewal Request, together with or instead of
-      renewing individual keying material: the KDC SHOULD NOT perform a
-      group rekeying, unless already scheduled to occur shortly (see
+      renewing individual keying material: the KDC SHOULD perform a
+      group rekeying if one is already scheduled to occur within an
+      acceptably short time frame, otherwise it SHOULD NOT (see
       Section 4.2.2).
 
    *  OPT13: Optionally, specify how the identifier of a group member's
@@ -2503,7 +2538,16 @@ Appendix B.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-B.1.  Version -00 to -01
+B.1.  Version -01 to -02
+
+   *  Clarified high-level description of the authorisation flow.
+
+   *  Clarified relation between a group rekeying and a Key Renewal
+      Request.
+
+   *  Editorial fixes and improvements.
+
+B.2.  Version -00 to -01
 
    *  Clarified recommendations about randomness and size of nonces.
 
@@ -2524,7 +2568,7 @@ B.1.  Version -00 to -01
 
    *  Editorial fixes and improvements.
 
-B.2.  Version -00
+B.3.  Version -00
 
    *  Imported content from draft-ietf-ace-pubsub-profile-11.
 
