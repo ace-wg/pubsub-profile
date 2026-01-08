@@ -651,7 +651,7 @@ Table of Contents
 
    More specifically, the following applies when, as defined in this
    document, a scope entry includes a set of permissions for user-
-   related operations performed by a pubsub Client.
+   related operations performed by a Pub-Sub Client.
 
    *  The object identifier ("Toid") is a CBOR text string, specifying
       the name of one application group (topic) or of the corresponding
