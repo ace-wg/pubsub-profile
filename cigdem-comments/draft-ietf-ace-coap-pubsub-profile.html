@@ -2334,7 +2334,7 @@ This application profile does not specify policies that instruct group members t
 <li class="normal" id="section-4.2.2-4.1">
               <p id="section-4.2.2-4.1.1">The KDC rekeys the group. That is, the KDC generates new group keying material for that group (see <a href="#rekeying" class="auto internal xref">Section 5</a>) and replies to the Publisher with a group rekeying message as defined in <a href="#rekeying" class="auto internal xref">Section 5</a>, providing the new group keying material. Then, the KDC rekeys the rest of the group, as discussed in <a href="#rekeying" class="auto internal xref">Section 5</a>.<a href="#section-4.2.2-4.1.1" class="pilcrow">¶</a></p>
 <p id="section-4.2.2-4.1.2">
-The KDC <span class="bcp14">SHOULD</span> perform a group rekeying only if already scheduled to occur shortly, e.g., according to an application-specific rekeying period or scheduling, or as a reaction to a recent change in the group membership. In any other case, the KDC <span class="bcp14">SHOULD NOT</span> rekey the OSCORE group when receiving a Key Renewal Request (OPT12).<a href="#section-4.2.2-4.1.2" class="pilcrow">¶</a></p>
+The KDC <span class="bcp14">SHOULD</span> perform a group rekeying if one is already scheduled to occur within a time frame that is acceptably short, as per application-specific policies at the KDC. For instance, a group rekeying could be already upcoming in accordance with an application-specific rekeying period or scheduling, or as a reaction to a recent change in the group membership. If a group rekeying is not already scheduled to occur within an acceptably short time frame, the KDC <span class="bcp14">SHOULD NOT</span> rekey the group when receiving a Key Renewal Request (OPT12).<a href="#section-4.2.2-4.1.2" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.2.2-4.2">
               <p id="section-4.2.2-4.2.1">The KDC determines and assigns a new Sender ID for the Publisher (REQ27), and it replies with a Key Renewal Response formatted as defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.8.2" class="relref">Section 4.8.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>. The CBOR Map in the response payload includes only the parameter 'group_SenderId' registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-18#section-16.3" class="relref">Section 16.3</a> of [<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span>, which specifies the new Sender ID of the Publisher encoded as a CBOR byte string (REQ27).<a href="#section-4.2.2-4.2.1" class="pilcrow">¶</a></p>
@@ -3184,7 +3184,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
             <p id="appendix-A.2-1.11.1">OPT11: Optionally, specify policies that instruct Clients to retain messages and for how long, if those are unsuccessfully decrypted: no such policies are specified.<a href="#appendix-A.2-1.11.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.12">
-            <p id="appendix-A.2-1.12.1">OPT12: Optionally, specify for the KDC to perform a group rekeying when receiving a Key Renewal Request, together with or instead of renewing individual keying material: the KDC <span class="bcp14">SHOULD NOT</span> perform a group rekeying, unless already scheduled to occur shortly (see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.2</a>).<a href="#appendix-A.2-1.12.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-1.12.1">OPT12: Optionally, specify for the KDC to perform a group rekeying when receiving a Key Renewal Request, together with or instead of renewing individual keying material: the KDC <span class="bcp14">SHOULD</span> perform a group rekeying if one is already scheduled to occur within an acceptably short time frame, otherwise it <span class="bcp14">SHOULD NOT</span> (see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.2</a>).<a href="#appendix-A.2-1.12.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-1.13">
             <p id="appendix-A.2-1.13.1">OPT13: Optionally, specify how the identifier of a group member's authentication credential is included in requests sent to other group members: no such method is defined.<a href="#appendix-A.2-1.13.1" class="pilcrow">¶</a></p>
@@ -3213,7 +3213,10 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
             <p id="appendix-B.1-1.1.1">Clarified high-level description of the authorisation flow.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.2">
-            <p id="appendix-B.1-1.2.1">Editorial fixes and improvements.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.2.1">Clarified relation between a group rekeying and a Key Renewal Request.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.3">
+            <p id="appendix-B.1-1.3.1">Editorial fixes and improvements.<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
