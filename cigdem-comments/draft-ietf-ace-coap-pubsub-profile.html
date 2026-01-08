@@ -1163,7 +1163,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-application-profile-overvie" class="internal xref">Application Profile Overview</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-getting-authorisation-to-jo" class="internal xref">Getting Authorisation to Join a Pub-Sub security group (A)</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-getting-authorisation-to-jo" class="internal xref">Getting Authorisation to Join a Pub-Sub security group</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
                 <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-topic-discovery-at-the-brok" class="internal xref">Topic Discovery at the Broker (Optional)</a></p>
@@ -1295,10 +1295,13 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-document-updates" class="internal xref">Document Updates</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
-                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
+                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-version-01-to-02" class="internal xref">Version -01 to -02</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
-                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-version-00" class="internal xref">Version -00</a></p>
+                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.3">
+                <p id="section-toc.1-1.11.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-version-00" class="internal xref">Version -00</a></p>
 </li>
             </ul>
 </li>
@@ -1530,7 +1533,7 @@ This is not to be confused with an "application group", which has relevance at t
 <div id="authorisation">
 <section id="section-3">
       <h2 id="name-getting-authorisation-to-jo">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-getting-authorisation-to-jo" class="section-name selfRef">Getting Authorisation to Join a Pub-Sub security group (A)</a>
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-getting-authorisation-to-jo" class="section-name selfRef">Getting Authorisation to Join a Pub-Sub security group</a>
       </h2>
 <p id="section-3-1"><a href="#message-flow" class="auto internal xref">Figure 3</a> provides a high level overview of the message flow for a Client getting authorisation to join a group. Square brackets denote optional steps. The message flow is expanded in the subsequent sections.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <span id="name-authorisation-flow"></span><div id="message-flow">
@@ -1687,10 +1690,13 @@ This is not to be confused with an "application group", which has relevance at t
 <a href="#name-authorisation-flow" class="selfRef">Authorisation Flow</a>
         </figcaption></figure>
 </div>
-<p id="section-3-3">After a Client uploads to the Broker the authorisation information for participating in a Pub-Sub topic with name TOPICNAME (see <a href="#auth-request" class="auto internal xref">Section 3.4</a>), the Client can perform the optional discovery of the KDC and security group name at the Broker, by accessing the topic resource corresponding to the topic in question (see <a href="#kdc-discovery" class="auto internal xref">Section 3.3</a>).<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">In order to ensure that the Client can seamlessly access the right topic resource at the Broker, it is <span class="bcp14">RECOMMENDED</span> that a Broker implementing this application profile uses the path /ps/TOPICNAME to host the topic resource for the topic with name TOPICNAME.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">Alternatively, the Client might not know the right topic resource to target and thus would attempt to access different ones (e.g., based on the result of an early discovery of topic resources, see <a href="#topic-discovery" class="auto internal xref">Section 3.1</a>), until it finds the right one specifying TOPICNAME as value of the 'topic-name' parameter in the resource representation.<a href="#section-3-5" class="pilcrow">¶</a></p>
-<p id="section-3-6">Since <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> recommends the use of CoAP and CBOR, this document describes the exchanges assuming that CoAP and CBOR are used. However, using HTTP instead of CoAP is possible, by leveraging the corresponding parameters and methods. Analogously, JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> can be used instead of CBOR, by relying on the conversion method specified in Sections <a href="https://rfc-editor.org/rfc/rfc8949#section-6.1" class="relref">6.1</a> and <a href="https://rfc-editor.org/rfc/rfc8949#section-6.2" class="relref">6.2</a> of <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>. In case JSON is used, the Content-Format of the message has to be specified accordingly. Exact definitions of these exchanges are out of scope for this document.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-3">As shown in <a href="#message-flow" class="auto internal xref">Figure 3</a>, after a Client obtains authorisation information for participating in a Pub-Sub topic with name TOPICNAME (see <a href="#auth-request" class="auto internal xref">Section 3.4</a> and <a href="#as-response" class="auto internal xref">Section 3.5</a>), the Client uploads that information to the Broker as per the specific transport profile of ACE used, e.g., <span>[<a href="#RFC9202" class="cite xref">RFC9202</a>]</span> or <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span>.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">Following that, the Client can perform the optional discovery of the KDC and security group name at the Broker, by accessing the topic resource corresponding to the topic in question (see <a href="#kdc-discovery" class="auto internal xref">Section 3.3</a>).<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">In order to ensure that the Client can seamlessly access the right topic resource at the Broker, it is <span class="bcp14">RECOMMENDED</span> that a Broker implementing this application profile uses the path /ps/TOPICNAME to host the topic resource for the topic with name TOPICNAME. Alternatively, the Client might not know the right topic resource to target and thus would attempt to access different ones (e.g., based on the result of an early discovery of topic resources, see <a href="#topic-discovery" class="auto internal xref">Section 3.1</a>), until it finds the right one specifying TOPICNAME as value of the 'topic-name' parameter in the resource representation.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">Separately, after the Client obtains authorisation information for joining the security group at the KDC (see <a href="#auth-request" class="auto internal xref">Section 3.4</a> and <a href="#as-response" class="auto internal xref">Section 3.5</a>), the Client uploads that information to the KDC (see <a href="#token-post" class="auto internal xref">Section 3.6</a>). Following that, the Client can join the security group at the KDC and thus obtain the corresponding keying material (see <a href="#join" class="auto internal xref">Section 4.1</a>).<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7">Once the steps above have been completed, the Client can take part in the secure group communication for the topic TOPICNAME, e.g., by publishing data to the topic through a request targeting the topic-data resource at the Broker.<a href="#section-3-7" class="pilcrow">¶</a></p>
+<p id="section-3-8">Note that the overview in <a href="#message-flow" class="auto internal xref">Figure 3</a> shows the specific sequence of steps where the Client: first associates with the Broker for participating in a topic; then discovers the KDC and the name of the security group through the Broker; and finally associates with the KDC, through which it joins the security group. However, if the Client is early aware about how to reach the KDC and about the name of the security group, the Client can instead: first associate with the KDC and join the security group, and then associate with the Broker for participating in the topic.<a href="#section-3-8" class="pilcrow">¶</a></p>
+<p id="section-3-9">Since <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> recommends the use of CoAP and CBOR, this document describes the exchanges assuming that CoAP and CBOR are used. However, using HTTP instead of CoAP is possible, by leveraging the corresponding parameters and methods. Analogously, JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> can be used instead of CBOR, by relying on the conversion method specified in Sections <a href="https://rfc-editor.org/rfc/rfc8949#section-6.1" class="relref">6.1</a> and <a href="https://rfc-editor.org/rfc/rfc8949#section-6.2" class="relref">6.2</a> of <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>. In case JSON is used, the Content-Format of the message has to be specified accordingly. Exact definitions of these exchanges are out of scope for this document.<a href="#section-3-9" class="pilcrow">¶</a></p>
 <div id="topic-discovery">
 <section id="section-3.1">
         <h3 id="name-topic-discovery-at-the-brok">
@@ -3197,58 +3203,73 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-document-updates" class="section-name selfRef">Document Updates</a>
       </h2>
 <p id="appendix-B-1">This section is to be removed before publishing as an RFC.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<div id="sec-00-01">
+<div id="sec-01-02">
 <section id="appendix-B.1">
-        <h3 id="name-version-00-to-01">
-<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
+        <h3 id="name-version-01-to-02">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-01-to-02" class="section-name selfRef">Version -01 to -02</a>
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-B.1-1.1">
-            <p id="appendix-B.1-1.1.1">Clarified recommendations about randomness and size of nonces.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.1.1">Clarified high-level description of the authorisation flow.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.2">
-            <p id="appendix-B.1-1.2.1">Clarified generation of N_S if TLS is used with the KDC instead of DTLS.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.2.1">Editorial fixes and improvements.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-1.3">
-            <p id="appendix-B.1-1.3.1">Added missing references to REQ and OPT requirements.<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-B.1-1.4">
-            <p id="appendix-B.1-1.4.1">Updated IANA considerations:<a href="#appendix-B.1-1.4.1" class="pilcrow">¶</a></p>
+        </ul>
+</section>
+</div>
+<div id="sec-00-01">
+<section id="appendix-B.2">
+        <h3 id="name-version-00-to-01">
+<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
+        </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.1-1.4.2.1">
-                <p id="appendix-B.1-1.4.2.1.1">Suggested values for IANA registrations.<a href="#appendix-B.1-1.4.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.2-1.1">
+            <p id="appendix-B.2-1.1.1">Clarified recommendations about randomness and size of nonces.<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-B.1-1.4.2.2">
-                <p id="appendix-B.1-1.4.2.2.1">Renamed TLS Exporter Label.<a href="#appendix-B.1-1.4.2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.2">
+            <p id="appendix-B.2-1.2.1">Clarified generation of N_S if TLS is used with the KDC instead of DTLS.<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-B.1-1.4.2.3">
-                <p id="appendix-B.1-1.4.2.3.1">Fixed content types in the CoAP Content-Formats registrations.<a href="#appendix-B.1-1.4.2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.3">
+            <p id="appendix-B.2-1.3.1">Added missing references to REQ and OPT requirements.<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.2-1.4">
+            <p id="appendix-B.2-1.4.1">Updated IANA considerations:<a href="#appendix-B.2-1.4.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B.2-1.4.2.1">
+                <p id="appendix-B.2-1.4.2.1.1">Suggested values for IANA registrations.<a href="#appendix-B.2-1.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-B.2-1.4.2.2">
+                <p id="appendix-B.2-1.4.2.2.1">Renamed TLS Exporter Label.<a href="#appendix-B.2-1.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-B.2-1.4.2.3">
+                <p id="appendix-B.2-1.4.2.3.1">Fixed content types in the CoAP Content-Formats registrations.<a href="#appendix-B.2-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="appendix-B.1-1.5">
-            <p id="appendix-B.1-1.5.1">Updated references.<a href="#appendix-B.1-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.5">
+            <p id="appendix-B.2-1.5.1">Updated references.<a href="#appendix-B.2-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-1.6">
-            <p id="appendix-B.1-1.6.1">Editorial fixes and improvements.<a href="#appendix-B.1-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.6">
+            <p id="appendix-B.2-1.6.1">Editorial fixes and improvements.<a href="#appendix-B.2-1.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-00">
-<section id="appendix-B.2">
+<section id="appendix-B.3">
         <h3 id="name-version-00">
-<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-version-00" class="section-name selfRef">Version -00</a>
+<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-version-00" class="section-name selfRef">Version -00</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.2-1.1">
-            <p id="appendix-B.2-1.1.1">Imported content from draft-ietf-ace-pubsub-profile-11.<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.3-1.1">
+            <p id="appendix-B.3-1.1.1">Imported content from draft-ietf-ace-pubsub-profile-11.<a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.2">
-            <p id="appendix-B.2-1.2.1">Removed content about MQTT.<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.2">
+            <p id="appendix-B.3-1.2.1">Removed content about MQTT.<a href="#appendix-B.3-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.3">
-            <p id="appendix-B.2-1.3.1">New document title.<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.3">
+            <p id="appendix-B.3-1.3.1">New document title.<a href="#appendix-B.3-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

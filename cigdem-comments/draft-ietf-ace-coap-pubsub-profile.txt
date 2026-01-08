@@ -82,7 +82,7 @@ Table of Contents
    1.  Introduction
      1.1.  Terminology
    2.  Application Profile Overview
-   3.  Getting Authorisation to Join a Pub-Sub security group (A)
+   3.  Getting Authorisation to Join a Pub-Sub security group
      3.1.  Topic Discovery at the Broker (Optional)
      3.2.  AS Discovery at the Broker (Optional)
      3.3.  KDC Discovery at the Broker (Optional)
@@ -121,8 +121,9 @@ Table of Contents
      A.1.  Mandatory-to-Address Requirements
      A.2.  Optional-to-Address Requirements
    Appendix B.  Document Updates
-     B.1.  Version -00 to -01
-     B.2.  Version -00
+     B.1.  Version -01 to -02
+     B.2.  Version -00 to -01
+     B.3.  Version -00
    Acknowledgments
    Authors' Addresses
 
@@ -401,7 +402,7 @@ Table of Contents
    profile of ACE and how they are fulfilled, consistently with the list
    of requirements defined in Appendix A of [RFC9594].
 
-3.  Getting Authorisation to Join a Pub-Sub security group (A)
+3.  Getting Authorisation to Join a Pub-Sub security group
 
    Figure 3 provides a high level overview of the message flow for a
    Client getting authorisation to join a group.  Square brackets denote
@@ -445,9 +446,13 @@ Table of Contents
 
                       Figure 3: Authorisation Flow
 
-   After a Client uploads to the Broker the authorisation information
-   for participating in a Pub-Sub topic with name TOPICNAME (see
-   Section 3.4), the Client can perform the optional discovery of the
+   As shown in Figure 3, after a Client obtains authorisation
+   information for participating in a Pub-Sub topic with name TOPICNAME
+   (see Section 3.4 and Section 3.5), the Client uploads that
+   information to the Broker as per the specific transport profile of
+   ACE used, e.g., [RFC9202] or [RFC9203].
+
+   Following that, the Client can perform the optional discovery of the
    KDC and security group name at the Broker, by accessing the topic
    resource corresponding to the topic in question (see Section 3.3).
 
@@ -455,12 +460,33 @@ Table of Contents
    topic resource at the Broker, it is RECOMMENDED that a Broker
    implementing this application profile uses the path /ps/TOPICNAME to
    host the topic resource for the topic with name TOPICNAME.
-
    Alternatively, the Client might not know the right topic resource to
    target and thus would attempt to access different ones (e.g., based
    on the result of an early discovery of topic resources, see
    Section 3.1), until it finds the right one specifying TOPICNAME as
    value of the 'topic-name' parameter in the resource representation.
+
+   Separately, after the Client obtains authorisation information for
+   joining the security group at the KDC (see Section 3.4 and
+   Section 3.5), the Client uploads that information to the KDC (see
+   Section 3.6).  Following that, the Client can join the security group
+   at the KDC and thus obtain the corresponding keying material (see
+   Section 4.1).
+
+   Once the steps above have been completed, the Client can take part in
+   the secure group communication for the topic TOPICNAME, e.g., by
+   publishing data to the topic through a request targeting the topic-
+   data resource at the Broker.
+
+   Note that the overview in Figure 3 shows the specific sequence of
+   steps where the Client: first associates with the Broker for
+   participating in a topic; then discovers the KDC and the name of the
+   security group through the Broker; and finally associates with the
+   KDC, through which it joins the security group.  However, if the
+   Client is early aware about how to reach the KDC and about the name
+   of the security group, the Client can instead: first associate with
+   the KDC and join the security group, and then associate with the
+   Broker for participating in the topic.
 
    Since [RFC9200] recommends the use of CoAP and CBOR, this document
    describes the exchanges assuming that CoAP and CBOR are used.
@@ -2503,7 +2529,13 @@ Appendix B.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-B.1.  Version -00 to -01
+B.1.  Version -01 to -02
+
+   *  Clarified high-level description of the authorisation flow.
+
+   *  Editorial fixes and improvements.
+
+B.2.  Version -00 to -01
 
    *  Clarified recommendations about randomness and size of nonces.
 
@@ -2524,7 +2556,7 @@ B.1.  Version -00 to -01
 
    *  Editorial fixes and improvements.
 
-B.2.  Version -00
+B.3.  Version -00
 
    *  Imported content from draft-ietf-ace-pubsub-profile-11.
 
