@@ -697,7 +697,7 @@ Upon receiving the Key Renewal Request, the KDC processes it as defined in {{Sec
 
 * The KDC rekeys the group. That is, the KDC generates new group keying material for that group (see {{rekeying}}) and replies to the Publisher with a group rekeying message as defined in {{rekeying}}, providing the new group keying material. Then, the KDC rekeys the rest of the group, as discussed in {{rekeying}}.
 
-  The KDC SHOULD perform a group rekeying only if already scheduled to occur shortly, e.g., according to an application-specific rekeying period or scheduling, or as a reaction to a recent change in the group membership. In any other case, the KDC SHOULD NOT rekey the OSCORE group when receiving a Key Renewal Request (OPT12).
+  The KDC SHOULD perform a group rekeying if one is already scheduled to occur within a time frame that is acceptably short, as per application-specific policies at the KDC. For instance, a group rekeying could be already upcoming in accordance with an application-specific rekeying period or scheduling, or as a reaction to a recent change in the group membership. If a group rekeying is not already scheduled to occur within an acceptably short time frame, the KDC SHOULD NOT rekey the group when receiving a Key Renewal Request (OPT12).
 
 * The KDC determines and assigns a new Sender ID for the Publisher (REQ27), and it replies with a Key Renewal Response formatted as defined in {{Section 4.8.2 of RFC9594}}. The CBOR Map in the response payload includes only the parameter 'group_SenderId' registered in {{Section 16.3 of I-D.ietf-ace-key-groupcomm-oscore}}, which specifies the new Sender ID of the Publisher encoded as a CBOR byte string (REQ27).
 
@@ -1132,7 +1132,7 @@ This section lists how this application profile of ACE addresses the requirement
 
 * OPT11: Optionally, specify policies that instruct Clients to retain messages and for how long, if those are unsuccessfully decrypted: no such policies are specified.
 
-* OPT12: Optionally, specify for the KDC to perform a group rekeying when receiving a Key Renewal Request, together with or instead of renewing individual keying material: the KDC SHOULD NOT perform a group rekeying, unless already scheduled to occur shortly (see {{sec-key-renewal-request}}).
+* OPT12: Optionally, specify for the KDC to perform a group rekeying when receiving a Key Renewal Request, together with or instead of renewing individual keying material: the KDC SHOULD perform a group rekeying if one is already scheduled to occur within an acceptably short time frame, otherwise it SHOULD NOT (see {{sec-key-renewal-request}}).
 
 * OPT13: Optionally, specify how the identifier of a group member's authentication credential is included in requests sent to other group members: no such method is defined.
 
@@ -1144,6 +1144,8 @@ This section lists how this application profile of ACE addresses the requirement
 ## Version -01 to -02 ## {#sec-01-02}
 
 * Clarified high-level description of the authorisation flow.
+
+* Clarified relation between a group rekeying and a Key Renewal Request.
 
 * Editorial fixes and improvements.
 
