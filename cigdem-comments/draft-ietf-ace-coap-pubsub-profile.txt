@@ -1731,8 +1731,8 @@ Table of Contents
    the Subscriber uses the 'kid' parameter from the 'Countersignature
    version 2' parameter within the 'unprotected' field of the
    COSE_Encrypt0 object, in order to retrieve the Publisher's public key
-   from the Broker or from its local storage.  Then, the Subscriber uses
-   that public key to verify the countersignature.
+   from the KDC (see Section 4.2.1) or from its local storage.  Then,
+   the Subscriber uses that public key to verify the countersignature.
 
    In case of successful verification, the Subscriber uses the 'kid'
    parameter from the 'unprotected' field of the COSE_Encrypt0 object,
