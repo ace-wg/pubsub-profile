@@ -1010,10 +1010,14 @@ Table of Contents
    |                                 | the group       |               |
    |                                 | GROUPNAME.      |               |
    +---------------------------------+-----------------+---------------+
-   | /ace-group/GROUPNAME/kdc-cred   | REQUIRED if a   | GET (All      |
-   |                                 | group rekeying  | Clients)      |
-   |                                 | mechanism is    |               |
-   |                                 | used.           |               |
+   | /ace-group/GROUPNAME/kdc-cred   | REQUIRED if     | GET (All      |
+   |                                 | the group       | Clients)      |
+   |                                 | rekeying        |               |
+   |                                 | scheme used     |               |
+   |                                 | requires the    |               |
+   |                                 | use of a KDC    |               |
+   |                                 | authentication  |               |
+   |                                 | credential.     |               |
    |                                 | Contains the    |               |
    |                                 | authentication  |               |
    |                                 | credential of   |               |
@@ -1367,11 +1371,10 @@ Table of Contents
       the Publisher Sender IDs, whose corresponding authentication
       credentials are specified in the 'creds' parameter (REQ25).
 
-   *  'kdc_cred', which MUST be present if the KDC is responsible for
-      rekeying the group, using a group rekeying scheme that requires a
-      KDC authentication credential.  It is encoded as a CBOR byte
-      string, with value the original binary representation of the KDC's
-      authentication credential (REQ8).
+   *  'kdc_cred', which MUST be present if the group rekeying scheme
+      used requires the use of a KDC authentication credential.  It is
+      encoded as a CBOR byte string, with value the original binary
+      representation of the KDC's authentication credential (REQ8).
 
    *  'kdc_nonce', which MUST be present if 'kdc_cred' is present.  It
       is encoded as a CBOR byte string, with value a dedicated nonce
