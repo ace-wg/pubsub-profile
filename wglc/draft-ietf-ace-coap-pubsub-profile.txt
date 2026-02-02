@@ -1111,8 +1111,8 @@ Table of Contents
       Section 4.1.1.2.
 
    As a Publisher Client has its own authentication credential to use in
-   a group, it MUST support the 'client_cred', 'cnonce', and
-   'client_cred_verify' parameters (REQ30).
+   a group, it MUST support the 'client_cred' and 'client_cred_verify'
+   parameters (REQ30).
 
    For this application profile, the 'creds_repo' parameter is not
    relevant, since the KDC always acts as repository of the Publishers'
@@ -1154,7 +1154,7 @@ Table of Contents
       used in the security group and with possible associated
       parameters, then the authentication credential can be used in the
       group.  In this case, the joining node MAY choose not to provide
-      again its authentication credential to the KDC in order to limit
+      again its authentication credential to the KDC, in order to limit
       the size of the Join Request.
 
    The joining node MUST provide the KDC with its own authentication
@@ -2549,7 +2549,7 @@ A.1.  Mandatory-to-Address Requirements
    *  REQ30: Define whether Clients must, should, or may support the
       conditional parameters defined in Section 8 of [RFC9594] and under
       which circumstances: a Publisher Client MUST support the
-      client_cred', 'cnonce', and 'client_cred_verify' parameters (see
+      client_cred' and 'client_cred_verify' parameters (see
       Section 4.1.1).  A Publisher Client that provides the access token
       to the KDC through the /authz-info endpoint MUST support the
       parameter 'kdcchallenge' (see Section 3.6).
@@ -2626,6 +2626,10 @@ B.1.  Version -02 to -03
 
    *  Updated introduction: clarified relationships between this
       document and related documents.
+
+   *  Ensured consistency with RFC 9594 when using an optimized Join
+      Request for re-joining a group (presence of the 'client_cred'
+      parameter).
 
    *  Clarifications:
 
