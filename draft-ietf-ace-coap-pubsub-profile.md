@@ -198,6 +198,7 @@ Both Publishers and Subscribers act as ACE Clients. The Broker acts as an ACE RS
      +------ (A) ------+                 |
      |                                   |
      |   +------------------ (B) --------+
+     |   |
      v   v
 +------------+                     +------------+
 |            |<------- (O) ------->|            |
