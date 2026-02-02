@@ -508,7 +508,7 @@ Each resource is marked as REQUIRED or OPTIONAL to be hosted at the KDC (REQ9).
 | /ace-group/GROUPNAME/creds | REQUIRED. Contains the authentication credentials of all the Publishers of the group with name GROUPNAME. | GET, FETCH (All Clients) |
 | /ace-group/GROUPNAME/num | REQUIRED. Contains the current version number for the symmetric group keying material of the group with name GROUPNAME. | GET (All Clients) |
 | /ace-group/GROUPNAME/nodes/NODENAME | REQUIRED. Contains the group keying material for that group member NODENAME in GROUPNAME. | GET, DELETE (All Clients). POST (Publishers). |
-| /ace-group/GROUPNAME/nodes/NODENAME/cred | REQUIRED. Authentication credential for NODENAME in the group GROUPNAME. |  POST (Publishers) |
+| /ace-group/GROUPNAME/nodes/NODENAME/cred | REQUIRED. Contains the authentication credential for NODENAME in the group GROUPNAME. |  POST (Publishers) |
 | /ace-group/GROUPNAME/kdc-cred | REQUIRED if the group rekeying scheme used requires the use of a KDC authentication credential. Contains the authentication credential of the KDC for the group with name GROUPNAME. | GET (All Clients) |
 | /ace-group/GROUPNAME/policies | OPTIONAL. Contains the group policies of the group with name GROUPNAME. | GET (All Clients) |
 {: #tab-kdc-resources title="Resources at the KDC" align="center"}
