@@ -549,7 +549,7 @@ After establishing a secure communication association with the KDC, the Client s
 
 * 'client\_cred\_verify': The use of this parameter is detailed in {{pop}}.
 
-As a Publisher Client has its own authentication credential to use in a group, it MUST support the 'client_cred', 'cnonce', and 'client_cred_verify' parameters (REQ30).
+As a Publisher Client has its own authentication credential to use in a group, it MUST support the 'client_cred' and 'client_cred_verify' parameters (REQ30).
 
 For this application profile, the 'creds_repo' parameter is not relevant, since the KDC always acts as repository of the Publishers' authentication credentials. Consequently, no encoding is defined for this parameter (OPT6).
 
@@ -565,7 +565,7 @@ One of the following cases can occur when a new Client attempts to join a securi
 
 * The joining node wishes to join as a Publisher and the KDC already acquired the authentication credential of the joining node, either during a past group joining process or when establishing a secure communication association using asymmetric proof-of-possession keys.
 
-  If the joining node's authentication credential as well as the included public key are compatible with the signature algorithm used in the security group and with possible associated parameters, then the authentication credential can be used in the group. In this case, the joining node MAY choose not to provide again its authentication credential to the KDC in order to limit the size of the Join Request.
+  If the joining node's authentication credential as well as the included public key are compatible with the signature algorithm used in the security group and with possible associated parameters, then the authentication credential can be used in the group. In this case, the joining node MAY choose not to provide again its authentication credential to the KDC, in order to limit the size of the Join Request.
 
 The joining node MUST provide the KDC with its own authentication credential again, if it has previously provided the KDC with multiple authentication credentials intended for different security groups.
 
@@ -1162,7 +1162,7 @@ This section lists how this application profile of ACE addresses the requirement
 
 * REQ29: Categorize newly defined parameters according to the same criteria of {{Section 8 of RFC9594}}: a Publisher Client MUST support 'group\_SenderId' in 'key'; see {{join-response}}.
 
-* REQ30: Define whether Clients must, should, or may support the conditional parameters defined in {{Section 8 of RFC9594}} and under which circumstances: a Publisher Client MUST support the client_cred', 'cnonce', and 'client_cred_verify' parameters (see {{join-request}}). A Publisher Client that provides the access token to the KDC through the /authz-info endpoint MUST support the parameter 'kdcchallenge' (see {{token-post}}).
+* REQ30: Define whether Clients must, should, or may support the conditional parameters defined in {{Section 8 of RFC9594}} and under which circumstances: a Publisher Client MUST support the client_cred' and 'client_cred_verify' parameters (see {{join-request}}). A Publisher Client that provides the access token to the KDC through the /authz-info endpoint MUST support the parameter 'kdcchallenge' (see {{token-post}}).
 
 ## Optional-to-Address Requirements
 
@@ -1200,6 +1200,8 @@ This section lists how this application profile of ACE addresses the requirement
 ## Version -02 to -03 ## {#sec-02-03}
 
 * Updated introduction: clarified relationships between this document and related documents.
+
+* Ensured consistency with RFC 9594 when using an optimized Join Request for re-joining a group (presence of the 'client_cred' parameter).
 
 * Clarifications:
 
