@@ -567,6 +567,8 @@ One of the following cases can occur when a new Client attempts to join a securi
 
   If the joining node's authentication credential as well as the included public key are compatible with the signature algorithm used in the security group and with possible associated parameters, then the authentication credential can be used in the group. In this case, the joining node MAY choose not to provide again its authentication credential to the KDC, in order to limit the size of the Join Request.
 
+  If the joining node chooses to do so, then the following applies when composing the Join Request: the value of the 'client_cred' parameter specifies an empty authentication credential, i.e., its value is set to the empty CBOR byte string (0x40); the 'client_cred_verify' parameter is omitted. In case the 'client_cred' parameter specifies the empty CBOR byte string (0x40), the KDC silently ignores the 'client_cred_verify' parameter if present.
+
 The joining node MUST provide the KDC with its own authentication credential again, if it has previously provided the KDC with multiple authentication credentials intended for different security groups.
 
 If the joining node provides its authentication credential, the KDC performs the consistency checks above and, in case of success, considers it as the authentication credential associated with the joining node in the group.
@@ -601,11 +603,13 @@ It is up to applications or future specifications to define how N_S is computed 
 
 Upon receiving the Join Request, the KDC processes it as defined in {{Section 4.3.1 of RFC9594}} and returns a success or error response.
 
-If the 'client\_cred' parameter is present, the KDC verifies the signature in the 'client\_cred\_verify' parameter. As PoP input, the KDC uses the value of the 'scope' parameter from the Join Request as a CBOR byte string, concatenated with N_S encoded as a CBOR byte string, concatenated with N_C encoded as a CBOR byte string.
+If the joining node is not requesting to join the group exclusively as a Subscriber and the 'client_cred' parameter does not specify the empty CBOR byte string (0x40), the KDC verifies the signature in the 'client_cred_verify' parameter. As PoP input, the KDC uses the value of the 'scope' parameter from the Join Request as a CBOR byte string, concatenated with N_S encoded as a CBOR byte string, concatenated with N_C encoded as a CBOR byte string.
 
-As public key of the joining node, the KDC uses either the one included in the authentication credential retrieved from the 'client\_cred' parameter of the Join Request, or the one from the already stored authentication credential from previous interactions with the joining node. The KDC verifies the signature used as PoP evidence by means of the public key of the joining node, according to the signature algorithm used in the group and possible corresponding parameters.
+As public key of the joining node, the KDC uses the one included in the authentication credential retrieved from the 'client\_cred' parameter of the Join Request. The KDC verifies the signature used as PoP evidence by means of the public key of the joining node, according to the signature algorithm used in the group and possible corresponding parameters.
 
-In case of any Join Request error, the KDC and the joining node follow the procedure defined in {{join-error}}.
+Instead, if the joining node is not requesting to join the group exclusively as a Subscriber and the 'client_cred' parameter specifies the empty CBOR byte string (0x40), the KDC verifies that it is storing exactly one eligible authentication credential for the joining node (e.g., of the format accepted in the group).
+
+In case an error occur when processing the Join Request, the KDC and the joining node follow what is defined in {{Section 4.3.1 of RFC9594}}, complemented by what is defined in {{join-error}} of the present document.
 
 In case of success, the KDC responds with a Join Response, whose payload is formatted as a CBOR map and MUST contain the following fields as per {{Section 4.3.1 of RFC9594}}:
 
@@ -669,7 +673,9 @@ In case of success, the KDC responds with a Join Response, whose payload is form
 
 The 'group_policies' parameter is not expected to be included in the Join Response (REQ20). This application profile does not define the functionalities that are possibly implemented at the resource hosted by the Client at the URI indicated in the 'control_group_uri' parameter (OPT10), if included in the Join Response.
 
-After sending a successful Join Response, the KDC adds the Client to the list of current members of the security group, if that Client is not already a group member. Also, the Client is assigned a name NODENAME and a sub-resource /ace-group/GROUPNAME/nodes/NODENAME at the KDC. Furthermore, the KDC associates NODENAME with the Client's access token and with the secure communication association that the KDC has with the Client. If the Client is a Publisher, its authentication credential is also associated with the tuple containing NODENAME, GROUPNAME, the current Gid, the newly assigned Publisher's Sender ID, and the Client's access token. The KDC MUST keep this association updated over time.
+After sending a successful Join Response, the KDC adds the Client to the list of current members of the security group, if that Client is not already a group member. Also, the Client is assigned a name NODENAME and a sub-resource /ace-group/GROUPNAME/nodes/NODENAME at the KDC. Furthermore, the KDC associates NODENAME with the Client's access token and with the secure communication association that the KDC has with the Client.
+
+If the Client is a Publisher, its authentication credential used in the group is either: the one retrieved from the 'client_cred' parameter of the Join Request, if the parameter did not specify the empty CBOR byte string (0x40); or, otherwise, the one that the KDC acquired from previous interactions with the joining node and is currently storing. The KDC associates the Client's authentication credential with the tuple containing NODENAME, GROUPNAME, the current Gid, the newly assigned Publisher's Sender ID, and the Client's access token. The KDC MUST keep this association updated over time.
 
 Note that, as long as the secure communication association between the Client and the KDC persists, the same Client re-joining the group is recognized by the KDC by virtue of such a secure communication association. As a consequence, the re-joining Client keeps the same NODENAME and the associated subresource /ace-group/GROUPNAME/nodes/NODENAME. Also, if the Client is a Publisher, it receives a new Sender ID according to the same criteria defined above.
 
@@ -681,11 +687,15 @@ Upon receiving the Join Response, the joining node retrieves the KDC's authentic
 
 The KDC MUST reply with a 4.00 (Bad Request) error response (OPT4) to the Join Request in the following cases:
 
-* The 'client_cred' parameter is present in the Join Request and its value is not an eligible authentication credential (e.g., it is not of the format accepted in the group) (OPT8).
+* The joining node is not requesting to join the group exclusively as a Subscriber and the 'client_cred' parameter is not present in the Join Request.
 
-* The 'client_cred' parameter is present, but the 'cnonce' and 'client_cred_verify' parameters are not present.
+* The joining node is not requesting to join the group exclusively as a Subscriber, the 'client_cred' parameter does not specify the empty CBOR byte string (0x40), and any of the following conditions holds:
 
-* The 'client_cred' parameter is not present while the joining node is not requesting to join the group exclusively as a Subscriber, and any of the following conditions holds:
+  - The value of the 'client_cred' parameter is not an eligible authentication credential (e.g., it is not of the format accepted in the group) (OPT8).
+
+  - The 'client_cred_verify' parameter is not present in the Join Request.
+
+* The joining node is not requesting to join the group exclusively as a Subscriber, the 'client_cred' parameter specifies the empty CBOR byte string (0x40), and any of the following conditions holds:
 
   -  The KDC does not store an eligible authentication credential for the joining node (e.g., of the format accepted in the group).
 
