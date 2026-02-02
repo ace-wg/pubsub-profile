@@ -2570,7 +2570,7 @@ The KDC <span class="bcp14">MUST</span> return a 5.03 (Service Unavailable) erro
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-group-rekeying-process" class="section-name selfRef">Group Rekeying Process</a>
       </h2>
 <p id="section-5-1">Rekeying a group consists in the KDC generating and distributing a new symmetric key, which is used as group key from then on to protect the publication of topic data with COSE (see <a href="#oscon" class="auto internal xref">Section 6.1</a>).<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">The KDC <span class="bcp14">MUST</span> trigger a group rekeying as described in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-6" class="relref">Section 6</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, upon a change in the group membership or due to the current group keying material approaching its expiration time. In addition, the KDC <span class="bcp14">MAY</span> perform regularly scheduled group rekeying executions.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-2">The KDC <span class="bcp14">MUST</span> perform a group rekeying as described in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-6" class="relref">Section 6</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>. Reasons that can trigger a group rekeying include a change in the group membership, or the current group keying material approaching its expiration time. In addition, the KDC <span class="bcp14">MAY</span> perform regularly scheduled group rekeying executions.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">Upon generating the new group key and before starting its distribution:<a href="#section-5-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5-4.1">
@@ -2884,7 +2884,7 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 <p id="section-7-6">The Broker is only trusted with verifying that a Publisher is authorised to publish on a certain topic and with distributing that data only to the Subscribers authorised to obtain it. However, the Broker is not trusted with the published topic data in itself, which the Broker cannot read or modify as it does not have access to the group key required for decrypting the data.<a href="#section-7-6" class="pilcrow">¶</a></p>
 <p id="section-7-7">With respect to the reuse of nonces for proof-of-possession input, the same considerations apply as in <span>[<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span>, with the difference that the KDC of the present document is considered instead of the Group Manager defined therein.<a href="#section-7-7" class="pilcrow">¶</a></p>
 <p id="section-7-8">Access tokens might have to be revoked before their expiration time. <span>[<a href="#RFC9770" class="cite xref">RFC9770</a>]</span> provides a list of possible circumstances where this can happen, and it specifies a method that an Authorization Server can use in order to notify the KDC, the Broker, and the Clients about pertaining access tokens that have been revoked but are not expired yet.<a href="#section-7-8" class="pilcrow">¶</a></p>
-<p id="section-7-9">Clients can be excluded from future communications related to a topic, by appropriately rekeying the group associated with the topic in question.<a href="#section-7-9" class="pilcrow">¶</a></p>
+<p id="section-7-9">Aligned with <a href="#rekeying" class="auto internal xref">Section 5</a>, the KDC performs a group rekeying when one or more members leave the group, thus preserving forward security. In particular, Clients can be excluded from future communications related to a topic, by appropriately rekeying the group associated with the topic in question. According to the specific application requirements, the KDC can also rekey the group upon a new node's joining, in case backward security has also to be preserved (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>). The KDC can also rekey the group for further reasons, e.g., according to an application-specific rekeying period or scheduling.<a href="#section-7-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -3409,6 +3409,9 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
 </li>
               <li class="normal" id="appendix-B.1-1.2.2.2">
                 <p id="appendix-B.1-1.2.2.2.1">Explicitly mentioned the rationale for computing a proof-of-possession (PoP) evidence.<a href="#appendix-B.1-1.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-B.1-1.2.2.3">
+                <p id="appendix-B.1-1.2.2.3.1">Reasons for and flexibility of group rekeying.<a href="#appendix-B.1-1.2.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
