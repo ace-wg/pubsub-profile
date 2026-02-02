@@ -609,7 +609,7 @@ As public key of the joining node, the KDC uses the one included in the authenti
 
 Instead, if the joining node is not requesting to join the group exclusively as a Subscriber and the 'client_cred' parameter specifies the empty CBOR byte string (0x40), the KDC verifies that it is storing exactly one eligible authentication credential for the joining node (e.g., of the format accepted in the group).
 
-In case an error occur when processing the Join Request, the KDC and the joining node follow what is defined in {{Section 4.3.1 of RFC9594}}, complemented by what is defined in {{join-error}} of the present document.
+In case an error occurs when processing the Join Request, the KDC and the joining node follow what is defined in {{Section 4.3.1 of RFC9594}}, complemented by what is defined in {{join-error}} of the present document.
 
 In case of success, the KDC responds with a Join Response, whose payload is formatted as a CBOR map and MUST contain the following fields as per {{Section 4.3.1 of RFC9594}}:
 
