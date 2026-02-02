@@ -1141,6 +1141,10 @@ This section lists how this application profile of ACE addresses the requirement
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
 
+## Version -02 to -03 ## {#sec-02-03}
+
+* Editorial fixes and improvements.
+
 ## Version -01 to -02 ## {#sec-01-02}
 
 * Clarified high-level description of the authorisation flow.
