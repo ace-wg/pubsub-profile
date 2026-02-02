@@ -158,7 +158,7 @@ All Publishers and Subscribers MUST use CoAP when communicating with the KDC.
 
 Furthermore, both Publishers and Subscribers MUST use the same transport profile of ACE (e.g., {{RFC9202}} for DTLS, or {{RFC9203}} for OSCORE) in their interaction with the Broker. In order to reduce the number of libraries that Clients have to support, it is RECOMMENDED that the same transport profile of ACE is used also for the interaction between the Clients and the KDC (REQ24).
 
-All communications between the involved entities MUST be secured.
+Except for the end-to-end protection of published topic data (see {{oscon}}), all communications between the involved entities (Clients, Broker, KDC, Authorization Server) MUST occur and be secured in accordance with the protocol-specific transport profile of ACE used.
 
 For each Client, the Client and the Broker MUST have a secure communication association, which they establish with the help of the AS and using a transport profile of ACE. This is shown by the interactions A and C in {{archi}}. During this process, the Client obtains an access token from the AS and uploads it to the Broker, thus providing an evidence of the topics that it is authorised to participate in, and with which permissions.
 
@@ -1141,6 +1141,10 @@ This section lists how this application profile of ACE addresses the requirement
 {:removeinrfc}
 
 ## Version -02 to -03 ## {#sec-02-03}
+
+* Clarifications:
+
+  - Secure communications required as per the transport profile of ACE used.
 
 * Editorial fixes and improvements.
 
