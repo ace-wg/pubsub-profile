@@ -117,24 +117,24 @@ The content of published messages that are circulated by the Broker is protected
   | among ACE participants      |                        |
   | are specified in ...        | >>> This document <<<  |
   |                             |                        |
-+--------------------+          |                        |<-------------+
-| ACE framework for  |          | CoAP publish-subscribe |              |
-| authentication and |          | profile for ACE        |              |
-| authorization (b)  |          |                        |              |
-+--------------------+          o========================o              |
-  |                                  ^                                  |
-  | Used to build ...                | Instanced by the                 |
-  |                                  | application profile              |
-  |                                  | defined in ...                   |
-  v                                  |                                  |
-+---------------------------------+  |                                  |
-| Key provisioning for group      |  |                  Used to protect |
-| communication using ACE (e)     |  |                  published topic |
-|                                 |  |                  data end-to-end |
-| - General message formats       |  |       +--------+ in ...          |
-| - Operations and interface at a |--+       | COSE   |                 |
-|   Key Distribution Center (KDC) |          | (f)(g) |-----------------+
-+---------------------------------+          +--------+
++--------------------+          |                        |<-----------+
+| ACE framework for  |          | CoAP publish-subscribe |            |
+| authentication and |          | profile for ACE        |            |
+| authorization (b)  |          |                        |            |
++--------------------+          o========================o            |
+  |                                  ^                                |
+  | Used to build ...                | Instanced by the               |
+  |                                  | application profile            |
+  |                                  | defined in ...                 |
+  v                                  |                                |
++---------------------------------+  |                                |
+| Key provisioning for group      |  |                Used to protect |
+| communication using ACE (e)     |  |                published topic |
+|                                 |  |                data end-to-end |
+| - General message formats       |  |     +--------+ in ...          |
+| - Operations and interface at a |--+     | COSE   |                 |
+|   Key Distribution Center (KDC) |        | (f)(g) |-----------------+
++---------------------------------+        +--------+
 
 (a) : [I-D.ietf-core-coap-pubsub]
 (b) : [RFC9200]
