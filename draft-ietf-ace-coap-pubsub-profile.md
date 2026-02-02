@@ -783,7 +783,7 @@ The KDC can also remove a group member due to any of the reasons described in {{
 
 Rekeying a group consists in the KDC generating and distributing a new symmetric key, which is used as group key from then on to protect the publication of topic data with COSE (see {{oscon}}).
 
-The KDC MUST trigger a group rekeying as described in {{Section 6 of RFC9594}}, upon a change in the group membership or due to the current group keying material approaching its expiration time. In addition, the KDC MAY perform regularly scheduled group rekeying executions.
+The KDC MUST perform a group rekeying as described in {{Section 6 of RFC9594}}. Reasons that can trigger a group rekeying include a change in the group membership, or the current group keying material approaching its expiration time. In addition, the KDC MAY perform regularly scheduled group rekeying executions.
 
 Upon generating the new group key and before starting its distribution:
 
@@ -993,7 +993,7 @@ With respect to the reuse of nonces for proof-of-possession input, the same cons
 
 Access tokens might have to be revoked before their expiration time. {{RFC9770}} provides a list of possible circumstances where this can happen, and it specifies a method that an Authorization Server can use in order to notify the KDC, the Broker, and the Clients about pertaining access tokens that have been revoked but are not expired yet.
 
-Clients can be excluded from future communications related to a topic, by appropriately rekeying the group associated with the topic in question.
+Aligned with {{rekeying}}, the KDC performs a group rekeying when one or more members leave the group, thus preserving forward security. In particular, Clients can be excluded from future communications related to a topic, by appropriately rekeying the group associated with the topic in question. According to the specific application requirements, the KDC can also rekey the group upon a new node's joining, in case backward security has also to be preserved (see {{join-response}}). The KDC can also rekey the group for further reasons, e.g., according to an application-specific rekeying period or scheduling.
 
 # IANA Considerations
 
@@ -1206,6 +1206,8 @@ This section lists how this application profile of ACE addresses the requirement
   - Secure communications required as per the transport profile of ACE used.
 
   - Explicitly mentioned the rationale for computing a proof-of-possession (PoP) evidence.
+
+  - Reasons for and flexibility of group rekeying.
 
 * Editorial fixes and improvements.
 
