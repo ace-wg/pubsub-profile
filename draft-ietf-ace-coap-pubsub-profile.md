@@ -560,7 +560,7 @@ This application profile does not define the functionalities that are implemente
 
 One of the following cases can occur when a new Client attempts to join a security group.
 
-* The joining node is not a Publisher, i.e., it is not going to send data to the application group.  In this case, the joining node is not required to provide its own authentication credential to the KDC. In case the joining node still provides an authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}), the KDC silently ignores that parameter, as well as the related parameter 'client_cred_verify'.
+* The joining node is not a Publisher, i.e., it is not going to send data to the application group.  In this case, the joining node is not required to provide its own authentication credential to the KDC. In case the joining node still provides an authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}), the KDC silently ignores that parameter, as well as the related parameter 'client_cred_verify' if present.
 
 * The joining node wishes to join as a Publisher and the KDC has not previously acquired an authentication credential of the joining node. Then, the joining node MUST provide a compatible authentication credential in the 'client_cred' parameter of the Join Request (see {{join-request}}).
 
@@ -578,7 +578,7 @@ If the joining node provides its authentication credential, the KDC performs the
 
 The 'client\_cred\_verify' parameter contains the proof-of-possession (PoP) evidence and is computed by the joining node to prove the possession of its own private key. The PoP evidence is computed as defined below (REQ14).
 
-The joining node signs the scope, concatenated with N\_S and further concatenated with N\_C, by using the private key corresponding to the public key that is specified in the 'client_cred' parameter.
+The joining node signs the scope, concatenated with N\_S and further concatenated with N\_C, by using the private key corresponding to the public key included in the authentication credential that is specified in the 'client_cred' parameter.
 
 The N\_S may be either of the following:
 
