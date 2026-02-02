@@ -1256,7 +1256,7 @@ Table of Contents
    storing exactly one eligible authentication credential for the
    joining node (e.g., of the format accepted in the group).
 
-   In case an error occur when processing the Join Request, the KDC and
+   In case an error occurs when processing the Join Request, the KDC and
    the joining node follow what is defined in Section 4.3.1 of
    [RFC9594], complemented by what is defined in Section 4.1.3 of the
    present document.
