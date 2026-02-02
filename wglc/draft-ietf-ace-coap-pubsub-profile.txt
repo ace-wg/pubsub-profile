@@ -1011,8 +1011,7 @@ Table of Contents
    |                                 | GROUPNAME.      |               |
    +---------------------------------+-----------------+---------------+
    | /ace-group/GROUPNAME/kdc-cred   | REQUIRED if a   | GET (All      |
-   |                                 | group re-       | Clients)      |
-   |                                 | keying          |               |
+   |                                 | group rekeying  | Clients)      |
    |                                 | mechanism is    |               |
    |                                 | used.           |               |
    |                                 | Contains the    |               |
@@ -2065,7 +2064,7 @@ Table of Contents
    yet.
 
    Clients can be excluded from future communications related to a
-   topic, by appropriately re-keying the group associated with the topic
+   topic, by appropriately rekeying the group associated with the topic
    in question.
 
 8.  IANA Considerations
