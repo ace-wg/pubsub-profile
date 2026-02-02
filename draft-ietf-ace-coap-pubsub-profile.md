@@ -67,7 +67,6 @@ informative:
   RFC9203:
   RFC9770:
   I-D.ietf-cose-cbor-encoded-cert:
-  I-D.ietf-ace-edhoc-oscore-profile:
   I-D.ietf-ace-key-groupcomm-oscore:
 
 entity:
@@ -88,7 +87,7 @@ With a focus on the Pub-Sub architecture defined in {{I-D.ietf-core-coap-pubsub}
 
 Building on the message formats and processing defined in {{RFC9594}}, this document specifies the provisioning and enforcement of authorization information for Clients to act as Publishers and/or Subscribers at the Broker, as well as the provisioning of keying material and security parameters that Clients use for protecting end-to-end their communications via the Broker.
 
-In order to protect the Pub-Sub operations at the Broker as well as the provisioning of keying material and security parameters, this profile relies on protocol-specific transport profiles of ACE (e.g., {{RFC9202}}, {{RFC9203}}, or {{I-D.ietf-ace-edhoc-oscore-profile}}) to achieve communication security, server authentication, and proof of possession of a key owned by the Client and bound to an OAuth 2.0 access token.
+In order to protect the Pub-Sub operations at the Broker as well as the provisioning of keying material and security parameters, this profile relies on protocol-specific transport profiles of ACE (e.g., {{RFC9202}}{{RFC9203}}) to achieve communication security, server authentication, and proof of possession of a key owned by the Client and bound to an OAuth 2.0 access token.
 
 The content of published messages that are circulated by the Broker is protected end-to-end between the corresponding Publisher and the intended Subscribers. To this end, this profile relies on COSE {{RFC9052}}{{RFC9053}} and on keying material provided to the Publishers and Subscribers participating in the same Pub-Sub topic. In particular, source authentication of published content is achieved by means of the corresponding Publisher signing such content with its own private key.
 
@@ -157,7 +156,7 @@ Both Publishers and Subscribers MUST use the same protocol for interacting with 
 
 All Publishers and Subscribers MUST use CoAP when communicating with the KDC.
 
-Furthermore, both Publishers and Subscribers MUST use the same transport profile of ACE (e.g., {{RFC9202}} for DTLS; or {{RFC9203}} or {{I-D.ietf-ace-edhoc-oscore-profile}} for OSCORE) in their interaction with the Broker. In order to reduce the number of libraries that Clients have to support, it is RECOMMENDED that the same transport profile of ACE is used also for the interaction between the Clients and the KDC (REQ24).
+Furthermore, both Publishers and Subscribers MUST use the same transport profile of ACE (e.g., {{RFC9202}} for DTLS, or {{RFC9203}} for OSCORE) in their interaction with the Broker. In order to reduce the number of libraries that Clients have to support, it is RECOMMENDED that the same transport profile of ACE is used also for the interaction between the Clients and the KDC (REQ24).
 
 All communications between the involved entities MUST be secured.
 
