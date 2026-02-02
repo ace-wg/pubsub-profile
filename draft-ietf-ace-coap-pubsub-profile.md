@@ -509,7 +509,7 @@ Each resource is marked as REQUIRED or OPTIONAL to be hosted at the KDC (REQ9).
 | /ace-group/GROUPNAME/num | REQUIRED. Contains the current version number for the symmetric group keying material of the group with name GROUPNAME. | GET (All Clients) |
 | /ace-group/GROUPNAME/nodes/NODENAME | REQUIRED. Contains the group keying material for that group member NODENAME in GROUPNAME. | GET, DELETE (All Clients). POST (Publishers). |
 | /ace-group/GROUPNAME/nodes/NODENAME/cred | REQUIRED. Authentication credential for NODENAME in the group GROUPNAME. |  POST (Publishers) |
-| /ace-group/GROUPNAME/kdc-cred | REQUIRED if a group re-keying mechanism is used. Contains the authentication credential of the KDC for the group with name GROUPNAME. | GET (All Clients) |
+| /ace-group/GROUPNAME/kdc-cred | REQUIRED if a group rekeying mechanism is used. Contains the authentication credential of the KDC for the group with name GROUPNAME. | GET (All Clients) |
 | /ace-group/GROUPNAME/policies | OPTIONAL. Contains the group policies of the group with name GROUPNAME. | GET (All Clients) |
 {: #tab-kdc-resources title="Resources at the KDC" align="center"}
 
@@ -993,7 +993,7 @@ With respect to the reuse of nonces for proof-of-possession input, the same cons
 
 Access tokens might have to be revoked before their expiration time. {{RFC9770}} provides a list of possible circumstances where this can happen, and it specifies a method that an Authorization Server can use in order to notify the KDC, the Broker, and the Clients about pertaining access tokens that have been revoked but are not expired yet.
 
-Clients can be excluded from future communications related to a topic, by appropriately re-keying the group associated with the topic in question.
+Clients can be excluded from future communications related to a topic, by appropriately rekeying the group associated with the topic in question.
 
 # IANA Considerations
 
