@@ -377,7 +377,7 @@ Table of Contents
    In summary, this profile specifies the following functionalities.
 
    1.  A Client obtains the authorization to participate in a Pub-Sub
-       topic at the Broker with certain permissions.  This pertains
+       topic at the Broker with certain permissions.  This pertains to
        operations defined in [I-D.ietf-core-coap-pubsub] for taking part
        in Pub-Sub communication with CoAP.
 
