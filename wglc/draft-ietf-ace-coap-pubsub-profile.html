@@ -1448,7 +1448,7 @@ This is not to be confused with an "application group", which has relevance at t
 <p id="section-2-6">Both Publishers and Subscribers <span class="bcp14">MUST</span> use the same protocol for interacting with the Broker and participating in Pub-Sub communications. When using the profile defined in this document, such a protocol <span class="bcp14">MUST</span> be CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, which is used as described in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> (REQ22). .<a href="#section-2-6" class="pilcrow">¶</a></p>
 <p id="section-2-7">All Publishers and Subscribers <span class="bcp14">MUST</span> use CoAP when communicating with the KDC.<a href="#section-2-7" class="pilcrow">¶</a></p>
 <p id="section-2-8">Furthermore, both Publishers and Subscribers <span class="bcp14">MUST</span> use the same transport profile of ACE (e.g., <span>[<a href="#RFC9202" class="cite xref">RFC9202</a>]</span> for DTLS, or <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span> for OSCORE) in their interaction with the Broker. In order to reduce the number of libraries that Clients have to support, it is <span class="bcp14">RECOMMENDED</span> that the same transport profile of ACE is used also for the interaction between the Clients and the KDC (REQ24).<a href="#section-2-8" class="pilcrow">¶</a></p>
-<p id="section-2-9">All communications between the involved entities <span class="bcp14">MUST</span> be secured.<a href="#section-2-9" class="pilcrow">¶</a></p>
+<p id="section-2-9">Except for the end-to-end protection of published topic data (see <a href="#oscon" class="auto internal xref">Section 6.1</a>), all communications between the involved entities (Clients, Broker, KDC, Authorization Server) <span class="bcp14">MUST</span> occur and be secured in accordance with the protocol-specific transport profile of ACE used.<a href="#section-2-9" class="pilcrow">¶</a></p>
 <p id="section-2-10">For each Client, the Client and the Broker <span class="bcp14">MUST</span> have a secure communication association, which they establish with the help of the AS and using a transport profile of ACE. This is shown by the interactions A and C in <a href="#archi" class="auto internal xref">Figure 1</a>. During this process, the Client obtains an access token from the AS and uploads it to the Broker, thus providing an evidence of the topics that it is authorised to participate in, and with which permissions.<a href="#section-2-10" class="pilcrow">¶</a></p>
 <p id="section-2-11">For each Client, the Client and the KDC <span class="bcp14">MUST</span> have a secure communication association, which they also establish with the help of the AS and using a transport profile of ACE (REQ24). This is shown by the interactions A and B in <a href="#archi" class="auto internal xref">Figure 1</a>. During this process, the Client obtains an access token from the AS and uploads it to the KDC, thus providing an evidence of the security groups that it can join, as associated with the topics of interest at the Broker. Based on the permissions specified in the access token, the Client can request the KDC to join a security group, after which the Client obtains from the KDC the keying material to use for communicating with the other group members. This builds on the process for joining security groups with ACE, as defined in <span>[<a href="#RFC9594" class="cite xref">RFC9594</a>]</span> and further specified in this document.<a href="#section-2-11" class="pilcrow">¶</a></p>
 <p id="section-2-12">In addition, this profile allows an anonymous Client to perform some of the discovery operations defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-18#section-2.3" class="relref">Section 2.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> through the Broker, as shown by the interaction O in <a href="#archi" class="auto internal xref">Figure 1</a>. That is, an anonymous Client can discover:<a href="#section-2-12" class="pilcrow">¶</a></p>
@@ -3210,7 +3210,15 @@ The countersignature is computed as defined in <span>[<a href="#RFC9338" class="
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-B.1-1.1">
-            <p id="appendix-B.1-1.1.1">Editorial fixes and improvements.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.1.1">Clarifications:<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B.1-1.1.2.1">
+                <p id="appendix-B.1-1.1.2.1.1">Secure communications required as per the transport profile of ACE used.<a href="#appendix-B.1-1.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="appendix-B.1-1.2">
+            <p id="appendix-B.1-1.2.1">Editorial fixes and improvements.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
