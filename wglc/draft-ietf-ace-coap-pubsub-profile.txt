@@ -1146,13 +1146,13 @@ Table of Contents
       communication association using asymmetric proof-of-possession
       keys.
 
-      If the joining node's proof-of-possession key is compatible with
-      the signature algorithm used in the security group and with
-      possible associated parameters, then the corresponding
-      authentication credential can be used in the group.  In this case,
-      the joining node MAY choose not to provide again its
-      authentication credential to the KDC in order to limit the size of
-      the Join Request.
+      If the joining node's authentication credential as well as the
+      included public key are compatible with the signature algorithm
+      used in the security group and with possible associated
+      parameters, then the authentication credential can be used in the
+      group.  In this case, the joining node MAY choose not to provide
+      again its authentication credential to the KDC in order to limit
+      the size of the Join Request.
 
    The joining node MUST provide the KDC with its own authentication
    credential again, if it has previously provided the KDC with multiple
@@ -1166,9 +1166,11 @@ Table of Contents
 4.1.1.2.  Proof of Possession through 'client_cred_verify'
 
    The 'client_cred_verify' parameter contains the proof-of-possession
-   evidence and is computed as defined below (REQ14).
+   (PoP) evidence and is computed by the joining node to prove the
+   possession of its own private key.  The PoP evidence is computed as
+   defined below (REQ14).
 
-   The Publisher signs the scope, concatenated with N_S and further
+   The joining node signs the scope, concatenated with N_S and further
    concatenated with N_C, by using the private key corresponding to the
    public key that is specified in the 'client_cred' parameter.
 
@@ -1366,9 +1368,11 @@ Table of Contents
       the Publisher Sender IDs, whose corresponding authentication
       credentials are specified in the 'creds' parameter (REQ25).
 
-   *  'kdc_cred', which MUST be present if group re-keying is used.  It
-      is encoded as a CBOR byte string, with value the original binary
-      representation of the KDC's authentication credential (REQ8).
+   *  'kdc_cred', which MUST be present if the KDC is responsible for
+      rekeying the group, using a group rekeying scheme that requires a
+      KDC authentication credential.  It is encoded as a CBOR byte
+      string, with value the original binary representation of the KDC's
+      authentication credential (REQ8).
 
    *  'kdc_nonce', which MUST be present if 'kdc_cred' is present.  It
       is encoded as a CBOR byte string, with value a dedicated nonce
@@ -1377,11 +1381,12 @@ Table of Contents
       a random value.
 
    *  'kdc_cred_verify', which MUST be present if 'kdc_cred' is present.
-      It is encoded as a CBOR byte string.  The KDC MUST compute the
-      specified PoP evidence as a signature by using the signature
-      algorithm used in the group, as well as its own private key
-      associated with the authentication credential specified in the
-      'kdc_cred' parameter (REQ21).
+      It is encoded as a CBOR byte string, with value the PoP evidence
+      that the KDC computes to prove the possession of its own private
+      key.  The KDC MUST compute the specified PoP evidence as a
+      signature by using the signature algorithm used in the group, as
+      well as its own private key associated with the authentication
+      credential specified in the 'kdc_cred' parameter (REQ21).
 
    *  'group_rekeying', which MAY be omitted if the KDC uses the "Point-
       to-Point" group rekeying scheme registered in Section 11.13 of
@@ -2617,6 +2622,9 @@ B.1.  Version -02 to -03
 
       -  Secure communications required as per the transport profile of
          ACE used.
+
+      -  Explicitly mentioned the rationale for computing a proof-of-
+         possession (PoP) evidence.
 
    *  Editorial fixes and improvements.
 
