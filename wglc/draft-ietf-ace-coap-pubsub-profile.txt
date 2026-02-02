@@ -1004,8 +1004,9 @@ Table of Contents
    |                                 | GROUPNAME.      |               |
    +---------------------------------+-----------------+---------------+
    | /ace-                           | REQUIRED.       | POST          |
-   | group/GROUPNAME/nodes/NODENAME/ | Authentication  | (Publishers)  |
-   | cred                            | credential for  |               |
+   | group/GROUPNAME/nodes/NODENAME/ | Contains the    | (Publishers)  |
+   | cred                            | authentication  |               |
+   |                                 | credential for  |               |
    |                                 | NODENAME in     |               |
    |                                 | the group       |               |
    |                                 | GROUPNAME.      |               |
