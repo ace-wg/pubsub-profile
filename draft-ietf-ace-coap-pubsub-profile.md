@@ -793,7 +793,7 @@ The KDC can also remove a group member due to any of the reasons described in {{
 
 Rekeying a group consists in the KDC generating and distributing a new symmetric key, which is used as group key from then on to protect the publication of topic data with COSE (see {{oscon}}).
 
-The KDC MUST perform a group rekeying as described in {{Section 6 of RFC9594}}. Reasons that can trigger a group rekeying include a change in the group membership, or the current group keying material approaching its expiration time. In addition, the KDC MAY perform regularly scheduled group rekeying executions.
+The KDC MUST perform a group rekeying as described in {{Section 6 of RFC9594}}. Reasons that can trigger a group rekeying include a change in the group membership, or the current group keying material approaching its expiration time. In addition, the KDC MAY rekey the group for other reasons, e.g., according to an application-specific rekeying period or scheduling.
 
 Upon generating the new group key and before starting its distribution:
 
