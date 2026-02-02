@@ -985,6 +985,94 @@ In the Join Response from the KDC to a Client (see {{join-response}}), the 'ace_
 Both Publishers and Subscribers MUST authorise to the Broker with their respective tokens, as described in {{RFC9431}}. A Publisher sends PUBLISH messages for a given topic and protects the payload with the corresponding key for the associated security group. A Subscriber may send SUBSCRIBE messages with one or multiple topic filters. A topic filter may correspond to multiple topics. The Broker forwards all PUBLISH messages to all authorised Subscribers, including the retained messages.
 -->
 
+# Operational Considerations
+
+This section compiles the operational considerations that hold for this document.
+
+## Logging
+
+When performing its normal operations, the KDC is expected to produce and store timestamped logs about the following:
+
+* Any event that has resulted in the KDC sending an error response, as a reply to a request received at any of the resources exported by the interface specified in this document.
+
+  The logged information contains a description of the error occurred in the context of the present application profile, together with a description of the event related to the error and relevant metadata about the Client that has sent the request. For instance, possible metadata include: addressing information of the Client; when applicable, the Sender ID that is assigned to the Client in the group; when applicable, (an identifier of) the authentication credential of the Client (i.e., that the Client uses in the group or has used to authenticate itself to the KDC when establishing their secure communication association).
+
+  Note that, if the error response uses the format problem-details defined in {{RFC9290}}, then the optional "detail" entry in the response payload is meant to convey the diagnostic description of the error, which is meant to be part of the log entry for this event. This is consistent with {{Section 4.1.2 of RFC9594}}, which says that the diagnostic description of the error should be logged.
+
+* Any event consisting in a successfully performed operation that is triggered by a request received at any of the resources exported by the interface specified in this document.
+
+  Such events include:
+
+  - The (re-)joining of a group.
+  - The uploading of a new authentication credential to use in the group.
+  - The obtainment of a new Sender ID to use in the group.
+  - The leaving of a group.
+
+  The logged information contains a description of the operation performed in the context of the present application profile, together with relevant metadata about the Client that has sent the request. For instance, possible metadata include: addressing information of the Client; when applicable, the Sender ID that is assigned to the Client in the group; when applicable, (an identifier of) the authentication credential of the Client (i.e., that the Client uses in the group or has used to authenticate itself to the KDC when establishing their secure communication association).
+
+* The execution and successful/unsuccessful completion of a group rekeying instance.
+
+  The logged information includes:
+
+  - The reason that has triggered the group rekeying (e.g., scheduled/periodic occurrence, group joining of a new member, group leaving of a current member).
+  - A description of the group rekeying operations performed (e.g., a list of steps performed throughout the rekeying process).
+  - The outcome of the group rekeying instance.
+  - In case of success, the version number of the newly established group keying material and the newly established Group Identifier (Gid).
+
+* The addition of a group member to the group or the eviction of a group member from the group.
+
+  The logged information also contains relevant metadata about the Client that has been added to or removed from the group. For instance, possible metadata include: addressing information of the Client; when applicable, the Sender ID that is currently (was latest) assigned to the Client added to (removed from) the group; when applicable, (an identifier of) the authentication credential of the Client added to (removed from) the group (i.e., that the Client uses in the group or has used to authenticate itself to the KDC when establishing their secure communication association).
+
+* The creation, (re-)configuration, or termination of a group.
+
+In addition to what is compiled above, the KDC could log additional information. Further details about what the KDC logs, with what granularity, and based on what triggering events and conditions are application-specific and left to operators to define.
+
+The KDC MUST NOT log any secret or confidential information pertaining to a group, such as:
+
+* The group key used in the group as symmetric encryption key.
+
+* The Base Initialization Vector (Base IV) to use in the security group with the group key.
+
+* The private key associated with the KDC’s authentication credential used in the group, if any.
+
+* Rekeying messages that are exchanged in the group.
+
+* If applicable, administrative keying material used to protect the group rekeying process.
+
+It is up to the application to specify for how long a log entry is retained from the time of its creation and until its deletion. Different retention policies could be enforced for different groups. For a given group, eldest log entries are expected to be those deleted first, and different retention policies could be enforced depending on whether the group currently exists or has been deleted.
+
+It is out of the scope of this document what specific semantics and data model are used by the KDC for producing and processing the logs. Specific semantics and data models can be defined by applications and future specifications.
+
+The KDC is expected to make the logs produced available to securely access for authorized, external management applications and operators.
+
+In particular, logged information could be retrieved in the following ways.
+
+* By accessing logs at the KDC through polling. This can occur in an occasional, regular, or event-driven way.
+
+* Through notifications sent by the KDC according to an operator-defined frequency.
+
+* Through notifications asynchronously sent by the KDC, throttling them in order to prevent congestion and duplication and to not create attack vectors.
+
+Some of the logged information can be privacy-sensitive. This especially holds for the metadata about a Client, i.e., addressing information of the Client and, when applicable, (an identifier of) the authentication credential of the Client (i.e., that the Client uses in the group or has used to authenticate itself to the KDC when establishing their secure communication association). If external management applications and operators obtain such metadata, they become able to track a given Client, as to its interactions with one or multiple KDCs and its membership in groups under such KDC(s).
+
+Therefore, the logged information that is effectively provided to external management applications and operators SHOULD be redacted by the KDC, by omitting any privacy-sensitive information element that could enable or facilitate the impairment of Clients' privacy, e.g., by tracking Clients across different groups and different KDCs. Exceptions could apply, e.g., if the KDC can verify that the management application or operator in question is specifically authorized to obtain such privacy-sensitive information and appropriately entitled to obtain it according to enforced privacy policies.
+
+It is out of the scope of this document to provide operational considerations about the production, storage, processing, and sharing of logs at the Broker.
+
+## Administration of Groups
+
+It is out of the scope of this document how groups are created, (re-)configured, and terminated at the KDC. Specific methods, tools, and data models to perform such operations and administer groups at the KDC can be defined by applications and future specifications.
+
+It is out of the scope of this document to provide operational considerations about how application groups (topics) are created, (re-)configured, and terminated at the Broker, as well as about the store-and-forward of published topic data via the Broker.
+
+## Access Control
+
+Building on the ACE framework {{RFC9200}} and the foundation provided in {{RFC9594}}, this application profile enforces access control for Clients that interact with the interface at the KDC specified in this document and with the interface at the Broker specified in {{I-D.ietf-core-coap-pubsub}}.
+
+In particular, the granularity of such access control takes into account the resource specifically targeted at the KDC or at the Broker, the operation requested by sending a request to that resource, and the specific role(s) that the requesting Client is authorized to have according to its corresponding access token uploaded to the KDC or to the Broker.
+
+Furthermore, the interactions that a Client has with the KDC and with the Broker are secured as per the specific transport profile of ACE used (e.g., {{RFC9202}} and {{RFC9203}}).
+
 # Security Considerations
 
 Security considerations for this profile are inherited from {{RFC9594}}, the ACE framework for Authentication and Authorization {{RFC9200}}, and the specific transport profile of ACE used, such as {{RFC9202}} and {{RFC9203}}.
@@ -1212,6 +1300,8 @@ This section lists how this application profile of ACE addresses the requirement
 * Updated introduction: clarified relationships between this document and related documents.
 
 * Ensured consistency with RFC 9594 when using an optimized Join Request for re-joining a group (presence of the 'client_cred' parameter).
+
+* Added the "Operational Considerations" section.
 
 * Clarifications:
 
