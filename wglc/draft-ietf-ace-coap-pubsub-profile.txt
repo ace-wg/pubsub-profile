@@ -196,51 +196,51 @@ Table of Contents
    Figure 1 overviews the relationships between this document and other
    related documents mentioned above.
 
-+----------------------+
-| Pub-Sub architecture |
-| for CoAP (a)         |-------------+
-+----------------------+             |
-                                     | Authorization, provisioning of
-                                     | keying material and security
-+----------------------+             | parameters, and end-to-end
-| Transport profiles   |             | protection of published topic
-| of ACE, e.g., (c)(d) |             | data can be based on ...
-+----------------------+             |
-  ^                                  |
-  |                                  |
-  | Details about security           v
-  | and secure communication    o========================o
-  | among ACE participants      |                        |
-  | are specified in ...        | >>> This document <<<  |
-  |                             |                        |
-+--------------------+          |                        |<-------------+
-| ACE framework for  |          | CoAP publish-subscribe |              |
-| authentication and |          | profile for ACE        |              |
-| authorization (b)  |          |                        |              |
-+--------------------+          o========================o              |
-  |                                  ^                                  |
-  | Used to build ...                | Instanced by the                 |
-  |                                  | application profile              |
-  |                                  | defined in ...                   |
-  v                                  |                                  |
-+---------------------------------+  |                                  |
-| Key provisioning for group      |  |                  Used to protect |
-| communication using ACE (e)     |  |                  published topic |
-|                                 |  |                  data end-to-end |
-| - General message formats       |  |       +--------+ in ...          |
-| - Operations and interface at a |--+       | COSE   |                 |
-|   Key Distribution Center (KDC) |          | (f)(g) |-----------------+
-+---------------------------------+          +--------+
+ +----------------------+
+ | Pub-Sub architecture |
+ | for CoAP (a)         |-------------+
+ +----------------------+             |
+                                      | Authorization, provisioning of
+                                      | keying material and security
+ +----------------------+             | parameters, and end-to-end
+ | Transport profiles   |             | protection of published topic
+ | of ACE, e.g., (c)(d) |             | data can be based on ...
+ +----------------------+             |
+   ^                                  |
+   |                                  |
+   | Details about security           v
+   | and secure communication    o========================o
+   | among ACE participants      |                        |
+   | are specified in ...        | >>> This document <<<  |
+   |                             |                        |
+ +--------------------+          |                        |<-----------+
+ | ACE framework for  |          | CoAP publish-subscribe |            |
+ | authentication and |          | profile for ACE        |            |
+ | authorization (b)  |          |                        |            |
+ +--------------------+          o========================o            |
+   |                                  ^                                |
+   | Used to build ...                | Instanced by the               |
+   |                                  | application profile            |
+   |                                  | defined in ...                 |
+   v                                  |                                |
+ +---------------------------------+  |                                |
+ | Key provisioning for group      |  |                Used to protect |
+ | communication using ACE (e)     |  |                published topic |
+ |                                 |  |                data end-to-end |
+ | - General message formats       |  |     +--------+ in ...          |
+ | - Operations and interface at a |--+     | COSE   |                 |
+ |   Key Distribution Center (KDC) |        | (f)(g) |-----------------+
+ +---------------------------------+        +--------+
 
-(a) : [I-D.ietf-core-coap-pubsub]
-(b) : [RFC9200]
-(c) : [RFC9202]
-(d) : [RFC9203]
-(e) : [RFC9594]
-(f) : [RFC9052]
-(g) : [RFC9053]
+ (a) : [I-D.ietf-core-coap-pubsub]
+ (b) : [RFC9200]
+ (c) : [RFC9202]
+ (d) : [RFC9203]
+ (e) : [RFC9594]
+ (f) : [RFC9052]
+ (g) : [RFC9053]
 
-             Figure 1: Overview of Document Relationships
+              Figure 1: Overview of Document Relationships
 
    Note to RFC Editor: At the bottom of Figure 1, "[I-D.ietf-core-coap-
    pubsub]" is the reference label that the present document is
