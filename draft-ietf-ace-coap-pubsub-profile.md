@@ -83,13 +83,70 @@ Note to RFC Editor: Please replace "\[draft-ietf-core-coap-pubsub\]" with the RF
 
 In a publish-subscribe (Pub-Sub) scenario, devices acting as Publishers and/or Subscribers <!--with limited reachability--> communicate via a Broker that enforces store-and-forward messaging between those. This effectively enables a form of group communication, where all the Publishers and Subscribers participating in the same Pub-Sub topic are considered members of the same application group associated with that topic.
 
-With a focus on the Pub-Sub architecture defined in {{I-D.ietf-core-coap-pubsub}} for the Constrained Application Protocol (CoAP) {{RFC7252}}, this document defines an application profile of the Authentication and Authorization for Constrained Environments (ACE) framework {{RFC9200}}, which enables Pub-Sub communication where a group of Publishers and Subscribers securely communicate through a Broker using CoAP.
+The specification at {{I-D.ietf-core-coap-pubsub}} defines a Pub-Sub architecture for the Constrained Application Protocol (CoAP) {{RFC7252}}.
 
-Building on the message formats and processing defined in {{RFC9594}}, this document specifies the provisioning and enforcement of authorization information for Clients to act as Publishers and/or Subscribers at the Broker, as well as the provisioning of keying material and security parameters that Clients use for protecting end-to-end their communications via the Broker.
+Building on the Authentication and Authorization for Constrained Environments (ACE) framework {{RFC9200}}, the document {{RFC9594}} defines how to request, distribute, and renew keying material and configuration parameters to protect message exchanges in a group communication environment. That is, candidate group members that act as ACE Clients and are authorized to join a group can interact with a Key Distribution Center (KDC) that acts as ACE Resource Server and is responsible for the group. The KDC provides the necessary keying material and parameters to communicate with other group members.
 
-In order to protect the Pub-Sub operations at the Broker as well as the provisioning of keying material and security parameters, this profile relies on protocol-specific transport profiles of ACE (e.g., {{RFC9202}}{{RFC9203}}) to achieve communication security, server authentication, and proof of possession of a key owned by the Client and bound to an OAuth 2.0 access token.
+While {{RFC9594}} defines the operations and interface available at the KDC, as well as general message formats for the interactions between Clients and the KDC, it delegates details on the communication and security approaches used in a group to separate application profiles. These are specialized instances of {{RFC9594}} that target a particular group communication approach and define how communications in the group are protected, as well as the specific keying material and configuration parameters provided to group members.
 
-The content of published messages that are circulated by the Broker is protected end-to-end between the corresponding Publisher and the intended Subscribers. To this end, this profile relies on COSE {{RFC9052}}{{RFC9053}} and on keying material provided to the Publishers and Subscribers participating in the same Pub-Sub topic. In particular, source authentication of published content is achieved by means of the corresponding Publisher signing such content with its own private key.
+This document specifies an application profile of {{RFC9594}}. Message exchanges among the participants as well as message formats and processing follow what is specified in {{RFC9594}}, and enable secure Pub-Sub communication where a group of Publishers and Subscribers securely communicate through a Broker using CoAP as per {{I-D.ietf-core-coap-pubsub}}.
+
+In particular, this document specifies the provisioning and enforcement of authorization information for Clients to act as Publishers and/or Subscribers at the Broker, as well as the provisioning of keying material and security parameters that Clients use for protecting end-to-end their communications via the Broker.
+
+In order to protect the Pub-Sub operations at the Broker as well as the provisioning of keying material and security parameters, this profile leverages protocol-specific transport profiles of ACE (e.g., {{RFC9202}}{{RFC9203}}), in order to achieve communication security, server authentication, and proof of possession of a key owned by the Client and bound to an OAuth 2.0 access token.
+
+The content of published messages that are circulated by the Broker is protected end-to-end between the corresponding Publisher and the intended Subscribers. To this end, this profile relies on COSE {{RFC9052}}{{RFC9053}} and on keying material provided to the Publishers and Subscribers participating in the same Pub-Sub topic. In particular, source authentication of published topic data is achieved by means of the corresponding Publisher signing such content with its own private key.
+
+{{fig-document-relationships}} overviews the relationships between this document and other related documents mentioned above.
+
+~~~~~~~~~~~ aasvg
++----------------------+
+| Pub-Sub architecture |
+| for CoAP (a)         |-------------+
++----------------------+             |
+                                     | Authorization, provisioning of
+                                     | keying material and security
++----------------------+             | parameters, and end-to-end
+| Transport profiles   |             | protection of published topic
+| of ACE, e.g., (c)(d) |             | data can be based on ...
++----------------------+             |
+  ^                                  |
+  |                                  |
+  | Details about security           v
+  | and secure communication    o========================o
+  | among ACE participants      |                        |
+  | are specified in ...        | >>> This document <<<  |
+  |                             |                        |
++--------------------+          |                        |<-------------+
+| ACE framework for  |          | CoAP publish-subscribe |              |
+| authentication and |          | profile for ACE        |              |
+| authorization (b)  |          |                        |              |
++--------------------+          o========================o              |
+  |                                  ^                                  |
+  | Used to build ...                | Instanced by the                 |
+  |                                  | application profile              |
+  |                                  | defined in ...                   |
+  v                                  |                                  |
++---------------------------------+  |                                  |
+| Key provisioning for group      |  |                  Used to protect |
+| communication using ACE (e)     |  |                  published topic |
+|                                 |  |                  data end-to-end |
+| - General message formats       |  |       +--------+ in ...          |
+| - Operations and interface at a |--+       | COSE   |                 |
+|   Key Distribution Center (KDC) |          | (f)(g) |-----------------+
++---------------------------------+          +--------+
+
+(a) : [I-D.ietf-core-coap-pubsub]
+(b) : [RFC9200]
+(c) : [RFC9202]
+(d) : [RFC9203]
+(e) : [RFC9594]
+(f) : [RFC9052]
+(g) : [RFC9053]
+~~~~~~~~~~~
+{: #fig-document-relationships title="Overview of Document Relationships" artwork-align="center"}
+
+Note to RFC Editor: At the bottom of {{fig-document-relationships}}, "\[I-D.ietf-core-coap-pubsub\]" is the reference label that the present document is currently using for that referred document. Before publishing as an RFC, please replace that reference label with the one eventually used for the (RFC resulting from) the referred document. Then, please delete this note.
 
 <!--While this profile focuses on the Pub-Sub architecture for CoAP, {{mqtt-pubsub}} of this document describes how this profile can be applicable to MQTT {{MQTT-OASIS-Standard-v5}}. Similar adaptations can also extend to further transport protocols and Pub-Sub architectures.-->
 
@@ -174,7 +231,7 @@ However, an anonymous Client is not allowed to access topic resources at the Bro
 
 As highlighted in {{associations}}, each Client maintains two different security associations pertaining to the Pub-Sub group communication. On the one hand, the Client has a pairwise security association with the Broker, which, as an ACE RS, verifies that the Client is authorised to perform data operations (i.e., publish, subscribe, read, delete) on a certain set of topics (Security Association 1). As discussed above, this security association is set up with the help of the AS and using a transport profile of ACE, when the Client obtains the access token to upload to the Broker.
 
-On the other hand, separately for each topic, all the Publishers and Subscribers for that topic have a common, group security association, through which the published content sent through the Broker is protected end-to-end (Security Association 2). As discussed above, this security association is set up and maintained as the different Clients request the KDC to join the security group, upon which they obtain from the KDC the corresponding group keying material to use for protecting end-to-end and verifying the content of their Pub-Sub group communication.
+On the other hand, separately for each topic, all the Publishers and Subscribers for that topic have a common, group security association, through which the published topic data sent through the Broker is protected end-to-end (Security Association 2). As discussed above, this security association is set up and maintained as the different Clients request the KDC to join the security group, upon which they obtain from the KDC the corresponding group keying material to use for protecting end-to-end and verifying the content of their Pub-Sub group communication.
 
 ~~~~~~~~~~~ aasvg
 +-----------+             +------------+             +------------+
@@ -926,11 +983,11 @@ The following security considerations also apply for this profile.
 
 Consistent with the intended group-confidentiality model, each Client in a security group is able to decrypt the data published in the topic(s) associated with that group, by using the symmetric group key that is shared with all the other group members.
 
-At the same time, source authentication of the published topic data is achieved by means of a digital signature, which the Publisher of the data in question computes with its private key and embeds in the published data. This ensures integrity of the published topic data as well as its origin, thus preventing a group member from impersonating another one.
+At the same time, source authentication of the published topic data is achieved by means of a digital signature, which the Publisher of the data in question computes with its private key and embeds in the published topic data. This ensures integrity of the published topic data as well as its origin, thus preventing a group member from impersonating another one.
 
 To this end, both Publishers and Subscribers rely on asymmetric cryptography, while Subscribers must be able to access the public keys of the Publishers to a specific topic in order to verify the signature over the published topic data. This might make the message exchange quite heavy for small constrained devices.
 
-The Broker is only trusted with verifying that a Publisher is authorised to publish on a certain topic and with distributing that data only to the Subscribers authorised to obtain it. However, the Broker is not trusted with the published data in itself, which the Broker cannot read or modify as it does not have access to the group key required for decrypting the data.
+The Broker is only trusted with verifying that a Publisher is authorised to publish on a certain topic and with distributing that data only to the Subscribers authorised to obtain it. However, the Broker is not trusted with the published topic data in itself, which the Broker cannot read or modify as it does not have access to the group key required for decrypting the data.
 
 With respect to the reuse of nonces for proof-of-possession input, the same considerations apply as in {{I-D.ietf-ace-key-groupcomm-oscore}}, with the difference that the KDC of the present document is considered instead of the Group Manager defined therein.
 
@@ -1141,6 +1198,8 @@ This section lists how this application profile of ACE addresses the requirement
 {:removeinrfc}
 
 ## Version -02 to -03 ## {#sec-02-03}
+
+* Updated introduction: clarified relationships between this document and related documents.
 
 * Clarifications:
 
