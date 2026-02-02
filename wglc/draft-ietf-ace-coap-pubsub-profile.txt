@@ -1141,7 +1141,7 @@ Table of Contents
       KDC.  In case the joining node still provides an authentication
       credential in the 'client_cred' parameter of the Join Request (see
       Section 4.1.1), the KDC silently ignores that parameter, as well
-      as the related parameter 'client_cred_verify'.
+      as the related parameter 'client_cred_verify' if present.
 
    *  The joining node wishes to join as a Publisher and the KDC has not
       previously acquired an authentication credential of the joining
@@ -1190,7 +1190,8 @@ Table of Contents
 
    The joining node signs the scope, concatenated with N_S and further
    concatenated with N_C, by using the private key corresponding to the
-   public key that is specified in the 'client_cred' parameter.
+   public key included in the authentication credential that is
+   specified in the 'client_cred' parameter.
 
    The N_S may be either of the following:
 
