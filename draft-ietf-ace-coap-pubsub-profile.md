@@ -197,7 +197,7 @@ On the other hand, separately for each topic, all the Publishers and Subscribers
 
 In summary, this profile specifies the following functionalities.
 
-1. A Client obtains the authorization to participate in a Pub-Sub topic at the Broker with certain permissions. This pertains operations defined in {{I-D.ietf-core-coap-pubsub}} for taking part in Pub-Sub communication with CoAP.
+1. A Client obtains the authorization to participate in a Pub-Sub topic at the Broker with certain permissions. This pertains to operations defined in {{I-D.ietf-core-coap-pubsub}} for taking part in Pub-Sub communication with CoAP.
 
 2. A Client obtains the authorization to join a security group with certain permissions. This allows the Client to obtain from the KDC the group keying material for communicating with other group members, i.e., to protect end-to-end and verify the content published at the Broker on topics associated with the security group.
 
