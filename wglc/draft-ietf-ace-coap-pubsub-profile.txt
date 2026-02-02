@@ -1714,8 +1714,9 @@ Table of Contents
    The KDC MUST perform a group rekeying as described in Section 6 of
    [RFC9594].  Reasons that can trigger a group rekeying include a
    change in the group membership, or the current group keying material
-   approaching its expiration time.  In addition, the KDC MAY perform
-   regularly scheduled group rekeying executions.
+   approaching its expiration time.  In addition, the KDC MAY rekey the
+   group for other reasons, e.g., according to an application-specific
+   rekeying period or scheduling.
 
    Upon generating the new group key and before starting its
    distribution:
