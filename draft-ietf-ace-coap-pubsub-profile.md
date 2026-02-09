@@ -998,16 +998,16 @@ When performing its normal operations, the KDC is expected to produce and store 
 
   The logged information contains a description of the error occurred in the context of the present application profile, together with a description of the event related to the error and relevant metadata about the Client that has sent the request. For instance, possible metadata include: addressing information of the Client; when applicable, the Sender ID that is assigned to the Client in the group; when applicable, (an identifier of) the authentication credential of the Client (i.e., that the Client uses in the group or has used to authenticate itself to the KDC when establishing their secure communication association).
 
-  Note that, if the error response uses the format problem-details defined in {{RFC9290}}, then the optional "detail" entry in the response payload is meant to convey the diagnostic description of the error, which is meant to be part of the log entry for this event. This is consistent with {{Section 4.1.2 of RFC9594}}, which says that the diagnostic description of the error should be logged.
+  Note that, if the error response uses the format problem-details defined in {{RFC9290}}, then the optional "detail" entry in the response payload is meant to convey the diagnostic description of the error, which is meant to be part of the log entry for this event. This is consistent with {{Section 4.1.2 of RFC9594}}, which states that the diagnostic description of the error should be logged.
 
 * Any event consisting in a successfully performed operation that is triggered by a request received at any of the resources exported by the interface specified in this document.
 
   Such events include:
 
-  - The (re-)joining of a group.
-  - The uploading of a new authentication credential to use in the group.
-  - The obtainment of a new Sender ID to use in the group.
-  - The leaving of a group.
+  - A Client joining or re-joining a group.
+  - The upload of a new authentication credential for use within the group.
+  - The acquisition of a new Sender ID for use within the group.
+  - A Client leaving a group.
 
   The logged information contains a description of the operation performed in the context of the present application profile, together with relevant metadata about the Client that has sent the request. For instance, possible metadata include: addressing information of the Client; when applicable, the Sender ID that is assigned to the Client in the group; when applicable, (an identifier of) the authentication credential of the Client (i.e., that the Client uses in the group or has used to authenticate itself to the KDC when establishing their secure communication association).
 
@@ -1015,7 +1015,7 @@ When performing its normal operations, the KDC is expected to produce and store 
 
   The logged information includes:
 
-  - The reason that has triggered the group rekeying (e.g., scheduled/periodic occurrence, group joining of a new member, group leaving of a current member).
+  - The reason for the group rekeying (e.g., scheduled/periodic occurrence, group joining of a new member, group leaving of a current member).
   - A description of the group rekeying operations performed (e.g., a list of steps performed throughout the rekeying process).
   - The outcome of the group rekeying instance.
   - In case of success, the version number of the newly established group keying material and the newly established Group Identifier (Gid).
@@ -1040,11 +1040,11 @@ The KDC MUST NOT log any secret or confidential information pertaining to a grou
 
 * If applicable, administrative keying material used to protect the group rekeying process.
 
-It is up to the application to specify for how long a log entry is retained from the time of its creation and until its deletion. Different retention policies could be enforced for different groups. For a given group, eldest log entries are expected to be those deleted first, and different retention policies could be enforced depending on whether the group currently exists or has been deleted.
+It is up to the application to specify for how long a log entry is retained from the time of its creation and until its deletion. Different retention policies could be enforced for different groups. For a given group, oldest log entries are expected to be those deleted first, and different retention policies could be enforced depending on whether the group currently exists or has been deleted.
 
 It is out of the scope of this document what specific semantics and data model are used by the KDC for producing and processing the logs. Specific semantics and data models can be defined by applications and future specifications.
 
-The KDC is expected to make the logs produced available to securely access for authorized, external management applications and operators.
+The KDC is expected to make the logs that it produces available for secure access by authorized external management applications and operators.
 
 In particular, logged information could be retrieved in the following ways.
 
