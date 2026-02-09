@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 9 August 2026                                 Brunel University
+Expires: 13 August 2026                                Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                         5 February 2026
+                                                         9 February 2026
 
 
 CoAP Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 August 2026.
+   This Internet-Draft will expire on 13 August 2026.
 
 Copyright Notice
 
@@ -2090,7 +2090,7 @@ Table of Contents
       response payload is meant to convey the diagnostic description of
       the error, which is meant to be part of the log entry for this
       event.  This is consistent with Section 4.1.2 of [RFC9594], which
-      says that the diagnostic description of the error should be
+      states that the diagnostic description of the error should be
       logged.
 
    *  Any event consisting in a successfully performed operation that is
@@ -2099,14 +2099,14 @@ Table of Contents
 
       Such events include:
 
-      -  The (re-)joining of a group.
+      -  A Client joining or re-joining a group.
 
-      -  The uploading of a new authentication credential to use in the
-         group.
+      -  The upload of a new authentication credential for use within
+         the group.
 
-      -  The obtainment of a new Sender ID to use in the group.
+      -  The acquisition of a new Sender ID for use within the group.
 
-      -  The leaving of a group.
+      -  A Client leaving a group.
 
       The logged information contains a description of the operation
       performed in the context of the present application profile,
@@ -2124,9 +2124,9 @@ Table of Contents
 
       The logged information includes:
 
-      -  The reason that has triggered the group rekeying (e.g.,
-         scheduled/periodic occurrence, group joining of a new member,
-         group leaving of a current member).
+      -  The reason for the group rekeying (e.g., scheduled/periodic
+         occurrence, group joining of a new member, group leaving of a
+         current member).
 
       -  A description of the group rekeying operations performed (e.g.,
          a list of steps performed throughout the rekeying process).
@@ -2176,7 +2176,7 @@ Table of Contents
    It is up to the application to specify for how long a log entry is
    retained from the time of its creation and until its deletion.
    Different retention policies could be enforced for different groups.
-   For a given group, eldest log entries are expected to be those
+   For a given group, oldest log entries are expected to be those
    deleted first, and different retention policies could be enforced
    depending on whether the group currently exists or has been deleted.
 
@@ -2185,8 +2185,8 @@ Table of Contents
    Specific semantics and data models can be defined by applications and
    future specifications.
 
-   The KDC is expected to make the logs produced available to securely
-   access for authorized, external management applications and
+   The KDC is expected to make the logs that it produces available for
+   secure access by authorized external management applications and
    operators.
 
    In particular, logged information could be retrieved in the following
