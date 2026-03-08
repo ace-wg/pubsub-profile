@@ -32,9 +32,48 @@ author:
     email: marco.tiloca@ri.se
 
 normative:
-  IANA.cose_algorithms:
-  IANA.cose_key-type:
-  IANA.cose_header-parameters:
+  COSE.Algorithms:
+    author:
+      org: IANA
+    date: false
+    title: COSE Algorithms
+    target: https://www.iana.org/assignments/cose/cose.xhtml#algorithms
+  COSE.Key.Types:
+    author:
+      org: IANA
+    date: false
+    title: COSE Key Types
+    target: https://www.iana.org/assignments/cose/cose.xhtml#key-type
+  COSE.Header.Parameters:
+    author:
+      org: IANA
+    date: false
+    title: COSE Header Parameters
+    target: https://www.iana.org/assignments/cose/cose.xhtml#header-parameters
+  ACE.Groupcomm.Key.Types:
+    author:
+      org: IANA
+    date: false
+    title: ACE Groupcomm Key Types
+    target: https://www.iana.org/assignments/ace/ace.xhtml#ace-groupcomm-key-types
+  ACE.Groupcomm.Profiles:
+    author:
+      org: IANA
+    date: false
+    title: ACE Groupcomm Profiles
+    target: https://www.iana.org/assignments/ace/ace.xhtml#ace-groupcomm-profiles
+  Resource.Type.Values:
+    author:
+      org: IANA
+    date: false
+    title: Resource Type (rt=) Link Target Attribute Values
+    target: https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#rt-link-target-att-value
+  CoAP.Content.Formats:
+    author:
+      org: IANA
+    date: false
+    title: CoAP Content-Formats
+    target: https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#content-formats
   I-D.ietf-core-coap-pubsub:
   RFC5246:
   RFC5705:
@@ -482,13 +521,13 @@ If 'sign_info' is included in the Token Transfer Request, the KDC SHOULD include
 
 The following applies for each element 'sign_info_entry'.
 
-* 'sign_alg' MUST take its value from the "Value" column of one of the recommended algorithms in the "COSE Algorithms" registry {{IANA.cose_algorithms}} (REQ3).
+* 'sign_alg' MUST take its value from the "Value" column of one of the recommended algorithms in the "COSE Algorithms" registry {{COSE.Algorithms}} (REQ3).
 
-* 'sign_parameters' is a CBOR array.  Its format and value are the same of the COSE capabilities array for the algorithm indicated in 'sign_alg' under the "Capabilities" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}} (REQ4).
+* 'sign_parameters' is a CBOR array.  Its format and value are the same of the COSE capabilities array for the algorithm indicated in 'sign_alg' under the "Capabilities" column of the "COSE Algorithms" registry {{COSE.Algorithms}} (REQ4).
 
-* 'sign_key_parameters' is a CBOR array.  Its format and value are the same of the COSE capabilities array for the COSE key type of the keys used with the algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{IANA.cose_key-type}} (REQ5).
+* 'sign_key_parameters' is a CBOR array.  Its format and value are the same of the COSE capabilities array for the COSE key type of the keys used with the algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{COSE.Key.Types}} (REQ5).
 
-* 'cred_fmt' takes value from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}} (REQ6). Acceptable values denote a format of authentication credential that MUST explicitly provide the public key as well as the comprehensive set of information related to the public key algorithm, including, e.g., the used elliptic curve (when applicable).
+* 'cred_fmt' takes value from the "Label" column of the "COSE Header Parameters" registry {{COSE.Header.Parameters}} (REQ6). Acceptable values denote a format of authentication credential that MUST explicitly provide the public key as well as the comprehensive set of information related to the public key algorithm, including, e.g., the used elliptic curve (when applicable).
 
   Acceptable formats of authentication credentials include CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC7925}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Future formats would be acceptable to use as long as they comply with the criteria defined above.
 
@@ -624,7 +663,7 @@ In case of success, the KDC responds with a Join Response, whose payload is form
 
      - 'kty', with value 4 (Symmetric).
 
-     - 'alg', with value the identifier of the AEAD algorithm used in the security group. The value is taken from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
+     - 'alg', with value the identifier of the AEAD algorithm used in the security group. The value is taken from the "Value" column of the "COSE Algorithms" registry {{COSE.Algorithms}}.
 
      - 'Base IV', with value the Base Initialization Vector (Base IV) to use in the security group with this group key.
 
@@ -640,17 +679,17 @@ In case of success, the KDC responds with a Join Response, whose payload is form
 
       The Sender ID can be short in length. Its maximum length in bytes is the length in bytes of the AEAD nonce for the AEAD algorithm, minus 6. This means that, when using AES-CCM-16-64-128 as AEAD algorithm in the security group, the maximum length of Sender IDs is 7 bytes.
 
-   * 'cred_fmt': this parameter is identified by the CBOR unsigned integer 2 used as map key. Its value specifies the format of authentication credentials used in the group and is taken from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}}.
+   * 'cred_fmt': this parameter is identified by the CBOR unsigned integer 2 used as map key. Its value specifies the format of authentication credentials used in the group and is taken from the "Label" column of the "COSE Header Parameters" registry {{COSE.Header.Parameters}}.
 
      At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC7925}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Further formats may be available in the future and would be acceptable to use as long as they comply with the criteria defined above (REQ6).
 
-   * 'sign_alg': this parameter is identified by the CBOR unsigned integer 3 used as map key. Its value specifies the Signature Algorithm used to sign messages in the group and is taken from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
+   * 'sign_alg': this parameter is identified by the CBOR unsigned integer 3 used as map key. Its value specifies the Signature Algorithm used to sign messages in the group and is taken from the "Value" column of the "COSE Algorithms" registry {{COSE.Algorithms}}.
 
    * 'sign_params': this parameter is identified by the CBOR unsigned integer 4 used as map key. Its value specifies the parameters of the Signature Algorithm and is encoded as a CBOR array including the following two elements:
 
-      - 'sign_alg_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
+      - 'sign_alg_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry {{COSE.Algorithms}}.
 
-      - 'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{IANA.cose_key-type}}.
+      - 'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{COSE.Key.Types}}.
 
 - 'num', specifying the version number of the keying material specified in the 'key' field. The initial value of the version number MUST be set to 0 upon creating the group (REQ16).
 
@@ -1102,7 +1141,7 @@ This document has the following actions for IANA.
 
 ## ACE Groupcomm Key Types {#iana-ace-groupcomm-key}
 
-IANA is asked to register the following entry in the "ACE Groupcomm Key Types" registry defined in {{Section 11.8 of RFC9594}}.
+IANA is asked to register the following entry in the "ACE Groupcomm Key Types" registry {{ACE.Groupcomm.Key.Types}} within the "Authentication and Authorization for Constrained Environments (ACE)" registry group.
 
 * Name: Group_PubSub_Keying_Material
 
@@ -1116,7 +1155,7 @@ IANA is asked to register the following entry in the "ACE Groupcomm Key Types" r
 
 ## ACE Groupcomm Profiles {#iana-profile}
 
-IANA is asked to register the following entries in the "ACE Groupcomm Profiles" registry defined in {{Section 11.9 of RFC9594}}.
+IANA is asked to register the following entries in the "ACE Groupcomm Profiles" registry {{ACE.Groupcomm.Profiles}}, within the "Authentication and Authorization for Constrained Environments (ACE)" registry group.
 
 * Name: coap_group_pubsub_app
 
@@ -1129,7 +1168,7 @@ IANA is asked to register the following entries in the "ACE Groupcomm Profiles" 
 
 ## CoRE Resource Type {#core_rt}
 
-IANA is asked to register the following entry in the "Resource Type (rt=) Link Target Attribute Values" registry within the "Constrained Restful Environments (CoRE) Parameters" registry group.
+IANA is asked to register the following entry in the "Resource Type (rt=) Link Target Attribute Values" registry {{Resource.Type.Values}} within the "Constrained Restful Environments (CoRE) Parameters" registry group.
 
 *  Value: "core.ps.gm"
 
@@ -1163,7 +1202,7 @@ For the media-types "application/aif+cbor" and "application/aif+json" defined in
 
 ## CoAP Content-Formats {#content_formats}
 
-IANA is asked to register the following entries to the "CoAP Content-Formats" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
+IANA is asked to register the following entries to the "CoAP Content-Formats" registry {{CoAP.Content.Formats}} within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
 
 * Content Type: application/aif+cbor;toid=pubsub-topic;tperm=pubsub-perm
 
@@ -1207,13 +1246,13 @@ This section lists how this application profile of ACE addresses the requirement
 
 * REQ2: If scope uses AIF, register its specific instance of "Toid" and "Tperm" as media type parameters and a corresponding Content-Format, as per the guidelines in {{RFC9237}}: see {{aif}} and {{content_formats}}.
 
-* REQ3: If used, specify the acceptable values for the 'sign_alg' parameter: values from the "Value" column of the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
+* REQ3: If used, specify the acceptable values for the 'sign_alg' parameter: values from the "Value" column of the "COSE Algorithms" registry {{COSE.Algorithms}}.
 
-* REQ4: If used, specify the acceptable values and structure for the 'sign_parameters' parameter: values and structure from the COSE algorithm capabilities as specified in the "COSE Algorithms" registry {{IANA.cose_algorithms}}.
+* REQ4: If used, specify the acceptable values and structure for the 'sign_parameters' parameter: values and structure from the COSE algorithm capabilities as specified in the "COSE Algorithms" registry {{COSE.Algorithms}}.
 
-* REQ5: If used, specify the acceptable values and structure for the 'sign_key_parameters' parameter: values and structure from the COSE key type capabilities as specified in the "COSE Key Types" registry {{IANA.cose_key-type}}.
+* REQ5: If used, specify the acceptable values and structure for the 'sign_key_parameters' parameter: values and structure from the COSE key type capabilities as specified in the "COSE Key Types" registry {{COSE.Key.Types}}.
 
-* REQ6: Specify the acceptable formats for authentication credentials and, if applicable, the acceptable values for the 'cred_fmt' parameter: acceptable formats explicitly provide the public key as well as the comprehensive set of information related to the public key algorithm (see {{token-post}} and {{join-response}}). Consistent acceptable values for 'cred_fmt' are taken from the "Label" column of the "COSE Header Parameters" registry {{IANA.cose_header-parameters}}.
+* REQ6: Specify the acceptable formats for authentication credentials and, if applicable, the acceptable values for the 'cred_fmt' parameter: acceptable formats explicitly provide the public key as well as the comprehensive set of information related to the public key algorithm (see {{token-post}} and {{join-response}}). Consistent acceptable values for 'cred_fmt' are taken from the "Label" column of the "COSE Header Parameters" registry {{COSE.Header.Parameters}}.
 
 * REQ7: If the value of the GROUPNAME URI path and the group name in the access token scope ('gname') are not required to coincide, specify the mechanism to map the GROUPNAME value in the URI to the group name: not applicable, since a perfect matching is required.
 
@@ -1298,7 +1337,9 @@ This section lists how this application profile of ACE addresses the requirement
 
 ## Version -03 to -04 ## {#sec-03-04}
 
-* Editorial fixes and improvements.
+* Added references to IANA registries.
+
+* Editorial fixes.
 
 ## Version -02 to -03 ## {#sec-02-03}
 
