@@ -1040,7 +1040,7 @@ The KDC MUST NOT log any secret or confidential information pertaining to a grou
 
 * If applicable, administrative keying material used to protect the group rekeying process.
 
-It is up to the application to specify for how long a log entry is retained from the time of its creation and until its deletion. Different retention policies could be enforced for different groups. For a given group, oldest log entries are expected to be those deleted first, and different retention policies could be enforced depending on whether the group currently exists or has been deleted.
+It is up to the application to specify for how long a log entry is retained from the time of its creation and until its deletion. Different retention policies could be enforced for different groups. For a given group, the oldest log entries are expected to be those deleted first, and different retention policies could be enforced depending on whether the group currently exists or has been deleted.
 
 It is out of the scope of this document what specific semantics and data model are used by the KDC for producing and processing the logs. Specific semantics and data models can be defined by applications and future specifications.
 
@@ -1295,6 +1295,10 @@ This section lists how this application profile of ACE addresses the requirement
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -03 to -04 ## {#sec-03-04}
+
+* Editorial fixes and improvements.
 
 ## Version -02 to -03 ## {#sec-02-03}
 
