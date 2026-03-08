@@ -249,7 +249,7 @@ Both Publishers and Subscribers act as ACE Clients. The Broker acts as an ACE RS
 {: #archi title="Architecture for Pub-Sub with Authorization Server and Key Distribution Center"}
 {: artwork-align="center"}
 
-Both Publishers and Subscribers MUST use the same protocol for interacting with the Broker and participating in Pub-Sub communications. When using the profile defined in this document, such a protocol MUST be CoAP {{RFC7252}}, which is used as described in {{I-D.ietf-core-coap-pubsub}} (REQ22). <!--What is specified in this document can apply to other protocols for Pub-Sub communications such as MQTT {{MQTT-OASIS-Standard-v5}}, or to further transport protocols-->.
+Both Publishers and Subscribers MUST use the same protocol for interacting with the Broker and participating in Pub-Sub communications. When using the profile defined in this document, such a protocol MUST be CoAP {{RFC7252}}, which is used as described in {{I-D.ietf-core-coap-pubsub}} (REQ22). In particular, when using this application profile, the topic-data resource corresponding to a given topic is hosted precisely at the Broker associated with that topic. Setups where a topic-data resource is possibly hosted at different servers than the Broker are out of the scope of this application profile.<!--What is specified in this document can apply to other protocols for Pub-Sub communications such as MQTT {{MQTT-OASIS-Standard-v5}}, or to further transport protocols.-->
 
 All Publishers and Subscribers MUST use CoAP when communicating with the KDC.
 
@@ -1336,6 +1336,8 @@ This section lists how this application profile of ACE addresses the requirement
 {:removeinrfc}
 
 ## Version -03 to -04 ## {#sec-03-04}
+
+* Explicitly mentioned that topic-data resources are hosted at the Broker.
 
 * More consistent use of the terms "nonce" and "challenge".
 
