@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 13 August 2026                                Brunel University
+Expires: 9 September 2026                              Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                         9 February 2026
+                                                            8 March 2026
 
 
    Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 August 2026.
+   This Internet-Draft will expire on 9 September 2026.
 
 Copyright Notice
 
@@ -2060,9 +2060,9 @@ Table of Contents
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
               subscribe architecture for the Constrained Application
               Protocol (CoAP)", Work in Progress, Internet-Draft, draft-
-              ietf-core-coap-pubsub-18, 28 February 2025,
+              ietf-core-coap-pubsub-19, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pubsub-18>.
+              coap-pubsub-19>.
 
    [IANA.cose_algorithms]
               IANA, "COSE Algorithms",
@@ -2194,18 +2194,18 @@ Table of Contents
               Security for Constrained Environments (OSCORE) Profile for
               Authentication and Authorization for Constrained
               Environments (ACE)", Work in Progress, Internet-Draft,
-              draft-ietf-ace-edhoc-oscore-profile-09, 20 October 2025,
+              draft-ietf-ace-edhoc-oscore-profile-10, 1 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              edhoc-oscore-profile-09>.
+              edhoc-oscore-profile-10>.
 
    [I-D.ietf-ace-key-groupcomm-oscore]
               Tiloca, M. and F. Palombini, "Key Management for Group
               Object Security for Constrained RESTful Environments
               (Group OSCORE) Using Authentication and Authorization for
               Constrained Environments (ACE)", Work in Progress,
-              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-19, 24
-              January 2026, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-key-groupcomm-oscore-19>.
+              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-20, 25
+              February 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-key-groupcomm-oscore-20>.
 
    [I-D.ietf-ace-revoked-token-notification]
               Tiloca, M., Palombini, F., Echeverria, S., and G. Lewis,
@@ -2220,9 +2220,9 @@ Table of Contents
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-16, 25 January 2026,
+              ietf-cose-cbor-encoded-cert-17, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-16>.
+              cbor-encoded-cert-17>.
 
    [MQTT-OASIS-Standard-v5]
               Banks, A., Briggs, E., Borgendale, K., and R. Gupta,

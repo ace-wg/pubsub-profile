@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 13 August 2026                                Brunel University
+Expires: 9 September 2026                              Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                         9 February 2026
+                                                            8 March 2026
 
 
 CoAP Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 August 2026.
+   This Internet-Draft will expire on 9 September 2026.
 
 Copyright Notice
 
@@ -125,10 +125,11 @@ Table of Contents
      A.1.  Mandatory-to-Address Requirements
      A.2.  Optional-to-Address Requirements
    Appendix B.  Document Updates
-     B.1.  Version -02 to -03
-     B.2.  Version -01 to -02
-     B.3.  Version -00 to -01
-     B.4.  Version -00
+     B.1.  Version -03 to -04
+     B.2.  Version -02 to -03
+     B.3.  Version -01 to -02
+     B.4.  Version -00 to -01
+     B.5.  Version -00
    Acknowledgments
    Authors' Addresses
 
@@ -2176,7 +2177,7 @@ Table of Contents
    It is up to the application to specify for how long a log entry is
    retained from the time of its creation and until its deletion.
    Different retention policies could be enforced for different groups.
-   For a given group, oldest log entries are expected to be those
+   For a given group, the oldest log entries are expected to be those
    deleted first, and different retention policies could be enforced
    depending on whether the group currently exists or has been deleted.
 
@@ -2445,9 +2446,9 @@ Table of Contents
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
               subscribe architecture for the Constrained Application
               Protocol (CoAP)", Work in Progress, Internet-Draft, draft-
-              ietf-core-coap-pubsub-18, 28 February 2025,
+              ietf-core-coap-pubsub-19, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pubsub-18>.
+              coap-pubsub-19>.
 
    [IANA.cose_algorithms]
               IANA, "COSE Algorithms",
@@ -2590,17 +2591,17 @@ Table of Contents
               Object Security for Constrained RESTful Environments
               (Group OSCORE) Using Authentication and Authorization for
               Constrained Environments (ACE)", Work in Progress,
-              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-19, 24
-              January 2026, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-key-groupcomm-oscore-19>.
+              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-20, 25
+              February 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-key-groupcomm-oscore-20>.
 
    [I-D.ietf-cose-cbor-encoded-cert]
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-16, 25 January 2026,
+              ietf-cose-cbor-encoded-cert-17, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-16>.
+              cbor-encoded-cert-17>.
 
    [RFC8259]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", STD 90, RFC 8259,
@@ -2861,7 +2862,11 @@ Appendix B.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-B.1.  Version -02 to -03
+B.1.  Version -03 to -04
+
+   *  Editorial fixes and improvements.
+
+B.2.  Version -02 to -03
 
    *  Updated introduction: clarified relationships between this
       document and related documents.
@@ -2884,7 +2889,7 @@ B.1.  Version -02 to -03
 
    *  Editorial fixes and improvements.
 
-B.2.  Version -01 to -02
+B.3.  Version -01 to -02
 
    *  Clarified high-level description of the authorisation flow.
 
@@ -2893,7 +2898,7 @@ B.2.  Version -01 to -02
 
    *  Editorial fixes and improvements.
 
-B.3.  Version -00 to -01
+B.4.  Version -00 to -01
 
    *  Clarified recommendations about randomness and size of nonces.
 
@@ -2914,7 +2919,7 @@ B.3.  Version -00 to -01
 
    *  Editorial fixes and improvements.
 
-B.4.  Version -00
+B.5.  Version -00
 
    *  Imported content from draft-ietf-ace-pubsub-profile-11.
 
