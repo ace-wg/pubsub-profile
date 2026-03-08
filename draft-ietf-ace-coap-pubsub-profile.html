@@ -1652,7 +1652,7 @@ This is not to be confused with an "application group", which has relevance at t
 <a href="#name-architecture-for-pub-sub-wi" class="selfRef">Architecture for Pub-Sub with Authorization Server and Key Distribution Center</a>
         </figcaption></figure>
 </div>
-<p id="section-2-6">Both Publishers and Subscribers <span class="bcp14">MUST</span> use the same protocol for interacting with the Broker and participating in Pub-Sub communications. When using the profile defined in this document, such a protocol <span class="bcp14">MUST</span> be CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, which is used as described in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> (REQ22). .<a href="#section-2-6" class="pilcrow">¶</a></p>
+<p id="section-2-6">Both Publishers and Subscribers <span class="bcp14">MUST</span> use the same protocol for interacting with the Broker and participating in Pub-Sub communications. When using the profile defined in this document, such a protocol <span class="bcp14">MUST</span> be CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, which is used as described in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> (REQ22). In particular, when using this application profile, the topic-data resource corresponding to a given topic is hosted precisely at the Broker associated with that topic. Setups where a topic-data resource is possibly hosted at different servers than the Broker are out of the scope of this application profile.<a href="#section-2-6" class="pilcrow">¶</a></p>
 <p id="section-2-7">All Publishers and Subscribers <span class="bcp14">MUST</span> use CoAP when communicating with the KDC.<a href="#section-2-7" class="pilcrow">¶</a></p>
 <p id="section-2-8">Furthermore, both Publishers and Subscribers <span class="bcp14">MUST</span> use the same transport profile of ACE (e.g., <span>[<a href="#RFC9202" class="cite xref">RFC9202</a>]</span> for DTLS, or <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span> for OSCORE) in their interaction with the Broker. In order to reduce the number of libraries that Clients have to support, it is <span class="bcp14">RECOMMENDED</span> that the same transport profile of ACE is used also for the interaction between the Clients and the KDC (REQ24).<a href="#section-2-8" class="pilcrow">¶</a></p>
 <p id="section-2-9">Except for the end-to-end protection of published topic data (see <a href="#oscon" class="auto internal xref">Section 6.1</a>), all communications between the involved entities (Clients, Broker, KDC, Authorization Server) <span class="bcp14">MUST</span> occur and be secured in accordance with the protocol-specific transport profile of ACE used.<a href="#section-2-9" class="pilcrow">¶</a></p>
@@ -3574,13 +3574,16 @@ The logged information also contains relevant metadata about the Client that has
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-B.1-1.1">
-            <p id="appendix-B.1-1.1.1">More consistent use of the terms "nonce" and "challenge".<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.1.1">Explicitly mentioned that topic-data resources are hosted at the Broker.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.2">
-            <p id="appendix-B.1-1.2.1">Added references to IANA registries.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.2.1">More consistent use of the terms "nonce" and "challenge".<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.3">
-            <p id="appendix-B.1-1.3.1">Editorial fixes.<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.3.1">Added references to IANA registries.<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.4">
+            <p id="appendix-B.1-1.4.1">Editorial fixes.<a href="#appendix-B.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

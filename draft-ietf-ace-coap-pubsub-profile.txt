@@ -364,7 +364,12 @@ Table of Contents
    interacting with the Broker and participating in Pub-Sub
    communications.  When using the profile defined in this document,
    such a protocol MUST be CoAP [RFC7252], which is used as described in
-   [I-D.ietf-core-coap-pubsub] (REQ22). .
+   [I-D.ietf-core-coap-pubsub] (REQ22).  In particular, when using this
+   application profile, the topic-data resource corresponding to a given
+   topic is hosted precisely at the Broker associated with that topic.
+   Setups where a topic-data resource is possibly hosted at different
+   servers than the Broker are out of the scope of this application
+   profile.
 
    All Publishers and Subscribers MUST use CoAP when communicating with
    the KDC.
@@ -2889,6 +2894,9 @@ Appendix B.  Document Updates
    This section is to be removed before publishing as an RFC.
 
 B.1.  Version -03 to -04
+
+   *  Explicitly mentioned that topic-data resources are hosted at the
+      Broker.
 
    *  More consistent use of the terms "nonce" and "challenge".
 
