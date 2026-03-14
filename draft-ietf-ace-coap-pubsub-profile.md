@@ -1067,7 +1067,7 @@ When performing its normal operations, the KDC is expected to produce and store 
 
 * The addition of a group member to the group or the eviction of a group member from the group.
 
-  The logged information also contains relevant metadata about the Client that has been added to or removed from the group. For instance, possible metadata include: addressing information of the Client; when applicable, the Sender ID that is currently (was latest) assigned to the Client added to (removed from) the group; when applicable, (an identifier of) the authentication credential of the Client added to (removed from) the group (i.e., that the Client uses in the group or has used to authenticate itself to the KDC when establishing their secure communication association).
+  The logged information also contains relevant metadata about the Client that has been added to or removed from the group. For instance, possible metadata include: addressing information of the Client; when applicable, the Sender ID that is currently (was latest) assigned to the Client added to (removed from) the group; when applicable, (an identifier of) the authentication credential of the Client added to or removed from the group (i.e., that the Client uses in the group or has used to authenticate itself to the KDC when establishing their secure communication association).
 
 * The creation, (re-)configuration, or termination of a group.
 
