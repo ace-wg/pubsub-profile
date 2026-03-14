@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 9 September 2026                              Brunel University
+Expires: 15 September 2026                             Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                            8 March 2026
+                                                           14 March 2026
 
 
 CoAP Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 September 2026.
+   This Internet-Draft will expire on 15 September 2026.
 
 Copyright Notice
 
@@ -2435,8 +2435,8 @@ Table of Contents
 9.6.  TLS Exporter Labels
 
    IANA is asked to register the following entry to the "TLS Exporter
-   Labels" registry defined in Section 6 of [RFC5705] and updated in
-   Section 12 of [RFC8447].
+   Labels" registry [TLS.Exporter.Labels] defined in Section 6 of
+   [RFC5705] and updated in Section 12 of [RFC8447].
 
    *  Value: EXPORTER-ACE-Sign-Challenge-coap-pubsub-app
 
@@ -2614,6 +2614,11 @@ Table of Contents
               Constrained Environments (ACE)", RFC 9594,
               DOI 10.17487/RFC9594, September 2024,
               <https://www.rfc-editor.org/rfc/rfc9594>.
+
+   [TLS.Exporter.Labels]
+              IANA, "TLS Exporter Labels",
+              <https://www.iana.org/assignments/tls-parameters/tls-
+              parameters.xhtml#exporter-labels>.
 
 10.2.  Informative References
 
