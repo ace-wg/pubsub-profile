@@ -74,6 +74,12 @@ normative:
     date: false
     title: CoAP Content-Formats
     target: https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#content-formats
+  TLS.Exporter.Labels:
+    author:
+      org: IANA
+    date: false
+    title: TLS Exporter Labels
+    target: https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#exporter-labels
   I-D.ietf-core-coap-pubsub:
   RFC5246:
   RFC5705:
@@ -1224,7 +1230,7 @@ IANA is asked to register the following entries to the "CoAP Content-Formats" re
 
 ## TLS Exporter Labels {#tls_exporter}
 
-IANA is asked to register the following entry to the "TLS Exporter Labels" registry defined in {{Section 6 of RFC5705}} and updated in {{Section 12 of RFC8447}}.
+IANA is asked to register the following entry to the "TLS Exporter Labels" registry {{TLS.Exporter.Labels}} defined in {{Section 6 of RFC5705}} and updated in {{Section 12 of RFC8447}}.
 
 * Value: EXPORTER-ACE-Sign-Challenge-coap-pubsub-app
 
