@@ -2150,7 +2150,7 @@ Table of Contents
       Client; when applicable, the Sender ID that is currently (was
       latest) assigned to the Client added to (removed from) the group;
       when applicable, (an identifier of) the authentication credential
-      of the Client added to (removed from) the group (i.e., that the
+      of the Client added to or removed from the group (i.e., that the
       Client uses in the group or has used to authenticate itself to the
       KDC when establishing their secure communication association).
 
