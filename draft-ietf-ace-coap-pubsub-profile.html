@@ -2136,8 +2136,9 @@ Acceptable formats of authentication credentials include CBOR Web Tokens (CWTs) 
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-client-group-communication-" class="section-name selfRef">Client Group Communication Interface at the KDC</a>
       </h2>
 <p id="section-4-1">In order to enable secure group communication for the Pub-Sub Clients, the KDC provides the resources listed in <a href="#tab-kdc-resources" class="auto internal xref">Table 1</a>.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">The entry of each resource specifies the CoAP methods by means of which it is permitted to access that resource, for nodes with different roles in the group or as non members. Except for accessing the /ace-group resource with the FETCH method (to retrieve security group names through their group identifiers) and the /ace-group/GROUPNAME resource with the POST method (to join the security group with name GROUPNAME), all other operations are permitted only to current members of the security group with name GROUPNAME (REQ11).<a href="#section-4-2" class="pilcrow">¶</a></p>
-<p id="section-4-3">Each resource is marked as <span class="bcp14">REQUIRED</span> or <span class="bcp14">OPTIONAL</span> to be hosted at the KDC (REQ9).<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-2">The entry of each resource specifies the CoAP methods by means of which it is permitted to access that resource, for nodes with different roles in the group or as non-members. Except for accessing the /ace-group resource with the FETCH method (to retrieve security group names through their group identifiers) and the /ace-group/GROUPNAME resource with the POST method (to join the security group with name GROUPNAME), all other operations are permitted only to current members of the security group with name GROUPNAME (REQ11).<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">The GROUPNAME segment of the URI path <span class="bcp14">MUST</span> match with the group name specified in the scope entry of the scope in the access token (i.e., 'gname' in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-3.1" class="relref">Section 3.1</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>) (REQ7). Therefore, a group name has to be consistent with the semantics of URI path segments (see <span><a href="https://rfc-editor.org/rfc/rfc3986#section-3.3" class="relref">Section 3.3</a> of [<a href="#RFC3986" class="cite xref">RFC3986</a>]</span>).<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">Each resource is marked as <span class="bcp14">REQUIRED</span> or <span class="bcp14">OPTIONAL</span> to be hosted at the KDC (REQ9).<a href="#section-4-4" class="pilcrow">¶</a></p>
 <span id="name-resources-at-the-kdc"></span><div id="tab-kdc-resources">
 <table class="center" id="table-1">
         <caption>
@@ -2203,8 +2204,8 @@ Acceptable formats of authentication credentials include CBOR Web Tokens (CWTs) 
         </tbody>
       </table>
 </div>
-<p id="section-4-5">The use of these resources follows what is defined in <span>[<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, and only additions or modifications to that specification are defined in this document. With respect to <span>[<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, this document does not define new operations for Clients interacting with the KDC (REQ12).<a href="#section-4-5" class="pilcrow">¶</a></p>
-<p id="section-4-6">Consistent with what is defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.1.2" class="relref">Section 4.1.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, some error responses from the KDC can convey error-specific information according to the problem-details format specified in <span>[<a href="#RFC9290" class="cite xref">RFC9290</a>]</span>. This application profile does not define additional identifiers of error types as values of the 'error-id' field within the Custom Problem Detail entry 'ace-groupcomm-error' (OPT5).<a href="#section-4-6" class="pilcrow">¶</a></p>
+<p id="section-4-6">The use of these resources follows what is defined in <span>[<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, and only additions or modifications to that specification are defined in this document. With respect to <span>[<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, this document does not define new operations for Clients interacting with the KDC (REQ12).<a href="#section-4-6" class="pilcrow">¶</a></p>
+<p id="section-4-7">Consistent with what is defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.1.2" class="relref">Section 4.1.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, some error responses from the KDC can convey error-specific information according to the problem-details format specified in <span>[<a href="#RFC9290" class="cite xref">RFC9290</a>]</span>. This application profile does not define additional identifiers of error types as values of the 'error-id' field within the Custom Problem Detail entry 'ace-groupcomm-error' (OPT5).<a href="#section-4-7" class="pilcrow">¶</a></p>
 <div id="join">
 <section id="section-4.1">
         <h3 id="name-joining-a-security-group">
@@ -2498,7 +2499,7 @@ At the time of writing this specification, acceptable formats of authentication 
               <p id="section-4.2.1-2.1.1">'/ace-group': All Clients can send a FETCH request to retrieve a set of group names associated with their group identifiers specified in the request payload. Each element of the CBOR array 'gid' is a CBOR byte string (REQ13), which encodes the Gid of the group (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>) for which the group name and the URI to the group-membership resource are provided in the returned response.<a href="#section-4.2.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.2.1-2.2">
-              <p id="section-4.2.1-2.2.1">'/ace-group/GROUPNAME':  All group member Clients can send a GET request to retrieve the symmetric group keying material of the group with the name GROUPNAME. The value of the GROUPNAME URI path and the group name in the access token scope ('gname') <span class="bcp14">MUST</span> coincide (REQ7).<a href="#section-4.2.1-2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-4.2.1-2.2.1">'/ace-group/GROUPNAME':  All group member Clients can send a GET request to retrieve the symmetric group keying material of the group with the name GROUPNAME.<a href="#section-4.2.1-2.2.1" class="pilcrow">¶</a></p>
 <p id="section-4.2.1-2.2.2">
 The KDC processes the Key Distribution Request according to <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.3.2" class="relref">Section 4.3.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>. The Key Distribution Response is formatted as defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.3.2" class="relref">Section 4.3.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, with the following additions.<a href="#section-4.2.1-2.2.2" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -3268,6 +3269,10 @@ The logged information also contains relevant metadata about the Client that has
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC3986">[RFC3986]</dt>
+        <dd>
+<span class="refAuthor">Berners-Lee, T.</span>, <span class="refAuthor">Fielding, R.</span>, and <span class="refAuthor">L. Masinter</span>, <span class="refTitle">"Uniform Resource Identifier (URI): Generic Syntax"</span>, <span class="seriesInfo">STD 66</span>, <span class="seriesInfo">RFC 3986</span>, <span class="seriesInfo">DOI 10.17487/RFC3986</span>, <time datetime="2005-01" class="refDate">January 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3986">https://www.rfc-editor.org/rfc/rfc3986</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC5246">[RFC5246]</dt>
         <dd>
 <span class="refAuthor">Dierks, T.</span> and <span class="refAuthor">E. Rescorla</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.2"</span>, <span class="seriesInfo">RFC 5246</span>, <span class="seriesInfo">DOI 10.17487/RFC5246</span>, <time datetime="2008-08" class="refDate">August 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5246">https://www.rfc-editor.org/rfc/rfc5246</a>&gt;</span>. </dd>
@@ -3590,10 +3595,16 @@ The logged information also contains relevant metadata about the Client that has
             <p id="appendix-B.1-1.3.1">More consistent use of the terms "nonce" and "challenge".<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.4">
-            <p id="appendix-B.1-1.4.1">Added references to IANA registries.<a href="#appendix-B.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.4.1">Moved up the statement of compliance with REQ7.<a href="#appendix-B.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-B.1-1.5">
-            <p id="appendix-B.1-1.5.1">Editorial fixes.<a href="#appendix-B.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.5.1">Clarified that group names are consistent with the semantics of URI path segments.<a href="#appendix-B.1-1.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.6">
+            <p id="appendix-B.1-1.6.1">Added references to IANA registries.<a href="#appendix-B.1-1.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.7">
+            <p id="appendix-B.1-1.7.1">Editorial fixes.<a href="#appendix-B.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

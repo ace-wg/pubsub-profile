@@ -953,12 +953,18 @@ Table of Contents
 
    The entry of each resource specifies the CoAP methods by means of
    which it is permitted to access that resource, for nodes with
-   different roles in the group or as non members.  Except for accessing
+   different roles in the group or as non-members.  Except for accessing
    the /ace-group resource with the FETCH method (to retrieve security
    group names through their group identifiers) and the /ace-group/
    GROUPNAME resource with the POST method (to join the security group
    with name GROUPNAME), all other operations are permitted only to
    current members of the security group with name GROUPNAME (REQ11).
+
+   The GROUPNAME segment of the URI path MUST match with the group name
+   specified in the scope entry of the scope in the access token (i.e.,
+   'gname' in Section 3.1 of [RFC9594]) (REQ7).  Therefore, a group name
+   has to be consistent with the semantics of URI path segments (see
+   Section 3.3 of [RFC3986]).
 
    Each resource is marked as REQUIRED or OPTIONAL to be hosted at the
    KDC (REQ9).
@@ -1551,9 +1557,7 @@ Table of Contents
 
    *  '/ace-group/GROUPNAME': All group member Clients can send a GET
       request to retrieve the symmetric group keying material of the
-      group with the name GROUPNAME.  The value of the GROUPNAME URI
-      path and the group name in the access token scope ('gname') MUST
-      coincide (REQ7).
+      group with the name GROUPNAME.
 
       The KDC processes the Key Distribution Request according to
       Section 4.3.2 of [RFC9594].  The Key Distribution Response is
@@ -2502,6 +2506,11 @@ Table of Contents
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
 
+   [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+              Resource Identifier (URI): Generic Syntax", STD 66,
+              RFC 3986, DOI 10.17487/RFC3986, January 2005,
+              <https://www.rfc-editor.org/rfc/rfc3986>.
+
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246,
               DOI 10.17487/RFC5246, August 2008,
@@ -2910,6 +2919,11 @@ B.1.  Version -03 to -04
       Broker.
 
    *  More consistent use of the terms "nonce" and "challenge".
+
+   *  Moved up the statement of compliance with REQ7.
+
+   *  Clarified that group names are consistent with the semantics of
+      URI path segments.
 
    *  Added references to IANA registries.
 
