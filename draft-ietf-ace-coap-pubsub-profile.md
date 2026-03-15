@@ -81,6 +81,7 @@ normative:
     title: TLS Exporter Labels
     target: https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#exporter-labels
   I-D.ietf-core-coap-pubsub:
+  RFC3986:
   RFC5246:
   RFC5705:
   RFC6347:
@@ -546,7 +547,9 @@ This application profile does not define additional parameters to be used in the
 
 In order to enable secure group communication for the Pub-Sub Clients, the KDC provides the resources listed in {{tab-kdc-resources}}.
 
-The entry of each resource specifies the CoAP methods by means of which it is permitted to access that resource, for nodes with different roles in the group or as non members. Except for accessing the /ace-group resource with the FETCH method (to retrieve security group names through their group identifiers) and the /ace-group/GROUPNAME resource with the POST method (to join the security group with name GROUPNAME), all other operations are permitted only to current members of the security group with name GROUPNAME (REQ11).
+The entry of each resource specifies the CoAP methods by means of which it is permitted to access that resource, for nodes with different roles in the group or as non-members. Except for accessing the /ace-group resource with the FETCH method (to retrieve security group names through their group identifiers) and the /ace-group/GROUPNAME resource with the POST method (to join the security group with name GROUPNAME), all other operations are permitted only to current members of the security group with name GROUPNAME (REQ11).
+
+The GROUPNAME segment of the URI path MUST match with the group name specified in the scope entry of the scope in the access token (i.e., 'gname' in {{Section 3.1 of RFC9594}}) (REQ7). Therefore, a group name has to be consistent with the semantics of URI path segments (see {{Section 3.3 of RFC3986}}).
 
 Each resource is marked as REQUIRED or OPTIONAL to be hosted at the KDC (REQ9).
 
@@ -768,7 +771,7 @@ A Client can access the following resources at the KDC, in order to retrieve lat
 
 * '/ace-group': All Clients can send a FETCH request to retrieve a set of group names associated with their group identifiers specified in the request payload. Each element of the CBOR array 'gid' is a CBOR byte string (REQ13), which encodes the Gid of the group (see {{join-response}}) for which the group name and the URI to the group-membership resource are provided in the returned response.
 
-* '/ace-group/GROUPNAME':  All group member Clients can send a GET request to retrieve the symmetric group keying material of the group with the name GROUPNAME. The value of the GROUPNAME URI path and the group name in the access token scope ('gname') MUST coincide (REQ7).
+* '/ace-group/GROUPNAME':  All group member Clients can send a GET request to retrieve the symmetric group keying material of the group with the name GROUPNAME.
 
   The KDC processes the Key Distribution Request according to {{Section 4.3.2 of RFC9594}}. The Key Distribution Response is formatted as defined in {{Section 4.3.2 of RFC9594}}, with the following additions.
 
@@ -1351,6 +1354,10 @@ This section lists how this application profile of ACE addresses the requirement
 * Explicitly mentioned that topic-data resources are hosted at the Broker.
 
 * More consistent use of the terms "nonce" and "challenge".
+
+* Moved up the statement of compliance with REQ7.
+
+* Clarified that group names are consistent with the semantics of URI path segments.
 
 * Added references to IANA registries.
 
