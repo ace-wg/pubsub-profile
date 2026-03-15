@@ -482,8 +482,11 @@ The specific interactions between the Client and the Broker are defined in {{I-D
 
 The following CDDL {{RFC8610}} notation defines a scope entry that uses the AIF-PUBSUB-GROUPCOMM data model and expresses a set of permissions.
 
-~~~~~~~~~~~
-  AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-group, pubsub-perm>
+~~~~~~~~~~~ cddl
+   ;# include rfc9237
+
+   AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-group, pubsub-perm>
+
    pubsub-group = tstr ; name of Pub-Sub topic or of
                        ; the associated security group
 
@@ -1342,6 +1345,8 @@ This section lists how this application profile of ACE addresses the requirement
 {:removeinrfc}
 
 ## Version -03 to -04 ## {#sec-03-04}
+
+* Minor fixes in the CDDL grammar of the scope entry.
 
 * Explicitly mentioned that topic-data resources are hosted at the Broker.
 
