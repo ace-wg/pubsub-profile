@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 15 September 2026                             Brunel University
+Expires: 16 September 2026                             Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                           14 March 2026
+                                                           15 March 2026
 
 
 CoAP Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 September 2026.
+   This Internet-Draft will expire on 16 September 2026.
 
 Copyright Notice
 
@@ -821,21 +821,24 @@ Table of Contents
    the AIF-PUBSUB-GROUPCOMM data model and expresses a set of
    permissions.
 
+        ;# include rfc9237
+
         AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-group, pubsub-perm>
-         pubsub-group = tstr ; name of Pub-Sub topic or of
-                             ; the associated security group
 
-         pubsub-perm = uint .bits pubsub-perm-details
+        pubsub-group = tstr ; name of Pub-Sub topic or of
+                            ; the associated security group
 
-         pubsub-perm-details = &(
-          Admin: 0,
-          AppGroup: 1,
-          Publish: 2,
-          Read: 3,
-          Delete: 4
-         )
+        pubsub-perm = uint .bits pubsub-perm-details
 
-         scope_entry = [pubsub-group, pubsub-perm]
+        pubsub-perm-details = &(
+         Admin: 0,
+         AppGroup: 1,
+         Publish: 2,
+         Read: 3,
+         Delete: 4
+        )
+
+        scope_entry = [pubsub-group, pubsub-perm]
 
                 Figure 6: Pub-Sub scope using the AIF format
 
@@ -2900,6 +2903,8 @@ Appendix B.  Document Updates
    This section is to be removed before publishing as an RFC.
 
 B.1.  Version -03 to -04
+
+   *  Minor fixes in the CDDL grammar of the scope entry.
 
    *  Explicitly mentioned that topic-data resources are hosted at the
       Broker.
