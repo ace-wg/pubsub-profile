@@ -437,7 +437,7 @@ Building on {{Section 3.1 of RFC9594}}, this section defines the exact format an
 
 To this end, this profile uses the Authorization Information Format (AIF) {{RFC9237}} (REQ1). With reference to the generic AIF model
 
-~~~~~~~~~~~
+~~~~~~~~~~~ cddl
       AIF-Generic<Toid, Tperm> = [* [Toid, Tperm]]
 ~~~~~~~~~~~
 
