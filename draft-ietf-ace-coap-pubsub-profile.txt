@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 16 September 2026                             Brunel University
+Expires: 3 January 2027                                Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                           15 March 2026
+                                                             2 July 2026
 
 
 CoAP Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 September 2026.
+   This Internet-Draft will expire on 3 January 2027.
 
 Copyright Notice
 
@@ -125,11 +125,12 @@ Table of Contents
      A.1.  Mandatory-to-Address Requirements
      A.2.  Optional-to-Address Requirements
    Appendix B.  Document Updates
-     B.1.  Version -03 to -04
-     B.2.  Version -02 to -03
-     B.3.  Version -01 to -02
-     B.4.  Version -00 to -01
-     B.5.  Version -00
+     B.1.  Version -04 to -05
+     B.2.  Version -03 to -04
+     B.3.  Version -02 to -03
+     B.4.  Version -01 to -02
+     B.5.  Version -00 to -01
+     B.6.  Version -00
    Acknowledgments
    Authors' Addresses
 
@@ -490,7 +491,7 @@ Table of Contents
        (rekeying), e.g., due to a membership change in the group.
 
    Appendix A compiles the list of requirements for this application
-   profile of ACE and how they are fulfilled, consistently with the list
+   profile of ACE and how they are fulfilled, consistent with the list
    of requirements defined in Appendix A of [RFC9594].
 
 3.  Getting Authorisation to Join a Pub-Sub security group
@@ -584,10 +585,9 @@ Table of Contents
    However, using HTTP instead of CoAP is possible, by leveraging the
    corresponding parameters and methods.  Analogously, JSON [RFC8259]
    can be used instead of CBOR, by relying on the conversion method
-   specified in Sections 6.1 and 6.2 of [RFC8949].  In case JSON is
-   used, the Content-Format of the message has to be specified
-   accordingly.  Exact definitions of these exchanges are out of scope
-   for this document.
+   specified in Sections 6.1 and 6.2 of [RFC8949].  If JSON is used, the
+   Content-Format of the message has to be specified accordingly.  Exact
+   definitions of these exchanges are out of scope for this document.
 
 3.1.  Topic Discovery at the Broker (Optional)
 
@@ -821,24 +821,24 @@ Table of Contents
    the AIF-PUBSUB-GROUPCOMM data model and expresses a set of
    permissions.
 
-        ;# include rfc9237
+      ;# include rfc9237
 
-        AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-group, pubsub-perm>
+      AIF-PUBSUB-GROUPCOMM = AIF-Generic<pubsub-group, pubsub-perm>
 
-        pubsub-group = tstr ; name of Pub-Sub topic or of
-                            ; the associated security group
+      pubsub-group = tstr ; name of Pub-Sub topic or of
+                          ; the associated security group
 
-        pubsub-perm = uint .bits pubsub-perm-details
+      pubsub-perm = uint .bits pubsub-perm-details
 
-        pubsub-perm-details = &(
-         Admin: 0,
-         AppGroup: 1,
-         Publish: 2,
-         Read: 3,
-         Delete: 4
-        )
+      pubsub-perm-details = &(
+       Admin: 0,
+       AppGroup: 1,
+       Publish: 2,
+       Read: 3,
+       Delete: 4
+      )
 
-        scope_entry = [pubsub-group, pubsub-perm]
+      scope_entry = [pubsub-group, pubsub-perm]
 
                 Figure 6: Pub-Sub scope using the AIF format
 
@@ -916,25 +916,26 @@ Table of Contents
 
    *  'sign_alg' MUST take its value from the "Value" column of one of
       the recommended algorithms in the "COSE Algorithms" registry
-      [COSE.Algorithms] (REQ3).
+      [IANA.COSE.Algorithms] (REQ3).
 
    *  'sign_parameters' is a CBOR array.  Its format and value are the
       same of the COSE capabilities array for the algorithm indicated in
       'sign_alg' under the "Capabilities" column of the "COSE
-      Algorithms" registry [COSE.Algorithms] (REQ4).
+      Algorithms" registry [IANA.COSE.Algorithms] (REQ4).
 
    *  'sign_key_parameters' is a CBOR array.  Its format and value are
       the same of the COSE capabilities array for the COSE key type of
       the keys used with the algorithm indicated in 'sign_alg', as
       specified for that key type in the "Capabilities" column of the
-      "COSE Key Types" registry [COSE.Key.Types] (REQ5).
+      "COSE Key Types" registry [IANA.COSE.Key.Types] (REQ5).
 
    *  'cred_fmt' takes value from the "Label" column of the "COSE Header
-      Parameters" registry [COSE.Header.Parameters] (REQ6).  Acceptable
-      values denote a format of authentication credential that MUST
-      explicitly provide the public key as well as the comprehensive set
-      of information related to the public key algorithm, including,
-      e.g., the used elliptic curve (when applicable).
+      Parameters" registry [IANA.COSE.Header.Parameters] (REQ6).
+      Acceptable values denote a format of authentication credential
+      that MUST explicitly provide the public key as well as the
+      comprehensive set of information related to the public key
+      algorithm, including, e.g., the used elliptic curve (when
+      applicable).
 
       Acceptable formats of authentication credentials include CBOR Web
       Tokens (CWTs) and CWT Claims Sets (CCSs) [RFC8392], X.509
@@ -1152,7 +1153,7 @@ Table of Contents
    *  The joining node is not a Publisher, i.e., it is not going to send
       data to the application group.  In this case, the joining node is
       not required to provide its own authentication credential to the
-      KDC.  In case the joining node still provides an authentication
+      KDC.  If the joining node still provides an authentication
       credential in the 'client_cred' parameter of the Join Request (see
       Section 4.1.1), the KDC silently ignores that parameter, as well
       as the related parameter 'client_cred_verify' if present.
@@ -1181,17 +1182,16 @@ Table of Contents
       when composing the Join Request: the value of the 'client_cred'
       parameter specifies an empty authentication credential, i.e., its
       value is set to the empty CBOR byte string (0x40); the
-      'client_cred_verify' parameter is omitted.  In case the
-      'client_cred' parameter specifies the empty CBOR byte string
-      (0x40), the KDC silently ignores the 'client_cred_verify'
-      parameter if present.
+      'client_cred_verify' parameter is omitted.  If the 'client_cred'
+      parameter specifies the empty CBOR byte string (0x40), the KDC
+      silently ignores the 'client_cred_verify' parameter if present.
 
    The joining node MUST provide the KDC with its own authentication
    credential again, if it has previously provided the KDC with multiple
    authentication credentials intended for different security groups.
 
    If the joining node provides its authentication credential, the KDC
-   performs the consistency checks above and, in case of success,
+   performs the consistency checks above and, in the case of success,
    considers it as the authentication credential associated with the
    joining node in the group.
 
@@ -1277,12 +1277,12 @@ Table of Contents
    storing exactly one eligible authentication credential for the
    joining node (e.g., of the format accepted in the group).
 
-   In case an error occurs when processing the Join Request, the KDC and
-   the joining node follow what is defined in Section 4.3.1 of
-   [RFC9594], complemented by what is defined in Section 4.1.3 of the
+   In the case that an error occurs when processing the Join Request,
+   the KDC and the joining node follow what is defined in Section 4.3.1
+   of [RFC9594], complemented by what is defined in Section 4.1.3 of the
    present document.
 
-   In case of success, the KDC responds with a Join Response, whose
+   In the case of success, the KDC responds with a Join Response, whose
    payload is formatted as a CBOR map and MUST contain the following
    fields as per Section 4.3.1 of [RFC9594]:
 
@@ -1305,7 +1305,8 @@ Table of Contents
 
          o  'alg', with value the identifier of the AEAD algorithm used
             in the security group.  The value is taken from the "Value"
-            column of the "COSE Algorithms" registry [COSE.Algorithms].
+            column of the "COSE Algorithms" registry
+            [IANA.COSE.Algorithms].
 
          o  'Base IV', with value the Base Initialization Vector (Base
             IV) to use in the security group with this group key.
@@ -1347,7 +1348,7 @@ Table of Contents
          integer 2 used as map key.  Its value specifies the format of
          authentication credentials used in the group and is taken from
          the "Label" column of the "COSE Header Parameters" registry
-         [COSE.Header.Parameters].
+         [IANA.COSE.Header.Parameters].
 
          At the time of writing this specification, acceptable formats
          of authentication credentials are CBOR Web Tokens (CWTs) and
@@ -1361,7 +1362,7 @@ Table of Contents
          integer 3 used as map key.  Its value specifies the Signature
          Algorithm used to sign messages in the group and is taken from
          the "Value" column of the "COSE Algorithms" registry
-         [COSE.Algorithms].
+         [IANA.COSE.Algorithms].
 
       -  'sign_params': this parameter is identified by the CBOR
          unsigned integer 4 used as map key.  Its value specifies the
@@ -1372,14 +1373,14 @@ Table of Contents
             value of the COSE capabilities array for the Signature
             Algorithm indicated in 'sign_alg', as specified for that
             algorithm in the "Capabilities" column of the "COSE
-            Algorithms" registry [COSE.Algorithms].
+            Algorithms" registry [IANA.COSE.Algorithms].
 
          o  'sign_key_type_capab' is a CBOR array, with the same format
             and value of the COSE capabilities array for the COSE key
             type of the keys used with the Signature Algorithm indicated
             in 'sign_alg', as specified for that key type in the
             "Capabilities" column of the "COSE Key Types" registry
-            [COSE.Key.Types].
+            [IANA.COSE.Key.Types].
 
    *  'num', specifying the version number of the keying material
       specified in the 'key' field.  The initial value of the version
@@ -1531,12 +1532,12 @@ Table of Contents
 
    The KDC MUST return a 5.03 (Service Unavailable) error response to a
    Client that sends a Join Request to join the security group as
-   Publisher, in case there are currently no Sender IDs available to
-   assign.  The response MUST have Content-Format set to "application/
-   concise-problem-details+cbor" and is formatted as defined in
-   Section 4.1.2 of [RFC9594].  Within the Custom Problem Detail entry
-   'ace-groupcomm-error', the value of the 'error-id' field MUST be set
-   to 4 ("No available individual keying material").
+   Publisher, if there are currently no Sender IDs available to assign.
+   The response MUST have Content-Format set to "application/concise-
+   problem-details+cbor" and is formatted as defined in Section 4.1.2 of
+   [RFC9594].  Within the Custom Problem Detail entry 'ace-groupcomm-
+   error', the value of the 'error-id' field MUST be set to 4 ("No
+   available individual keying material").
 
 4.2.  Other Group Operations through the KDC
 
@@ -1685,8 +1686,8 @@ Table of Contents
       assigned to the group (i.e., since the latest group rekeying, see
       Section 5).
 
-      The KDC MUST return a 5.03 (Service Unavailable) error response in
-      case there are currently no Sender IDs available to assign in the
+      The KDC MUST return a 5.03 (Service Unavailable) error response if
+      there are currently no Sender IDs available to assign in the
       group.  The response MUST have Content-Format set to "application/
       concise-problem-details+cbor" and is formatted as defined in
       Section 4.1.2 of [RFC9594].  Within the Custom Problem Detail
@@ -1821,7 +1822,7 @@ Table of Contents
 
    The example also shows a delete operation, where the Publisher
    deletes the topic-data resource by sending a CoAP DELETE request to
-   the URI of that resource.  In case of success, the Broker replies
+   the URI of that resource.  In the case of success, the Broker replies
    with a 2.02 (Deleted) response.  Consequently, the Broker also
    unsubscribes all the Clients subscribed to that topic-data resource,
    by removing them from the list of observers and sending them a final
@@ -1876,11 +1877,11 @@ Table of Contents
    from the KDC (see Section 4.2.1) or from its local storage.  Then,
    the Subscriber uses that public key to verify the countersignature.
 
-   In case of successful verification, the Subscriber uses the 'kid'
+   In the case of successful verification, the Subscriber uses the 'kid'
    parameter from the 'unprotected' field of the COSE_Encrypt0 object,
    in order to retrieve the COSE Key used as current group key from its
    local storage.  Then, the Subscriber uses that group key to verify
-   and decrypt the COSE_Encrypt0 object.  In case of successful
+   and decrypt the COSE_Encrypt0 object.  In the case of successful
    verification, the Subscriber delivers the received topic data to the
    application.
 
@@ -2144,9 +2145,9 @@ Table of Contents
 
       -  The outcome of the group rekeying instance.
 
-      -  In case of success, the version number of the newly established
-         group keying material and the newly established Group
-         Identifier (Gid).
+      -  In the case of success, the version number of the newly
+         established group keying material and the newly established
+         Group Identifier (Gid).
 
    *  The addition of a group member to the group or the eviction of a
       group member from the group.
@@ -2322,8 +2323,8 @@ Table of Contents
    related to a topic, by appropriately rekeying the group associated
    with the topic in question.  According to the specific application
    requirements, the KDC can also rekey the group upon a new node's
-   joining, in case backward security has also to be preserved (see
-   Section 4.1.2).  The KDC can also rekey the group for further
+   joining, in the case that backward security has also to be preserved
+   (see Section 4.1.2).  The KDC can also rekey the group for further
    reasons, e.g., according to an application-specific rekeying period
    or scheduling.
 
@@ -2337,7 +2338,7 @@ Table of Contents
 9.1.  ACE Groupcomm Key Types
 
    IANA is asked to register the following entry in the "ACE Groupcomm
-   Key Types" registry [ACE.Groupcomm.Key.Types] within the
+   Key Types" registry [IANA.ACE.Groupcomm.Key.Types] within the
    "Authentication and Authorization for Constrained Environments (ACE)"
    registry group.
 
@@ -2354,7 +2355,7 @@ Table of Contents
 9.2.  ACE Groupcomm Profiles
 
    IANA is asked to register the following entries in the "ACE Groupcomm
-   Profiles" registry [ACE.Groupcomm.Profiles], within the
+   Profiles" registry [IANA.ACE.Groupcomm.Profiles], within the
    "Authentication and Authorization for Constrained Environments (ACE)"
    registry group.
 
@@ -2372,9 +2373,9 @@ Table of Contents
 9.3.  CoRE Resource Type
 
    IANA is asked to register the following entry in the "Resource Type
-   (rt=) Link Target Attribute Values" registry [Resource.Type.Values]
-   within the "Constrained Restful Environments (CoRE) Parameters"
-   registry group.
+   (rt=) Link Target Attribute Values" registry
+   [IANA.Resource.Type.Values] within the "Constrained Restful
+   Environments (CoRE) Parameters" registry group.
 
    *  Value: "core.ps.gm"
 
@@ -2416,7 +2417,7 @@ Table of Contents
 9.5.  CoAP Content-Formats
 
    IANA is asked to register the following entries to the "CoAP Content-
-   Formats" registry [CoAP.Content.Formats] within the "Constrained
+   Formats" registry [IANA.CoAP.Content.Formats] within the "Constrained
    RESTful Environments (CoRE) Parameters" registry group.
 
    *  Content Type: application/aif+cbor;toid=pubsub-topic;tperm=pubsub-
@@ -2442,8 +2443,8 @@ Table of Contents
 9.6.  TLS Exporter Labels
 
    IANA is asked to register the following entry in the "TLS Exporter
-   Labels" registry [TLS.Exporter.Labels] within the "Transport Layer
-   Security (TLS) Parameters" registry group, which is defined in
+   Labels" registry [IANA.TLS.Exporter.Labels] within the "Transport
+   Layer Security (TLS) Parameters" registry group, which is defined in
    Section 6 of [RFC5705] and updated in Section 12 of [RFC8447].
 
    *  Value: EXPORTER-ACE-Sign-Challenge-coap-pubsub-app
@@ -2458,48 +2459,53 @@ Table of Contents
 
 10.1.  Normative References
 
-   [ACE.Groupcomm.Key.Types]
-              IANA, "ACE Groupcomm Key Types",
-              <https://www.iana.org/assignments/ace/ace.xhtml#ace-
-              groupcomm-key-types>.
-
-   [ACE.Groupcomm.Profiles]
-              IANA, "ACE Groupcomm Profiles",
-              <https://www.iana.org/assignments/ace/ace.xhtml#ace-
-              groupcomm-profiles>.
-
-   [CoAP.Content.Formats]
-              IANA, "CoAP Content-Formats",
-              <https://www.iana.org/assignments/core-parameters/core-
-              parameters.xhtml#content-formats>.
-
-   [COSE.Algorithms]
-              IANA, "COSE Algorithms",
-              <https://www.iana.org/assignments/cose/
-              cose.xhtml#algorithms>.
-
-   [COSE.Header.Parameters]
-              IANA, "COSE Header Parameters",
-              <https://www.iana.org/assignments/cose/cose.xhtml#header-
-              parameters>.
-
-   [COSE.Key.Types]
-              IANA, "COSE Key Types",
-              <https://www.iana.org/assignments/cose/cose.xhtml#key-
-              type>.
-
    [I-D.ietf-core-coap-pubsub]
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
               subscribe architecture for the Constrained Application
               Protocol (CoAP)", Work in Progress, Internet-Draft, draft-
-              ietf-core-coap-pubsub-19, 2 March 2026,
+              ietf-core-coap-pubsub-21, 2 July 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pubsub-19>.
+              coap-pubsub-21>.
 
-   [Resource.Type.Values]
+   [IANA.ACE.Groupcomm.Key.Types]
+              IANA, "ACE Groupcomm Key Types",
+              <https://www.iana.org/assignments/ace/ace.xhtml#ace-
+              groupcomm-key-types>.
+
+   [IANA.ACE.Groupcomm.Profiles]
+              IANA, "ACE Groupcomm Profiles",
+              <https://www.iana.org/assignments/ace/ace.xhtml#ace-
+              groupcomm-profiles>.
+
+   [IANA.CoAP.Content.Formats]
+              IANA, "CoAP Content-Formats",
+              <https://www.iana.org/assignments/core-parameters/core-
+              parameters.xhtml#content-formats>.
+
+   [IANA.COSE.Algorithms]
+              IANA, "COSE Algorithms",
+              <https://www.iana.org/assignments/cose/
+              cose.xhtml#algorithms>.
+
+   [IANA.COSE.Header.Parameters]
+              IANA, "COSE Header Parameters",
+              <https://www.iana.org/assignments/cose/cose.xhtml#header-
+              parameters>.
+
+   [IANA.COSE.Key.Types]
+              IANA, "COSE Key Types",
+              <https://www.iana.org/assignments/cose/cose.xhtml#key-
+              type>.
+
+   [IANA.Resource.Type.Values]
               IANA, "Resource Type (rt=) Link Target Attribute Values",
               <https://www.iana.org/assignments/core-parameters/core-
               parameters.xhtml#rt-link-target-att-value>.
+
+   [IANA.TLS.Exporter.Labels]
+              IANA, "TLS Exporter Labels",
+              <https://www.iana.org/assignments/tls-parameters/tls-
+              parameters.xhtml#exporter-labels>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -2628,11 +2634,6 @@ Table of Contents
               DOI 10.17487/RFC9594, September 2024,
               <https://www.rfc-editor.org/rfc/rfc9594>.
 
-   [TLS.Exporter.Labels]
-              IANA, "TLS Exporter Labels",
-              <https://www.iana.org/assignments/tls-parameters/tls-
-              parameters.xhtml#exporter-labels>.
-
 10.2.  Informative References
 
    [I-D.ietf-ace-key-groupcomm-oscore]
@@ -2640,17 +2641,17 @@ Table of Contents
               Object Security for Constrained RESTful Environments
               (Group OSCORE) Using Authentication and Authorization for
               Constrained Environments (ACE)", Work in Progress,
-              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-20, 25
-              February 2026, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-key-groupcomm-oscore-20>.
+              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-21, 14
+              March 2026, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-ace-key-groupcomm-oscore-21>.
 
    [I-D.ietf-cose-cbor-encoded-cert]
-              Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
-              M. Furuhed, "CBOR Encoded X.509 Certificates (C509
-              Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-17, 2 March 2026,
+              Mattsson, J. P., Selander, G., Raza, S., Höglund, J.,
+              Furuhed, M., and L. Liao, "CBOR Encoded X.509 Certificates
+              (C509 Certificates)", Work in Progress, Internet-Draft,
+              draft-ietf-cose-cbor-encoded-cert-20, 30 June 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-17>.
+              cbor-encoded-cert-20>.
 
    [RFC8259]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", STD 90, RFC 8259,
@@ -2702,17 +2703,17 @@ A.1.  Mandatory-to-Address Requirements
 
    *  REQ3: If used, specify the acceptable values for the 'sign_alg'
       parameter: values from the "Value" column of the "COSE Algorithms"
-      registry [COSE.Algorithms].
+      registry [IANA.COSE.Algorithms].
 
    *  REQ4: If used, specify the acceptable values and structure for the
       'sign_parameters' parameter: values and structure from the COSE
       algorithm capabilities as specified in the "COSE Algorithms"
-      registry [COSE.Algorithms].
+      registry [IANA.COSE.Algorithms].
 
    *  REQ5: If used, specify the acceptable values and structure for the
       'sign_key_parameters' parameter: values and structure from the
       COSE key type capabilities as specified in the "COSE Key Types"
-      registry [COSE.Key.Types].
+      registry [IANA.COSE.Key.Types].
 
    *  REQ6: Specify the acceptable formats for authentication
       credentials and, if applicable, the acceptable values for the
@@ -2721,7 +2722,7 @@ A.1.  Mandatory-to-Address Requirements
       to the public key algorithm (see Section 3.6 and Section 4.1.2).
       Consistent acceptable values for 'cred_fmt' are taken from the
       "Label" column of the "COSE Header Parameters" registry
-      [COSE.Header.Parameters].
+      [IANA.COSE.Header.Parameters].
 
    *  REQ7: If the value of the GROUPNAME URI path and the group name in
       the access token scope ('gname') are not required to coincide,
@@ -2911,7 +2912,11 @@ Appendix B.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-B.1.  Version -03 to -04
+B.1.  Version -04 to -05
+
+   *  Editorial fixes.
+
+B.2.  Version -03 to -04
 
    *  Minor fixes in the CDDL grammar of the scope entry.
 
@@ -2929,7 +2934,7 @@ B.1.  Version -03 to -04
 
    *  Editorial fixes.
 
-B.2.  Version -02 to -03
+B.3.  Version -02 to -03
 
    *  Updated introduction: clarified relationships between this
       document and related documents.
@@ -2952,7 +2957,7 @@ B.2.  Version -02 to -03
 
    *  Editorial fixes and improvements.
 
-B.3.  Version -01 to -02
+B.4.  Version -01 to -02
 
    *  Clarified high-level description of the authorisation flow.
 
@@ -2961,7 +2966,7 @@ B.3.  Version -01 to -02
 
    *  Editorial fixes and improvements.
 
-B.4.  Version -00 to -01
+B.5.  Version -00 to -01
 
    *  Clarified recommendations about randomness and size of nonces.
 
@@ -2982,7 +2987,7 @@ B.4.  Version -00 to -01
 
    *  Editorial fixes and improvements.
 
-B.5.  Version -00
+B.6.  Version -00
 
    *  Imported content from draft-ietf-ace-pubsub-profile-11.
 

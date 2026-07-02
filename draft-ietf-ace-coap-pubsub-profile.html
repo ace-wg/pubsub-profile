@@ -12,22 +12,23 @@
        This document defines an application profile of the Authentication and Authorization for Constrained Environments (ACE) framework, to enable secure group communication in the Publish-Subscribe (Pub-Sub) architecture for the Constrained Application Protocol (CoAP) [draft-ietf-core-coap-pubsub], where Publishers and Subscribers communicate through a Broker. This profile relies on protocol-specific transport profiles of ACE to achieve communication security, server authentication, and proof of possession of a key owned by the Client and bound to an OAuth 2.0 access token. This document specifies the provisioning and enforcement of authorization information for Clients to act as Publishers and/or Subscribers, as well as the provisioning of keying material and security parameters that Clients use for protecting their communications end-to-end through the Broker. 
        Note to RFC Editor: Please replace "[draft-ietf-core-coap-pubsub]" with the RFC number of that document and delete this paragraph. 
     ' name="description">
-<meta content="xml2rfc 3.31.0" name="generator">
+<meta content="xml2rfc 3.34.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-ace-coap-pubsub-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.31.0
-    Python 3.12.12
-    ConfigArgParse 1.7
+  xml2rfc 3.34.0
+    Python 3.14.5
+    ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 6.0.2
-    platformdirs 4.5.1
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.10.0
     pycountry 24.6.1
     PyYAML 6.0.3
-    requests 2.32.5
-    wcwidth 0.3.0
+    requests 2.33.1
+    wcwidth 0.8.1
 -->
 <link href="draft-ietf-ace-coap-pubsub-profile.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -294,16 +295,19 @@ h1, h2, h3, h4, h5, h6 {
   font-size-adjust: 0.5;
   color: var(--title-color);
 }
-h1#title {
-  font-size: 32px;
-  line-height: 40px;
-  clear: both;
-}
-h1#title, h1#rfcnum {
-  margin: 1.5em 0 0.2em;
-}
-h1#rfcnum + h1#title {
-  margin: 0.2em 0;
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
 }
 
 h1, h2, h3 {
@@ -323,10 +327,10 @@ h4, h5, h6 {
 #abstract+p {
   font-size: 18px;
   line-height: 24px;
-}
-#abstract+p code, #abstract+p samp, #abstract+p tt {
-  font-size: 16px;
-  line-height: 0;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
 }
 
 p {
@@ -337,59 +341,59 @@ p {
 div {
   margin: 0;
 }
-.alignRight.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignRight.art-text pre {
-  padding: 0;
-  width: auto;
-}
 .alignRight {
   margin: 1em 0;
-}
-.alignRight > *:first-child {
-  border: none;
-  margin: 0;
-  float: right;
-  clear: both;
-}
-.alignRight > *:nth-child(2) {
-  clear: both;
-  display: block;
-  border: none;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
 }
 svg {
   display: block;
-}
-/* font-family isn't space-separated, but =~ will have to do */
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
-.alignCenter.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignCenter.art-text pre {
-  padding: 0;
-  width: auto;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
 }
 .alignCenter {
   margin: 1em 0;
-}
-.alignCenter > *:first-child {
-  border: none;
-  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
-     support flexbox yet.
-  */
-  display: table;
-  margin: 0 auto;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
 }
 
 /* lists */
@@ -427,26 +431,25 @@ dl {
     --indent: 5ch;
     & > dt {
       min-width: calc(var(--indent) - 2ch);
+      float: none;
     }
-  }
-  &.olPercent > dt {
-    float: none;
   }
 
   dl > dd > & {
     margin-top: 0.5em;
     margin-bottom: 0;
   }
-}
-dl:not(.dlNewline) > dt {
-  float: left;
-  margin-right: 2ch;
-  min-width: 8ch;
-}
-dl > dd {
-  margin-bottom: .8em;
-  margin-left: var(--indent) !important; /* stupid element overrides */
-  min-height: 2ex;
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
 }
 :is(dl.compact, .dlCompact) > dd {
   margin-bottom: 0;
@@ -462,20 +465,22 @@ dl > dd {
 }
 
 /* links */
-a, a[href].selfRef:hover {
+a {
   text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
 }
-a[href] {
-  color: var(--link-color);
-}
-a[href].selfRef, .iref + a[href].internal {
+.iref + a[href].internal {
   color: var(--text-color);
-}
-a[href]:hover {
-  text-decoration: underline;
-}
-a[href].selfRef:hover {
-  background-color: var(--highlight-color);
 }
 a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
   white-space: nowrap;
@@ -511,9 +516,9 @@ img {
 figure {
   margin: 0.5em 0;
   padding: 0;
-}
-figure blockquote {
-  margin: 0.8em 0.4em 0.4em;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
 }
 figcaption, caption {
   font-style: italic;
@@ -523,17 +528,19 @@ figcaption, caption {
 }
 @media screen {
   /* Auto-collapse boilerplate. */
-  :is(#status-of-memo, #copyright) p {
-    margin: -2px 0;
-    max-height: 0;
-    transition: max-height 2s ease, margin 0.5s ease 0.5s;
-    overflow: hidden;
-  }
-  :is(#status-of-memo, #copyright):hover p,
-  :is(#status-of-memo, #copyright) h2:target ~ p {
-    margin: 0.5em 0;
-    max-height: 500px;
-    overflow: auto;
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
   }
   pre, svg {
     display: inline-block;
@@ -583,25 +590,17 @@ table {
   max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
-}
-table.right {
-  margin-left: auto;
-}
-table.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-table.left {
-  margin-right: auto;
-}
-table .text-left {
-  text-align: left;
-}
-table .text-center {
-  text-align: center;
-}
-table .text-right {
-  text-align: right;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
 }
 
 thead, tbody {
@@ -621,13 +620,6 @@ th {
 :is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
   background-color: var(--highlight-color);
 }
-table caption {
-  margin: 0;
-  padding: 3px 0 3px 1em;
-}
-table p {
-  margin: 0;
-}
 
 /* pilcrow */
 a.pilcrow {
@@ -638,18 +630,16 @@ a.pilcrow {
     color: var(--pilcrow-weak);
     &:hover { text-decoration: none; }
   }
-}
-@media not print {
-  :hover > a.pilcrow, a.pilcrow:focus {
-    opacity: 1;
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
   }
-  a.pilcrow[href]:hover {
-    color: var(--pilcrow-strong);
-    background-color: transparent;
-  }
-}
-@media print {
-  a.pilcrow {
+  @media print {
     display: none;
   }
 }
@@ -708,9 +698,9 @@ sub, sup {
   font-size: 0.9em;
   font-style: italic;
   margin-top: 2em;
-}
-.docInfo .prepared {
-  float: right;
+  & .prepared {
+    float: right;
+  }
 }
 
 /* table of contents */
@@ -800,23 +790,27 @@ hr.addr {
   max-width: calc(100% - 16px);
 }
 @media (min-width: 500px) {
-  #authors-addresses > section {
-    column-count: 2;
-    column-gap: 20px;
-  }
-  #authors-addresses > section > h2 {
-    column-span: all;
-  }
-  /* hack for break-inside: avoid-column */
-  #authors-addresses address {
-    display: inline-block;
-    break-inside: avoid-column;
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
   }
 }
 
 /* Comments */
-.rfcEditorRemove p:first-of-type {
-  font-style: italic;
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -827,19 +821,21 @@ hr.addr {
 }
 
 @media screen {
-  #toc nav {
-    font-family: var(--font-title);
-    font-weight: 360;
-    & > ul { margin-bottom: 2em; }
-    & ul {
-      margin: 0 0 0 4px;
-      & :is(p, li) {
-        margin: 2px 0;
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
       }
     }
-  }
-  #toc a.toplink {
-    float: right;
+    & a.toplink {
+      float: right;
+    }
   }
 }
 @media not screen {
@@ -860,54 +856,54 @@ hr.addr {
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 2px 0 2px 6px;
-    padding-right: 1em;
-    font-size: 18px;
-    line-height: 24px;
-    min-width: 190px;
-    text-align: right;
-    background-color: #444;
-    color: white;
-    cursor: pointer;
-    &::before { /* css hamburger */
-      float: right;
-      position: relative;
-      width: 1em;
-      height: 1px;
-      left: -164px;
-      margin: 8px 0 0 0;
-      background: white none repeat scroll 0 0;
-      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
-      content: "";
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
     }
-  }
-  #toc nav {
-    display: none;
-    background-color: var(--background-color);
-    padding: 0.5em 1em 1em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    height: calc(100vh - 48px);
-    border-left: 1px solid #ddd;
-  }
-  #toc.active {
-    opacity: 1;
-    & nav { display: block; }
-  }
-  /* Make the collapsed ToC header render white on gray also when it's a link */
-  #toc h2 a,
-  #toc h2 a:is(:link, :focus, :hover),
-  #toc a.toplink,
-  #toc a.toplink:hover {
-    color: white;
-    background-color: #444;
-    text-decoration: none;
-  }
-  #toc a.toplink {
-    margin: 2px 0.5em 0;
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
   }
 }
 
@@ -926,26 +922,26 @@ hr.addr {
     margin: 0;
     padding: 0;
     z-index: 1;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 0.25em 1em 1em 0;
-  }
-  #toc nav {
-    display: block;
-    height: calc(90vh - 84px);
-    bottom: 0;
-    padding: 0.5em 0 2em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
   }
   img { /* future proofing */
     max-width: 100%;
     height: auto;
-  }
-  #toc a.toplink {
-    margin: 8px 0.5em 0;
   }
 }
 
@@ -961,12 +957,13 @@ hr.addr {
   #n-copyright-notice {
     border-bottom: none;
   }
-  #toc, #n-introduction {
-    page-break-before: always;
-  }
   #toc {
+    page-break-before: always;
     border-top: none;
     padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
   }
   figure, pre, .vcard {
     page-break-inside: avoid;
@@ -1028,17 +1025,19 @@ hr.addr {
 }
 
 /* SVG Trick: a prefix match works because only black and white are allowed */
-svg :is([stroke="black"], [stroke^="#000"]) {
-  stroke: var(--text-color);
-}
-svg :is([stroke="white"], [stroke^="#fff"]) {
-  stroke: var(--background-color);
-}
-svg :is([fill="black"], [fill^="#000"], :not([fill])) {
-  fill: var(--text-color);
-}
-svg :is([fill="white"], [fill^="#fff"]) {
-  fill: var(--background-color);
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
 }
 </style>
 
@@ -1048,11 +1047,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ACE CoAP Pub-Sub Profile</td>
-<td class="right">March 2026</td>
+<td class="right">July 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Palombini, et al.</td>
-<td class="center">Expires 16 September 2026</td>
+<td class="center">Expires 3 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-coap-pubsub-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-03-15" class="published">15 March 2026</time>
+<time datetime="2026-07-02" class="published">2 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-09-16">16 September 2026</time></dd>
+<dd class="expires"><time datetime="2027-01-03">3 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1124,7 +1123,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 16 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 3 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1311,19 +1310,22 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-document-updates" class="internal xref">Document Updates</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
-                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-version-03-to-04" class="internal xref">Version -03 to -04</a></p>
+                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-version-04-to-05" class="internal xref">Version -04 to -05</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
-                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-version-02-to-03" class="internal xref">Version -02 to -03</a></p>
+                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-version-03-to-04" class="internal xref">Version -03 to -04</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3">
-                <p id="section-toc.1-1.12.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-version-01-to-02" class="internal xref">Version -01 to -02</a></p>
+                <p id="section-toc.1-1.12.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-version-02-to-03" class="internal xref">Version -02 to -03</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4">
-                <p id="section-toc.1-1.12.2.4.1"><a href="#appendix-B.4" class="auto internal xref">B.4</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
+                <p id="section-toc.1-1.12.2.4.1"><a href="#appendix-B.4" class="auto internal xref">B.4</a>.  <a href="#name-version-01-to-02" class="internal xref">Version -01 to -02</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.5">
-                <p id="section-toc.1-1.12.2.5.1"><a href="#appendix-B.5" class="auto internal xref">B.5</a>.  <a href="#name-version-00" class="internal xref">Version -00</a></p>
+                <p id="section-toc.1-1.12.2.5.1"><a href="#appendix-B.5" class="auto internal xref">B.5</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.6">
+                <p id="section-toc.1-1.12.2.6.1"><a href="#appendix-B.6" class="auto internal xref">B.6</a>.  <a href="#name-version-00" class="internal xref">Version -00</a></p>
 </li>
             </ul>
 </li>
@@ -1658,13 +1660,13 @@ This is not to be confused with an "application group", which has relevance at t
 <p id="section-2-9">Except for the end-to-end protection of published topic data (see <a href="#oscon" class="auto internal xref">Section 6.1</a>), all communications between the involved entities (Clients, Broker, KDC, Authorization Server) <span class="bcp14">MUST</span> occur and be secured in accordance with the protocol-specific transport profile of ACE used.<a href="#section-2-9" class="pilcrow">¶</a></p>
 <p id="section-2-10">For each Client, the Client and the Broker <span class="bcp14">MUST</span> have a secure communication association, which they establish with the help of the AS and using a transport profile of ACE. This is shown by the interactions A and C in <a href="#archi" class="auto internal xref">Figure 2</a>. During this process, the Client obtains an access token from the AS and uploads it to the Broker, thus providing an evidence of the topics that it is authorised to participate in, and with which permissions.<a href="#section-2-10" class="pilcrow">¶</a></p>
 <p id="section-2-11">For each Client, the Client and the KDC <span class="bcp14">MUST</span> have a secure communication association, which they also establish with the help of the AS and using a transport profile of ACE (REQ24). This is shown by the interactions A and B in <a href="#archi" class="auto internal xref">Figure 2</a>. During this process, the Client obtains an access token from the AS and uploads it to the KDC, thus providing an evidence of the security groups that it can join, as associated with the topics of interest at the Broker. Based on the permissions specified in the access token, the Client can request the KDC to join a security group, after which the Client obtains from the KDC the keying material to use for communicating with the other group members. This builds on the process for joining security groups with ACE, as defined in <span>[<a href="#RFC9594" class="cite xref">RFC9594</a>]</span> and further specified in this document.<a href="#section-2-11" class="pilcrow">¶</a></p>
-<p id="section-2-12">In addition, this profile allows an anonymous Client to perform some of the discovery operations defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-19#section-2.3" class="relref">Section 2.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> through the Broker, as shown by the interaction O in <a href="#archi" class="auto internal xref">Figure 2</a>. That is, an anonymous Client can discover:<a href="#section-2-12" class="pilcrow">¶</a></p>
+<p id="section-2-12">In addition, this profile allows an anonymous Client to perform some of the discovery operations defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.3" class="relref">Section 2.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> through the Broker, as shown by the interaction O in <a href="#archi" class="auto internal xref">Figure 2</a>. That is, an anonymous Client can discover:<a href="#section-2-12" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-13.1">
-          <p id="section-2-13.1.1">the Broker itself, by relying on the resource type "core.ps" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-19#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>); and<a href="#section-2-13.1.1" class="pilcrow">¶</a></p>
+          <p id="section-2-13.1.1">the Broker itself, by relying on the resource type "core.ps" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>); and<a href="#section-2-13.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-13.2">
-          <p id="section-2-13.2.1">topics of interest at the Broker (i.e., the corresponding topic resources hosted at the Broker), by relying on the resource type "core.ps.conf" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-19#section-2.3.3" class="relref">Section 2.3.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-2-13.2.1" class="pilcrow">¶</a></p>
+          <p id="section-2-13.2.1">topics of interest at the Broker (i.e., the corresponding topic resources hosted at the Broker), by relying on the resource type "core.ps.conf" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.3.3" class="relref">Section 2.3.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-2-13.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-2-14">However, an anonymous Client is not allowed to access topic resources at the Broker and obtain from those any additional information or metadata about the corresponding topic (e.g., the topic status, the URI of the topic-data resource where to publish or subscribe for that topic, or the URI to the KDC).<a href="#section-2-14" class="pilcrow">¶</a></p>
@@ -1738,7 +1740,7 @@ This is not to be confused with an "application group", which has relevance at t
           <p id="section-2-19.5.1">The KDC renews and redistributes the group keying material (rekeying), e.g., due to a membership change in the group.<a href="#section-2-19.5.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
-<p id="section-2-20"><a href="#groupcomm_requirements" class="auto internal xref">Appendix A</a> compiles the list of requirements for this application profile of ACE and how they are fulfilled, consistently with the list of requirements defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#appendix-A" class="relref">Appendix A</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>.<a href="#section-2-20" class="pilcrow">¶</a></p>
+<p id="section-2-20"><a href="#groupcomm_requirements" class="auto internal xref">Appendix A</a> compiles the list of requirements for this application profile of ACE and how they are fulfilled, consistent with the list of requirements defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#appendix-A" class="relref">Appendix A</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>.<a href="#section-2-20" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authorisation">
@@ -1907,14 +1909,14 @@ This is not to be confused with an "application group", which has relevance at t
 <p id="section-3-6">Separately, after the Client obtains authorisation information for joining the security group at the KDC (see <a href="#auth-request" class="auto internal xref">Section 3.4</a> and <a href="#as-response" class="auto internal xref">Section 3.5</a>), the Client uploads that information to the KDC (see <a href="#token-post" class="auto internal xref">Section 3.6</a>). Following that, the Client can join the security group at the KDC and thus obtain the corresponding keying material (see <a href="#join" class="auto internal xref">Section 4.1</a>).<a href="#section-3-6" class="pilcrow">¶</a></p>
 <p id="section-3-7">Once the steps above have been completed, the Client can take part in the secure group communication for the topic TOPICNAME, e.g., by publishing data to the topic through a request targeting the topic-data resource at the Broker.<a href="#section-3-7" class="pilcrow">¶</a></p>
 <p id="section-3-8">Note that the overview in <a href="#message-flow" class="auto internal xref">Figure 4</a> shows the specific sequence of steps where the Client: first associates with the Broker for participating in a topic; then discovers the KDC and the name of the security group through the Broker; and finally associates with the KDC, through which it joins the security group. However, if the Client is early aware about how to reach the KDC and about the name of the security group, the Client can instead: first associate with the KDC and join the security group, and then associate with the Broker for participating in the topic.<a href="#section-3-8" class="pilcrow">¶</a></p>
-<p id="section-3-9">Since <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> recommends the use of CoAP and CBOR, this document describes the exchanges assuming that CoAP and CBOR are used. However, using HTTP instead of CoAP is possible, by leveraging the corresponding parameters and methods. Analogously, JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> can be used instead of CBOR, by relying on the conversion method specified in Sections <a href="https://rfc-editor.org/rfc/rfc8949#section-6.1" class="relref">6.1</a> and <a href="https://rfc-editor.org/rfc/rfc8949#section-6.2" class="relref">6.2</a> of <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>. In case JSON is used, the Content-Format of the message has to be specified accordingly. Exact definitions of these exchanges are out of scope for this document.<a href="#section-3-9" class="pilcrow">¶</a></p>
+<p id="section-3-9">Since <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> recommends the use of CoAP and CBOR, this document describes the exchanges assuming that CoAP and CBOR are used. However, using HTTP instead of CoAP is possible, by leveraging the corresponding parameters and methods. Analogously, JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> can be used instead of CBOR, by relying on the conversion method specified in Sections <a href="https://rfc-editor.org/rfc/rfc8949#section-6.1" class="relref">6.1</a> and <a href="https://rfc-editor.org/rfc/rfc8949#section-6.2" class="relref">6.2</a> of <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>. If JSON is used, the Content-Format of the message has to be specified accordingly. Exact definitions of these exchanges are out of scope for this document.<a href="#section-3-9" class="pilcrow">¶</a></p>
 <div id="topic-discovery">
 <section id="section-3.1">
         <h3 id="name-topic-discovery-at-the-brok">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-topic-discovery-at-the-brok" class="section-name selfRef">Topic Discovery at the Broker (Optional)</a>
         </h3>
-<p id="section-3.1-1">The discovery of a topic at the Broker can be performed by discovering the corresponding topic resource hosted at the Broker. For example, the Client can send a lookup request to /.well-known/core at the Broker, specifying as lookup criterion the resource type "core.ps.conf" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-19#section-2.3.3" class="relref">Section 2.3.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">Although the links to the topic resources are also specified in the representation of the collection resource at the Broker (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-19#section-2.4" class="relref">Section 2.4</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>), the Client is not supposed to access such a resource, as intended for administrative operations that are out of the scope of this document.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">The discovery of a topic at the Broker can be performed by discovering the corresponding topic resource hosted at the Broker. For example, the Client can send a lookup request to /.well-known/core at the Broker, specifying as lookup criterion the resource type "core.ps.conf" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.3.3" class="relref">Section 2.3.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">Although the links to the topic resources are also specified in the representation of the collection resource at the Broker (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.4" class="relref">Section 2.4</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>), the Client is not supposed to access such a resource, as intended for administrative operations that are out of the scope of this document.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="AS-discovery">
@@ -1947,8 +1949,8 @@ This is not to be confused with an "application group", which has relevance at t
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-kdc-discovery-at-the-broker" class="section-name selfRef">KDC Discovery at the Broker (Optional)</a>
         </h3>
 <p id="section-3.3-1">Once a Client has obtained an access token from the AS and accordingly established a secure association with the Broker, the Client has the permission to access the topic resources at the Broker that pertain to the topics on which the Client is authorised to operate.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3-2">In particular the Client is authorised to retrieve the representation of a topic resource, from which the Client can retrieve information related to the topic in question, as specified in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-19#section-2.5" class="relref">Section 2.5</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
-<p id="section-3.3-3">This profile extends the set of CoAP Pub-Sub Parameters that is possible to specify within the representation of a topic resource, as originally defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-19#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>. In particular, this profile defines the following two parameters that the Broker can specify in a response to a request that targets a topic resource (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-19#section-2.5" class="relref">Section 2.5</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>). Note that, when these parameters are transported in their respective fields of the message payload, the Content-Format "application/core-pubsub+cbor" defined in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> <span class="bcp14">MUST</span> be used.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">In particular the Client is authorised to retrieve the representation of a topic resource, from which the Client can retrieve information related to the topic in question, as specified in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.5" class="relref">Section 2.5</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.3-3">This profile extends the set of CoAP Pub-Sub Parameters that is possible to specify within the representation of a topic resource, as originally defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>. In particular, this profile defines the following two parameters that the Broker can specify in a response to a request that targets a topic resource (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.5" class="relref">Section 2.5</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>). Note that, when these parameters are transported in their respective fields of the message payload, the Content-Format "application/core-pubsub+cbor" defined in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> <span class="bcp14">MUST</span> be used.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3-4.1">
             <p id="section-3.3-4.1.1">'kdc_uri', with value the URI of the group-membership resource at the KDC, where Clients can send a request to join the security group associated with the topic in question. The URI is encoded as a CBOR text string. Clients will have to obtain an access token from the AS to upload to the KDC, before starting the process to join the security group at the KDC.<a href="#section-3.3-4.1.1" class="pilcrow">¶</a></p>
@@ -2050,7 +2052,7 @@ Since this application profile considers user-related operations, the "Admin" op
 <p id="section-3.4.1-13">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> notation defines a scope entry that uses the AIF-PUBSUB-GROUPCOMM data model and expresses a set of permissions.<a href="#section-3.4.1-13" class="pilcrow">¶</a></p>
 <span id="name-pub-sub-scope-using-the-aif"></span><div id="scope-aif">
 <figure id="figure-6">
-            <div class="alignCenter art-cddl art-text artwork" id="section-3.4.1-14.1">
+            <div class="lang-cddl sourcecode" id="section-3.4.1-14.1">
 <pre>
    ;# include rfc9237
 
@@ -2111,16 +2113,16 @@ Since this application profile considers user-related operations, the "Admin" op
 <p id="section-3.6-4">The following applies for each element 'sign_info_entry'.<a href="#section-3.6-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.6-5.1">
-            <p id="section-3.6-5.1.1">'sign_alg' <span class="bcp14">MUST</span> take its value from the "Value" column of one of the recommended algorithms in the "COSE Algorithms" registry <span>[<a href="#COSE.Algorithms" class="cite xref">COSE.Algorithms</a>]</span> (REQ3).<a href="#section-3.6-5.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.6-5.1.1">'sign_alg' <span class="bcp14">MUST</span> take its value from the "Value" column of one of the recommended algorithms in the "COSE Algorithms" registry <span>[<a href="#IANA.COSE.Algorithms" class="cite xref">IANA.COSE.Algorithms</a>]</span> (REQ3).<a href="#section-3.6-5.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.6-5.2">
-            <p id="section-3.6-5.2.1">'sign_parameters' is a CBOR array.  Its format and value are the same of the COSE capabilities array for the algorithm indicated in 'sign_alg' under the "Capabilities" column of the "COSE Algorithms" registry <span>[<a href="#COSE.Algorithms" class="cite xref">COSE.Algorithms</a>]</span> (REQ4).<a href="#section-3.6-5.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.6-5.2.1">'sign_parameters' is a CBOR array.  Its format and value are the same of the COSE capabilities array for the algorithm indicated in 'sign_alg' under the "Capabilities" column of the "COSE Algorithms" registry <span>[<a href="#IANA.COSE.Algorithms" class="cite xref">IANA.COSE.Algorithms</a>]</span> (REQ4).<a href="#section-3.6-5.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.6-5.3">
-            <p id="section-3.6-5.3.1">'sign_key_parameters' is a CBOR array.  Its format and value are the same of the COSE capabilities array for the COSE key type of the keys used with the algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry <span>[<a href="#COSE.Key.Types" class="cite xref">COSE.Key.Types</a>]</span> (REQ5).<a href="#section-3.6-5.3.1" class="pilcrow">¶</a></p>
+            <p id="section-3.6-5.3.1">'sign_key_parameters' is a CBOR array.  Its format and value are the same of the COSE capabilities array for the COSE key type of the keys used with the algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry <span>[<a href="#IANA.COSE.Key.Types" class="cite xref">IANA.COSE.Key.Types</a>]</span> (REQ5).<a href="#section-3.6-5.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.6-5.4">
-            <p id="section-3.6-5.4.1">'cred_fmt' takes value from the "Label" column of the "COSE Header Parameters" registry <span>[<a href="#COSE.Header.Parameters" class="cite xref">COSE.Header.Parameters</a>]</span> (REQ6). Acceptable values denote a format of authentication credential that <span class="bcp14">MUST</span> explicitly provide the public key as well as the comprehensive set of information related to the public key algorithm, including, e.g., the used elliptic curve (when applicable).<a href="#section-3.6-5.4.1" class="pilcrow">¶</a></p>
+            <p id="section-3.6-5.4.1">'cred_fmt' takes value from the "Label" column of the "COSE Header Parameters" registry <span>[<a href="#IANA.COSE.Header.Parameters" class="cite xref">IANA.COSE.Header.Parameters</a>]</span> (REQ6). Acceptable values denote a format of authentication credential that <span class="bcp14">MUST</span> explicitly provide the public key as well as the comprehensive set of information related to the public key algorithm, including, e.g., the used elliptic curve (when applicable).<a href="#section-3.6-5.4.1" class="pilcrow">¶</a></p>
 <p id="section-3.6-5.4.2">
 Acceptable formats of authentication credentials include CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>, X.509 certificates <span>[<a href="#RFC7925" class="cite xref">RFC7925</a>]</span>, and C509 certificates <span>[<a href="#I-D.ietf-cose-cbor-encoded-cert" class="cite xref">I-D.ietf-cose-cbor-encoded-cert</a>]</span>. Future formats would be acceptable to use as long as they comply with the criteria defined above.<a href="#section-3.6-5.4.2" class="pilcrow">¶</a></p>
 </li>
@@ -2278,7 +2280,7 @@ Acceptable formats of authentication credentials include CBOR Web Tokens (CWTs) 
 <p id="section-4.1.1.1-1">One of the following cases can occur when a new Client attempts to join a security group.<a href="#section-4.1.1.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1.1.1-2.1">
-                <p id="section-4.1.1.1-2.1.1">The joining node is not a Publisher, i.e., it is not going to send data to the application group.  In this case, the joining node is not required to provide its own authentication credential to the KDC. In case the joining node still provides an authentication credential in the 'client_cred' parameter of the Join Request (see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>), the KDC silently ignores that parameter, as well as the related parameter 'client_cred_verify' if present.<a href="#section-4.1.1.1-2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1.1.1-2.1.1">The joining node is not a Publisher, i.e., it is not going to send data to the application group.  In this case, the joining node is not required to provide its own authentication credential to the KDC. If the joining node still provides an authentication credential in the 'client_cred' parameter of the Join Request (see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>), the KDC silently ignores that parameter, as well as the related parameter 'client_cred_verify' if present.<a href="#section-4.1.1.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1.1.1-2.2">
                 <p id="section-4.1.1.1-2.2.1">The joining node wishes to join as a Publisher and the KDC has not previously acquired an authentication credential of the joining node. Then, the joining node <span class="bcp14">MUST</span> provide a compatible authentication credential in the 'client_cred' parameter of the Join Request (see <a href="#join-request" class="auto internal xref">Section 4.1.1</a>).<a href="#section-4.1.1.1-2.2.1" class="pilcrow">¶</a></p>
@@ -2288,11 +2290,11 @@ Acceptable formats of authentication credentials include CBOR Web Tokens (CWTs) 
 <p id="section-4.1.1.1-2.3.2">
 If the joining node's authentication credential as well as the included public key are compatible with the signature algorithm used in the security group and with possible associated parameters, then the authentication credential can be used in the group. In this case, the joining node <span class="bcp14">MAY</span> choose not to provide again its authentication credential to the KDC, in order to limit the size of the Join Request.<a href="#section-4.1.1.1-2.3.2" class="pilcrow">¶</a></p>
 <p id="section-4.1.1.1-2.3.3">
-If the joining node chooses to do so, then the following applies when composing the Join Request: the value of the 'client_cred' parameter specifies an empty authentication credential, i.e., its value is set to the empty CBOR byte string (0x40); the 'client_cred_verify' parameter is omitted. In case the 'client_cred' parameter specifies the empty CBOR byte string (0x40), the KDC silently ignores the 'client_cred_verify' parameter if present.<a href="#section-4.1.1.1-2.3.3" class="pilcrow">¶</a></p>
+If the joining node chooses to do so, then the following applies when composing the Join Request: the value of the 'client_cred' parameter specifies an empty authentication credential, i.e., its value is set to the empty CBOR byte string (0x40); the 'client_cred_verify' parameter is omitted. If the 'client_cred' parameter specifies the empty CBOR byte string (0x40), the KDC silently ignores the 'client_cred_verify' parameter if present.<a href="#section-4.1.1.1-2.3.3" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <p id="section-4.1.1.1-3">The joining node <span class="bcp14">MUST</span> provide the KDC with its own authentication credential again, if it has previously provided the KDC with multiple authentication credentials intended for different security groups.<a href="#section-4.1.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-4.1.1.1-4">If the joining node provides its authentication credential, the KDC performs the consistency checks above and, in case of success, considers it as the authentication credential associated with the joining node in the group.<a href="#section-4.1.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.1.1.1-4">If the joining node provides its authentication credential, the KDC performs the consistency checks above and, in the case of success, considers it as the authentication credential associated with the joining node in the group.<a href="#section-4.1.1.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="pop">
@@ -2339,8 +2341,8 @@ The same as above holds if TLS 1.3 <span>[<a href="#RFC8446" class="cite xref">R
 <p id="section-4.1.2-2">If the joining node is not requesting to join the group exclusively as a Subscriber and the 'client_cred' parameter does not specify the empty CBOR byte string (0x40), the KDC verifies the signature in the 'client_cred_verify' parameter. As PoP input, the KDC uses the value of the 'scope' parameter from the Join Request as a CBOR byte string, concatenated with N_S encoded as a CBOR byte string, concatenated with N_C encoded as a CBOR byte string.<a href="#section-4.1.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-3">As public key of the joining node, the KDC uses the one included in the authentication credential retrieved from the 'client_cred' parameter of the Join Request. The KDC verifies the signature used as PoP evidence by means of the public key of the joining node, according to the signature algorithm used in the group and possible corresponding parameters.<a href="#section-4.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-4">Instead, if the joining node is not requesting to join the group exclusively as a Subscriber and the 'client_cred' parameter specifies the empty CBOR byte string (0x40), the KDC verifies that it is storing exactly one eligible authentication credential for the joining node (e.g., of the format accepted in the group).<a href="#section-4.1.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-5">In case an error occurs when processing the Join Request, the KDC and the joining node follow what is defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, complemented by what is defined in <a href="#join-error" class="auto internal xref">Section 4.1.3</a> of the present document.<a href="#section-4.1.2-5" class="pilcrow">¶</a></p>
-<p id="section-4.1.2-6">In case of success, the KDC responds with a Join Response, whose payload is formatted as a CBOR map and <span class="bcp14">MUST</span> contain the following fields as per <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>:<a href="#section-4.1.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-5">In the case that an error occurs when processing the Join Request, the KDC and the joining node follow what is defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>, complemented by what is defined in <a href="#join-error" class="auto internal xref">Section 4.1.3</a> of the present document.<a href="#section-4.1.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-6">In the case of success, the KDC responds with a Join Response, whose payload is formatted as a CBOR map and <span class="bcp14">MUST</span> contain the following fields as per <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>:<a href="#section-4.1.2-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1.2-7.1">
               <p id="section-4.1.2-7.1.1">'gkty': this field specifies the key type "Group_PubSub_Keying_Material" (REQ18) registered in <a href="#iana-ace-groupcomm-key" class="auto internal xref">Section 9.1</a> for the 'key' parameter.<a href="#section-4.1.2-7.1.1" class="pilcrow">¶</a></p>
@@ -2357,7 +2359,7 @@ The COSE_Key object <span class="bcp14">MUST</span> contain the following parame
                       <p id="section-4.1.2-7.2.2.1.3.1.1">'kty', with value 4 (Symmetric).<a href="#section-4.1.2-7.2.2.1.3.1.1" class="pilcrow">¶</a></p>
 </li>
                     <li class="normal" id="section-4.1.2-7.2.2.1.3.2">
-                      <p id="section-4.1.2-7.2.2.1.3.2.1">'alg', with value the identifier of the AEAD algorithm used in the security group. The value is taken from the "Value" column of the "COSE Algorithms" registry <span>[<a href="#COSE.Algorithms" class="cite xref">COSE.Algorithms</a>]</span>.<a href="#section-4.1.2-7.2.2.1.3.2.1" class="pilcrow">¶</a></p>
+                      <p id="section-4.1.2-7.2.2.1.3.2.1">'alg', with value the identifier of the AEAD algorithm used in the security group. The value is taken from the "Value" column of the "COSE Algorithms" registry <span>[<a href="#IANA.COSE.Algorithms" class="cite xref">IANA.COSE.Algorithms</a>]</span>.<a href="#section-4.1.2-7.2.2.1.3.2.1" class="pilcrow">¶</a></p>
 </li>
                     <li class="normal" id="section-4.1.2-7.2.2.1.3.3">
                       <p id="section-4.1.2-7.2.2.1.3.3.1">'Base IV', with value the Base Initialization Vector (Base IV) to use in the security group with this group key.<a href="#section-4.1.2-7.2.2.1.3.3.1" class="pilcrow">¶</a></p>
@@ -2380,21 +2382,21 @@ The Sender ID <span class="bcp14">MUST</span> be unique within the security grou
 The Sender ID can be short in length. Its maximum length in bytes is the length in bytes of the AEAD nonce for the AEAD algorithm, minus 6. This means that, when using AES-CCM-16-64-128 as AEAD algorithm in the security group, the maximum length of Sender IDs is 7 bytes.<a href="#section-4.1.2-7.2.2.2.3" class="pilcrow">¶</a></p>
 </li>
                 <li class="normal" id="section-4.1.2-7.2.2.3">
-                  <p id="section-4.1.2-7.2.2.3.1">'cred_fmt': this parameter is identified by the CBOR unsigned integer 2 used as map key. Its value specifies the format of authentication credentials used in the group and is taken from the "Label" column of the "COSE Header Parameters" registry <span>[<a href="#COSE.Header.Parameters" class="cite xref">COSE.Header.Parameters</a>]</span>.<a href="#section-4.1.2-7.2.2.3.1" class="pilcrow">¶</a></p>
+                  <p id="section-4.1.2-7.2.2.3.1">'cred_fmt': this parameter is identified by the CBOR unsigned integer 2 used as map key. Its value specifies the format of authentication credentials used in the group and is taken from the "Label" column of the "COSE Header Parameters" registry <span>[<a href="#IANA.COSE.Header.Parameters" class="cite xref">IANA.COSE.Header.Parameters</a>]</span>.<a href="#section-4.1.2-7.2.2.3.1" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-7.2.2.3.2">
 At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>, X.509 certificates <span>[<a href="#RFC7925" class="cite xref">RFC7925</a>]</span>, and C509 certificates <span>[<a href="#I-D.ietf-cose-cbor-encoded-cert" class="cite xref">I-D.ietf-cose-cbor-encoded-cert</a>]</span>. Further formats may be available in the future and would be acceptable to use as long as they comply with the criteria defined above (REQ6).<a href="#section-4.1.2-7.2.2.3.2" class="pilcrow">¶</a></p>
 </li>
                 <li class="normal" id="section-4.1.2-7.2.2.4">
-                  <p id="section-4.1.2-7.2.2.4.1">'sign_alg': this parameter is identified by the CBOR unsigned integer 3 used as map key. Its value specifies the Signature Algorithm used to sign messages in the group and is taken from the "Value" column of the "COSE Algorithms" registry <span>[<a href="#COSE.Algorithms" class="cite xref">COSE.Algorithms</a>]</span>.<a href="#section-4.1.2-7.2.2.4.1" class="pilcrow">¶</a></p>
+                  <p id="section-4.1.2-7.2.2.4.1">'sign_alg': this parameter is identified by the CBOR unsigned integer 3 used as map key. Its value specifies the Signature Algorithm used to sign messages in the group and is taken from the "Value" column of the "COSE Algorithms" registry <span>[<a href="#IANA.COSE.Algorithms" class="cite xref">IANA.COSE.Algorithms</a>]</span>.<a href="#section-4.1.2-7.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
                 <li class="normal" id="section-4.1.2-7.2.2.5">
                   <p id="section-4.1.2-7.2.2.5.1">'sign_params': this parameter is identified by the CBOR unsigned integer 4 used as map key. Its value specifies the parameters of the Signature Algorithm and is encoded as a CBOR array including the following two elements:<a href="#section-4.1.2-7.2.2.5.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1.2-7.2.2.5.2.1">
-                      <p id="section-4.1.2-7.2.2.5.2.1.1">'sign_alg_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry <span>[<a href="#COSE.Algorithms" class="cite xref">COSE.Algorithms</a>]</span>.<a href="#section-4.1.2-7.2.2.5.2.1.1" class="pilcrow">¶</a></p>
+                      <p id="section-4.1.2-7.2.2.5.2.1.1">'sign_alg_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry <span>[<a href="#IANA.COSE.Algorithms" class="cite xref">IANA.COSE.Algorithms</a>]</span>.<a href="#section-4.1.2-7.2.2.5.2.1.1" class="pilcrow">¶</a></p>
 </li>
                     <li class="normal" id="section-4.1.2-7.2.2.5.2.2">
-                      <p id="section-4.1.2-7.2.2.5.2.2.1">'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry <span>[<a href="#COSE.Key.Types" class="cite xref">COSE.Key.Types</a>]</span>.<a href="#section-4.1.2-7.2.2.5.2.2.1" class="pilcrow">¶</a></p>
+                      <p id="section-4.1.2-7.2.2.5.2.2.1">'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry <span>[<a href="#IANA.COSE.Key.Types" class="cite xref">IANA.COSE.Key.Types</a>]</span>.<a href="#section-4.1.2-7.2.2.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
                   </ul>
 </li>
@@ -2478,7 +2480,7 @@ At the time of writing this specification, acceptable formats of authentication 
 <p id="section-4.1.3-3">A 4.00 (Bad Request) error response from the KDC to the joining node <span class="bcp14">MAY</span> have content format "application/ace-groupcomm+cbor" and contain a CBOR map as payload.<a href="#section-4.1.3-3" class="pilcrow">¶</a></p>
 <p id="section-4.1.3-4">The CBOR map <span class="bcp14">MAY</span> include the 'kdcchallenge' parameter. If present, this parameter is a CBOR byte string, with value a newly generated 'kdcchallenge' value that the Client can use when preparing a new Join Request. In such a case, the KDC <span class="bcp14">MUST</span> store the newly generated value as the 'kdcchallenge' value associated with the joining node, which replaces the currently stored value (if any).<a href="#section-4.1.3-4" class="pilcrow">¶</a></p>
 <p id="section-4.1.3-5">Upon receiving the Join Response, if 'kdc_cred' is present but the Client cannot verify the PoP evidence, the Client <span class="bcp14">MUST</span> stop processing the Join Response and <span class="bcp14">MAY</span> send a new Join Request to the KDC.<a href="#section-4.1.3-5" class="pilcrow">¶</a></p>
-<p id="section-4.1.3-6">The KDC <span class="bcp14">MUST</span> return a 5.03 (Service Unavailable) error response to a Client that sends a Join Request to join the security group as Publisher, in case there are currently no Sender IDs available to assign. The response <span class="bcp14">MUST</span> have Content-Format set to "application/concise-problem-details+cbor" and is formatted as defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.1.2" class="relref">Section 4.1.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>. Within the Custom Problem Detail entry 'ace-groupcomm-error', the value of the 'error-id' field <span class="bcp14">MUST</span> be set to 4 ("No available individual keying material").<a href="#section-4.1.3-6" class="pilcrow">¶</a></p>
+<p id="section-4.1.3-6">The KDC <span class="bcp14">MUST</span> return a 5.03 (Service Unavailable) error response to a Client that sends a Join Request to join the security group as Publisher, if there are currently no Sender IDs available to assign. The response <span class="bcp14">MUST</span> have Content-Format set to "application/concise-problem-details+cbor" and is formatted as defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.1.2" class="relref">Section 4.1.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>. Within the Custom Problem Detail entry 'ace-groupcomm-error', the value of the 'error-id' field <span class="bcp14">MUST</span> be set to 4 ("No available individual keying material").<a href="#section-4.1.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2564,11 +2566,11 @@ This application profile does not specify policies that instruct group members t
 The KDC <span class="bcp14">SHOULD</span> perform a group rekeying if one is already scheduled to occur within a time frame that is acceptably short, as per application-specific policies at the KDC. For instance, a group rekeying could be already upcoming in accordance with an application-specific rekeying period or scheduling, or as a reaction to a recent change in the group membership. If a group rekeying is not already scheduled to occur within an acceptably short time frame, the KDC <span class="bcp14">SHOULD NOT</span> rekey the group when receiving a Key Renewal Request (OPT12).<a href="#section-4.2.2-4.1.2" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.2.2-4.2">
-              <p id="section-4.2.2-4.2.1">The KDC determines and assigns a new Sender ID for the Publisher (REQ27), and it replies with a Key Renewal Response formatted as defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.8.2" class="relref">Section 4.8.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>. The CBOR Map in the response payload includes only the parameter 'group_SenderId' registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-20#section-16.3" class="relref">Section 16.3</a> of [<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span>, which specifies the new Sender ID of the Publisher encoded as a CBOR byte string (REQ27).<a href="#section-4.2.2-4.2.1" class="pilcrow">¶</a></p>
+              <p id="section-4.2.2-4.2.1">The KDC determines and assigns a new Sender ID for the Publisher (REQ27), and it replies with a Key Renewal Response formatted as defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.8.2" class="relref">Section 4.8.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>. The CBOR Map in the response payload includes only the parameter 'group_SenderId' registered in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-21#section-16.3" class="relref">Section 16.3</a> of [<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span>, which specifies the new Sender ID of the Publisher encoded as a CBOR byte string (REQ27).<a href="#section-4.2.2-4.2.1" class="pilcrow">¶</a></p>
 <p id="section-4.2.2-4.2.2">
 The KDC <span class="bcp14">MUST</span> assign a new Sender ID that has not been used in the group since the latest time when the current Gid value was assigned to the group (i.e., since the latest group rekeying, see <a href="#rekeying" class="auto internal xref">Section 5</a>).<a href="#section-4.2.2-4.2.2" class="pilcrow">¶</a></p>
 <p id="section-4.2.2-4.2.3">
-The KDC <span class="bcp14">MUST</span> return a 5.03 (Service Unavailable) error response in case there are currently no Sender IDs available to assign in the group. The response <span class="bcp14">MUST</span> have Content-Format set to "application/concise-problem-details+cbor" and is formatted as defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.1.2" class="relref">Section 4.1.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>. Within the Custom Problem Detail entry 'ace-groupcomm-error', the value of the 'error-id' field <span class="bcp14">MUST</span> be set to 4 ("No available individual keying material").<a href="#section-4.2.2-4.2.3" class="pilcrow">¶</a></p>
+The KDC <span class="bcp14">MUST</span> return a 5.03 (Service Unavailable) error response if there are currently no Sender IDs available to assign in the group. The response <span class="bcp14">MUST</span> have Content-Format set to "application/concise-problem-details+cbor" and is formatted as defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-4.1.2" class="relref">Section 4.1.2</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>. Within the Custom Problem Detail entry 'ace-groupcomm-error', the value of the 'error-id' field <span class="bcp14">MUST</span> be set to 4 ("No available individual keying material").<a href="#section-4.2.2-4.2.3" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -2682,7 +2684,7 @@ That is, the value of the new Gid is specified by the 'kid' parameter of the COS
         </figcaption></figure>
 </div>
 <p id="section-6-4"><a href="#flow" class="auto internal xref">Figure 9</a> provides a more detailed example of such a secure Pub-Sub communication. All the messages exchanged between a Client and the Broker are protected with the secure communication association between that Client and the Broker. In addition, COSE is used to protect end-to-end the published topic data, which is conveyed in a PUT request from the Publisher to the topic-data resource at the Broker and in a 2.05 (Content) response from that resource to a Subscriber.<a href="#section-6-4" class="pilcrow">¶</a></p>
-<p id="section-6-5">The example also shows a delete operation, where the Publisher deletes the topic-data resource by sending a CoAP DELETE request to the URI of that resource. In case of success, the Broker replies with a 2.02 (Deleted) response. Consequently, the Broker also unsubscribes all the Clients subscribed to that topic-data resource, by removing them from the list of observers and sending them a final 4.04 (Not Found) error response as per <span><a href="https://rfc-editor.org/rfc/rfc7641#section-3.2" class="relref">Section 3.2</a> of [<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>.<a href="#section-6-5" class="pilcrow">¶</a></p>
+<p id="section-6-5">The example also shows a delete operation, where the Publisher deletes the topic-data resource by sending a CoAP DELETE request to the URI of that resource. In the case of success, the Broker replies with a 2.02 (Deleted) response. Consequently, the Broker also unsubscribes all the Clients subscribed to that topic-data resource, by removing them from the list of observers and sending them a final 4.04 (Not Found) error response as per <span><a href="https://rfc-editor.org/rfc/rfc7641#section-3.2" class="relref">Section 3.2</a> of [<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>.<a href="#section-6-5" class="pilcrow">¶</a></p>
 <span id="name-example-of-secure-pub-sub-c"></span><div id="flow">
 <figure id="figure-9">
         <div id="section-6-6.1">
@@ -2750,11 +2752,11 @@ That is, the value of the new Gid is specified by the 'kid' parameter of the COS
         <h3 id="name-using-cose-to-protect-the-p">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-using-cose-to-protect-the-p" class="section-name selfRef">Using COSE to Protect the Published Topic Data</a>
         </h3>
-<p id="section-6.1-1">The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-19#section-3.2.1" class="relref">Section 3.2.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>). Specifically, the Publisher creates a COSE_Encrypt0 object <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span><span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> by means of the COSE Key currently used as group key (REQ23). The encryption algorithm and Base IV to use are specified by the 'alg' and 'Base IV' parameters of the COSE Key, together with its key identifier in the 'kid' parameter.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-3.2.1" class="relref">Section 3.2.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>). Specifically, the Publisher creates a COSE_Encrypt0 object <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span><span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> by means of the COSE Key currently used as group key (REQ23). The encryption algorithm and Base IV to use are specified by the 'alg' and 'Base IV' parameters of the COSE Key, together with its key identifier in the 'kid' parameter.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.1-2">Also, the Publisher uses its private key corresponding to the public key sent to the KDC, in order to countersign the COSE_Encrypt0 object as specified in <span>[<a href="#RFC9338" class="cite xref">RFC9338</a>]</span> (REQ23). The countersignature is specified in the 'Countersignature version 2' parameter, within the 'unprotected' field of the COSE_Encrypt0 object.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
 <p id="section-6.1-3">Finally, the Publisher sends the COSE_Encrypt0 object conveying the countersignature to the Broker, as payload of the PUT request sent to the topic-data of the topic targeted by the Publish operation.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
 <p id="section-6.1-4">Upon receiving a response from the topic-data resource at the Broker, the Subscriber uses the 'kid' parameter from the 'Countersignature version 2' parameter within the 'unprotected' field of the COSE_Encrypt0 object, in order to retrieve the Publisher's public key from the KDC (see <a href="#query" class="auto internal xref">Section 4.2.1</a>) or from its local storage. Then, the Subscriber uses that public key to verify the countersignature.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
-<p id="section-6.1-5">In case of successful verification, the Subscriber uses the 'kid' parameter from the 'unprotected' field of the COSE_Encrypt0 object, in order to retrieve the COSE Key used as current group key from its local storage. Then, the Subscriber uses that group key to verify and decrypt the COSE_Encrypt0 object. In case of successful verification, the Subscriber delivers the received topic data to the application.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
+<p id="section-6.1-5">In the case of successful verification, the Subscriber uses the 'kid' parameter from the 'unprotected' field of the COSE_Encrypt0 object, in order to retrieve the COSE Key used as current group key from its local storage. Then, the Subscriber uses that group key to verify and decrypt the COSE_Encrypt0 object. In the case of successful verification, the Subscriber delivers the received topic data to the application.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
 <p id="section-6.1-6">The COSE_Encrypt0 object is constructed as follows.<a href="#section-6.1-6" class="pilcrow">¶</a></p>
 <p id="section-6.1-7">The 'protected' field <span class="bcp14">MUST</span> include:<a href="#section-6.1-7" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -2961,7 +2963,7 @@ The logged information includes:<a href="#section-7.1-2.3.2" class="pilcrow">¶<
                 <p id="section-7.1-2.3.3.3.1">The outcome of the group rekeying instance.<a href="#section-7.1-2.3.3.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-7.1-2.3.3.4">
-                <p id="section-7.1-2.3.3.4.1">In case of success, the version number of the newly established group keying material and the newly established Group Identifier (Gid).<a href="#section-7.1-2.3.3.4.1" class="pilcrow">¶</a></p>
+                <p id="section-7.1-2.3.3.4.1">In the case of success, the version number of the newly established group keying material and the newly established Group Identifier (Gid).<a href="#section-7.1-2.3.3.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -3047,7 +3049,7 @@ The logged information also contains relevant metadata about the Client that has
 <p id="section-8-6">The Broker is only trusted with verifying that a Publisher is authorised to publish on a certain topic and with distributing that data only to the Subscribers authorised to obtain it. However, the Broker is not trusted with the published topic data in itself, which the Broker cannot read or modify as it does not have access to the group key required for decrypting the data.<a href="#section-8-6" class="pilcrow">¶</a></p>
 <p id="section-8-7">With respect to the reuse of challenges for proof-of-possession input, the same considerations apply as in <span>[<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span>, with the difference that the KDC of the present document is considered instead of the Group Manager defined therein.<a href="#section-8-7" class="pilcrow">¶</a></p>
 <p id="section-8-8">Access tokens might have to be revoked before their expiration time. <span>[<a href="#RFC9770" class="cite xref">RFC9770</a>]</span> provides a list of possible circumstances where this can happen, and it specifies a method that an Authorization Server can use in order to notify the KDC, the Broker, and the Clients about pertaining access tokens that have been revoked but are not expired yet.<a href="#section-8-8" class="pilcrow">¶</a></p>
-<p id="section-8-9">Aligned with <a href="#rekeying" class="auto internal xref">Section 5</a>, the KDC performs a group rekeying when one or more members leave the group, thus preserving forward security. In particular, Clients can be excluded from future communications related to a topic, by appropriately rekeying the group associated with the topic in question. According to the specific application requirements, the KDC can also rekey the group upon a new node's joining, in case backward security has also to be preserved (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>). The KDC can also rekey the group for further reasons, e.g., according to an application-specific rekeying period or scheduling.<a href="#section-8-9" class="pilcrow">¶</a></p>
+<p id="section-8-9">Aligned with <a href="#rekeying" class="auto internal xref">Section 5</a>, the KDC performs a group rekeying when one or more members leave the group, thus preserving forward security. In particular, Clients can be excluded from future communications related to a topic, by appropriately rekeying the group associated with the topic in question. According to the specific application requirements, the KDC can also rekey the group upon a new node's joining, in the case that backward security has also to be preserved (see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>). The KDC can also rekey the group for further reasons, e.g., according to an application-specific rekeying period or scheduling.<a href="#section-8-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -3062,7 +3064,7 @@ The logged information also contains relevant metadata about the Client that has
         <h3 id="name-ace-groupcomm-key-types">
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-ace-groupcomm-key-types" class="section-name selfRef">ACE Groupcomm Key Types</a>
         </h3>
-<p id="section-9.1-1">IANA is asked to register the following entry in the "ACE Groupcomm Key Types" registry <span>[<a href="#ACE.Groupcomm.Key.Types" class="cite xref">ACE.Groupcomm.Key.Types</a>]</span> within the "Authentication and Authorization for Constrained Environments (ACE)" registry group.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
+<p id="section-9.1-1">IANA is asked to register the following entry in the "ACE Groupcomm Key Types" registry <span>[<a href="#IANA.ACE.Groupcomm.Key.Types" class="cite xref">IANA.ACE.Groupcomm.Key.Types</a>]</span> within the "Authentication and Authorization for Constrained Environments (ACE)" registry group.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9.1-2.1">
             <p id="section-9.1-2.1.1">Name: Group_PubSub_Keying_Material<a href="#section-9.1-2.1.1" class="pilcrow">¶</a></p>
@@ -3087,7 +3089,7 @@ The logged information also contains relevant metadata about the Client that has
         <h3 id="name-ace-groupcomm-profiles">
 <a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-ace-groupcomm-profiles" class="section-name selfRef">ACE Groupcomm Profiles</a>
         </h3>
-<p id="section-9.2-1">IANA is asked to register the following entries in the "ACE Groupcomm Profiles" registry <span>[<a href="#ACE.Groupcomm.Profiles" class="cite xref">ACE.Groupcomm.Profiles</a>]</span>, within the "Authentication and Authorization for Constrained Environments (ACE)" registry group.<a href="#section-9.2-1" class="pilcrow">¶</a></p>
+<p id="section-9.2-1">IANA is asked to register the following entries in the "ACE Groupcomm Profiles" registry <span>[<a href="#IANA.ACE.Groupcomm.Profiles" class="cite xref">IANA.ACE.Groupcomm.Profiles</a>]</span>, within the "Authentication and Authorization for Constrained Environments (ACE)" registry group.<a href="#section-9.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9.2-2.1">
             <p id="section-9.2-2.1.1">Name: coap_group_pubsub_app<a href="#section-9.2-2.1.1" class="pilcrow">¶</a></p>
@@ -3109,7 +3111,7 @@ The logged information also contains relevant metadata about the Client that has
         <h3 id="name-core-resource-type">
 <a href="#section-9.3" class="section-number selfRef">9.3. </a><a href="#name-core-resource-type" class="section-name selfRef">CoRE Resource Type</a>
         </h3>
-<p id="section-9.3-1">IANA is asked to register the following entry in the "Resource Type (rt=) Link Target Attribute Values" registry <span>[<a href="#Resource.Type.Values" class="cite xref">Resource.Type.Values</a>]</span> within the "Constrained Restful Environments (CoRE) Parameters" registry group.<a href="#section-9.3-1" class="pilcrow">¶</a></p>
+<p id="section-9.3-1">IANA is asked to register the following entry in the "Resource Type (rt=) Link Target Attribute Values" registry <span>[<a href="#IANA.Resource.Type.Values" class="cite xref">IANA.Resource.Type.Values</a>]</span> within the "Constrained Restful Environments (CoRE) Parameters" registry group.<a href="#section-9.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9.3-2.1">
             <p id="section-9.3-2.1.1">Value: "core.ps.gm"<a href="#section-9.3-2.1.1" class="pilcrow">¶</a></p>
@@ -3166,7 +3168,7 @@ The logged information also contains relevant metadata about the Client that has
         <h3 id="name-coap-content-formats">
 <a href="#section-9.5" class="section-number selfRef">9.5. </a><a href="#name-coap-content-formats" class="section-name selfRef">CoAP Content-Formats</a>
         </h3>
-<p id="section-9.5-1">IANA is asked to register the following entries to the "CoAP Content-Formats" registry <span>[<a href="#CoAP.Content.Formats" class="cite xref">CoAP.Content.Formats</a>]</span> within the "Constrained RESTful Environments (CoRE) Parameters" registry group.<a href="#section-9.5-1" class="pilcrow">¶</a></p>
+<p id="section-9.5-1">IANA is asked to register the following entries to the "CoAP Content-Formats" registry <span>[<a href="#IANA.CoAP.Content.Formats" class="cite xref">IANA.CoAP.Content.Formats</a>]</span> within the "Constrained RESTful Environments (CoRE) Parameters" registry group.<a href="#section-9.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9.5-2.1">
             <p id="section-9.5-2.1.1">Content Type: application/aif+cbor;toid=pubsub-topic;tperm=pubsub-perm<a href="#section-9.5-2.1.1" class="pilcrow">¶</a></p>
@@ -3203,7 +3205,7 @@ The logged information also contains relevant metadata about the Client that has
         <h3 id="name-tls-exporter-labels">
 <a href="#section-9.6" class="section-number selfRef">9.6. </a><a href="#name-tls-exporter-labels" class="section-name selfRef">TLS Exporter Labels</a>
         </h3>
-<p id="section-9.6-1">IANA is asked to register the following entry in the "TLS Exporter Labels" registry <span>[<a href="#TLS.Exporter.Labels" class="cite xref">TLS.Exporter.Labels</a>]</span> within the "Transport Layer Security (TLS) Parameters" registry group, which is defined in <span><a href="https://rfc-editor.org/rfc/rfc5705#section-6" class="relref">Section 6</a> of [<a href="#RFC5705" class="cite xref">RFC5705</a>]</span> and updated in <span><a href="https://rfc-editor.org/rfc/rfc8447#section-12" class="relref">Section 12</a> of [<a href="#RFC8447" class="cite xref">RFC8447</a>]</span>.<a href="#section-9.6-1" class="pilcrow">¶</a></p>
+<p id="section-9.6-1">IANA is asked to register the following entry in the "TLS Exporter Labels" registry <span>[<a href="#IANA.TLS.Exporter.Labels" class="cite xref">IANA.TLS.Exporter.Labels</a>]</span> within the "Transport Layer Security (TLS) Parameters" registry group, which is defined in <span><a href="https://rfc-editor.org/rfc/rfc5705#section-6" class="relref">Section 6</a> of [<a href="#RFC5705" class="cite xref">RFC5705</a>]</span> and updated in <span><a href="https://rfc-editor.org/rfc/rfc8447#section-12" class="relref">Section 12</a> of [<a href="#RFC8447" class="cite xref">RFC8447</a>]</span>.<a href="#section-9.6-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9.6-2.1">
             <p id="section-9.6-2.1.1">Value: EXPORTER-ACE-Sign-Challenge-coap-pubsub-app<a href="#section-9.6-2.1.1" class="pilcrow">¶</a></p>
@@ -3233,37 +3235,41 @@ The logged information also contains relevant metadata about the Client that has
 <a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
-<dt id="ACE.Groupcomm.Key.Types">[ACE.Groupcomm.Key.Types]</dt>
+<dt id="I-D.ietf-core-coap-pubsub">[I-D.ietf-core-coap-pubsub]</dt>
+        <dd>
+<span class="refAuthor">Jimenez, J.</span>, <span class="refAuthor">Koster, M.</span>, and <span class="refAuthor">A. Keränen</span>, <span class="refTitle">"A publish-subscribe architecture for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-21</span>, <time datetime="2026-07-02" class="refDate">2 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA.ACE.Groupcomm.Key.Types">[IANA.ACE.Groupcomm.Key.Types]</dt>
         <dd>
 <span class="refAuthor">IANA</span>, <span class="refTitle">"ACE Groupcomm Key Types"</span>, <span>&lt;<a href="https://www.iana.org/assignments/ace/ace.xhtml#ace-groupcomm-key-types">https://www.iana.org/assignments/ace/ace.xhtml#ace-groupcomm-key-types</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="ACE.Groupcomm.Profiles">[ACE.Groupcomm.Profiles]</dt>
+<dt id="IANA.ACE.Groupcomm.Profiles">[IANA.ACE.Groupcomm.Profiles]</dt>
         <dd>
 <span class="refAuthor">IANA</span>, <span class="refTitle">"ACE Groupcomm Profiles"</span>, <span>&lt;<a href="https://www.iana.org/assignments/ace/ace.xhtml#ace-groupcomm-profiles">https://www.iana.org/assignments/ace/ace.xhtml#ace-groupcomm-profiles</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="CoAP.Content.Formats">[CoAP.Content.Formats]</dt>
+<dt id="IANA.CoAP.Content.Formats">[IANA.CoAP.Content.Formats]</dt>
         <dd>
 <span class="refAuthor">IANA</span>, <span class="refTitle">"CoAP Content-Formats"</span>, <span>&lt;<a href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#content-formats">https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#content-formats</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="COSE.Algorithms">[COSE.Algorithms]</dt>
+<dt id="IANA.COSE.Algorithms">[IANA.COSE.Algorithms]</dt>
         <dd>
 <span class="refAuthor">IANA</span>, <span class="refTitle">"COSE Algorithms"</span>, <span>&lt;<a href="https://www.iana.org/assignments/cose/cose.xhtml#algorithms">https://www.iana.org/assignments/cose/cose.xhtml#algorithms</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="COSE.Header.Parameters">[COSE.Header.Parameters]</dt>
+<dt id="IANA.COSE.Header.Parameters">[IANA.COSE.Header.Parameters]</dt>
         <dd>
 <span class="refAuthor">IANA</span>, <span class="refTitle">"COSE Header Parameters"</span>, <span>&lt;<a href="https://www.iana.org/assignments/cose/cose.xhtml#header-parameters">https://www.iana.org/assignments/cose/cose.xhtml#header-parameters</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="COSE.Key.Types">[COSE.Key.Types]</dt>
+<dt id="IANA.COSE.Key.Types">[IANA.COSE.Key.Types]</dt>
         <dd>
 <span class="refAuthor">IANA</span>, <span class="refTitle">"COSE Key Types"</span>, <span>&lt;<a href="https://www.iana.org/assignments/cose/cose.xhtml#key-type">https://www.iana.org/assignments/cose/cose.xhtml#key-type</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="I-D.ietf-core-coap-pubsub">[I-D.ietf-core-coap-pubsub]</dt>
-        <dd>
-<span class="refAuthor">Jimenez, J.</span>, <span class="refAuthor">Koster, M.</span>, and <span class="refAuthor">A. Keränen</span>, <span class="refTitle">"A publish-subscribe architecture for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-19</span>, <time datetime="2026-03-02" class="refDate">2 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-19">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-19</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="Resource.Type.Values">[Resource.Type.Values]</dt>
+<dt id="IANA.Resource.Type.Values">[IANA.Resource.Type.Values]</dt>
         <dd>
 <span class="refAuthor">IANA</span>, <span class="refTitle">"Resource Type (rt=) Link Target Attribute Values"</span>, <span>&lt;<a href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#rt-link-target-att-value">https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#rt-link-target-att-value</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA.TLS.Exporter.Labels">[IANA.TLS.Exporter.Labels]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"TLS Exporter Labels"</span>, <span>&lt;<a href="https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#exporter-labels">https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#exporter-labels</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -3366,12 +3372,8 @@ The logged information also contains relevant metadata about the Client that has
 <span class="refAuthor">Bergmann, O.</span>, <span class="refAuthor">Preuß Mattsson, J.</span>, and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Extension of the Datagram Transport Layer Security (DTLS) Profile for Authentication and Authorization for Constrained Environments (ACE) to Transport Layer Security (TLS)"</span>, <span class="seriesInfo">RFC 9430</span>, <span class="seriesInfo">DOI 10.17487/RFC9430</span>, <time datetime="2023-07" class="refDate">July 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9430">https://www.rfc-editor.org/rfc/rfc9430</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9594">[RFC9594]</dt>
-        <dd>
-<span class="refAuthor">Palombini, F.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Provisioning for Group Communication Using Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="seriesInfo">RFC 9594</span>, <span class="seriesInfo">DOI 10.17487/RFC9594</span>, <time datetime="2024-09" class="refDate">September 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9594">https://www.rfc-editor.org/rfc/rfc9594</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="TLS.Exporter.Labels">[TLS.Exporter.Labels]</dt>
       <dd>
-<span class="refAuthor">IANA</span>, <span class="refTitle">"TLS Exporter Labels"</span>, <span>&lt;<a href="https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#exporter-labels">https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#exporter-labels</a>&gt;</span>. </dd>
+<span class="refAuthor">Palombini, F.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Provisioning for Group Communication Using Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="seriesInfo">RFC 9594</span>, <span class="seriesInfo">DOI 10.17487/RFC9594</span>, <time datetime="2024-09" class="refDate">September 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9594">https://www.rfc-editor.org/rfc/rfc9594</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -3384,11 +3386,11 @@ The logged information also contains relevant metadata about the Client that has
 <dl class="references">
 <dt id="I-D.ietf-ace-key-groupcomm-oscore">[I-D.ietf-ace-key-groupcomm-oscore]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Key Management for Group Object Security for Constrained RESTful Environments (Group OSCORE) Using Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-20</span>, <time datetime="2026-02-25" class="refDate">25 February 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-20">https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-20</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Key Management for Group Object Security for Constrained RESTful Environments (Group OSCORE) Using Authentication and Authorization for Constrained Environments (ACE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-21</span>, <time datetime="2026-03-14" class="refDate">14 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-21">https://datatracker.ietf.org/doc/html/draft-ietf-ace-key-groupcomm-oscore-21</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-cose-cbor-encoded-cert">[I-D.ietf-cose-cbor-encoded-cert]</dt>
         <dd>
-<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, and <span class="refAuthor">M. Furuhed</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-17</span>, <time datetime="2026-03-02" class="refDate">2 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-17">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-17</a>&gt;</span>. </dd>
+<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, <span class="refAuthor">Furuhed, M.</span>, and <span class="refAuthor">L. Liao</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-20</span>, <time datetime="2026-06-30" class="refDate">30 June 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-20">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-20</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8259">[RFC8259]</dt>
         <dd>
@@ -3434,16 +3436,16 @@ The logged information also contains relevant metadata about the Client that has
             <p id="appendix-A.1-1.2.1">REQ2: If scope uses AIF, register its specific instance of "Toid" and "Tperm" as media type parameters and a corresponding Content-Format, as per the guidelines in <span>[<a href="#RFC9237" class="cite xref">RFC9237</a>]</span>: see <a href="#aif" class="auto internal xref">Section 9.4</a> and <a href="#content_formats" class="auto internal xref">Section 9.5</a>.<a href="#appendix-A.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.3">
-            <p id="appendix-A.1-1.3.1">REQ3: If used, specify the acceptable values for the 'sign_alg' parameter: values from the "Value" column of the "COSE Algorithms" registry <span>[<a href="#COSE.Algorithms" class="cite xref">COSE.Algorithms</a>]</span>.<a href="#appendix-A.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.3.1">REQ3: If used, specify the acceptable values for the 'sign_alg' parameter: values from the "Value" column of the "COSE Algorithms" registry <span>[<a href="#IANA.COSE.Algorithms" class="cite xref">IANA.COSE.Algorithms</a>]</span>.<a href="#appendix-A.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.4">
-            <p id="appendix-A.1-1.4.1">REQ4: If used, specify the acceptable values and structure for the 'sign_parameters' parameter: values and structure from the COSE algorithm capabilities as specified in the "COSE Algorithms" registry <span>[<a href="#COSE.Algorithms" class="cite xref">COSE.Algorithms</a>]</span>.<a href="#appendix-A.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.4.1">REQ4: If used, specify the acceptable values and structure for the 'sign_parameters' parameter: values and structure from the COSE algorithm capabilities as specified in the "COSE Algorithms" registry <span>[<a href="#IANA.COSE.Algorithms" class="cite xref">IANA.COSE.Algorithms</a>]</span>.<a href="#appendix-A.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.5">
-            <p id="appendix-A.1-1.5.1">REQ5: If used, specify the acceptable values and structure for the 'sign_key_parameters' parameter: values and structure from the COSE key type capabilities as specified in the "COSE Key Types" registry <span>[<a href="#COSE.Key.Types" class="cite xref">COSE.Key.Types</a>]</span>.<a href="#appendix-A.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.5.1">REQ5: If used, specify the acceptable values and structure for the 'sign_key_parameters' parameter: values and structure from the COSE key type capabilities as specified in the "COSE Key Types" registry <span>[<a href="#IANA.COSE.Key.Types" class="cite xref">IANA.COSE.Key.Types</a>]</span>.<a href="#appendix-A.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.6">
-            <p id="appendix-A.1-1.6.1">REQ6: Specify the acceptable formats for authentication credentials and, if applicable, the acceptable values for the 'cred_fmt' parameter: acceptable formats explicitly provide the public key as well as the comprehensive set of information related to the public key algorithm (see <a href="#token-post" class="auto internal xref">Section 3.6</a> and <a href="#join-response" class="auto internal xref">Section 4.1.2</a>). Consistent acceptable values for 'cred_fmt' are taken from the "Label" column of the "COSE Header Parameters" registry <span>[<a href="#COSE.Header.Parameters" class="cite xref">COSE.Header.Parameters</a>]</span>.<a href="#appendix-A.1-1.6.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.6.1">REQ6: Specify the acceptable formats for authentication credentials and, if applicable, the acceptable values for the 'cred_fmt' parameter: acceptable formats explicitly provide the public key as well as the comprehensive set of information related to the public key algorithm (see <a href="#token-post" class="auto internal xref">Section 3.6</a> and <a href="#join-response" class="auto internal xref">Section 4.1.2</a>). Consistent acceptable values for 'cred_fmt' are taken from the "Label" column of the "COSE Header Parameters" registry <span>[<a href="#IANA.COSE.Header.Parameters" class="cite xref">IANA.COSE.Header.Parameters</a>]</span>.<a href="#appendix-A.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.7">
             <p id="appendix-A.1-1.7.1">REQ7: If the value of the GROUPNAME URI path and the group name in the access token scope ('gname') are not required to coincide, specify the mechanism to map the GROUPNAME value in the URI to the group name: not applicable, since a perfect matching is required.<a href="#appendix-A.1-1.7.1" class="pilcrow">¶</a></p>
@@ -3579,141 +3581,153 @@ The logged information also contains relevant metadata about the Client that has
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-document-updates" class="section-name selfRef">Document Updates</a>
       </h2>
 <p id="appendix-B-1">This section is to be removed before publishing as an RFC.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<div id="sec-03-04">
+<div id="sec-04-05">
 <section id="appendix-B.1">
-        <h3 id="name-version-03-to-04">
-<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-03-to-04" class="section-name selfRef">Version -03 to -04</a>
+        <h3 id="name-version-04-to-05">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-04-to-05" class="section-name selfRef">Version -04 to -05</a>
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-B.1-1.1">
-            <p id="appendix-B.1-1.1.1">Minor fixes in the CDDL grammar of the scope entry.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.1.1">Editorial fixes.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-1.2">
-            <p id="appendix-B.1-1.2.1">Explicitly mentioned that topic-data resources are hosted at the Broker.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+        </ul>
+</section>
+</div>
+<div id="sec-03-04">
+<section id="appendix-B.2">
+        <h3 id="name-version-03-to-04">
+<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-version-03-to-04" class="section-name selfRef">Version -03 to -04</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="appendix-B.2-1.1">
+            <p id="appendix-B.2-1.1.1">Minor fixes in the CDDL grammar of the scope entry.<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-1.3">
-            <p id="appendix-B.1-1.3.1">More consistent use of the terms "nonce" and "challenge".<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.2">
+            <p id="appendix-B.2-1.2.1">Explicitly mentioned that topic-data resources are hosted at the Broker.<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-1.4">
-            <p id="appendix-B.1-1.4.1">Moved up the statement of compliance with REQ7.<a href="#appendix-B.1-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.3">
+            <p id="appendix-B.2-1.3.1">More consistent use of the terms "nonce" and "challenge".<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-1.5">
-            <p id="appendix-B.1-1.5.1">Clarified that group names are consistent with the semantics of URI path segments.<a href="#appendix-B.1-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.4">
+            <p id="appendix-B.2-1.4.1">Moved up the statement of compliance with REQ7.<a href="#appendix-B.2-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-1.6">
-            <p id="appendix-B.1-1.6.1">Added references to IANA registries.<a href="#appendix-B.1-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.5">
+            <p id="appendix-B.2-1.5.1">Clarified that group names are consistent with the semantics of URI path segments.<a href="#appendix-B.2-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-1.7">
-            <p id="appendix-B.1-1.7.1">Editorial fixes.<a href="#appendix-B.1-1.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.2-1.6">
+            <p id="appendix-B.2-1.6.1">Added references to IANA registries.<a href="#appendix-B.2-1.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.2-1.7">
+            <p id="appendix-B.2-1.7.1">Editorial fixes.<a href="#appendix-B.2-1.7.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-02-03">
-<section id="appendix-B.2">
+<section id="appendix-B.3">
         <h3 id="name-version-02-to-03">
-<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-version-02-to-03" class="section-name selfRef">Version -02 to -03</a>
+<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-version-02-to-03" class="section-name selfRef">Version -02 to -03</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.2-1.1">
-            <p id="appendix-B.2-1.1.1">Updated introduction: clarified relationships between this document and related documents.<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.3-1.1">
+            <p id="appendix-B.3-1.1.1">Updated introduction: clarified relationships between this document and related documents.<a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.2">
-            <p id="appendix-B.2-1.2.1">Ensured consistency with RFC 9594 when using an optimized Join Request for re-joining a group (presence of the 'client_cred' parameter).<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.2">
+            <p id="appendix-B.3-1.2.1">Ensured consistency with RFC 9594 when using an optimized Join Request for re-joining a group (presence of the 'client_cred' parameter).<a href="#appendix-B.3-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.3">
-            <p id="appendix-B.2-1.3.1">Added the "Operational Considerations" section.<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.3">
+            <p id="appendix-B.3-1.3.1">Added the "Operational Considerations" section.<a href="#appendix-B.3-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.4">
-            <p id="appendix-B.2-1.4.1">Clarifications:<a href="#appendix-B.2-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.4">
+            <p id="appendix-B.3-1.4.1">Clarifications:<a href="#appendix-B.3-1.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-B.2-1.4.2.1">
-                <p id="appendix-B.2-1.4.2.1.1">Secure communications required as per the transport profile of ACE used.<a href="#appendix-B.2-1.4.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.3-1.4.2.1">
+                <p id="appendix-B.3-1.4.2.1.1">Secure communications required as per the transport profile of ACE used.<a href="#appendix-B.3-1.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-B.2-1.4.2.2">
-                <p id="appendix-B.2-1.4.2.2.1">Explicitly mentioned the rationale for computing a proof-of-possession (PoP) evidence.<a href="#appendix-B.2-1.4.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="appendix-B.3-1.4.2.2">
+                <p id="appendix-B.3-1.4.2.2.1">Explicitly mentioned the rationale for computing a proof-of-possession (PoP) evidence.<a href="#appendix-B.3-1.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-B.2-1.4.2.3">
-                <p id="appendix-B.2-1.4.2.3.1">Reasons for and flexibility of group rekeying.<a href="#appendix-B.2-1.4.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="appendix-B.3-1.4.2.3">
+                <p id="appendix-B.3-1.4.2.3.1">Reasons for and flexibility of group rekeying.<a href="#appendix-B.3-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="appendix-B.2-1.5">
-            <p id="appendix-B.2-1.5.1">Editorial fixes and improvements.<a href="#appendix-B.2-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.5">
+            <p id="appendix-B.3-1.5.1">Editorial fixes and improvements.<a href="#appendix-B.3-1.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-01-02">
-<section id="appendix-B.3">
+<section id="appendix-B.4">
         <h3 id="name-version-01-to-02">
-<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-version-01-to-02" class="section-name selfRef">Version -01 to -02</a>
+<a href="#appendix-B.4" class="section-number selfRef">B.4. </a><a href="#name-version-01-to-02" class="section-name selfRef">Version -01 to -02</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.3-1.1">
-            <p id="appendix-B.3-1.1.1">Clarified high-level description of the authorisation flow.<a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.4-1.1">
+            <p id="appendix-B.4-1.1.1">Clarified high-level description of the authorisation flow.<a href="#appendix-B.4-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.2">
-            <p id="appendix-B.3-1.2.1">Clarified relation between a group rekeying and a Key Renewal Request.<a href="#appendix-B.3-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.2">
+            <p id="appendix-B.4-1.2.1">Clarified relation between a group rekeying and a Key Renewal Request.<a href="#appendix-B.4-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.3">
-            <p id="appendix-B.3-1.3.1">Editorial fixes and improvements.<a href="#appendix-B.3-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.3">
+            <p id="appendix-B.4-1.3.1">Editorial fixes and improvements.<a href="#appendix-B.4-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-00-01">
-<section id="appendix-B.4">
+<section id="appendix-B.5">
         <h3 id="name-version-00-to-01">
-<a href="#appendix-B.4" class="section-number selfRef">B.4. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
+<a href="#appendix-B.5" class="section-number selfRef">B.5. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.4-1.1">
-            <p id="appendix-B.4-1.1.1">Clarified recommendations about randomness and size of nonces.<a href="#appendix-B.4-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.5-1.1">
+            <p id="appendix-B.5-1.1.1">Clarified recommendations about randomness and size of nonces.<a href="#appendix-B.5-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.4-1.2">
-            <p id="appendix-B.4-1.2.1">Clarified generation of N_S if TLS is used with the KDC instead of DTLS.<a href="#appendix-B.4-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.5-1.2">
+            <p id="appendix-B.5-1.2.1">Clarified generation of N_S if TLS is used with the KDC instead of DTLS.<a href="#appendix-B.5-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.4-1.3">
-            <p id="appendix-B.4-1.3.1">Added missing references to REQ and OPT requirements.<a href="#appendix-B.4-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.5-1.3">
+            <p id="appendix-B.5-1.3.1">Added missing references to REQ and OPT requirements.<a href="#appendix-B.5-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.4-1.4">
-            <p id="appendix-B.4-1.4.1">Updated IANA considerations:<a href="#appendix-B.4-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.5-1.4">
+            <p id="appendix-B.5-1.4.1">Updated IANA considerations:<a href="#appendix-B.5-1.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-B.4-1.4.2.1">
-                <p id="appendix-B.4-1.4.2.1.1">Suggested values for IANA registrations.<a href="#appendix-B.4-1.4.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.5-1.4.2.1">
+                <p id="appendix-B.5-1.4.2.1.1">Suggested values for IANA registrations.<a href="#appendix-B.5-1.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-B.4-1.4.2.2">
-                <p id="appendix-B.4-1.4.2.2.1">Renamed TLS Exporter Label.<a href="#appendix-B.4-1.4.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="appendix-B.5-1.4.2.2">
+                <p id="appendix-B.5-1.4.2.2.1">Renamed TLS Exporter Label.<a href="#appendix-B.5-1.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-B.4-1.4.2.3">
-                <p id="appendix-B.4-1.4.2.3.1">Fixed content types in the CoAP Content-Formats registrations.<a href="#appendix-B.4-1.4.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="appendix-B.5-1.4.2.3">
+                <p id="appendix-B.5-1.4.2.3.1">Fixed content types in the CoAP Content-Formats registrations.<a href="#appendix-B.5-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="appendix-B.4-1.5">
-            <p id="appendix-B.4-1.5.1">Updated references.<a href="#appendix-B.4-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.5-1.5">
+            <p id="appendix-B.5-1.5.1">Updated references.<a href="#appendix-B.5-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.4-1.6">
-            <p id="appendix-B.4-1.6.1">Editorial fixes and improvements.<a href="#appendix-B.4-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.5-1.6">
+            <p id="appendix-B.5-1.6.1">Editorial fixes and improvements.<a href="#appendix-B.5-1.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-00">
-<section id="appendix-B.5">
+<section id="appendix-B.6">
         <h3 id="name-version-00">
-<a href="#appendix-B.5" class="section-number selfRef">B.5. </a><a href="#name-version-00" class="section-name selfRef">Version -00</a>
+<a href="#appendix-B.6" class="section-number selfRef">B.6. </a><a href="#name-version-00" class="section-name selfRef">Version -00</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.5-1.1">
-            <p id="appendix-B.5-1.1.1">Imported content from draft-ietf-ace-pubsub-profile-11.<a href="#appendix-B.5-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.6-1.1">
+            <p id="appendix-B.6-1.1.1">Imported content from draft-ietf-ace-pubsub-profile-11.<a href="#appendix-B.6-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.5-1.2">
-            <p id="appendix-B.5-1.2.1">Removed content about MQTT.<a href="#appendix-B.5-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.6-1.2">
+            <p id="appendix-B.6-1.2.1">Removed content about MQTT.<a href="#appendix-B.6-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.5-1.3">
-            <p id="appendix-B.5-1.3.1">New document title.<a href="#appendix-B.5-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.6-1.3">
+            <p id="appendix-B.6-1.3.1">New document title.<a href="#appendix-B.6-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
