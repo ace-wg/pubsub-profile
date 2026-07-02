@@ -634,7 +634,7 @@ Table of Contents
    related to the topic in question, as specified in Sections 2.5.1 and
    2.5.2 of [I-D.ietf-core-coap-pubsub].
 
-   This profile extends the set of CoAP Pub-Sub Parameters that is
+   This profile extends the set of CoAP Pub-Sub Topic Properties that is
    possible to specify within the representation of a topic resource, as
    originally defined in Section 2.2.1 of [I-D.ietf-core-coap-pubsub].
    In particular, this profile defines the following two parameters that
@@ -652,12 +652,12 @@ Table of Contents
       as a CBOR text string.  Clients will have to obtain an access
       token from the AS to upload to the KDC, before starting the
       process to join the security group at the KDC.  The CBOR
-      abbreviation for this parameter is registered in Section 9.4.
+      abbreviation for this topic property is registered in Section 9.4.
 
    *  'sec-gp', specifying the name of the security group associated
       with the topic in question, as a stable and invariant identifier.
       The name of the security group is encoded as a CBOR text string.
-      The CBOR abbreviation for this parameter is registered in
+      The CBOR abbreviation for this topic property is registered in
       Section 9.4.
 
    Furthermore, the Resource Type (rt=) Link Target Attribute value
