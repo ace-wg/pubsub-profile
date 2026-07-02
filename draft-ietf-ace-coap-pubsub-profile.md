@@ -397,9 +397,9 @@ In particular the Client is authorised to retrieve the representation of a topic
 
 This profile extends the set of CoAP Pub-Sub Parameters that is possible to specify within the representation of a topic resource, as originally defined in {{Section 2.2.1 of I-D.ietf-core-coap-pubsub}}. In particular, this profile defines the following two parameters that the Broker can specify in a response to a GET or FETCH request that targets a topic resource (see {{Sections 2.5.1 and 2.5.2 of I-D.ietf-core-coap-pubsub}}), with the FETCH request using the Content-Format "application/cbor". Note that, when these parameters are transported in their respective fields of the response payload, the Content-Format "application/core-pubsub+cbor" defined in {{I-D.ietf-core-coap-pubsub}} is used.
 
-* 'kdc_uri', with value the URI of the group-membership resource at the KDC, where Clients can send a request to join the security group associated with the topic in question. The URI is encoded as a CBOR text string. Clients will have to obtain an access token from the AS to upload to the KDC, before starting the process to join the security group at the KDC.
+* 'kdc-uri', with value the URI of the group-membership resource at the KDC, where Clients can send a request to join the security group associated with the topic in question. The URI is encoded as a CBOR text string. Clients will have to obtain an access token from the AS to upload to the KDC, before starting the process to join the security group at the KDC. The CBOR abbreviation for this parameter is registered in {{iana-pubsub-topic-properties}}.
 
-* 'sec_gp', specifying the name of the security group associated with the topic in question, as a stable and invariant identifier. The name of the security group is encoded as a CBOR text string.
+* 'sec-gp', specifying the name of the security group associated with the topic in question, as a stable and invariant identifier. The name of the security group is encoded as a CBOR text string. The CBOR abbreviation for this parameter is registered in {{iana-pubsub-topic-properties}}.
 
 Furthermore, the Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in {{core_rt}} (REQ10), and can be used to describe group-membership resources at the KDC, e.g., by using a CoRE link-format document {{RFC6690}}. As an alternative to the discovery approach defined above and provided by the Broker, applications can use this common resource type to discover links to group-membership resources at the KDC for joining security groups associated with Pub-Sub topics.
 
@@ -1190,6 +1190,22 @@ IANA is asked to register the following entry in the "Resource Type (rt=) Link T
 
 Clients can use this resource type to discover a group membership resource at the KDC.
 
+## CoAP Pubsub Topic Properties {#iana-pubsub-topic-properties}
+
+IANA is asked to add the following entries to the "CoAP Pubsub Topic Properties" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group, which is defined by {{I-D.ietf-core-coap-pubsub}}.
+
+* Name: kdc-uri
+* CBOR Key: TBD (range 0-255)
+* CBOR Type: tstr
+* Reference: {{&SELF}}
+
+<br>
+
+* Name: sec-gp
+* CBOR Key: TBD (range 0-255)
+* CBOR Type: tstr
+* Reference: {{&SELF}}
+
 ## AIF Media-Type Sub-Parameters {#aif}
 
 For the media-types "application/aif+cbor" and "application/aif+json" defined in {{Section 5.1 of RFC9237}}, IANA is requested to register the following entries for the two media-type parameters Toid and Tperm, in the respective sub-registry defined in {{Section 5.2 of RFC9237}} within the "MIME Media Type Sub-Parameter" registry group.
@@ -1356,6 +1372,8 @@ This section lists how this application profile of ACE addresses the requirement
   * Content-Format of certain messages to/from the Broker.
 
   * Referred section numbers.
+
+* IANA registration request for the CoAP Pubsub Topic Properties 'kdc-uri' and 'sec-gp'.
 
 * Editorial fixes.
 
