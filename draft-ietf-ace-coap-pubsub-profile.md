@@ -888,7 +888,7 @@ In the same diagram, (E) corresponds to the subscription of a Subscriber to the 
 ~~~~~~~~~~~~~
 {: #pubsub-3 title="Secure Pub-Sub Communication between Publisher and Subscriber" artwork-align="center"}
 
-{{flow}} provides a more detailed example of such a secure Pub-Sub communication. All the messages exchanged between a Client and the Broker are protected with the secure communication association between that Client and the Broker. In addition, COSE is used to protect end-to-end the published topic data, which is conveyed in a PUT request from the Publisher to the topic-data resource at the Broker and in a 2.05 (Content) response from that resource to a Subscriber.
+{{flow}} provides a more detailed example of such a secure Pub-Sub communication. All the messages exchanged between a Client and the Broker are protected with the secure communication association between that Client and the Broker. In addition, COSE is used to protect end-to-end the published topic data, which is conveyed in a PUT request from the Publisher to the topic-data resource at the Broker and in a successful response (typically 2.05 (Content)) from that resource to a Subscriber.
 
 The example also shows a delete operation, where the Publisher deletes the topic-data resource by sending a CoAP DELETE request to the URI of that resource. In the case of success, the Broker replies with a 2.02 (Deleted) response. Consequently, the Broker also unsubscribes all the Clients subscribed to that topic-data resource, by removing them from the list of observers and sending them a final 4.04 (Not Found) error response as per {{Section 3.2 of RFC7641}}.
 
@@ -1348,6 +1348,10 @@ This section lists how this application profile of ACE addresses the requirement
 {:removeinrfc}
 
 ## Version -04 to -05 ## {#sec-04-05}
+
+* Alignment with draft-ietf-core-coap-pubsub-21:
+
+  * Generalized response code in successful responses from the Broker.
 
 * Editorial fixes.
 
