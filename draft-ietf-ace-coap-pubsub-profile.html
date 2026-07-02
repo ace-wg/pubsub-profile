@@ -1274,13 +1274,16 @@ svg {
                 <p id="section-toc.1-1.9.2.3.1"><a href="#section-9.3" class="auto internal xref">9.3</a>.  <a href="#name-core-resource-type" class="internal xref">CoRE Resource Type</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.4">
-                <p id="section-toc.1-1.9.2.4.1"><a href="#section-9.4" class="auto internal xref">9.4</a>.  <a href="#name-aif-media-type-sub-paramete" class="internal xref">AIF Media-Type Sub-Parameters</a></p>
+                <p id="section-toc.1-1.9.2.4.1"><a href="#section-9.4" class="auto internal xref">9.4</a>.  <a href="#name-coap-pubsub-topic-propertie" class="internal xref">CoAP Pubsub Topic Properties</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.5">
-                <p id="section-toc.1-1.9.2.5.1"><a href="#section-9.5" class="auto internal xref">9.5</a>.  <a href="#name-coap-content-formats" class="internal xref">CoAP Content-Formats</a></p>
+                <p id="section-toc.1-1.9.2.5.1"><a href="#section-9.5" class="auto internal xref">9.5</a>.  <a href="#name-aif-media-type-sub-paramete" class="internal xref">AIF Media-Type Sub-Parameters</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.6">
-                <p id="section-toc.1-1.9.2.6.1"><a href="#section-9.6" class="auto internal xref">9.6</a>.  <a href="#name-tls-exporter-labels" class="internal xref">TLS Exporter Labels</a></p>
+                <p id="section-toc.1-1.9.2.6.1"><a href="#section-9.6" class="auto internal xref">9.6</a>.  <a href="#name-coap-content-formats" class="internal xref">CoAP Content-Formats</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.7">
+                <p id="section-toc.1-1.9.2.7.1"><a href="#section-9.7" class="auto internal xref">9.7</a>.  <a href="#name-tls-exporter-labels" class="internal xref">TLS Exporter Labels</a></p>
 </li>
             </ul>
 </li>
@@ -1953,10 +1956,10 @@ This is not to be confused with an "application group", which has relevance at t
 <p id="section-3.3-3">This profile extends the set of CoAP Pub-Sub Parameters that is possible to specify within the representation of a topic resource, as originally defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.2.1" class="relref">Section 2.2.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>. In particular, this profile defines the following two parameters that the Broker can specify in a response to a GET or FETCH request that targets a topic resource (see Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.5.1" class="relref">2.5.1</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.5.2" class="relref">2.5.2</a> of <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>), with the FETCH request using the Content-Format "application/cbor". Note that, when these parameters are transported in their respective fields of the response payload, the Content-Format "application/core-pubsub+cbor" defined in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> is used.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3-4.1">
-            <p id="section-3.3-4.1.1">'kdc_uri', with value the URI of the group-membership resource at the KDC, where Clients can send a request to join the security group associated with the topic in question. The URI is encoded as a CBOR text string. Clients will have to obtain an access token from the AS to upload to the KDC, before starting the process to join the security group at the KDC.<a href="#section-3.3-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-4.1.1">'kdc-uri', with value the URI of the group-membership resource at the KDC, where Clients can send a request to join the security group associated with the topic in question. The URI is encoded as a CBOR text string. Clients will have to obtain an access token from the AS to upload to the KDC, before starting the process to join the security group at the KDC. The CBOR abbreviation for this parameter is registered in <a href="#iana-pubsub-topic-properties" class="auto internal xref">Section 9.4</a>.<a href="#section-3.3-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.3-4.2">
-            <p id="section-3.3-4.2.1">'sec_gp', specifying the name of the security group associated with the topic in question, as a stable and invariant identifier. The name of the security group is encoded as a CBOR text string.<a href="#section-3.3-4.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-4.2.1">'sec-gp', specifying the name of the security group associated with the topic in question, as a stable and invariant identifier. The name of the security group is encoded as a CBOR text string. The CBOR abbreviation for this parameter is registered in <a href="#iana-pubsub-topic-properties" class="auto internal xref">Section 9.4</a>.<a href="#section-3.3-4.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.3-5">Furthermore, the Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in <a href="#core_rt" class="auto internal xref">Section 9.3</a> (REQ10), and can be used to describe group-membership resources at the KDC, e.g., by using a CoRE link-format document <span>[<a href="#RFC6690" class="cite xref">RFC6690</a>]</span>. As an alternative to the discovery approach defined above and provided by the Broker, applications can use this common resource type to discover links to group-membership resources at the KDC for joining security groups associated with Pub-Sub topics.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
@@ -2078,7 +2081,7 @@ Since this application profile considers user-related operations, the "Admin" op
 <a href="#name-pub-sub-scope-using-the-aif" class="selfRef">Pub-Sub scope using the AIF format</a>
             </figcaption></figure>
 </div>
-<p id="section-3.4.1-15">As per the guidelines in <span>[<a href="#RFC9237" class="cite xref">RFC9237</a>]</span>, <a href="#aif" class="auto internal xref">Section 9.4</a> and <a href="#content_formats" class="auto internal xref">Section 9.5</a> register the specific instance of "Toid" and "Tperm" as media type parameters and a corresponding Content-Format (REQ2).<a href="#section-3.4.1-15" class="pilcrow">¶</a></p>
+<p id="section-3.4.1-15">As per the guidelines in <span>[<a href="#RFC9237" class="cite xref">RFC9237</a>]</span>, <a href="#aif" class="auto internal xref">Section 9.5</a> and <a href="#content_formats" class="auto internal xref">Section 9.6</a> register the specific instance of "Toid" and "Tperm" as media type parameters and a corresponding Content-Format (REQ2).<a href="#section-3.4.1-15" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2097,8 +2100,8 @@ Since this application profile considers user-related operations, the "Admin" op
             <p id="section-3.5-2.2.1">In the Authorization Response, the AS <span class="bcp14">MUST</span> include the 'scope' parameter, when the value included in the access token differs from the one specified by the Client in the Authorization Request.  In such a case, the second element of each scope entry specifies the set of operations that the Client is authorised for that scope entry, encoded as specified in <a href="#auth-request" class="auto internal xref">Section 3.4</a>.<a href="#section-3.5-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.5-3">Furthermore, the AS <span class="bcp14">MAY</span> use the extended format of scope defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-7" class="relref">Section 7</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span> for the 'scope' claim of the access token. In such a case, the AS <span class="bcp14">MUST</span> use the CBOR tag with tag number TAG_NUMBER, associated with the CoAP Content-Format CF_ID for the media type "application/aif+cbor" registered in <a href="#content_formats" class="auto internal xref">Section 9.5</a> of this document (REQ28).<a href="#section-3.5-3" class="pilcrow">¶</a></p>
-<p id="section-3.5-4">Note to RFC Editor: In the previous paragraph, please replace "TAG_NUMBER" with the CBOR tag number computed as TN(ct) in <span><a href="https://rfc-editor.org/rfc/rfc9277#section-4.3" class="relref">Section 4.3</a> of [<a href="#RFC9277" class="cite xref">RFC9277</a>]</span>, where ct is the ID assigned to the CoAP Content-Format registered in <a href="#content_formats" class="auto internal xref">Section 9.5</a> of this document.  Then, please replace "CF_ID" with the ID assigned to that CoAP Content-Format.  Finally, please delete this paragraph.<a href="#section-3.5-4" class="pilcrow">¶</a></p>
+<p id="section-3.5-3">Furthermore, the AS <span class="bcp14">MAY</span> use the extended format of scope defined in <span><a href="https://rfc-editor.org/rfc/rfc9594#section-7" class="relref">Section 7</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span> for the 'scope' claim of the access token. In such a case, the AS <span class="bcp14">MUST</span> use the CBOR tag with tag number TAG_NUMBER, associated with the CoAP Content-Format CF_ID for the media type "application/aif+cbor" registered in <a href="#content_formats" class="auto internal xref">Section 9.6</a> of this document (REQ28).<a href="#section-3.5-3" class="pilcrow">¶</a></p>
+<p id="section-3.5-4">Note to RFC Editor: In the previous paragraph, please replace "TAG_NUMBER" with the CBOR tag number computed as TN(ct) in <span><a href="https://rfc-editor.org/rfc/rfc9277#section-4.3" class="relref">Section 4.3</a> of [<a href="#RFC9277" class="cite xref">RFC9277</a>]</span>, where ct is the ID assigned to the CoAP Content-Format registered in <a href="#content_formats" class="auto internal xref">Section 9.6</a> of this document.  Then, please replace "CF_ID" with the ID assigned to that CoAP Content-Format.  Finally, please delete this paragraph.<a href="#section-3.5-4" class="pilcrow">¶</a></p>
 <p id="section-3.5-5">This indicates that the binary encoded scope follows the scope semantics defined for this application profile in <a href="#scope" class="auto internal xref">Section 3.4.1</a> of this document.<a href="#section-3.5-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2312,14 +2315,14 @@ If the joining node chooses to do so, then the following applies when composing 
               <li class="normal" id="section-4.1.1.2-4.2">
                 <p id="section-4.1.1.2-4.2.1">If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE <span>[<a href="#RFC9202" class="cite xref">RFC9202</a>]</span> and the access token was specified in the "psk_identity" field of the ClientKeyExchange message when using DTLS 1.2 <span>[<a href="#RFC6347" class="cite xref">RFC6347</a>]</span>, then N_S is an exporter value computed as defined in <span><a href="https://rfc-editor.org/rfc/rfc5705#section-4" class="relref">Section 4</a> of [<a href="#RFC5705" class="cite xref">RFC5705</a>]</span> (REQ15).<a href="#section-4.1.1.2-4.2.1" class="pilcrow">¶</a></p>
 <p id="section-4.1.1.2-4.2.2">
-Specifically, N_S is exported from the DTLS session between the joining node and the KDC, using an empty context value (i.e., a context value of zero-length), 32 as length value in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-pubsub-app" defined in <a href="#tls_exporter" class="auto internal xref">Section 9.6</a> of this document.<a href="#section-4.1.1.2-4.2.2" class="pilcrow">¶</a></p>
+Specifically, N_S is exported from the DTLS session between the joining node and the KDC, using an empty context value (i.e., a context value of zero-length), 32 as length value in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-pubsub-app" defined in <a href="#tls_exporter" class="auto internal xref">Section 9.7</a> of this document.<a href="#section-4.1.1.2-4.2.2" class="pilcrow">¶</a></p>
 <p id="section-4.1.1.2-4.2.3">
 The same as above holds if TLS 1.2 <span>[<a href="#RFC5246" class="cite xref">RFC5246</a>]</span> was used instead of DTLS 1.2, as per <span>[<a href="#RFC9430" class="cite xref">RFC9430</a>]</span>.<a href="#section-4.1.1.2-4.2.3" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1.1.2-4.3">
                 <p id="section-4.1.1.2-4.3.1">If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE <span>[<a href="#RFC9202" class="cite xref">RFC9202</a>]</span> and the access token was specified in the "identity" field of a PskIdentity within the PreSharedKeyExtension of the ClientHello message when using DTLS 1.3 <span>[<a href="#RFC9147" class="cite xref">RFC9147</a>]</span>, then N_S is an exporter value computed as defined in <span><a href="https://rfc-editor.org/rfc/rfc8446#section-7.5" class="relref">Section 7.5</a> of [<a href="#RFC8446" class="cite xref">RFC8446</a>]</span> (REQ15).<a href="#section-4.1.1.2-4.3.1" class="pilcrow">¶</a></p>
 <p id="section-4.1.1.2-4.3.2">
-Specifically, N_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value' (i.e., a 'context_value' of zero length), 32 as 'key_length' in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-pubsub-app" defined in <a href="#tls_exporter" class="auto internal xref">Section 9.6</a> of this document.<a href="#section-4.1.1.2-4.3.2" class="pilcrow">¶</a></p>
+Specifically, N_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value' (i.e., a 'context_value' of zero length), 32 as 'key_length' in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-pubsub-app" defined in <a href="#tls_exporter" class="auto internal xref">Section 9.7</a> of this document.<a href="#section-4.1.1.2-4.3.2" class="pilcrow">¶</a></p>
 <p id="section-4.1.1.2-4.3.3">
 The same as above holds if TLS 1.3 <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span> was used instead of DTLS 1.3, as per <span>[<a href="#RFC9430" class="cite xref">RFC9430</a>]</span>.<a href="#section-4.1.1.2-4.3.3" class="pilcrow">¶</a></p>
 </li>
@@ -3126,21 +3129,21 @@ The logged information also contains relevant metadata about the Client that has
 <p id="section-9.3-3">Clients can use this resource type to discover a group membership resource at the KDC.<a href="#section-9.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="aif">
+<div id="iana-pubsub-topic-properties">
 <section id="section-9.4">
-        <h3 id="name-aif-media-type-sub-paramete">
-<a href="#section-9.4" class="section-number selfRef">9.4. </a><a href="#name-aif-media-type-sub-paramete" class="section-name selfRef">AIF Media-Type Sub-Parameters</a>
+        <h3 id="name-coap-pubsub-topic-propertie">
+<a href="#section-9.4" class="section-number selfRef">9.4. </a><a href="#name-coap-pubsub-topic-propertie" class="section-name selfRef">CoAP Pubsub Topic Properties</a>
         </h3>
-<p id="section-9.4-1">For the media-types "application/aif+cbor" and "application/aif+json" defined in <span><a href="https://rfc-editor.org/rfc/rfc9237#section-5.1" class="relref">Section 5.1</a> of [<a href="#RFC9237" class="cite xref">RFC9237</a>]</span>, IANA is requested to register the following entries for the two media-type parameters Toid and Tperm, in the respective sub-registry defined in <span><a href="https://rfc-editor.org/rfc/rfc9237#section-5.2" class="relref">Section 5.2</a> of [<a href="#RFC9237" class="cite xref">RFC9237</a>]</span> within the "MIME Media Type Sub-Parameter" registry group.<a href="#section-9.4-1" class="pilcrow">¶</a></p>
+<p id="section-9.4-1">IANA is asked to add the following entries to the "CoAP Pubsub Topic Properties" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group, which is defined by <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>.<a href="#section-9.4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9.4-2.1">
-            <p id="section-9.4-2.1.1">Parameter: Toid<a href="#section-9.4-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-9.4-2.1.1">Name: kdc-uri<a href="#section-9.4-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.4-2.2">
-            <p id="section-9.4-2.2.1">Name: pubsub-topic<a href="#section-9.4-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-9.4-2.2.1">CBOR Key: TBD (range 0-255)<a href="#section-9.4-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.4-2.3">
-            <p id="section-9.4-2.3.1">Description/Specification: Name of one application group (topic) or of a corresponding security group.<a href="#section-9.4-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-9.4-2.3.1">CBOR Type: tstr<a href="#section-9.4-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.4-2.4">
             <p id="section-9.4-2.4.1">Reference: [RFC-XXXX]<a href="#section-9.4-2.4.1" class="pilcrow">¶</a></p>
@@ -3149,13 +3152,13 @@ The logged information also contains relevant metadata about the Client that has
 <p id="section-9.4-3"><br></p>
 <ul class="normal">
 <li class="normal" id="section-9.4-4.1">
-            <p id="section-9.4-4.1.1">Parameter: Tperm<a href="#section-9.4-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-9.4-4.1.1">Name: sec-gp<a href="#section-9.4-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.4-4.2">
-            <p id="section-9.4-4.2.1">Name: pubsub-perm<a href="#section-9.4-4.2.1" class="pilcrow">¶</a></p>
+            <p id="section-9.4-4.2.1">CBOR Key: TBD (range 0-255)<a href="#section-9.4-4.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.4-4.3">
-            <p id="section-9.4-4.3.1">Description/Specification: Permissions pertaining to application groups (topics) or to corresponding security groups.<a href="#section-9.4-4.3.1" class="pilcrow">¶</a></p>
+            <p id="section-9.4-4.3.1">CBOR Type: tstr<a href="#section-9.4-4.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.4-4.4">
             <p id="section-9.4-4.4.1">Reference: [RFC-XXXX]<a href="#section-9.4-4.4.1" class="pilcrow">¶</a></p>
@@ -3163,21 +3166,21 @@ The logged information also contains relevant metadata about the Client that has
         </ul>
 </section>
 </div>
-<div id="content_formats">
+<div id="aif">
 <section id="section-9.5">
-        <h3 id="name-coap-content-formats">
-<a href="#section-9.5" class="section-number selfRef">9.5. </a><a href="#name-coap-content-formats" class="section-name selfRef">CoAP Content-Formats</a>
+        <h3 id="name-aif-media-type-sub-paramete">
+<a href="#section-9.5" class="section-number selfRef">9.5. </a><a href="#name-aif-media-type-sub-paramete" class="section-name selfRef">AIF Media-Type Sub-Parameters</a>
         </h3>
-<p id="section-9.5-1">IANA is asked to register the following entries to the "CoAP Content-Formats" registry <span>[<a href="#IANA.CoAP.Content.Formats" class="cite xref">IANA.CoAP.Content.Formats</a>]</span> within the "Constrained RESTful Environments (CoRE) Parameters" registry group.<a href="#section-9.5-1" class="pilcrow">¶</a></p>
+<p id="section-9.5-1">For the media-types "application/aif+cbor" and "application/aif+json" defined in <span><a href="https://rfc-editor.org/rfc/rfc9237#section-5.1" class="relref">Section 5.1</a> of [<a href="#RFC9237" class="cite xref">RFC9237</a>]</span>, IANA is requested to register the following entries for the two media-type parameters Toid and Tperm, in the respective sub-registry defined in <span><a href="https://rfc-editor.org/rfc/rfc9237#section-5.2" class="relref">Section 5.2</a> of [<a href="#RFC9237" class="cite xref">RFC9237</a>]</span> within the "MIME Media Type Sub-Parameter" registry group.<a href="#section-9.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9.5-2.1">
-            <p id="section-9.5-2.1.1">Content Type: application/aif+cbor;toid=pubsub-topic;tperm=pubsub-perm<a href="#section-9.5-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-9.5-2.1.1">Parameter: Toid<a href="#section-9.5-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.5-2.2">
-            <p id="section-9.5-2.2.1">Content Coding: -<a href="#section-9.5-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-9.5-2.2.1">Name: pubsub-topic<a href="#section-9.5-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.5-2.3">
-            <p id="section-9.5-2.3.1">ID: 294 (suggested)<a href="#section-9.5-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-9.5-2.3.1">Description/Specification: Name of one application group (topic) or of a corresponding security group.<a href="#section-9.5-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.5-2.4">
             <p id="section-9.5-2.4.1">Reference: [RFC-XXXX]<a href="#section-9.5-2.4.1" class="pilcrow">¶</a></p>
@@ -3186,13 +3189,13 @@ The logged information also contains relevant metadata about the Client that has
 <p id="section-9.5-3"><br></p>
 <ul class="normal">
 <li class="normal" id="section-9.5-4.1">
-            <p id="section-9.5-4.1.1">Content Type: application/aif+json;toid=pubsub-topic;tperm=pubsub-perm<a href="#section-9.5-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-9.5-4.1.1">Parameter: Tperm<a href="#section-9.5-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.5-4.2">
-            <p id="section-9.5-4.2.1">Content Coding: -<a href="#section-9.5-4.2.1" class="pilcrow">¶</a></p>
+            <p id="section-9.5-4.2.1">Name: pubsub-perm<a href="#section-9.5-4.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.5-4.3">
-            <p id="section-9.5-4.3.1">ID: 295 (suggested)<a href="#section-9.5-4.3.1" class="pilcrow">¶</a></p>
+            <p id="section-9.5-4.3.1">Description/Specification: Permissions pertaining to application groups (topics) or to corresponding security groups.<a href="#section-9.5-4.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.5-4.4">
             <p id="section-9.5-4.4.1">Reference: [RFC-XXXX]<a href="#section-9.5-4.4.1" class="pilcrow">¶</a></p>
@@ -3200,24 +3203,61 @@ The logged information also contains relevant metadata about the Client that has
         </ul>
 </section>
 </div>
-<div id="tls_exporter">
+<div id="content_formats">
 <section id="section-9.6">
-        <h3 id="name-tls-exporter-labels">
-<a href="#section-9.6" class="section-number selfRef">9.6. </a><a href="#name-tls-exporter-labels" class="section-name selfRef">TLS Exporter Labels</a>
+        <h3 id="name-coap-content-formats">
+<a href="#section-9.6" class="section-number selfRef">9.6. </a><a href="#name-coap-content-formats" class="section-name selfRef">CoAP Content-Formats</a>
         </h3>
-<p id="section-9.6-1">IANA is asked to register the following entry in the "TLS Exporter Labels" registry <span>[<a href="#IANA.TLS.Exporter.Labels" class="cite xref">IANA.TLS.Exporter.Labels</a>]</span> within the "Transport Layer Security (TLS) Parameters" registry group, which is defined in <span><a href="https://rfc-editor.org/rfc/rfc5705#section-6" class="relref">Section 6</a> of [<a href="#RFC5705" class="cite xref">RFC5705</a>]</span> and updated in <span><a href="https://rfc-editor.org/rfc/rfc8447#section-12" class="relref">Section 12</a> of [<a href="#RFC8447" class="cite xref">RFC8447</a>]</span>.<a href="#section-9.6-1" class="pilcrow">¶</a></p>
+<p id="section-9.6-1">IANA is asked to register the following entries to the "CoAP Content-Formats" registry <span>[<a href="#IANA.CoAP.Content.Formats" class="cite xref">IANA.CoAP.Content.Formats</a>]</span> within the "Constrained RESTful Environments (CoRE) Parameters" registry group.<a href="#section-9.6-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9.6-2.1">
-            <p id="section-9.6-2.1.1">Value: EXPORTER-ACE-Sign-Challenge-coap-pubsub-app<a href="#section-9.6-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-9.6-2.1.1">Content Type: application/aif+cbor;toid=pubsub-topic;tperm=pubsub-perm<a href="#section-9.6-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.6-2.2">
-            <p id="section-9.6-2.2.1">DTLS-OK: Y<a href="#section-9.6-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-9.6-2.2.1">Content Coding: -<a href="#section-9.6-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.6-2.3">
-            <p id="section-9.6-2.3.1">Recommended: N<a href="#section-9.6-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-9.6-2.3.1">ID: 294 (suggested)<a href="#section-9.6-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.6-2.4">
-            <p id="section-9.6-2.4.1">Reference: <a href="#pop" class="auto internal xref">Section 4.1.1.2</a> of [RFC-XXXX]<a href="#section-9.6-2.4.1" class="pilcrow">¶</a></p>
+            <p id="section-9.6-2.4.1">Reference: [RFC-XXXX]<a href="#section-9.6-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-9.6-3"><br></p>
+<ul class="normal">
+<li class="normal" id="section-9.6-4.1">
+            <p id="section-9.6-4.1.1">Content Type: application/aif+json;toid=pubsub-topic;tperm=pubsub-perm<a href="#section-9.6-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.6-4.2">
+            <p id="section-9.6-4.2.1">Content Coding: -<a href="#section-9.6-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.6-4.3">
+            <p id="section-9.6-4.3.1">ID: 295 (suggested)<a href="#section-9.6-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.6-4.4">
+            <p id="section-9.6-4.4.1">Reference: [RFC-XXXX]<a href="#section-9.6-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="tls_exporter">
+<section id="section-9.7">
+        <h3 id="name-tls-exporter-labels">
+<a href="#section-9.7" class="section-number selfRef">9.7. </a><a href="#name-tls-exporter-labels" class="section-name selfRef">TLS Exporter Labels</a>
+        </h3>
+<p id="section-9.7-1">IANA is asked to register the following entry in the "TLS Exporter Labels" registry <span>[<a href="#IANA.TLS.Exporter.Labels" class="cite xref">IANA.TLS.Exporter.Labels</a>]</span> within the "Transport Layer Security (TLS) Parameters" registry group, which is defined in <span><a href="https://rfc-editor.org/rfc/rfc5705#section-6" class="relref">Section 6</a> of [<a href="#RFC5705" class="cite xref">RFC5705</a>]</span> and updated in <span><a href="https://rfc-editor.org/rfc/rfc8447#section-12" class="relref">Section 12</a> of [<a href="#RFC8447" class="cite xref">RFC8447</a>]</span>.<a href="#section-9.7-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-9.7-2.1">
+            <p id="section-9.7-2.1.1">Value: EXPORTER-ACE-Sign-Challenge-coap-pubsub-app<a href="#section-9.7-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.7-2.2">
+            <p id="section-9.7-2.2.1">DTLS-OK: Y<a href="#section-9.7-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.7-2.3">
+            <p id="section-9.7-2.3.1">Recommended: N<a href="#section-9.7-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.7-2.4">
+            <p id="section-9.7-2.4.1">Reference: <a href="#pop" class="auto internal xref">Section 4.1.1.2</a> of [RFC-XXXX]<a href="#section-9.7-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -3433,7 +3473,7 @@ The logged information also contains relevant metadata about the Client that has
             <p id="appendix-A.1-1.1.1">REQ1: Specify the format and encoding of scope. This includes defining the set of possible roles and their identifiers, as well as the corresponding encoding to use in the scope entries according to the used scope format: see <a href="#scope" class="auto internal xref">Section 3.4.1</a>.<a href="#appendix-A.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.2">
-            <p id="appendix-A.1-1.2.1">REQ2: If scope uses AIF, register its specific instance of "Toid" and "Tperm" as media type parameters and a corresponding Content-Format, as per the guidelines in <span>[<a href="#RFC9237" class="cite xref">RFC9237</a>]</span>: see <a href="#aif" class="auto internal xref">Section 9.4</a> and <a href="#content_formats" class="auto internal xref">Section 9.5</a>.<a href="#appendix-A.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.2.1">REQ2: If scope uses AIF, register its specific instance of "Toid" and "Tperm" as media type parameters and a corresponding Content-Format, as per the guidelines in <span>[<a href="#RFC9237" class="cite xref">RFC9237</a>]</span>: see <a href="#aif" class="auto internal xref">Section 9.5</a> and <a href="#content_formats" class="auto internal xref">Section 9.6</a>.<a href="#appendix-A.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.3">
             <p id="appendix-A.1-1.3.1">REQ3: If used, specify the acceptable values for the 'sign_alg' parameter: values from the "Value" column of the "COSE Algorithms" registry <span>[<a href="#IANA.COSE.Algorithms" class="cite xref">IANA.COSE.Algorithms</a>]</span>.<a href="#appendix-A.1-1.3.1" class="pilcrow">¶</a></p>
@@ -3511,7 +3551,7 @@ The logged information also contains relevant metadata about the Client that has
             <p id="appendix-A.1-1.27.1">REQ27: Specify the format of (newly generated) individual keying material for group members or of the information to derive such keying material, as well as the corresponding CBOR map key that has to be registered in the "ACE Groupcomm Parameters" registry: see <a href="#sec-key-renewal-request" class="auto internal xref">Section 4.2.2</a>.<a href="#appendix-A.1-1.27.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.28">
-            <p id="appendix-A.1-1.28.1">REQ28: Specify which CBOR tag is used for identifying the semantics of binary scopes, or register a new CBOR tag if a suitable one does not exist already: see <a href="#as-response" class="auto internal xref">Section 3.5</a> and <a href="#content_formats" class="auto internal xref">Section 9.5</a>.<a href="#appendix-A.1-1.28.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.1-1.28.1">REQ28: Specify which CBOR tag is used for identifying the semantics of binary scopes, or register a new CBOR tag if a suitable one does not exist already: see <a href="#as-response" class="auto internal xref">Section 3.5</a> and <a href="#content_formats" class="auto internal xref">Section 9.6</a>.<a href="#appendix-A.1-1.28.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.1-1.29">
             <p id="appendix-A.1-1.29.1">REQ29: Categorize newly defined parameters according to the same criteria of <span><a href="https://rfc-editor.org/rfc/rfc9594#section-8" class="relref">Section 8</a> of [<a href="#RFC9594" class="cite xref">RFC9594</a>]</span>: a Publisher Client <span class="bcp14">MUST</span> support 'group_SenderId' in 'key'; see <a href="#join-response" class="auto internal xref">Section 4.1.2</a>.<a href="#appendix-A.1-1.29.1" class="pilcrow">¶</a></p>
@@ -3602,7 +3642,10 @@ The logged information also contains relevant metadata about the Client that has
             </ul>
 </li>
           <li class="normal" id="appendix-B.1-1.2">
-            <p id="appendix-B.1-1.2.1">Editorial fixes.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.2.1">IANA registration request for the CoAP Pubsub Topic Properties 'kdc-uri' and 'sec-gp'.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.3">
+            <p id="appendix-B.1-1.3.1">Editorial fixes.<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

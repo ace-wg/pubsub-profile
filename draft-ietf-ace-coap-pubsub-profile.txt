@@ -115,9 +115,10 @@ Table of Contents
      9.1.  ACE Groupcomm Key Types
      9.2.  ACE Groupcomm Profiles
      9.3.  CoRE Resource Type
-     9.4.  AIF Media-Type Sub-Parameters
-     9.5.  CoAP Content-Formats
-     9.6.  TLS Exporter Labels
+     9.4.  CoAP Pubsub Topic Properties
+     9.5.  AIF Media-Type Sub-Parameters
+     9.6.  CoAP Content-Formats
+     9.7.  TLS Exporter Labels
    10. References
      10.1.  Normative References
      10.2.  Informative References
@@ -645,16 +646,19 @@ Table of Contents
    the Content-Format "application/core-pubsub+cbor" defined in
    [I-D.ietf-core-coap-pubsub] is used.
 
-   *  'kdc_uri', with value the URI of the group-membership resource at
+   *  'kdc-uri', with value the URI of the group-membership resource at
       the KDC, where Clients can send a request to join the security
       group associated with the topic in question.  The URI is encoded
       as a CBOR text string.  Clients will have to obtain an access
       token from the AS to upload to the KDC, before starting the
-      process to join the security group at the KDC.
+      process to join the security group at the KDC.  The CBOR
+      abbreviation for this parameter is registered in Section 9.4.
 
-   *  'sec_gp', specifying the name of the security group associated
+   *  'sec-gp', specifying the name of the security group associated
       with the topic in question, as a stable and invariant identifier.
       The name of the security group is encoded as a CBOR text string.
+      The CBOR abbreviation for this parameter is registered in
+      Section 9.4.
 
    Furthermore, the Resource Type (rt=) Link Target Attribute value
    "core.ps.gm" is registered in Section 9.3 (REQ10), and can be used to
@@ -844,7 +848,7 @@ Table of Contents
 
                 Figure 6: Pub-Sub scope using the AIF format
 
-   As per the guidelines in [RFC9237], Section 9.4 and Section 9.5
+   As per the guidelines in [RFC9237], Section 9.5 and Section 9.6
    register the specific instance of "Toid" and "Tperm" as media type
    parameters and a corresponding Content-Format (REQ2).
 
@@ -868,13 +872,13 @@ Table of Contents
    Section 7 of [RFC9594] for the 'scope' claim of the access token.  In
    such a case, the AS MUST use the CBOR tag with tag number TAG_NUMBER,
    associated with the CoAP Content-Format CF_ID for the media type
-   "application/aif+cbor" registered in Section 9.5 of this document
+   "application/aif+cbor" registered in Section 9.6 of this document
    (REQ28).
 
    Note to RFC Editor: In the previous paragraph, please replace
    "TAG_NUMBER" with the CBOR tag number computed as TN(ct) in
    Section 4.3 of [RFC9277], where ct is the ID assigned to the CoAP
-   Content-Format registered in Section 9.5 of this document.  Then,
+   Content-Format registered in Section 9.6 of this document.  Then,
    please replace "CF_ID" with the ID assigned to that CoAP Content-
    Format.  Finally, please delete this paragraph.
 
@@ -1225,7 +1229,7 @@ Table of Contents
       joining node and the KDC, using an empty context value (i.e., a
       context value of zero-length), 32 as length value in bytes, and
       the exporter label "EXPORTER-ACE-Sign-Challenge-coap-pubsub-app"
-      defined in Section 9.6 of this document.
+      defined in Section 9.7 of this document.
 
       The same as above holds if TLS 1.2 [RFC5246] was used instead of
       DTLS 1.2, as per [RFC9430].
@@ -1241,7 +1245,7 @@ Table of Contents
       joining node and the KDC, using an empty 'context_value' (i.e., a
       'context_value' of zero length), 32 as 'key_length' in bytes, and
       the exporter label "EXPORTER-ACE-Sign-Challenge-coap-pubsub-app"
-      defined in Section 9.6 of this document.
+      defined in Section 9.7 of this document.
 
       The same as above holds if TLS 1.3 [RFC8446] was used instead of
       DTLS 1.3, as per [RFC9430].
@@ -2388,7 +2392,32 @@ Table of Contents
    Clients can use this resource type to discover a group membership
    resource at the KDC.
 
-9.4.  AIF Media-Type Sub-Parameters
+9.4.  CoAP Pubsub Topic Properties
+
+   IANA is asked to add the following entries to the "CoAP Pubsub Topic
+   Properties" registry within the "Constrained RESTful Environments
+   (CoRE) Parameters" registry group, which is defined by
+   [I-D.ietf-core-coap-pubsub].
+
+   *  Name: kdc-uri
+
+   *  CBOR Key: TBD (range 0-255)
+
+   *  CBOR Type: tstr
+
+   *  Reference: [RFC-XXXX]
+
+
+
+   *  Name: sec-gp
+
+   *  CBOR Key: TBD (range 0-255)
+
+   *  CBOR Type: tstr
+
+   *  Reference: [RFC-XXXX]
+
+9.5.  AIF Media-Type Sub-Parameters
 
    For the media-types "application/aif+cbor" and "application/aif+json"
    defined in Section 5.1 of [RFC9237], IANA is requested to register
@@ -2416,7 +2445,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-9.5.  CoAP Content-Formats
+9.6.  CoAP Content-Formats
 
    IANA is asked to register the following entries to the "CoAP Content-
    Formats" registry [IANA.CoAP.Content.Formats] within the "Constrained
@@ -2442,7 +2471,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-9.6.  TLS Exporter Labels
+9.7.  TLS Exporter Labels
 
    IANA is asked to register the following entry in the "TLS Exporter
    Labels" registry [IANA.TLS.Exporter.Labels] within the "Transport
@@ -2700,8 +2729,8 @@ A.1.  Mandatory-to-Address Requirements
 
    *  REQ2: If scope uses AIF, register its specific instance of "Toid"
       and "Tperm" as media type parameters and a corresponding Content-
-      Format, as per the guidelines in [RFC9237]: see Section 9.4 and
-      Section 9.5.
+      Format, as per the guidelines in [RFC9237]: see Section 9.5 and
+      Section 9.6.
 
    *  REQ3: If used, specify the acceptable values for the 'sign_alg'
       parameter: values from the "Value" column of the "COSE Algorithms"
@@ -2832,7 +2861,7 @@ A.1.  Mandatory-to-Address Requirements
    *  REQ28: Specify which CBOR tag is used for identifying the
       semantics of binary scopes, or register a new CBOR tag if a
       suitable one does not exist already: see Section 3.5 and
-      Section 9.5.
+      Section 9.6.
 
    *  REQ29: Categorize newly defined parameters according to the same
       criteria of Section 8 of [RFC9594]: a Publisher Client MUST
@@ -2924,6 +2953,9 @@ B.1.  Version -04 to -05
       -  Content-Format of certain messages to/from the Broker.
 
       -  Referred section numbers.
+
+   *  IANA registration request for the CoAP Pubsub Topic Properties
+      'kdc-uri' and 'sec-gp'.
 
    *  Editorial fixes.
 
