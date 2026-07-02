@@ -393,9 +393,9 @@ Complementary to what is defined in {{Section 5.1 of RFC9200}} for AS discovery,
 
 Once a Client has obtained an access token from the AS and accordingly established a secure association with the Broker, the Client has the permission to access the topic resources at the Broker that pertain to the topics on which the Client is authorised to operate.
 
-In particular the Client is authorised to retrieve the representation of a topic resource, from which the Client can retrieve information related to the topic in question, as specified in {{Section 2.5 of I-D.ietf-core-coap-pubsub}}.
+In particular the Client is authorised to retrieve the representation of a topic resource, from which the Client can retrieve information related to the topic in question, as specified in {{Sections 2.5.1 and 2.5.2 of I-D.ietf-core-coap-pubsub}}.
 
-This profile extends the set of CoAP Pub-Sub Parameters that is possible to specify within the representation of a topic resource, as originally defined in {{Section 3 of I-D.ietf-core-coap-pubsub}}. In particular, this profile defines the following two parameters that the Broker can specify in a response to a request that targets a topic resource (see {{Section 2.5 of I-D.ietf-core-coap-pubsub}}). Note that, when these parameters are transported in their respective fields of the message payload, the Content-Format "application/core-pubsub+cbor" defined in {{I-D.ietf-core-coap-pubsub}} MUST be used.
+This profile extends the set of CoAP Pub-Sub Parameters that is possible to specify within the representation of a topic resource, as originally defined in {{Section 2.2.1 of I-D.ietf-core-coap-pubsub}}. In particular, this profile defines the following two parameters that the Broker can specify in a response to a GET or FETCH request that targets a topic resource (see {{Sections 2.5.1 and 2.5.2 of I-D.ietf-core-coap-pubsub}}), with the FETCH request using the Content-Format "application/cbor". Note that, when these parameters are transported in their respective fields of the response payload, the Content-Format "application/core-pubsub+cbor" defined in {{I-D.ietf-core-coap-pubsub}} is used.
 
 * 'kdc_uri', with value the URI of the group-membership resource at the KDC, where Clients can send a request to join the security group associated with the topic in question. The URI is encoded as a CBOR text string. Clients will have to obtain an access token from the AS to upload to the KDC, before starting the process to join the security group at the KDC.
 
@@ -1352,6 +1352,10 @@ This section lists how this application profile of ACE addresses the requirement
 * Alignment with draft-ietf-core-coap-pubsub-21:
 
   * Generalized response code in successful responses from the Broker.
+
+  * Content-Format of certain messages to/from the Broker.
+
+  * Referred section numbers.
 
 * Editorial fixes.
 
