@@ -637,13 +637,13 @@ Table of Contents
    This profile extends the set of CoAP Pub-Sub Topic Properties that is
    possible to specify within the representation of a topic resource, as
    originally defined in Section 2.2.1 of [I-D.ietf-core-coap-pubsub].
-   In particular, this profile defines the following two parameters that
-   the Broker can specify in a response to a GET or FETCH request that
-   targets a topic resource (see Sections 2.5.1 and 2.5.2 of
-   [I-D.ietf-core-coap-pubsub]), with the FETCH request using the
-   Content-Format "application/cbor".  Note that, when these parameters
-   are transported in their respective fields of the response payload,
-   the Content-Format "application/core-pubsub+cbor" defined in
+   In particular, this profile defines the following two topic
+   properties that the Broker can specify in a response to a GET or
+   FETCH request that targets a topic resource (see Sections 2.5.1 and
+   2.5.2 of [I-D.ietf-core-coap-pubsub]), with the FETCH request using
+   the Content-Format "application/cbor".  Note that, when these topic
+   properties are transported in their respective fields of the response
+   payload, the Content-Format "application/core-pubsub+cbor" defined in
    [I-D.ietf-core-coap-pubsub] is used.
 
    *  'kdc-uri', with value the URI of the group-membership resource at
