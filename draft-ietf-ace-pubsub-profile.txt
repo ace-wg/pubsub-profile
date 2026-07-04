@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 3 January 2027                                Brunel University
+Expires: 5 January 2027                                Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                             2 July 2026
+                                                             4 July 2026
 
 
    Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 January 2027.
+   This Internet-Draft will expire on 5 January 2027.
 
 Copyright Notice
 
