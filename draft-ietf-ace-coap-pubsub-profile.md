@@ -135,7 +135,7 @@ Building on the Authentication and Authorization for Constrained Environments (A
 
 While {{RFC9594}} defines the operations and interface available at the KDC, as well as general message formats for the interactions between Clients and the KDC, it delegates details on the communication and security approaches used in a group to separate application profiles. These are specialized instances of {{RFC9594}} that target a particular group communication approach and define how communications in the group are protected, as well as the specific keying material and configuration parameters provided to group members.
 
-This document specifies an application profile of {{RFC9594}}. Message exchanges among the participants as well as message formats and processing follow what is specified in {{RFC9594}}, and enable secure Pub-Sub communication where a group of Publishers and Subscribers securely communicate through a Broker using CoAP as per {{I-D.ietf-core-coap-pubsub}}.
+This document specifies an application profile of {{RFC9594}}. Message exchanges among the participants as well as message formats and processing follow what is specified in {{RFC9594}}, and they enable secure Pub-Sub communication where a group of Publishers and Subscribers securely communicate through a Broker using CoAP as per {{I-D.ietf-core-coap-pubsub}}.
 
 In particular, this document specifies the provisioning and enforcement of authorization information for Clients to act as Publishers and/or Subscribers at the Broker, as well as the provisioning of keying material and security parameters that Clients use for protecting end-to-end their communications via the Broker.
 
@@ -264,19 +264,21 @@ Furthermore, both Publishers and Subscribers MUST use the same transport profile
 
 Except for the end-to-end protection of published topic data (see {{oscon}}), all communications between the involved entities (Clients, Broker, KDC, Authorization Server) MUST occur and be secured in accordance with the protocol-specific transport profile of ACE used.
 
-For each Client, the Client and the Broker MUST have a secure communication association, which they establish with the help of the AS and using a transport profile of ACE. This is shown by the interactions A and C in {{archi}}. During this process, the Client obtains an access token from the AS and uploads it to the Broker, thus providing an evidence of the topics that it is authorised to participate in, and with which permissions.
+For each Client, the Client and the Broker MUST have a secure communication association, which they establish with the help of the AS and using a transport profile of ACE. This is shown by the interactions A and C in {{archi}}. During this process, the Client obtains an access token from the AS and uploads it at the Broker, thus providing an evidence of the topics that it is authorised to participate in, and with which permissions.
 
-For each Client, the Client and the KDC MUST have a secure communication association, which they also establish with the help of the AS and using a transport profile of ACE (REQ24). This is shown by the interactions A and B in {{archi}}. During this process, the Client obtains an access token from the AS and uploads it to the KDC, thus providing an evidence of the security groups that it can join, as associated with the topics of interest at the Broker. Based on the permissions specified in the access token, the Client can request the KDC to join a security group, after which the Client obtains from the KDC the keying material to use for communicating with the other group members. This builds on the process for joining security groups with ACE, as defined in {{RFC9594}} and further specified in this document.
+For each Client, the Client and the KDC MUST have a secure communication association, which they also establish with the help of the AS and using a transport profile of ACE (REQ24). This is shown by the interactions A and B in {{archi}}. During this process, the Client obtains an access token from the AS and uploads it at the KDC, thus providing an evidence of the security groups that it can join, as associated with the topics of interest at the Broker. Based on the permissions specified in the access token, the Client can request the KDC to join a security group, after which the Client obtains from the KDC the keying material to use for communicating with the other group members. This builds on the process for joining security groups with ACE, as defined in {{RFC9594}} and further specified in this document.
 
 In addition, this profile allows an anonymous Client to perform some of the discovery operations defined in {{Section 2.3 of I-D.ietf-core-coap-pubsub}} through the Broker, as shown by the interaction O in {{archi}}. That is, an anonymous Client can discover:
 
-* the Broker itself, by relying on the resource type "core.ps" (see {{Section 2.3.1 of I-D.ietf-core-coap-pubsub}}); and
+* The Broker itself, by relying on the resource type "core.ps" (see {{Section 2.3.1 of I-D.ietf-core-coap-pubsub}}); and
 
-* topics of interest at the Broker (i.e., the corresponding topic resources hosted at the Broker), by relying on the resource type "core.ps.conf" (see {{Section 2.3.3 of I-D.ietf-core-coap-pubsub}}).
+* Topics of interest at the Broker (i.e., the corresponding topic resources hosted at the Broker), by relying on the resource type "core.ps.conf" (see {{Section 2.3.3 of I-D.ietf-core-coap-pubsub}}).
 
 However, an anonymous Client is not allowed to access topic resources at the Broker and obtain from those any additional information or metadata about the corresponding topic (e.g., the topic status, the URI of the topic-data resource where to publish or subscribe for that topic, or the URI to the KDC).
 
-As highlighted in {{associations}}, each Client maintains two different security associations pertaining to the Pub-Sub group communication. On the one hand, the Client has a pairwise security association with the Broker, which, as an ACE RS, verifies that the Client is authorised to perform data operations (i.e., publish, subscribe, read, delete) on a certain set of topics (Security Association 1). As discussed above, this security association is set up with the help of the AS and using a transport profile of ACE, when the Client obtains the access token to upload to the Broker.
+As highlighted in {{associations}}, each Client maintains two different security associations pertaining to the Pub-Sub group communication.
+
+On the one hand, the Client has a pairwise security association with the Broker, which, as an ACE RS, verifies that the Client is authorised to perform data operations (i.e., publish, subscribe, read, delete) on a certain set of topics (Security Association 1). As discussed above, this security association is set up with the help of the AS and using a transport profile of ACE, when the Client obtains the access token to upload at the Broker.
 
 On the other hand, separately for each topic, all the Publishers and Subscribers for that topic have a common, group security association, through which the published topic data sent through the Broker is protected end-to-end (Security Association 2). As discussed above, this security association is set up and maintained as the different Clients request the KDC to join the security group, upon which they obtain from the KDC the corresponding group keying material to use for protecting end-to-end and verifying the content of their Pub-Sub group communication.
 
@@ -302,7 +304,7 @@ In summary, this profile specifies the following functionalities.
 
 1. A Client obtains the authorization to participate in a Pub-Sub topic at the Broker with certain permissions. This pertains to operations defined in {{I-D.ietf-core-coap-pubsub}} for taking part in Pub-Sub communication with CoAP.
 
-2. A Client obtains the authorization to join a security group with certain permissions. This allows the Client to obtain from the KDC the group keying material for communicating with other group members, i.e., to protect end-to-end and verify the content published at the Broker on topics associated with the security group.
+2. A Client obtains the authorization to join a security group with certain permissions. This allows the Client to obtain from the KDC the group keying material for securely communicating with other group members, i.e., to protect end-to-end and verify the content published at the Broker on topics associated with the security group.
 
 3. A Client obtains from the KDC the authentication credentials of other group members, and provides or updates the KDC with its own authentication credential.
 
@@ -313,7 +315,7 @@ In summary, this profile specifies the following functionalities.
 {{groupcomm_requirements}} compiles the list of requirements for this application profile of ACE and how they are fulfilled, consistent with the list of requirements defined in {{Section A of RFC9594}}.
 
 
-# Getting Authorisation to Join a Pub-Sub security group {#authorisation}
+# Getting Authorisation to Join a Pub-Sub Security Group {#authorisation}
 
 {{message-flow}} provides a high level overview of the message flow for a Client getting authorisation to join a group. Square brackets denote optional steps. The message flow is expanded in the subsequent sections.
 
@@ -355,13 +357,13 @@ Client                                                Broker    AS  KDC
 ~~~~~~~~~~~
 {: #message-flow title="Authorisation Flow" artwork-align="center"}
 
-As shown in {{message-flow}}, after a Client obtains authorisation information for participating in a Pub-Sub topic with name TOPICNAME (see {{auth-request}} and {{as-response}}), the Client uploads that information to the Broker as per the specific transport profile of ACE used, e.g., {{RFC9202}} or {{RFC9203}}.
+As shown in {{message-flow}}, after a Client obtains authorisation information for participating in a Pub-Sub topic with name TOPICNAME (see {{auth-request}} and {{as-response}}), the Client uploads that information at the Broker as per the specific transport profile of ACE used, e.g., {{RFC9202}} or {{RFC9203}}.
 
 Following that, the Client can perform the optional discovery of the KDC and security group name at the Broker, by accessing the topic resource corresponding to the topic in question (see {{kdc-discovery}}).
 
 In order to ensure that the Client can seamlessly access the right topic resource at the Broker, it is RECOMMENDED that a Broker implementing this application profile uses the path /ps/TOPICNAME to host the topic resource for the topic with name TOPICNAME. Alternatively, the Client might not know the right topic resource to target and thus would attempt to access different ones (e.g., based on the result of an early discovery of topic resources, see {{topic-discovery}}), until it finds the right one specifying TOPICNAME as value of the 'topic-name' parameter in the resource representation.
 
-Separately, after the Client obtains authorisation information for joining the security group at the KDC (see {{auth-request}} and {{as-response}}), the Client uploads that information to the KDC (see {{token-post}}). Following that, the Client can join the security group at the KDC and thus obtain the corresponding keying material (see {{join}}).
+Separately, after the Client obtains authorisation information for joining the security group at the KDC (see {{auth-request}} and {{as-response}}), the Client uploads that information at the KDC (see {{token-post}}). Following that, the Client can join the security group at the KDC and thus obtain the corresponding keying material (see {{join}}).
 
 Once the steps above have been completed, the Client can take part in the secure group communication for the topic TOPICNAME, e.g., by publishing data to the topic through a request targeting the topic-data resource at the Broker.
 
@@ -397,11 +399,11 @@ In particular the Client is authorised to retrieve the representation of a topic
 
 This profile extends the set of CoAP Pub-Sub Topic Properties that is possible to specify within the representation of a topic resource, as originally defined in {{Section 2.2.1 of I-D.ietf-core-coap-pubsub}}. In particular, this profile defines the following two topic properties that the Broker can specify in a response to a GET or FETCH request that targets a topic resource (see {{Sections 2.5.1 and 2.5.2 of I-D.ietf-core-coap-pubsub}}), with the FETCH request using the Content-Format "application/cbor". Note that, when these topic properties are transported in their respective fields of the response payload, the Content-Format "application/core-pubsub+cbor" defined in {{I-D.ietf-core-coap-pubsub}} is used.
 
-* 'kdc-uri', with value the URI of the group-membership resource at the KDC, where Clients can send a request to join the security group associated with the topic in question. The URI is encoded as a CBOR text string. Clients will have to obtain an access token from the AS to upload to the KDC, before starting the process to join the security group at the KDC. The CBOR abbreviation for this topic property is registered in {{iana-pubsub-topic-properties}}.
+* 'kdc-uri', with value the URI of the group-membership resource at the KDC, where Clients can send a request to join the security group associated with the topic in question. The URI is encoded as a CBOR text string. Clients will have to obtain an access token from the AS to upload at the KDC, before starting the process to join the security group at the KDC. The CBOR abbreviation for this topic property is registered in {{iana-pubsub-topic-properties}}.
 
 * 'sec-gp', specifying the name of the security group associated with the topic in question, as a stable and invariant identifier. The name of the security group is encoded as a CBOR text string. The CBOR abbreviation for this topic property is registered in {{iana-pubsub-topic-properties}}.
 
-Furthermore, the Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in {{core_rt}} (REQ10), and can be used to describe group-membership resources at the KDC, e.g., by using a CoRE link-format document {{RFC6690}}. As an alternative to the discovery approach defined above and provided by the Broker, applications can use this common resource type to discover links to group-membership resources at the KDC for joining security groups associated with Pub-Sub topics.
+Furthermore, the Resource Type (rt=) Link Target Attribute value "core.ps.gm" is registered in {{core_rt}} (REQ10) and can be used to describe group-membership resources at the KDC, e.g., by using a CoRE link-format document {{RFC6690}}. As an alternative to the discovery approach defined above and provided by the Broker, applications can use this common resource type to discover links to group-membership resources at the KDC for joining security groups associated with Pub-Sub topics.
 
 ## Authorisation Request/Response for the KDC and the Broker {#auth-request}
 
@@ -507,9 +509,9 @@ The following CDDL {{RFC8610}} notation defines a scope entry that uses the AIF-
 
 As per the guidelines in {{RFC9237}}, {{aif}} and {{content_formats}} register the specific instance of "Toid" and "Tperm" as media type parameters and a corresponding Content-Format (REQ2).
 
-## Authorization response {#as-response}
+## Authorization Response {#as-response}
 
-The AS responds with an Authorization Response as defined in {{Section 5.8.2 of RFC9200}} and {{Section 3.2 of RFC9594}}, with the following additions:
+The AS replies with an Authorization Response as defined in {{Section 5.8.2 of RFC9200}} and {{Section 3.2 of RFC9594}}, with the following additions:
 
 * In the Authorization Response, the AS MUST include the 'expires_in' parameter.
 
@@ -523,11 +525,11 @@ This indicates that the binary encoded scope follows the scope semantics defined
 
 ## Token Transfer to the KDC {#token-post}
 
-The Client transfers its access token to the KDC using one of the methods defined in the {{Section 3.3 of RFC9594}}. This typically includes sending a POST request to the /authz-info endpoint. However, if the DTLS transport profile of ACE {{RFC9202}} is used and the Client uses a symmetric proof-of-possession (PoP) key in the DTLS handshake, the Client MAY provide the access token to the KDC in the "psk_identity" field of the DTLS ClientKeyExchange message when using DTLS 1.2 {{RFC6347}}, or in the "identity" field of a PskIdentity within the PreSharedKeyExtension of the ClientHello message when using DTLS 1.3 {{RFC9147}}. In addition to that, the following applies.
+The Client transfers its access token to the KDC using one of the methods defined in {{Section 3.3 of RFC9594}}. This typically includes sending a POST request to the /authz-info endpoint. However, if the DTLS transport profile of ACE {{RFC9202}} is used and the Client uses a symmetric proof-of-possession (PoP) key in the DTLS handshake, the Client MAY provide the access token to the KDC in the "psk_identity" field of the DTLS ClientKeyExchange message when using DTLS 1.2 {{RFC6347}}, or in the "identity" field of a PskIdentity within the PreSharedKeyExtension of the ClientHello message when using DTLS 1.3 {{RFC9147}}. In addition to that, the following applies.
 
 In the Token Transfer Response to the Publishers, i.e., the Clients whose scope of the access token includes the "Publish" permission for at least one scope entry, the KDC MUST include the parameter 'kdcchallenge' in the CBOR map. 'kdcchallenge' is a challenge N_S generated by the KDC. As to the N_S value, it is RECOMMENDED to be at least 8 bytes long and it is RECOMMENDED to be a random value. Later when joining the group, the Publisher can use the 'kdcchallenge' challenge as part of proving possession of its private key (see {{RFC9594}}). If a Publisher provides the access token to the KDC through an /authz-info endpoint, the Client MUST support the parameter 'kdcchallenge' (REQ30).
 
-If 'sign_info' is included in the Token Transfer Request, the KDC SHOULD include the 'sign_info' parameter in the Token Transfer Response. Note that the joining node may have obtained such information by alternative means, e.g., the 'sign_info' may have been pre-configured (OPT3).
+If 'sign_info' is included in the Token Transfer Request, the KDC SHOULD include the 'sign_info' parameter in the Token Transfer Response. Note that the joining node may have obtained such information by alternative means, e.g., information conveyed in the 'sign_info' parameter may have been pre-configured (OPT3).
 
 The following applies for each element 'sign_info_entry'.
 
@@ -571,9 +573,9 @@ Consistent with what is defined in {{Section 4.1.2 of RFC9594}}, some error resp
 
 ## Joining a Security Group {#join}
 
-This section describes the interactions between a Client and the KDC to join a security group. Source authentication of a message sent within the group is ensured by means of a digital signature embedded in the message. Subscribers must be able to retrieve Publishers' authentication credentials from a trusted repository, to verify source authentication of received messages. Hence, on joining a security group, a Publisher is expected to provide its own authentication credential to the KDC.
+This section describes the interactions between a Client and the KDC to join a security group. Source authentication of a message sent within the group is ensured by means of a digital signature embedded in the message. Subscribers have to be able to retrieve Publishers' authentication credentials from a trusted repository, to verify source authentication of received messages. Hence, on joining a security group, a Publisher is expected to provide its own authentication credential to the KDC.
 
-On a successful join, the Clients receive from the KDC the symmetric COSE Key {{RFC9052}} that is used as the shared group key to protect the payload of a published topic data.
+On a successful join, the Clients receive from the KDC the symmetric COSE Key {{RFC9052}} that is used as the shared group key to protect the payload of published topic data.
 
 The message exchange between the joining node and the KDC follows what is defined in {{Section 4.3.1.1 of RFC9594}}, and only additions or modifications to that specification are defined in this document.
 
@@ -647,7 +649,7 @@ The N\_S may be either of the following:
 
   The same as above holds if TLS 1.3 {{RFC8446}} was used instead of DTLS 1.3, as per {{RFC9430}}.
 
-* If the Join Request is a retry in response to an error response from the KDC, which included a new 'kdcchallenge' parameter, then N_S MUST be the new value from this parameter.
+* If the Join Request is a retry following an error response from the KDC, which included a new 'kdcchallenge' parameter, then N_S MUST be the new value from this parameter.
 
 It is up to applications or future specifications to define how N_S is computed in further alternative settings.
 
@@ -663,7 +665,7 @@ Instead, if the joining node is not requesting to join the group exclusively as 
 
 In the case that an error occurs when processing the Join Request, the KDC and the joining node follow what is defined in {{Section 4.3.1 of RFC9594}}, complemented by what is defined in {{join-error}} of the present document.
 
-In the case of success, the KDC responds with a Join Response, whose payload is formatted as a CBOR map and MUST contain the following fields as per {{Section 4.3.1 of RFC9594}}:
+In the case of success, the KDC replies with a Join Response, whose payload is formatted as a CBOR map and MUST contain the following fields as per {{Section 4.3.1 of RFC9594}}:
 
 - 'gkty': this field specifies the key type "Group_PubSub_Keying_Material" (REQ18) registered in {{iana-ace-groupcomm-key}} for the 'key' parameter.
 
@@ -695,13 +697,13 @@ In the case of success, the KDC responds with a Join Response, whose payload is 
 
      At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC7925}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Further formats may be available in the future and would be acceptable to use as long as they comply with the criteria defined above (REQ6).
 
-   * 'sign_alg': this parameter is identified by the CBOR unsigned integer 3 used as map key. Its value specifies the Signature Algorithm used to sign messages in the group and is taken from the "Value" column of the "COSE Algorithms" registry {{IANA.COSE.Algorithms}}.
+   * 'sign_alg': this parameter is identified by the CBOR unsigned integer 3 used as map key. Its value specifies the signature algorithm used to sign messages in the group and is taken from the "Value" column of the "COSE Algorithms" registry {{IANA.COSE.Algorithms}}.
 
-   * 'sign_params': this parameter is identified by the CBOR unsigned integer 4 used as map key. Its value specifies the parameters of the Signature Algorithm and is encoded as a CBOR array including the following two elements:
+   * 'sign_params': this parameter is identified by the CBOR unsigned integer 4 used as map key. Its value specifies the parameters of the signature algorithm and is encoded as a CBOR array including the following two elements:
 
-      - 'sign_alg_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the Signature Algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry {{IANA.COSE.Algorithms}}.
+      - 'sign_alg_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the signature algorithm indicated in 'sign_alg', as specified for that algorithm in the "Capabilities" column of the "COSE Algorithms" registry {{IANA.COSE.Algorithms}}.
 
-      - 'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the Signature Algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{IANA.COSE.Key.Types}}.
+      - 'sign_key_type_capab' is a CBOR array, with the same format and value of the COSE capabilities array for the COSE key type of the keys used with the signature algorithm indicated in 'sign_alg', as specified for that key type in the "Capabilities" column of the "COSE Key Types" registry {{IANA.COSE.Key.Types}}.
 
 - 'num', specifying the version number of the keying material specified in the 'key' field. The initial value of the version number MUST be set to 0 upon creating the group (REQ16).
 
@@ -731,7 +733,7 @@ If the Client is a Publisher, its authentication credential used in the group is
 
 Note that, as long as the secure communication association between the Client and the KDC persists, the same Client re-joining the group is recognized by the KDC by virtue of such a secure communication association. As a consequence, the re-joining Client keeps the same NODENAME and the associated subresource /ace-group/GROUPNAME/nodes/NODENAME. Also, if the Client is a Publisher, it receives a new Sender ID according to the same criteria defined above.
 
-If the application requires backward security, the KDC MUST generate updated security parameters and group keying material, and provide it to the current group members upon the new node's joining (see {{rekeying}}). In such a case, the joining node is not able to access secure communication in the Pub-Sub group prior to its joining.
+If the application requires backward security, the KDC MUST generate updated security parameters and group keying material, and provide those to the current group members upon the new node's joining (see {{rekeying}}). In such a case, the joining node is not able to access secure communication in the Pub-Sub group that occurred prior to its joining.
 
 Upon receiving the Join Response, the joining node retrieves the KDC's authentication credential from the 'kdc_cred' parameter (if present). The joining node MUST verify the signature used as PoP evidence, which is specified by the 'kdc_cred_verify' parameter of the Join Response (REQ21).
 
@@ -769,7 +771,7 @@ The KDC MUST return a 5.03 (Service Unavailable) error response to a Client that
 
 A Client can access the following resources at the KDC, in order to retrieve latest information about the group or the group keying material.
 
-* '/ace-group': All Clients can send a FETCH request to retrieve a set of group names associated with their group identifiers specified in the request payload. Each element of the CBOR array 'gid' is a CBOR byte string (REQ13), which encodes the Gid of the group (see {{join-response}}) for which the group name and the URI to the group-membership resource are provided in the returned response.
+* '/ace-group': All Clients can send a FETCH request to retrieve a set of group names associated with the group identifiers specified in the request payload. Each element of the CBOR array 'gid' is a CBOR byte string (REQ13), which encodes the Gid of the group (see {{join-response}}) for which the group name and the URI to the group-membership resource are provided in the returned response.
 
 * '/ace-group/GROUPNAME':  All group member Clients can send a GET request to retrieve the symmetric group keying material of the group with the name GROUPNAME.
 
@@ -785,7 +787,7 @@ A Client can access the following resources at the KDC, in order to retrieve lat
 
   This application profile does not specify policies that instruct group members to retain messages and for how long, if those messages are unsuccessfully decrypted (OPT11).
 
-* '/ace-group/GROUPNAME/creds': The KDC acts as a repository of authentication credentials for the Publishers that are member of the security group with name GROUPNAME. The members of the group that are Subscribers can send GET/FETCH requests to this resource in order to retrieve the authentication credentials of all or a subset of the group members that are Publishers. The KDC silently ignores the Sender IDs included in the 'get_creds' parameter of the request that are not associated with any current Publisher group member (REQ26).
+* '/ace-group/GROUPNAME/creds': The KDC acts as a repository of authentication credentials for the Publishers that are members of the security group with name GROUPNAME. The members of the group that are Subscribers can send GET/FETCH requests to this resource in order to retrieve the authentication credentials of all or a subset of the group members that are Publishers. The KDC silently ignores the Sender IDs included in the 'get_creds' parameter of the request that are not associated with any current Publisher group member (REQ26).
 
   The response from the KDC MAY omit the parameter 'peer\_roles', since: i) each authentication credential conveyed in the 'creds' parameter is associated with a Client authorised to be Publisher in the group; and ii) it is irrelevant whether such a Client is also authorised to be Subscriber in the group. If 'creds' is not present, 'peer\_roles' MUST NOT be present.
 
@@ -807,7 +809,7 @@ A Client can access the following resources at the KDC, in order to retrieve lat
 
 ### Requesting a New Sender ID ## {#sec-key-renewal-request}
 
-A Publisher group member with node name NODENAME may at some point exhaust its Sender Sequence Numbers used for protecting its published topic data (see {{oscon}}).
+A Publisher group member with node name NODENAME can at some point exhaust its Sender Sequence Numbers used for protecting its published topic data (see {{oscon}}).
 
 When this happens, the Publisher MUST send a Key Renewal Request message to the KDC, as per {{Section 4.8.2.1 of RFC9594}}. That is, it sends a CoAP POST request to the endpoint /ace-group/GROUPNAME/nodes/NODENAME at the KDC.
 
@@ -817,7 +819,7 @@ Upon receiving the Key Renewal Request, the KDC processes it as defined in {{Sec
 
   The KDC SHOULD perform a group rekeying if one is already scheduled to occur within a time frame that is acceptably short, as per application-specific policies at the KDC. For instance, a group rekeying could be already upcoming in accordance with an application-specific rekeying period or scheduling, or as a reaction to a recent change in the group membership. If a group rekeying is not already scheduled to occur within an acceptably short time frame, the KDC SHOULD NOT rekey the group when receiving a Key Renewal Request (OPT12).
 
-* The KDC determines and assigns a new Sender ID for the Publisher (REQ27), and it replies with a Key Renewal Response formatted as defined in {{Section 4.8.2 of RFC9594}}. The CBOR Map in the response payload includes only the parameter 'group_SenderId' registered in {{Section 16.3 of I-D.ietf-ace-key-groupcomm-oscore}}, which specifies the new Sender ID of the Publisher encoded as a CBOR byte string (REQ27).
+* The KDC determines and assigns a new Sender ID for the Publisher (REQ27), and it replies with a Key Renewal Response formatted as defined in {{Section 4.8.2 of RFC9594}}. The CBOR map in the response payload includes only the parameter 'group_SenderId' registered in {{Section 17.3 of I-D.ietf-ace-key-groupcomm-oscore}}, which specifies the new Sender ID of the Publisher encoded as a CBOR byte string (REQ27).
 
   The KDC MUST assign a new Sender ID that has not been used in the group since the latest time when the current Gid value was assigned to the group (i.e., since the latest group rekeying, see {{rekeying}}).
 
@@ -918,7 +920,7 @@ Publisher                         Broker                    Subscriber
 
 The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (see {{Section 3.2.1 of I-D.ietf-core-coap-pubsub}}). Specifically, the Publisher creates a COSE\_Encrypt0 object {{RFC9052}}{{RFC9053}} by means of the COSE Key currently used as group key (REQ23). The encryption algorithm and Base IV to use are specified by the 'alg' and 'Base IV' parameters of the COSE Key, together with its key identifier in the 'kid' parameter.
 
-Also, the Publisher uses its private key corresponding to the public key sent to the KDC, in order to countersign the COSE\_Encrypt0 object as specified in {{RFC9338}} (REQ23). The countersignature is specified in the 'Countersignature version 2' parameter, within the 'unprotected' field of the COSE\_Encrypt0 object.
+Also, the Publisher uses its private key corresponding to the public key provided to the KDC, in order to countersign the COSE\_Encrypt0 object as specified in {{RFC9338}} (REQ23). The countersignature is specified in the 'Countersignature version 2' parameter, within the 'unprotected' field of the COSE\_Encrypt0 object.
 
 Finally, the Publisher sends the COSE\_Encrypt0 object conveying the countersignature to the Broker, as payload of the PUT request sent to the topic-data of the topic targeted by the Publish operation.
 
@@ -944,13 +946,13 @@ The 'unprotected' field MUST include:
 
 * The 'Countersignature version 2' parameter, specifying the countersignature of the COSE\_Encrypt0 object. In particular:
 
-   - The 'protected' field includes the 'alg' parameter, with value the identifier of the Signature Algorithm used in the security group.
+   - The 'protected' field includes the 'alg' parameter, with value the identifier of the signature algorithm used in the security group.
 
    - The 'unprotected' field includes the 'kid' parameter, with value the Publisher's Sender ID that the Publisher obtained from the KDC when joining the security group, as the value of the 'group_SenderId' parameter of the Join Response (see {{join-response}}).
 
    - The 'signature' field, with value the countersignature.
 
-   The countersignature is computed as defined in {{RFC9338}}, by using the private key of the Publisher as signing key and by means of the Signature Algorithm used in the group. The fields of the Countersign_structure are populated as follows:
+   The countersignature is computed as defined in {{RFC9338}}, by using the private key of the Publisher as signing key and by means of the signature algorithm used in the group. The fields of the Countersign_structure are populated as follows:
 
    - 'context' takes "CounterSignature".
    - 'body_protected' takes the serialized parameters from the 'protected' field of the COSE\_Encrypt0 object, i.e., the 'alg' parameter.
@@ -958,7 +960,7 @@ The 'unprotected' field MUST include:
    - 'external_aad is not supplied.
    - 'payload' is the ciphertext of the COSE\_Encrypt0 object (see below).
 
-The 'ciphertext' field specifies the ciphertext computed over the topic data to publish. The ciphertext is computed as defined in {{RFC9052}}{{RFC9053}}, by using the current group key as encryption key, the AEAD Nonce computed as defined in {{ssec-aead-nonce}}, the topic data to publish as plaintext, and the Enc_structure populated as follows:
+The 'ciphertext' field specifies the ciphertext computed over the topic data to publish. The ciphertext is computed as defined in {{RFC9052}}{{RFC9053}}, by using the current group key as encryption key, the AEAD nonce computed as defined in {{ssec-aead-nonce}}, the topic data to publish as plaintext, and the Enc_structure populated as follows:
 
    - 'context' takes "Encrypt0".
    - 'protected' takes the serialization of the protected parameter 'alg' from the 'protected' field of the COSE\_Encrypt0 object.
@@ -996,13 +998,13 @@ The AEAD nonce for producing or consuming the COSE\_Encrypt0 object is construct
 ~~~~~~~~~~~
 {: #fig-aead-nonce title="AEAD Nonce Construction" artwork-align="center"}
 
-The construction above only supports AEAD algorithms that use nonces with length equal or greater than 7 bytes. At the same time, it makes it easy to verify that the nonces will be unique when used with the same group key, even though this is shared and used by all the Publishers in the security group. In fact:
+The construction above only supports AEAD algorithms that use nonces with length equal to or greater than 7 bytes. At the same time, it makes it easy to verify that the nonces will be unique when used with the same group key, even though this is shared and used by all the Publishers in the security group. In fact:
 
 * Since Publisher's Sender IDs are unique within the security group and they are not reassigned until a group rekeying occurs (see {{join-response}} and {{rekeying}}), two Publisher Clients cannot share the same tuple (S, padded ID_PIV) by construction.
 
 * Since a Publisher increments by 1 its Sender Sequence Number after each use that it makes of the current group key, the Publisher  never reuses the same tuple (S, padded ID_PIV, padded PIV) together with the same group key.
 
-* Therefore neither the same Publisher reuses the same AEAD nonce with the same group key, nor any two Publishers use the same AEAD nonce with the same group key.
+* Therefore, neither the same Publisher reuses the same AEAD nonce with the same group key, nor any two Publishers use the same AEAD nonce with the same group key.
 
 ## Replay Checks # {#ssec-replay-checks}
 
@@ -1121,7 +1123,7 @@ It is out of the scope of this document to provide operational considerations ab
 
 Building on the ACE framework {{RFC9200}} and the foundation provided in {{RFC9594}}, this application profile enforces access control for Clients that interact with the interface at the KDC specified in this document and with the interface at the Broker specified in {{I-D.ietf-core-coap-pubsub}}.
 
-In particular, the granularity of such access control takes into account the resource specifically targeted at the KDC or at the Broker, the operation requested by sending a request to that resource, and the specific role(s) that the requesting Client is authorized to have according to its corresponding access token uploaded to the KDC or to the Broker.
+In particular, the granularity of such access control takes into account the resource specifically targeted at the KDC or at the Broker, the operation requested by sending a request to that resource, and the specific role(s) that the requesting Client is authorized to have according to its corresponding access token uploaded at the KDC or at the Broker.
 
 Furthermore, the interactions that a Client has with the KDC and with the Broker are secured as per the specific transport profile of ACE used (e.g., {{RFC9202}} and {{RFC9203}}).
 
@@ -1135,7 +1137,7 @@ Consistent with the intended group-confidentiality model, each Client in a secur
 
 At the same time, source authentication of the published topic data is achieved by means of a digital signature, which the Publisher of the data in question computes with its private key and embeds in the published topic data. This ensures integrity of the published topic data as well as its origin, thus preventing a group member from impersonating another one.
 
-To this end, both Publishers and Subscribers rely on asymmetric cryptography, while Subscribers must be able to access the public keys of the Publishers to a specific topic in order to verify the signature over the published topic data. This might make the message exchange quite heavy for small constrained devices.
+To this end, both Publishers and Subscribers rely on asymmetric cryptography, while Subscribers have to be able to access the public keys of the Publishers to a specific topic in order to verify the signature over the published topic data. This might make the message exchange quite heavy for small constrained devices.
 
 The Broker is only trusted with verifying that a Publisher is authorised to publish on a certain topic and with distributing that data only to the Subscribers authorised to obtain it. However, the Broker is not trusted with the published topic data in itself, which the Broker cannot read or modify as it does not have access to the group key required for decrypting the data.
 
@@ -1188,7 +1190,7 @@ IANA is asked to register the following entry in the "Resource Type (rt=) Link T
 
 *  Reference: {{&SELF}}
 
-Clients can use this resource type to discover a group membership resource at the KDC.
+Clients can use this resource type to discover a group-membership resource at the KDC.
 
 ## CoAP Pubsub Topic Properties {#iana-pubsub-topic-properties}
 
@@ -1236,7 +1238,7 @@ IANA is asked to register the following entries to the "CoAP Content-Formats" re
 
 * Content Coding: -
 
-* ID: 294 (suggested)
+* ID: 299 (suggested)
 
 * Reference: {{&SELF}}
 
@@ -1246,7 +1248,7 @@ IANA is asked to register the following entries to the "CoAP Content-Formats" re
 
 * Content Coding: -
 
-* ID: 295 (suggested)
+* ID: 300 (suggested)
 
 * Reference: {{&SELF}}
 
