@@ -439,10 +439,10 @@ Table of Contents
    On the one hand, the Client has a pairwise security association with
    the Broker, which, as an ACE RS, verifies that the Client is
    authorised to perform data operations (i.e., publish, subscribe,
-   read, delete) on a certain set of topics (Security Association 1).
-   As discussed above, this security association is set up with the help
-   of the AS and using a transport profile of ACE, when the Client
-   obtains the access token to upload at the Broker.
+   read) on a certain set of topics (Security Association 1).  As
+   discussed above, this security association is set up with the help of
+   the AS and using a transport profile of ACE, when the Client obtains
+   the access token to upload at the Broker.
 
    On the other hand, separately for each topic, all the Publishers and
    Subscribers for that topic have a common, group security association,
@@ -791,22 +791,6 @@ Table of Contents
             topic in question, performed by means of a simple GET
             request sent to the same topic-data resource.
 
-         o  Delete (4): This operation concerns the deletion of the
-            topic-data resource for the topic in question at the Broker,
-            performed by means of a DELETE request sent to that
-            resource.
-
-            If a Client wishes to have authorised only the Delete
-            operation on an application group, then the Client does not
-            need to join the corresponding security group, hence it does
-            not need to request an access token for interacting with the
-            KDC.
-
-            If a Client wishes to have authorised the Delete operation
-            on a security group, then the AS and the KDC ignore the wish
-            for that operation when processing the scope entry in
-            question.
-
       -  The set of N numeric identifiers is converted into the single
          value R, by taking two to the power of each numeric identifier
          X_1, X_2, ..., X_N, and then computing the inclusive OR of the
@@ -844,8 +828,7 @@ Table of Contents
        Admin: 0,
        AppGroup: 1,
        Publish: 2,
-       Read: 3,
-       Delete: 4
+       Read: 3
       )
 
       scope_entry = [pubsub-group, pubsub-perm]
@@ -1023,11 +1006,11 @@ Table of Contents
    |                                 | name            |               |
    |                                 | GROUPNAME.      |               |
    +---------------------------------+-----------------+---------------+
-   | /ace-group/GROUPNAME/nodes/     | REQUIRED.       | GET, DELETE   |
-   | NODENAME                        | Contains the    | (All          |
-   |                                 | group keying    | Clients).     |
-   |                                 | material for    | POST          |
-   |                                 | that group      | (Publishers). |
+   | /ace-group/GROUPNAME/nodes/     | REQUIRED.       | GET (All      |
+   | NODENAME                        | Contains the    | Clients).     |
+   |                                 | group keying    | POST          |
+   |                                 | material for    | (Publishers). |
+   |                                 | that group      |               |
    |                                 | member          |               |
    |                                 | NODENAME in     |               |
    |                                 | GROUPNAME.      |               |
@@ -1829,14 +1812,6 @@ Table of Contents
    Broker and in a successful response (typically 2.05 (Content)) from
    that resource to a Subscriber.
 
-   The example also shows a delete operation, where the Publisher
-   deletes the topic-data resource by sending a CoAP DELETE request to
-   the URI of that resource.  In the case of success, the Broker replies
-   with a 2.02 (Deleted) response.  Consequently, the Broker also
-   unsubscribes all the Clients subscribed to that topic-data resource,
-   by removing them from the list of observers and sending them a final
-   4.04 (Not Found) error response as per Section 3.2 of [RFC7641].
-
   Publisher                         Broker                    Subscriber
   |                                   |                                |
   +---- 0.03 PUT ps/data/1bd0d6d ---->|                                |
@@ -1848,12 +1823,6 @@ Table of Contents
   |                                   |                                |
   |                                   +------ 2.05 Content ----------->|
   |                                   |       Observe: 10001           |
-  |                                   |                                |
-  +-- 0.04 DELETE /ps/data/1bd0d6d -->|                                |
-  |                                   |                                |
-  |<---- 2.02 Deleted ----------------+                                |
-  |                                   |                                |
-  |                                   +------ 4.04 Not Found --------->|
   |                                   |                                |
 
        Figure 9: Example of Secure Pub-Sub Communication using CoAP
@@ -2956,6 +2925,9 @@ B.1.  Version -05 to -06
          control of_ the topic-data resource corresponding to that
          topic.  A topic-data resource can be _served_ from a different
          address than that of the corresponding topic resource
+
+      -  It is not possibile anymore to delete a topic-data resource by
+         sending a DELETE request to it.
 
 B.2.  Version -04 to -05
 
