@@ -91,7 +91,6 @@ normative:
   RFC7641:
   RFC7925:
   RFC8392:
-  RFC8446:
   RFC8447:
   RFC8610:
   RFC8949:
@@ -105,6 +104,7 @@ normative:
   RFC9338:
   RFC9430:
   RFC9594:
+  RFC9846:
 
 informative:
   RFC8613:
@@ -636,11 +636,11 @@ The N\_S may be either of the following:
 
   The same as above holds if TLS 1.2 {{RFC5246}} was used instead of DTLS 1.2, as per {{RFC9430}}.
 
-* If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE {{RFC9202}} and the access token was specified in the "identity" field of a PskIdentity within the PreSharedKeyExtension of the ClientHello message when using DTLS 1.3 {{RFC9147}}, then N\_S is an exporter value computed as defined in {{Section 7.5 of RFC8446}} (REQ15).
+* If the provisioning of the access token to the KDC has relied on the DTLS profile of ACE {{RFC9202}} and the access token was specified in the "identity" field of a PskIdentity within the PreSharedKeyExtension of the ClientHello message when using DTLS 1.3 {{RFC9147}}, then N\_S is an exporter value computed as defined in {{Section 7.5 of RFC9846}} (REQ15).
 
   Specifically, N\_S is exported from the DTLS session between the joining node and the KDC, using an empty 'context_value' (i.e., a 'context_value' of zero length), 32 as 'key_length' in bytes, and the exporter label "EXPORTER-ACE-Sign-Challenge-coap-pubsub-app" defined in {{tls_exporter}} of this document.
 
-  The same as above holds if TLS 1.3 {{RFC8446}} was used instead of DTLS 1.3, as per {{RFC9430}}.
+  The same as above holds if TLS 1.3 {{RFC9846}} was used instead of DTLS 1.3, as per {{RFC9430}}.
 
 * If the Join Request is a retry following an error response from the KDC, which included a new 'kdcchallenge' parameter, then N_S MUST be the new value from this parameter.
 
@@ -1359,6 +1359,8 @@ This section lists how this application profile of ACE addresses the requirement
     A Broker that hosts a topic resource always _hosts_ and _is in control of_ the topic-data resource corresponding to that topic. A topic-data resource can be _served_ from a different address than that of the corresponding topic resource
 
   * It is not possibile anymore to delete a topic-data resource by sending a DELETE request to it.
+
+* Updated references.
 
 ## Version -04 to -05 ## {#sec-04-05}
 
