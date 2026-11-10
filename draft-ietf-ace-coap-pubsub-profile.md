@@ -278,7 +278,7 @@ However, an anonymous Client is not allowed to access topic resources at the Bro
 
 As highlighted in {{associations}}, each Client maintains two different security associations pertaining to the Pub-Sub group communication.
 
-On the one hand, the Client has a pairwise security association with the Broker, which, as an ACE RS, verifies that the Client is authorised to perform data operations (i.e., publish, subscribe, read, delete) on a certain set of topics (Security Association 1). As discussed above, this security association is set up with the help of the AS and using a transport profile of ACE, when the Client obtains the access token to upload at the Broker.
+On the one hand, the Client has a pairwise security association with the Broker, which, as an ACE RS, verifies that the Client is authorised to perform data operations (i.e., publish, subscribe, read) on a certain set of topics (Security Association 1). As discussed above, this security association is set up with the help of the AS and using a transport profile of ACE, when the Client obtains the access token to upload at the Broker.
 
 On the other hand, separately for each topic, all the Publishers and Subscribers for that topic have a common, group security association, through which the published topic data sent through the Broker is protected end-to-end (Security Association 2). As discussed above, this security association is set up and maintained as the different Clients request the KDC to join the security group, upon which they obtain from the KDC the corresponding group keying material to use for protecting end-to-end and verifying the content of their Pub-Sub group communication.
 
@@ -469,12 +469,6 @@ More specifically, the following applies when, as defined in this document, a sc
 
       - Read (3): This operation concerns both: i) the subscription at the topic-data resource for the topic in question at the Broker, performed by means of a GET request with the CoAP Observe Option set to 0 and sent by a Subscriber Client; and ii) the simple reading of the latest data published to the topic in question, performed by means of a simple GET request sent to the same topic-data resource.
 
-      - Delete (4): This operation concerns the deletion of the topic-data resource for the topic in question at the Broker, performed by means of a DELETE request sent to that resource.
-
-        If a Client wishes to have authorised only the Delete operation on an application group, then the Client does not need to join the corresponding security group, hence it does not need to request an access token for interacting with the KDC.
-
-        If a Client wishes to have authorised the Delete operation on a security group, then the AS and the KDC ignore the wish for that operation when processing the scope entry in question.
-
    * The set of N numeric identifiers is converted into the single value R, by taking two to the power of each numeric identifier X_1, X_2, ..., X_N, and then computing the inclusive OR of the binary representations of all the power values.
 
    Since this application profile considers user-related operations, the "Admin" operation is indicated as not wished/authorised. That is, the scope entries MUST have the least significant bit of "Tperm" set to 0.
@@ -499,8 +493,7 @@ The following CDDL {{RFC8610}} notation defines a scope entry that uses the AIF-
     Admin: 0,
     AppGroup: 1,
     Publish: 2,
-    Read: 3,
-    Delete: 4
+    Read: 3
    )
 
    scope_entry = [pubsub-group, pubsub-perm]
@@ -561,7 +554,7 @@ Each resource is marked as REQUIRED or OPTIONAL to be hosted at the KDC (REQ9).
 | /ace-group/GROUPNAME | REQUIRED. Contains symmetric group keying material associated with GROUPNAME. | GET, POST (All Clients) |
 | /ace-group/GROUPNAME/creds | REQUIRED. Contains the authentication credentials of all the Publishers of the group with name GROUPNAME. | GET, FETCH (All Clients) |
 | /ace-group/GROUPNAME/num | REQUIRED. Contains the current version number for the symmetric group keying material of the group with name GROUPNAME. | GET (All Clients) |
-| /ace-group/GROUPNAME/nodes/NODENAME | REQUIRED. Contains the group keying material for that group member NODENAME in GROUPNAME. | GET, DELETE (All Clients). POST (Publishers). |
+| /ace-group/GROUPNAME/nodes/NODENAME | REQUIRED. Contains the group keying material for that group member NODENAME in GROUPNAME. | GET (All Clients). POST (Publishers). |
 | /ace-group/GROUPNAME/nodes/NODENAME/cred | REQUIRED. Contains the authentication credential for NODENAME in the group GROUPNAME. |  POST (Publishers) |
 | /ace-group/GROUPNAME/kdc-cred | REQUIRED if the group rekeying scheme used requires the use of a KDC authentication credential. Contains the authentication credential of the KDC for the group with name GROUPNAME. | GET (All Clients) |
 | /ace-group/GROUPNAME/policies | OPTIONAL. Contains the group policies of the group with name GROUPNAME. | GET (All Clients) |
@@ -892,8 +885,6 @@ In the same diagram, (E) corresponds to the subscription of a Subscriber to the 
 
 {{flow}} provides a more detailed example of such a secure Pub-Sub communication. All the messages exchanged between a Client and the Broker are protected with the secure communication association between that Client and the Broker. In addition, COSE is used to protect end-to-end the published topic data, which is conveyed in a PUT request from the Publisher to the topic-data resource at the Broker and in a successful response (typically 2.05 (Content)) from that resource to a Subscriber.
 
-The example also shows a delete operation, where the Publisher deletes the topic-data resource by sending a CoAP DELETE request to the URI of that resource. In the case of success, the Broker replies with a 2.02 (Deleted) response. Consequently, the Broker also unsubscribes all the Clients subscribed to that topic-data resource, by removing them from the list of observers and sending them a final 4.04 (Not Found) error response as per {{Section 3.2 of RFC7641}}.
-
 ~~~~~~~~~~~ aasvg
 Publisher                         Broker                    Subscriber
 |                                   |                                |
@@ -906,12 +897,6 @@ Publisher                         Broker                    Subscriber
 |                                   |                                |
 |                                   +------ 2.05 Content ----------->|
 |                                   |       Observe: 10001           |
-|                                   |                                |
-+-- 0.04 DELETE /ps/data/1bd0d6d -->|                                |
-|                                   |                                |
-|<---- 2.02 Deleted ----------------+                                |
-|                                   |                                |
-|                                   +------ 4.04 Not Found --------->|
 |                                   |                                |
 ~~~~~~~~~~~
 {: #flow title="Example of Secure Pub-Sub Communication using CoAP" artwork-align="center"}
@@ -1372,6 +1357,8 @@ This section lists how this application profile of ACE addresses the requirement
   * Section 2 of this document: rephrasing of what is not in scope.
 
     A Broker that hosts a topic resource always _hosts_ and _is in control of_ the topic-data resource corresponding to that topic. A topic-data resource can be _served_ from a different address than that of the corresponding topic resource
+
+  * It is not possibile anymore to delete a topic-data resource by sending a DELETE request to it.
 
 ## Version -04 to -05 ## {#sec-04-05}
 
