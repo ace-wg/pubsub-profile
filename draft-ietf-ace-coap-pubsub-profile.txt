@@ -2927,7 +2927,7 @@ B.1.  Version -05 to -06
          topic.  A topic-data resource can be _served_ from a different
          address than that of the corresponding topic resource
 
-      -  It is not possibile anymore to delete a topic-data resource by
+      -  It is not possible anymore to delete a topic-data resource by
          sending a DELETE request to it.
 
    *  Updated references.
