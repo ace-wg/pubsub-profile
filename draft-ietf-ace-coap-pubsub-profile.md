@@ -1358,7 +1358,7 @@ This section lists how this application profile of ACE addresses the requirement
 
     A Broker that hosts a topic resource always _hosts_ and _is in control of_ the topic-data resource corresponding to that topic. A topic-data resource can be _served_ from a different address than that of the corresponding topic resource
 
-  * It is not possibile anymore to delete a topic-data resource by sending a DELETE request to it.
+  * It is not possible anymore to delete a topic-data resource by sending a DELETE request to it.
 
 * Updated references.
 
