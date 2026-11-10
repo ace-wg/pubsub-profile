@@ -256,7 +256,7 @@ Both Publishers and Subscribers act as ACE Clients. The Broker acts as an ACE RS
 {: #archi title="Architecture for Pub-Sub with Authorization Server and Key Distribution Center"}
 {: artwork-align="center"}
 
-Both Publishers and Subscribers MUST use the same protocol for interacting with the Broker and participating in Pub-Sub communications. When using the profile defined in this document, such a protocol MUST be CoAP {{RFC7252}}, which is used as described in {{I-D.ietf-core-coap-pubsub}} (REQ22). In particular, when using this application profile, the topic-data resource corresponding to a given topic is hosted precisely at the Broker associated with that topic. Setups where a topic-data resource is possibly hosted at different servers than the Broker are out of the scope of this application profile.<!--What is specified in this document can apply to other protocols for Pub-Sub communications such as MQTT {{MQTT-OASIS-Standard-v5}}, or to further transport protocols.-->
+Both Publishers and Subscribers MUST use the same protocol for interacting with the Broker and participating in Pub-Sub communications. When using the profile defined in this document, such a protocol MUST be CoAP {{RFC7252}}, which is used as described in {{I-D.ietf-core-coap-pubsub}} (REQ22). In particular, when using this application profile, the topic-data resource corresponding to a given topic at the Broker is served precisely from the same address of the topic resource associated with that topic. The scope of this application profile does not include setups where a topic-data resource is possibly served from a different address than that of the topic resource, e.g., by a server that is part of the same broker deployment (see {{Section 1.1 of I-D.ietf-core-coap-pubsub}}).<!--What is specified in this document can apply to other protocols for Pub-Sub communications such as MQTT {{MQTT-OASIS-Standard-v5}}, or to further transport protocols.-->
 
 All Publishers and Subscribers MUST use CoAP when communicating with the KDC.
 
@@ -1364,6 +1364,14 @@ This section lists how this application profile of ACE addresses the requirement
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -05 to -06 ## {#sec-05-06}
+
+* Alignment with draft-ietf-core-coap-pubsub-22:
+
+  * Section 2 of this document: rephrasing of what is not in scope.
+
+    A Broker that hosts a topic resource always _hosts_ and _is in control of_ the topic-data resource corresponding to that topic. A topic-data resource can be _served_ from a different address than that of the corresponding topic resource
 
 ## Version -04 to -05 ## {#sec-04-05}
 
