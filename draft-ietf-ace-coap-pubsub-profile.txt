@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 5 January 2027                                Brunel University
+Expires: 14 May 2027                                   Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                             4 July 2026
+                                                        10 November 2026
 
 
 CoAP Publish-Subscribe Profile for Authentication and Authorization for
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 January 2027.
+   This Internet-Draft will expire on 14 May 2027.
 
 Copyright Notice
 
@@ -126,12 +126,13 @@ Table of Contents
      A.1.  Mandatory-to-Address Requirements
      A.2.  Optional-to-Address Requirements
    Appendix B.  Document Updates
-     B.1.  Version -04 to -05
-     B.2.  Version -03 to -04
-     B.3.  Version -02 to -03
-     B.4.  Version -01 to -02
-     B.5.  Version -00 to -01
-     B.6.  Version -00
+     B.1.  Version -05 to -06
+     B.2.  Version -04 to -05
+     B.3.  Version -03 to -04
+     B.4.  Version -02 to -03
+     B.5.  Version -01 to -02
+     B.6.  Version -00 to -01
+     B.7.  Version -00
    Acknowledgments
    Authors' Addresses
 
@@ -368,10 +369,12 @@ Table of Contents
    such a protocol MUST be CoAP [RFC7252], which is used as described in
    [I-D.ietf-core-coap-pubsub] (REQ22).  In particular, when using this
    application profile, the topic-data resource corresponding to a given
-   topic is hosted precisely at the Broker associated with that topic.
-   Setups where a topic-data resource is possibly hosted at different
-   servers than the Broker are out of the scope of this application
-   profile.
+   topic at the Broker is served precisely from the same address of the
+   topic resource associated with that topic.  The scope of this
+   application profile does not include setups where a topic-data
+   resource is possibly served from a different address than that of the
+   topic resource, e.g., by a server that is part of the same broker
+   deployment (see Section 1.1 of [I-D.ietf-core-coap-pubsub]).
 
    All Publishers and Subscribers MUST use CoAP when communicating with
    the KDC.
@@ -2494,9 +2497,9 @@ Table of Contents
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
               subscribe architecture for the Constrained Application
               Protocol (CoAP)", Work in Progress, Internet-Draft, draft-
-              ietf-core-coap-pubsub-21, 2 July 2026,
+              ietf-core-coap-pubsub-22, 2 November 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pubsub-21>.
+              coap-pubsub-22>.
 
    [IANA.ACE.Groupcomm.Key.Types]
               IANA, "ACE Groupcomm Key Types",
@@ -2680,9 +2683,9 @@ Table of Contents
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J.,
               Furuhed, M., and L. Liao, "CBOR Encoded X.509 Certificates
               (C509 Certificates)", Work in Progress, Internet-Draft,
-              draft-ietf-cose-cbor-encoded-cert-20, 30 June 2026,
+              draft-ietf-cose-cbor-encoded-cert-21, 24 September 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-20>.
+              cbor-encoded-cert-21>.
 
    [RFC8259]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", STD 90, RFC 8259,
@@ -2943,7 +2946,18 @@ Appendix B.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-B.1.  Version -04 to -05
+B.1.  Version -05 to -06
+
+   *  Alignment with draft-ietf-core-coap-pubsub-22:
+
+      -  Section 2 of this document: rephrasing of what is not in scope.
+
+         A Broker that hosts a topic resource always _hosts_ and _is in
+         control of_ the topic-data resource corresponding to that
+         topic.  A topic-data resource can be _served_ from a different
+         address than that of the corresponding topic resource
+
+B.2.  Version -04 to -05
 
    *  Alignment with draft-ietf-core-coap-pubsub-21:
 
@@ -2959,7 +2973,7 @@ B.1.  Version -04 to -05
 
    *  Editorial fixes.
 
-B.2.  Version -03 to -04
+B.3.  Version -03 to -04
 
    *  Minor fixes in the CDDL grammar of the scope entry.
 
@@ -2977,7 +2991,7 @@ B.2.  Version -03 to -04
 
    *  Editorial fixes.
 
-B.3.  Version -02 to -03
+B.4.  Version -02 to -03
 
    *  Updated introduction: clarified relationships between this
       document and related documents.
@@ -3000,7 +3014,7 @@ B.3.  Version -02 to -03
 
    *  Editorial fixes and improvements.
 
-B.4.  Version -01 to -02
+B.5.  Version -01 to -02
 
    *  Clarified high-level description of the authorisation flow.
 
@@ -3009,7 +3023,7 @@ B.4.  Version -01 to -02
 
    *  Editorial fixes and improvements.
 
-B.5.  Version -00 to -01
+B.6.  Version -00 to -01
 
    *  Clarified recommendations about randomness and size of nonces.
 
@@ -3030,7 +3044,7 @@ B.5.  Version -00 to -01
 
    *  Editorial fixes and improvements.
 
-B.6.  Version -00
+B.7.  Version -00
 
    *  Imported content from draft-ietf-ace-pubsub-profile-11.
 

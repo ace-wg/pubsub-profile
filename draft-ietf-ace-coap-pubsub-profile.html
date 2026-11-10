@@ -12,23 +12,23 @@
        This document defines an application profile of the Authentication and Authorization for Constrained Environments (ACE) framework, to enable secure group communication in the Publish-Subscribe (Pub-Sub) architecture for the Constrained Application Protocol (CoAP) [draft-ietf-core-coap-pubsub], where Publishers and Subscribers communicate through a Broker. This profile relies on protocol-specific transport profiles of ACE to achieve communication security, server authentication, and proof of possession of a key owned by the Client and bound to an OAuth 2.0 access token. This document specifies the provisioning and enforcement of authorization information for Clients to act as Publishers and/or Subscribers, as well as the provisioning of keying material and security parameters that Clients use for protecting their communications end-to-end through the Broker. 
        Note to RFC Editor: Please replace "[draft-ietf-core-coap-pubsub]" with the RFC number of that document and delete this paragraph. 
     ' name="description">
-<meta content="xml2rfc 3.34.0" name="generator">
+<meta content="xml2rfc 3.35.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-ace-coap-pubsub-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.34.0
-    Python 3.14.5
-    ConfigArgParse 1.7.5
+  xml2rfc 3.35.0
+    Python 3.14.10
+    ConfigArgParse 1.9.0
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.10.0
+    platformdirs 4.14.3
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.2
+    wcwidth 0.9.4
 -->
 <link href="draft-ietf-ace-coap-pubsub-profile.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -64,7 +64,6 @@
   src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: italic;
@@ -113,7 +112,6 @@
   src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: normal;
@@ -178,7 +176,6 @@
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 }
 
 @font-face {
@@ -1032,7 +1029,7 @@ svg {
   & :is([stroke="white"], [stroke^="#fff"]) {
     stroke: var(--background-color);
   }
-  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+  & :is([fill="black"], [fill^="#000"], :not([fill], [fill] *)) {
     fill: var(--text-color);
   }
   & :is([fill="white"], [fill^="#fff"]) {
@@ -1047,11 +1044,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ACE CoAP Pub-Sub Profile</td>
-<td class="right">July 2026</td>
+<td class="right">November 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Palombini, et al.</td>
-<td class="center">Expires 5 January 2027</td>
+<td class="center">Expires 14 May 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1061,12 @@ svg {
 <dd class="internet-draft">draft-ietf-ace-coap-pubsub-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-04" class="published">4 July 2026</time>
+<time datetime="2026-11-10" class="published">10 November 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-05">5 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-05-14">14 May 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1123,7 +1120,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 14 May 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1313,22 +1310,25 @@ svg {
             <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-document-updates" class="internal xref">Document Updates</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
-                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-version-04-to-05" class="internal xref">Version -04 to -05</a></p>
+                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-version-05-to-06" class="internal xref">Version -05 to -06</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
-                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-version-03-to-04" class="internal xref">Version -03 to -04</a></p>
+                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-version-04-to-05" class="internal xref">Version -04 to -05</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3">
-                <p id="section-toc.1-1.12.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-version-02-to-03" class="internal xref">Version -02 to -03</a></p>
+                <p id="section-toc.1-1.12.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-version-03-to-04" class="internal xref">Version -03 to -04</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4">
-                <p id="section-toc.1-1.12.2.4.1"><a href="#appendix-B.4" class="auto internal xref">B.4</a>.  <a href="#name-version-01-to-02" class="internal xref">Version -01 to -02</a></p>
+                <p id="section-toc.1-1.12.2.4.1"><a href="#appendix-B.4" class="auto internal xref">B.4</a>.  <a href="#name-version-02-to-03" class="internal xref">Version -02 to -03</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.5">
-                <p id="section-toc.1-1.12.2.5.1"><a href="#appendix-B.5" class="auto internal xref">B.5</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
+                <p id="section-toc.1-1.12.2.5.1"><a href="#appendix-B.5" class="auto internal xref">B.5</a>.  <a href="#name-version-01-to-02" class="internal xref">Version -01 to -02</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.6">
-                <p id="section-toc.1-1.12.2.6.1"><a href="#appendix-B.6" class="auto internal xref">B.6</a>.  <a href="#name-version-00" class="internal xref">Version -00</a></p>
+                <p id="section-toc.1-1.12.2.6.1"><a href="#appendix-B.6" class="auto internal xref">B.6</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.7">
+                <p id="section-toc.1-1.12.2.7.1"><a href="#appendix-B.7" class="auto internal xref">B.7</a>.  <a href="#name-version-00" class="internal xref">Version -00</a></p>
 </li>
             </ul>
 </li>
@@ -1657,19 +1657,19 @@ This is not to be confused with an "application group", which has relevance at t
 <a href="#name-architecture-for-pub-sub-wi" class="selfRef">Architecture for Pub-Sub with Authorization Server and Key Distribution Center</a>
         </figcaption></figure>
 </div>
-<p id="section-2-6">Both Publishers and Subscribers <span class="bcp14">MUST</span> use the same protocol for interacting with the Broker and participating in Pub-Sub communications. When using the profile defined in this document, such a protocol <span class="bcp14">MUST</span> be CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, which is used as described in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> (REQ22). In particular, when using this application profile, the topic-data resource corresponding to a given topic is hosted precisely at the Broker associated with that topic. Setups where a topic-data resource is possibly hosted at different servers than the Broker are out of the scope of this application profile.<a href="#section-2-6" class="pilcrow">¶</a></p>
+<p id="section-2-6">Both Publishers and Subscribers <span class="bcp14">MUST</span> use the same protocol for interacting with the Broker and participating in Pub-Sub communications. When using the profile defined in this document, such a protocol <span class="bcp14">MUST</span> be CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, which is used as described in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> (REQ22). In particular, when using this application profile, the topic-data resource corresponding to a given topic at the Broker is served precisely from the same address of the topic resource associated with that topic. The scope of this application profile does not include setups where a topic-data resource is possibly served from a different address than that of the topic resource, e.g., by a server that is part of the same broker deployment (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22#section-1.1" class="relref">Section 1.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-2-6" class="pilcrow">¶</a></p>
 <p id="section-2-7">All Publishers and Subscribers <span class="bcp14">MUST</span> use CoAP when communicating with the KDC.<a href="#section-2-7" class="pilcrow">¶</a></p>
 <p id="section-2-8">Furthermore, both Publishers and Subscribers <span class="bcp14">MUST</span> use the same transport profile of ACE (e.g., <span>[<a href="#RFC9202" class="cite xref">RFC9202</a>]</span> for DTLS, or <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span> for OSCORE) in their interaction with the Broker. In order to reduce the number of libraries that Clients have to support, it is <span class="bcp14">RECOMMENDED</span> that the same transport profile of ACE is used also for the interaction between the Clients and the KDC (REQ24).<a href="#section-2-8" class="pilcrow">¶</a></p>
 <p id="section-2-9">Except for the end-to-end protection of published topic data (see <a href="#oscon" class="auto internal xref">Section 6.1</a>), all communications between the involved entities (Clients, Broker, KDC, Authorization Server) <span class="bcp14">MUST</span> occur and be secured in accordance with the protocol-specific transport profile of ACE used.<a href="#section-2-9" class="pilcrow">¶</a></p>
 <p id="section-2-10">For each Client, the Client and the Broker <span class="bcp14">MUST</span> have a secure communication association, which they establish with the help of the AS and using a transport profile of ACE. This is shown by the interactions A and C in <a href="#archi" class="auto internal xref">Figure 2</a>. During this process, the Client obtains an access token from the AS and uploads it at the Broker, thus providing an evidence of the topics that it is authorised to participate in, and with which permissions.<a href="#section-2-10" class="pilcrow">¶</a></p>
 <p id="section-2-11">For each Client, the Client and the KDC <span class="bcp14">MUST</span> have a secure communication association, which they also establish with the help of the AS and using a transport profile of ACE (REQ24). This is shown by the interactions A and B in <a href="#archi" class="auto internal xref">Figure 2</a>. During this process, the Client obtains an access token from the AS and uploads it at the KDC, thus providing an evidence of the security groups that it can join, as associated with the topics of interest at the Broker. Based on the permissions specified in the access token, the Client can request the KDC to join a security group, after which the Client obtains from the KDC the keying material to use for communicating with the other group members. This builds on the process for joining security groups with ACE, as defined in <span>[<a href="#RFC9594" class="cite xref">RFC9594</a>]</span> and further specified in this document.<a href="#section-2-11" class="pilcrow">¶</a></p>
-<p id="section-2-12">In addition, this profile allows an anonymous Client to perform some of the discovery operations defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.3" class="relref">Section 2.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> through the Broker, as shown by the interaction O in <a href="#archi" class="auto internal xref">Figure 2</a>. That is, an anonymous Client can discover:<a href="#section-2-12" class="pilcrow">¶</a></p>
+<p id="section-2-12">In addition, this profile allows an anonymous Client to perform some of the discovery operations defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22#section-2.3" class="relref">Section 2.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> through the Broker, as shown by the interaction O in <a href="#archi" class="auto internal xref">Figure 2</a>. That is, an anonymous Client can discover:<a href="#section-2-12" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-13.1">
-          <p id="section-2-13.1.1">The Broker itself, by relying on the resource type "core.ps" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>); and<a href="#section-2-13.1.1" class="pilcrow">¶</a></p>
+          <p id="section-2-13.1.1">The Broker itself, by relying on the resource type "core.ps" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>); and<a href="#section-2-13.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-13.2">
-          <p id="section-2-13.2.1">Topics of interest at the Broker (i.e., the corresponding topic resources hosted at the Broker), by relying on the resource type "core.ps.conf" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.3.3" class="relref">Section 2.3.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-2-13.2.1" class="pilcrow">¶</a></p>
+          <p id="section-2-13.2.1">Topics of interest at the Broker (i.e., the corresponding topic resources hosted at the Broker), by relying on the resource type "core.ps.conf" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22#section-2.3.3" class="relref">Section 2.3.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-2-13.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-2-14">However, an anonymous Client is not allowed to access topic resources at the Broker and obtain from those any additional information or metadata about the corresponding topic (e.g., the topic status, the URI of the topic-data resource where to publish or subscribe for that topic, or the URI to the KDC).<a href="#section-2-14" class="pilcrow">¶</a></p>
@@ -1919,8 +1919,8 @@ This is not to be confused with an "application group", which has relevance at t
         <h3 id="name-topic-discovery-at-the-brok">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-topic-discovery-at-the-brok" class="section-name selfRef">Topic Discovery at the Broker (Optional)</a>
         </h3>
-<p id="section-3.1-1">The discovery of a topic at the Broker can be performed by discovering the corresponding topic resource hosted at the Broker. For example, the Client can send a lookup request to /.well-known/core at the Broker, specifying as lookup criterion the resource type "core.ps.conf" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.3.3" class="relref">Section 2.3.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">Although the links to the topic resources are also specified in the representation of the collection resource at the Broker (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.4" class="relref">Section 2.4</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>), the Client is not supposed to access such a resource, as intended for administrative operations that are out of the scope of this document.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">The discovery of a topic at the Broker can be performed by discovering the corresponding topic resource hosted at the Broker. For example, the Client can send a lookup request to /.well-known/core at the Broker, specifying as lookup criterion the resource type "core.ps.conf" (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22#section-2.3.3" class="relref">Section 2.3.3</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>).<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">Although the links to the topic resources are also specified in the representation of the collection resource at the Broker (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22#section-2.4" class="relref">Section 2.4</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>), the Client is not supposed to access such a resource, as intended for administrative operations that are out of the scope of this document.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="AS-discovery">
@@ -1953,8 +1953,8 @@ This is not to be confused with an "application group", which has relevance at t
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-kdc-discovery-at-the-broker" class="section-name selfRef">KDC Discovery at the Broker (Optional)</a>
         </h3>
 <p id="section-3.3-1">Once a Client has obtained an access token from the AS and accordingly established a secure association with the Broker, the Client has the permission to access the topic resources at the Broker that pertain to the topics on which the Client is authorised to operate.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3-2">In particular the Client is authorised to retrieve the representation of a topic resource, from which the Client can retrieve information related to the topic in question, as specified in Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.5.1" class="relref">2.5.1</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.5.2" class="relref">2.5.2</a> of <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
-<p id="section-3.3-3">This profile extends the set of CoAP Pub-Sub Topic Properties that is possible to specify within the representation of a topic resource, as originally defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.2.1" class="relref">Section 2.2.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>. In particular, this profile defines the following two topic properties that the Broker can specify in a response to a GET or FETCH request that targets a topic resource (see Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.5.1" class="relref">2.5.1</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-2.5.2" class="relref">2.5.2</a> of <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>), with the FETCH request using the Content-Format "application/cbor". Note that, when these topic properties are transported in their respective fields of the response payload, the Content-Format "application/core-pubsub+cbor" defined in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> is used.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">In particular the Client is authorised to retrieve the representation of a topic resource, from which the Client can retrieve information related to the topic in question, as specified in Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22#section-2.5.1" class="relref">2.5.1</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22#section-2.5.2" class="relref">2.5.2</a> of <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.3-3">This profile extends the set of CoAP Pub-Sub Topic Properties that is possible to specify within the representation of a topic resource, as originally defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22#section-2.2.1" class="relref">Section 2.2.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>. In particular, this profile defines the following two topic properties that the Broker can specify in a response to a GET or FETCH request that targets a topic resource (see Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22#section-2.5.1" class="relref">2.5.1</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22#section-2.5.2" class="relref">2.5.2</a> of <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>), with the FETCH request using the Content-Format "application/cbor". Note that, when these topic properties are transported in their respective fields of the response payload, the Content-Format "application/core-pubsub+cbor" defined in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span> is used.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3-4.1">
             <p id="section-3.3-4.1.1">'kdc-uri', with value the URI of the group-membership resource at the KDC, where Clients can send a request to join the security group associated with the topic in question. The URI is encoded as a CBOR text string. Clients will have to obtain an access token from the AS to upload at the KDC, before starting the process to join the security group at the KDC. The CBOR abbreviation for this topic property is registered in <a href="#iana-pubsub-topic-properties" class="auto internal xref">Section 9.4</a>.<a href="#section-3.3-4.1.1" class="pilcrow">¶</a></p>
@@ -2756,7 +2756,7 @@ That is, the value of the new Gid is specified by the 'kid' parameter of the COS
         <h3 id="name-using-cose-to-protect-the-p">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-using-cose-to-protect-the-p" class="section-name selfRef">Using COSE to Protect the Published Topic Data</a>
         </h3>
-<p id="section-6.1-1">The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21#section-3.2.1" class="relref">Section 3.2.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>). Specifically, the Publisher creates a COSE_Encrypt0 object <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span><span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> by means of the COSE Key currently used as group key (REQ23). The encryption algorithm and Base IV to use are specified by the 'alg' and 'Base IV' parameters of the COSE Key, together with its key identifier in the 'kid' parameter.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">The Publisher uses the symmetric COSE Key received from the KDC to protect the payload of the Publish operation (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22#section-3.2.1" class="relref">Section 3.2.1</a> of [<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>). Specifically, the Publisher creates a COSE_Encrypt0 object <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span><span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> by means of the COSE Key currently used as group key (REQ23). The encryption algorithm and Base IV to use are specified by the 'alg' and 'Base IV' parameters of the COSE Key, together with its key identifier in the 'kid' parameter.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.1-2">Also, the Publisher uses its private key corresponding to the public key provided to the KDC, in order to countersign the COSE_Encrypt0 object as specified in <span>[<a href="#RFC9338" class="cite xref">RFC9338</a>]</span> (REQ23). The countersignature is specified in the 'Countersignature version 2' parameter, within the 'unprotected' field of the COSE_Encrypt0 object.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
 <p id="section-6.1-3">Finally, the Publisher sends the COSE_Encrypt0 object conveying the countersignature to the Broker, as payload of the PUT request sent to the topic-data of the topic targeted by the Publish operation.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
 <p id="section-6.1-4">Upon receiving a response from the topic-data resource at the Broker, the Subscriber uses the 'kid' parameter from the 'Countersignature version 2' parameter within the 'unprotected' field of the COSE_Encrypt0 object, in order to retrieve the Publisher's public key from the KDC (see <a href="#query" class="auto internal xref">Section 4.2.1</a>) or from its local storage. Then, the Subscriber uses that public key to verify the countersignature.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
@@ -3278,7 +3278,7 @@ The logged information also contains relevant metadata about the Client that has
 <dl class="references">
 <dt id="I-D.ietf-core-coap-pubsub">[I-D.ietf-core-coap-pubsub]</dt>
         <dd>
-<span class="refAuthor">Jimenez, J.</span>, <span class="refAuthor">Koster, M.</span>, and <span class="refAuthor">A. Keränen</span>, <span class="refTitle">"A publish-subscribe architecture for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-21</span>, <time datetime="2026-07-02" class="refDate">2 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21</a>&gt;</span>. </dd>
+<span class="refAuthor">Jimenez, J.</span>, <span class="refAuthor">Koster, M.</span>, and <span class="refAuthor">A. Keränen</span>, <span class="refTitle">"A publish-subscribe architecture for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-22</span>, <time datetime="2026-11-02" class="refDate">2 November 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-22</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="IANA.ACE.Groupcomm.Key.Types">[IANA.ACE.Groupcomm.Key.Types]</dt>
         <dd>
@@ -3431,7 +3431,7 @@ The logged information also contains relevant metadata about the Client that has
 <dd class="break"></dd>
 <dt id="I-D.ietf-cose-cbor-encoded-cert">[I-D.ietf-cose-cbor-encoded-cert]</dt>
         <dd>
-<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, <span class="refAuthor">Furuhed, M.</span>, and <span class="refAuthor">L. Liao</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-20</span>, <time datetime="2026-06-30" class="refDate">30 June 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-20">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-20</a>&gt;</span>. </dd>
+<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, <span class="refAuthor">Furuhed, M.</span>, and <span class="refAuthor">L. Liao</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-21</span>, <time datetime="2026-09-24" class="refDate">24 September 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-21">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-21</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8259">[RFC8259]</dt>
         <dd>
@@ -3622,170 +3622,189 @@ The logged information also contains relevant metadata about the Client that has
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-document-updates" class="section-name selfRef">Document Updates</a>
       </h2>
 <p id="appendix-B-1">This section is to be removed before publishing as an RFC.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<div id="sec-04-05">
+<div id="sec-05-06">
 <section id="appendix-B.1">
-        <h3 id="name-version-04-to-05">
-<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-04-to-05" class="section-name selfRef">Version -04 to -05</a>
+        <h3 id="name-version-05-to-06">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-05-to-06" class="section-name selfRef">Version -05 to -06</a>
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-B.1-1.1">
-            <p id="appendix-B.1-1.1.1">Alignment with draft-ietf-core-coap-pubsub-21:<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.1.1">Alignment with draft-ietf-core-coap-pubsub-22:<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B.1-1.1.2.1">
-                <p id="appendix-B.1-1.1.2.1.1">Generalized response code in successful responses from the Broker.<a href="#appendix-B.1-1.1.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="appendix-B.1-1.1.2.2">
-                <p id="appendix-B.1-1.1.2.2.1">Content-Format of certain messages to/from the Broker.<a href="#appendix-B.1-1.1.2.2.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="appendix-B.1-1.1.2.3">
-                <p id="appendix-B.1-1.1.2.3.1">Referred section numbers.<a href="#appendix-B.1-1.1.2.3.1" class="pilcrow">¶</a></p>
+                <p id="appendix-B.1-1.1.2.1.1">Section 2 of this document: rephrasing of what is not in scope.<a href="#appendix-B.1-1.1.2.1.1" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-1.1.2.1.2">
+A Broker that hosts a topic resource always <em>hosts</em> and <em>is in control of</em> the topic-data resource corresponding to that topic. A topic-data resource can be <em>served</em> from a different address than that of the corresponding topic resource<a href="#appendix-B.1-1.1.2.1.2" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="appendix-B.1-1.2">
-            <p id="appendix-B.1-1.2.1">IANA registration request for the CoAP Pubsub Topic Properties 'kdc-uri' and 'sec-gp'.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+        </ul>
+</section>
+</div>
+<div id="sec-04-05">
+<section id="appendix-B.2">
+        <h3 id="name-version-04-to-05">
+<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-version-04-to-05" class="section-name selfRef">Version -04 to -05</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="appendix-B.2-1.1">
+            <p id="appendix-B.2-1.1.1">Alignment with draft-ietf-core-coap-pubsub-21:<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B.2-1.1.2.1">
+                <p id="appendix-B.2-1.1.2.1.1">Generalized response code in successful responses from the Broker.<a href="#appendix-B.2-1.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-1.3">
-            <p id="appendix-B.1-1.3.1">Editorial fixes.<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="appendix-B.2-1.1.2.2">
+                <p id="appendix-B.2-1.1.2.2.1">Content-Format of certain messages to/from the Broker.<a href="#appendix-B.2-1.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-B.2-1.1.2.3">
+                <p id="appendix-B.2-1.1.2.3.1">Referred section numbers.<a href="#appendix-B.2-1.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="appendix-B.2-1.2">
+            <p id="appendix-B.2-1.2.1">IANA registration request for the CoAP Pubsub Topic Properties 'kdc-uri' and 'sec-gp'.<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.2-1.3">
+            <p id="appendix-B.2-1.3.1">Editorial fixes.<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-03-04">
-<section id="appendix-B.2">
+<section id="appendix-B.3">
         <h3 id="name-version-03-to-04">
-<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-version-03-to-04" class="section-name selfRef">Version -03 to -04</a>
+<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-version-03-to-04" class="section-name selfRef">Version -03 to -04</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.2-1.1">
-            <p id="appendix-B.2-1.1.1">Minor fixes in the CDDL grammar of the scope entry.<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.3-1.1">
+            <p id="appendix-B.3-1.1.1">Minor fixes in the CDDL grammar of the scope entry.<a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.2">
-            <p id="appendix-B.2-1.2.1">Explicitly mentioned that topic-data resources are hosted at the Broker.<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.2">
+            <p id="appendix-B.3-1.2.1">Explicitly mentioned that topic-data resources are hosted at the Broker.<a href="#appendix-B.3-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.3">
-            <p id="appendix-B.2-1.3.1">More consistent use of the terms "nonce" and "challenge".<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.3">
+            <p id="appendix-B.3-1.3.1">More consistent use of the terms "nonce" and "challenge".<a href="#appendix-B.3-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.4">
-            <p id="appendix-B.2-1.4.1">Moved up the statement of compliance with REQ7.<a href="#appendix-B.2-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.4">
+            <p id="appendix-B.3-1.4.1">Moved up the statement of compliance with REQ7.<a href="#appendix-B.3-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.5">
-            <p id="appendix-B.2-1.5.1">Clarified that group names are consistent with the semantics of URI path segments.<a href="#appendix-B.2-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.5">
+            <p id="appendix-B.3-1.5.1">Clarified that group names are consistent with the semantics of URI path segments.<a href="#appendix-B.3-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.6">
-            <p id="appendix-B.2-1.6.1">Added references to IANA registries.<a href="#appendix-B.2-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.6">
+            <p id="appendix-B.3-1.6.1">Added references to IANA registries.<a href="#appendix-B.3-1.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.7">
-            <p id="appendix-B.2-1.7.1">Editorial fixes.<a href="#appendix-B.2-1.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.7">
+            <p id="appendix-B.3-1.7.1">Editorial fixes.<a href="#appendix-B.3-1.7.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-02-03">
-<section id="appendix-B.3">
+<section id="appendix-B.4">
         <h3 id="name-version-02-to-03">
-<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-version-02-to-03" class="section-name selfRef">Version -02 to -03</a>
+<a href="#appendix-B.4" class="section-number selfRef">B.4. </a><a href="#name-version-02-to-03" class="section-name selfRef">Version -02 to -03</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.3-1.1">
-            <p id="appendix-B.3-1.1.1">Updated introduction: clarified relationships between this document and related documents.<a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.4-1.1">
+            <p id="appendix-B.4-1.1.1">Updated introduction: clarified relationships between this document and related documents.<a href="#appendix-B.4-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.2">
-            <p id="appendix-B.3-1.2.1">Ensured consistency with RFC 9594 when using an optimized Join Request for re-joining a group (presence of the 'client_cred' parameter).<a href="#appendix-B.3-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.2">
+            <p id="appendix-B.4-1.2.1">Ensured consistency with RFC 9594 when using an optimized Join Request for re-joining a group (presence of the 'client_cred' parameter).<a href="#appendix-B.4-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.3">
-            <p id="appendix-B.3-1.3.1">Added the "Operational Considerations" section.<a href="#appendix-B.3-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.3">
+            <p id="appendix-B.4-1.3.1">Added the "Operational Considerations" section.<a href="#appendix-B.4-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.4">
-            <p id="appendix-B.3-1.4.1">Clarifications:<a href="#appendix-B.3-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.4">
+            <p id="appendix-B.4-1.4.1">Clarifications:<a href="#appendix-B.4-1.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-B.3-1.4.2.1">
-                <p id="appendix-B.3-1.4.2.1.1">Secure communications required as per the transport profile of ACE used.<a href="#appendix-B.3-1.4.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.4-1.4.2.1">
+                <p id="appendix-B.4-1.4.2.1.1">Secure communications required as per the transport profile of ACE used.<a href="#appendix-B.4-1.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-B.3-1.4.2.2">
-                <p id="appendix-B.3-1.4.2.2.1">Explicitly mentioned the rationale for computing a proof-of-possession (PoP) evidence.<a href="#appendix-B.3-1.4.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="appendix-B.4-1.4.2.2">
+                <p id="appendix-B.4-1.4.2.2.1">Explicitly mentioned the rationale for computing a proof-of-possession (PoP) evidence.<a href="#appendix-B.4-1.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-B.3-1.4.2.3">
-                <p id="appendix-B.3-1.4.2.3.1">Reasons for and flexibility of group rekeying.<a href="#appendix-B.3-1.4.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="appendix-B.4-1.4.2.3">
+                <p id="appendix-B.4-1.4.2.3.1">Reasons for and flexibility of group rekeying.<a href="#appendix-B.4-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="appendix-B.3-1.5">
-            <p id="appendix-B.3-1.5.1">Editorial fixes and improvements.<a href="#appendix-B.3-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.5">
+            <p id="appendix-B.4-1.5.1">Editorial fixes and improvements.<a href="#appendix-B.4-1.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-01-02">
-<section id="appendix-B.4">
+<section id="appendix-B.5">
         <h3 id="name-version-01-to-02">
-<a href="#appendix-B.4" class="section-number selfRef">B.4. </a><a href="#name-version-01-to-02" class="section-name selfRef">Version -01 to -02</a>
+<a href="#appendix-B.5" class="section-number selfRef">B.5. </a><a href="#name-version-01-to-02" class="section-name selfRef">Version -01 to -02</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.4-1.1">
-            <p id="appendix-B.4-1.1.1">Clarified high-level description of the authorisation flow.<a href="#appendix-B.4-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.5-1.1">
+            <p id="appendix-B.5-1.1.1">Clarified high-level description of the authorisation flow.<a href="#appendix-B.5-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.4-1.2">
-            <p id="appendix-B.4-1.2.1">Clarified relation between a group rekeying and a Key Renewal Request.<a href="#appendix-B.4-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.5-1.2">
+            <p id="appendix-B.5-1.2.1">Clarified relation between a group rekeying and a Key Renewal Request.<a href="#appendix-B.5-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.4-1.3">
-            <p id="appendix-B.4-1.3.1">Editorial fixes and improvements.<a href="#appendix-B.4-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.5-1.3">
+            <p id="appendix-B.5-1.3.1">Editorial fixes and improvements.<a href="#appendix-B.5-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-00-01">
-<section id="appendix-B.5">
+<section id="appendix-B.6">
         <h3 id="name-version-00-to-01">
-<a href="#appendix-B.5" class="section-number selfRef">B.5. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
+<a href="#appendix-B.6" class="section-number selfRef">B.6. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.5-1.1">
-            <p id="appendix-B.5-1.1.1">Clarified recommendations about randomness and size of nonces.<a href="#appendix-B.5-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.6-1.1">
+            <p id="appendix-B.6-1.1.1">Clarified recommendations about randomness and size of nonces.<a href="#appendix-B.6-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.5-1.2">
-            <p id="appendix-B.5-1.2.1">Clarified generation of N_S if TLS is used with the KDC instead of DTLS.<a href="#appendix-B.5-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.6-1.2">
+            <p id="appendix-B.6-1.2.1">Clarified generation of N_S if TLS is used with the KDC instead of DTLS.<a href="#appendix-B.6-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.5-1.3">
-            <p id="appendix-B.5-1.3.1">Added missing references to REQ and OPT requirements.<a href="#appendix-B.5-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.6-1.3">
+            <p id="appendix-B.6-1.3.1">Added missing references to REQ and OPT requirements.<a href="#appendix-B.6-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.5-1.4">
-            <p id="appendix-B.5-1.4.1">Updated IANA considerations:<a href="#appendix-B.5-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.6-1.4">
+            <p id="appendix-B.6-1.4.1">Updated IANA considerations:<a href="#appendix-B.6-1.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-B.5-1.4.2.1">
-                <p id="appendix-B.5-1.4.2.1.1">Suggested values for IANA registrations.<a href="#appendix-B.5-1.4.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.6-1.4.2.1">
+                <p id="appendix-B.6-1.4.2.1.1">Suggested values for IANA registrations.<a href="#appendix-B.6-1.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-B.5-1.4.2.2">
-                <p id="appendix-B.5-1.4.2.2.1">Renamed TLS Exporter Label.<a href="#appendix-B.5-1.4.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="appendix-B.6-1.4.2.2">
+                <p id="appendix-B.6-1.4.2.2.1">Renamed TLS Exporter Label.<a href="#appendix-B.6-1.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-B.5-1.4.2.3">
-                <p id="appendix-B.5-1.4.2.3.1">Fixed content types in the CoAP Content-Formats registrations.<a href="#appendix-B.5-1.4.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="appendix-B.6-1.4.2.3">
+                <p id="appendix-B.6-1.4.2.3.1">Fixed content types in the CoAP Content-Formats registrations.<a href="#appendix-B.6-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="appendix-B.5-1.5">
-            <p id="appendix-B.5-1.5.1">Updated references.<a href="#appendix-B.5-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.6-1.5">
+            <p id="appendix-B.6-1.5.1">Updated references.<a href="#appendix-B.6-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.5-1.6">
-            <p id="appendix-B.5-1.6.1">Editorial fixes and improvements.<a href="#appendix-B.5-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.6-1.6">
+            <p id="appendix-B.6-1.6.1">Editorial fixes and improvements.<a href="#appendix-B.6-1.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-00">
-<section id="appendix-B.6">
+<section id="appendix-B.7">
         <h3 id="name-version-00">
-<a href="#appendix-B.6" class="section-number selfRef">B.6. </a><a href="#name-version-00" class="section-name selfRef">Version -00</a>
+<a href="#appendix-B.7" class="section-number selfRef">B.7. </a><a href="#name-version-00" class="section-name selfRef">Version -00</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.6-1.1">
-            <p id="appendix-B.6-1.1.1">Imported content from draft-ietf-ace-pubsub-profile-11.<a href="#appendix-B.6-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.7-1.1">
+            <p id="appendix-B.7-1.1.1">Imported content from draft-ietf-ace-pubsub-profile-11.<a href="#appendix-B.7-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.6-1.2">
-            <p id="appendix-B.6-1.2.1">Removed content about MQTT.<a href="#appendix-B.6-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.7-1.2">
+            <p id="appendix-B.7-1.2.1">Removed content about MQTT.<a href="#appendix-B.7-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.6-1.3">
-            <p id="appendix-B.6-1.3.1">New document title.<a href="#appendix-B.6-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.7-1.3">
+            <p id="appendix-B.7-1.3.1">New document title.<a href="#appendix-B.7-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
