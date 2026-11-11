@@ -141,7 +141,7 @@ In particular, this document specifies the provisioning and enforcement of autho
 
 In order to protect the Pub-Sub operations at the Broker as well as the provisioning of keying material and security parameters, this profile leverages protocol-specific transport profiles of ACE (e.g., {{RFC9202}}{{RFC9203}}), in order to achieve communication security, server authentication, and proof of possession of a key owned by the Client and bound to an OAuth 2.0 access token.
 
-The content of published messages that are circulated by the Broker is protected end-to-end between the corresponding Publisher and the intended Subscribers. To this end, this profile relies on COSE {{RFC9052}}{{RFC9053}} and on keying material provided to the Publishers and Subscribers participating in the same Pub-Sub topic. In particular, source authentication of published topic data is achieved by means of the corresponding Publisher signing such content with its own private key.
+The content of published messages that are circulated by the Broker is protected end-to-end between the corresponding Publisher and the intended Subscribers. To this end, this profile relies on CBOR Object Signing and Encryption (COSE) {{RFC9052}}{{RFC9053}} and on keying material provided to the Publishers and Subscribers participating in the same Pub-Sub topic. In particular, source authentication of published topic data is achieved by means of the corresponding Publisher signing such content with its own private key.
 
 {{fig-document-relationships}} overviews the relationships between this document and other related documents mentioned above.
 
@@ -208,7 +208,7 @@ Readers are expected to be familiar with:
 
 * The terms and concept related to the message formats and processing specified in {{RFC9594}}, for provisioning and renewing keying material in group communication scenarios. These include the abbreviations REQx and OPTx denoting the numbered mandatory-to-address and optional-to-address requirements, respectively.
 
-* The terms and concepts described in CDDL {{RFC8610}}, CBOR {{RFC8949}}, and COSE {{RFC9052}}{{RFC9053}}{{RFC9338}}.
+* The terms and concepts described in the Concise Data Definition Language (CDDL) {{RFC8610}}, Concise Binary Object Representation (CBOR) {{RFC8949}}, and COSE {{RFC9052}}{{RFC9053}}{{RFC9338}}.
 
 * The terms and concepts described in CoAP {{RFC7252}}. Note that the term "endpoint" is used here following its OAuth definition {{RFC6749}}, aimed at denoting resources such as `/token` and `/introspect` at the AS, and `/authz-info` at the RS. The CoAP definition, which is "\[a\]n entity participating in the CoAP protocol" {{RFC7252}}, is not used in this document.
 
@@ -554,7 +554,7 @@ Each resource is marked as REQUIRED or OPTIONAL to be hosted at the KDC (REQ9).
 | /ace-group/GROUPNAME | REQUIRED. Contains symmetric group keying material associated with GROUPNAME. | GET, POST (All Clients) |
 | /ace-group/GROUPNAME/creds | REQUIRED. Contains the authentication credentials of all the Publishers of the group with name GROUPNAME. | GET, FETCH (All Clients) |
 | /ace-group/GROUPNAME/num | REQUIRED. Contains the current version number for the symmetric group keying material of the group with name GROUPNAME. | GET (All Clients) |
-| /ace-group/GROUPNAME/nodes/NODENAME | REQUIRED. Contains the group keying material for that group member NODENAME in GROUPNAME. | GET (All Clients). POST (Publishers). |
+| /ace-group/GROUPNAME/nodes/NODENAME | REQUIRED. Contains the group keying material for that group member NODENAME in GROUPNAME. | GET, DELETE (All Clients). POST (Publishers). |
 | /ace-group/GROUPNAME/nodes/NODENAME/cred | REQUIRED. Contains the authentication credential for NODENAME in the group GROUPNAME. |  POST (Publishers) |
 | /ace-group/GROUPNAME/kdc-cred | REQUIRED if the group rekeying scheme used requires the use of a KDC authentication credential. Contains the authentication credential of the KDC for the group with name GROUPNAME. | GET (All Clients) |
 | /ace-group/GROUPNAME/policies | OPTIONAL. Contains the group policies of the group with name GROUPNAME. | GET (All Clients) |
@@ -688,7 +688,7 @@ In the case of success, the KDC replies with a Join Response, whose payload is f
 
    * 'cred_fmt': this parameter is identified by the CBOR unsigned integer 2 used as map key. Its value specifies the format of authentication credentials used in the group and is taken from the "Label" column of the "COSE Header Parameters" registry {{IANA.COSE.Header.Parameters}}.
 
-     At the time of writing this specification, acceptable formats of authentication credentials are CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC7925}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Further formats may be available in the future and would be acceptable to use as long as they comply with the criteria defined above (REQ6).
+     At the time of writing this specification, acceptable formats of authentication credentials are CWTs and CCSs {{RFC8392}}, X.509 certificates {{RFC7925}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Further formats may be available in the future and would be acceptable to use as long as they comply with the criteria defined above (REQ6).
 
    * 'sign_alg': this parameter is identified by the CBOR unsigned integer 3 used as map key. Its value specifies the signature algorithm used to sign messages in the group and is taken from the "Value" column of the "COSE Algorithms" registry {{IANA.COSE.Algorithms}}.
 
@@ -868,7 +868,7 @@ This application profile does not define additional information to include in re
 
 In the diagram shown in {{pubsub-3}}, (D) corresponds to the publication on a topic at the Broker, by using a CoAP PUT request. The Publisher protects the published topic data end-to-end for the Subscribers by using COSE ({{RFC9052}}{{RFC9053}}{{RFC9338}}), as detailed in {{oscon}}.
 
-In the same diagram, (E) corresponds to the subscription of a Subscriber to the same topic, by means of a CoAP GET request with the Observe option set to 0 (register) {{RFC7641}}, as per {{I-D.ietf-core-coap-pubsub}}. Finally, (F) corresponds to the Observe notification response from the Broker to the Subscriber, where the published topic data is conveyed as originally protected end-to-end with COSE by the Publisher.
+In the same diagram, (E) corresponds to the subscription of a Subscriber to the same topic, by means of a CoAP GET request with the Observe Option set to 0 (register) {{RFC7641}}, as per {{I-D.ietf-core-coap-pubsub}}. Finally, (F) corresponds to the Observe notification response from the Broker to the Subscriber, where the published topic data is conveyed as originally protected end-to-end with COSE by the Publisher.
 
 ~~~~~~~~~~~~ aasvg
 +-----------+             +--------+              +------------+
@@ -890,10 +890,10 @@ Publisher                         Broker                    Subscriber
 |                                   |                                |
 +---- 0.03 PUT ps/data/1bd0d6d ---->|                                |
 |                                   |                                |
-|<------ 2.01 Created --------------+                                |
+|<------ 2.04 Changed --------------+                                |
 |                                   |                                |
 |                                   |<-- 0.01 GET /ps/data/1bd0d6d --+
-|                                   |    Observe:0                   |
+|                                   |    Observe: 0                  |
 |                                   |                                |
 |                                   +------ 2.05 Content ----------->|
 |                                   |       Observe: 10001           |
@@ -923,7 +923,7 @@ The 'unprotected' field MUST include:
 
 * The 'kid' parameter, with the same value specified in the 'kid' parameter of the COSE Key used as current group key. This value represents the current Group ID (Gid) of the security group associated with the application group (topic).
 
-* The 'Partial IV' parameter, with value set to the current Sender Sequence Number of the Publisher. All leading bytes of value zero SHALL be removed when encoding the Partial IV, except in the case of Partial IV with value 0, which is encoded to the byte string 0x00.
+* The 'Partial IV' parameter, with value set to the binary representation of the current Sender Sequence Number of the Publisher. All leading bytes of value zero SHALL be removed when composing the Partial IV value, except in the case of Partial IV with value 0, which results in the binary representation 0x00.
 
    The Publisher MUST initialize the Sender Sequence Number to 0 upon joining the security group and MUST reset it to 0 upon receiving a new group key as the result of a group rekeying (see {{rekeying}}). The Publisher MUST increment its Sender Sequence Number value by 1, after having completed an encryption operation by means of the current group key.
 
@@ -933,7 +933,7 @@ The 'unprotected' field MUST include:
 
    - The 'protected' field includes the 'alg' parameter, with value the identifier of the signature algorithm used in the security group.
 
-   - The 'unprotected' field includes the 'kid' parameter, with value the Publisher's Sender ID that the Publisher obtained from the KDC when joining the security group, as the value of the 'group_SenderId' parameter of the Join Response (see {{join-response}}).
+   - The 'unprotected' field includes the 'kid' parameter, with value the Publisher's current Sender ID that the Publisher obtained from the KDC, i.e., when joining the security group as the value of the 'group_SenderId' parameter of the Join Response (see {{join-response}}) or when requesting a new Sender ID as value of the 'group_SenderId' parameter of the Key Renewal Response (see {{sec-key-renewal-request}}).
 
    - The 'signature' field, with value the countersignature.
 
@@ -1106,7 +1106,7 @@ It is out of the scope of this document to provide operational considerations ab
 
 ## Access Control
 
-Building on the ACE framework {{RFC9200}} and the foundation provided in {{RFC9594}}, this application profile enforces access control for Clients that interact with the interface at the KDC specified in this document and with the interface at the Broker specified in {{I-D.ietf-core-coap-pubsub}}.
+Building on the ACE framework {{RFC9200}} and the foundation provided in {{RFC9594}}, this application profile enforces access control for Clients that interact with the interface at the KDC specified in this document and with part of the interface at the Broker specified in {{I-D.ietf-core-coap-pubsub}}.
 
 In particular, the granularity of such access control takes into account the resource specifically targeted at the KDC or at the Broker, the operation requested by sending a request to that resource, and the specific role(s) that the requesting Client is authorized to have according to its corresponding access token uploaded at the KDC or at the Broker.
 
@@ -1360,7 +1360,7 @@ This section lists how this application profile of ACE addresses the requirement
 
   * It is not possible anymore to delete a topic-data resource by sending a DELETE request to it.
 
-* Updated references.
+* Updated references and editorial fixes.
 
 ## Version -04 to -05 ## {#sec-04-05}
 
