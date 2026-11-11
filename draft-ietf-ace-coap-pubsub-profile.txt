@@ -5,10 +5,10 @@
 ACE Working Group                                           F. Palombini
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                               C. Sengul
-Expires: 14 May 2027                                   Brunel University
+Expires: 15 May 2027                                   Brunel University
                                                                M. Tiloca
                                                                  RISE AB
-                                                        10 November 2026
+                                                        11 November 2026
 
 
 CoAP Publish-Subscribe Profile for Authentication and Authorization for
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 May 2027.
+   This Internet-Draft will expire on 15 May 2027.
 
 Copyright Notice
 
@@ -191,12 +191,12 @@ Table of Contents
 
    The content of published messages that are circulated by the Broker
    is protected end-to-end between the corresponding Publisher and the
-   intended Subscribers.  To this end, this profile relies on COSE
-   [RFC9052][RFC9053] and on keying material provided to the Publishers
-   and Subscribers participating in the same Pub-Sub topic.  In
-   particular, source authentication of published topic data is achieved
-   by means of the corresponding Publisher signing such content with its
-   own private key.
+   intended Subscribers.  To this end, this profile relies on CBOR
+   Object Signing and Encryption (COSE) [RFC9052][RFC9053] and on keying
+   material provided to the Publishers and Subscribers participating in
+   the same Pub-Sub topic.  In particular, source authentication of
+   published topic data is achieved by means of the corresponding
+   Publisher signing such content with its own private key.
 
    Figure 1 overviews the relationships between this document and other
    related documents mentioned above.
@@ -279,8 +279,9 @@ Table of Contents
       the abbreviations REQx and OPTx denoting the numbered mandatory-
       to-address and optional-to-address requirements, respectively.
 
-   *  The terms and concepts described in CDDL [RFC8610], CBOR
-      [RFC8949], and COSE [RFC9052][RFC9053][RFC9338].
+   *  The terms and concepts described in the Concise Data Definition
+      Language (CDDL) [RFC8610], Concise Binary Object Representation
+      (CBOR) [RFC8949], and COSE [RFC9052][RFC9053][RFC9338].
 
    *  The terms and concepts described in CoAP [RFC7252].  Note that the
       term "endpoint" is used here following its OAuth definition
@@ -1007,11 +1008,11 @@ Table of Contents
    |                                 | name            |               |
    |                                 | GROUPNAME.      |               |
    +---------------------------------+-----------------+---------------+
-   | /ace-group/GROUPNAME/nodes/     | REQUIRED.       | GET (All      |
-   | NODENAME                        | Contains the    | Clients).     |
-   |                                 | group keying    | POST          |
-   |                                 | material for    | (Publishers). |
-   |                                 | that group      |               |
+   | /ace-group/GROUPNAME/nodes/     | REQUIRED.       | GET, DELETE   |
+   | NODENAME                        | Contains the    | (All          |
+   |                                 | group keying    | Clients).     |
+   |                                 | material for    | POST          |
+   |                                 | that group      | (Publishers). |
    |                                 | member          |               |
    |                                 | NODENAME in     |               |
    |                                 | GROUPNAME.      |               |
@@ -1344,12 +1345,11 @@ Table of Contents
          [IANA.COSE.Header.Parameters].
 
          At the time of writing this specification, acceptable formats
-         of authentication credentials are CBOR Web Tokens (CWTs) and
-         CWT Claims Sets (CCSs) [RFC8392], X.509 certificates [RFC7925],
-         and C509 certificates [I-D.ietf-cose-cbor-encoded-cert].
-         Further formats may be available in the future and would be
-         acceptable to use as long as they comply with the criteria
-         defined above (REQ6).
+         of authentication credentials are CWTs and CCSs [RFC8392],
+         X.509 certificates [RFC7925], and C509 certificates
+         [I-D.ietf-cose-cbor-encoded-cert].  Further formats may be
+         available in the future and would be acceptable to use as long
+         as they comply with the criteria defined above (REQ6).
 
       -  'sign_alg': this parameter is identified by the CBOR unsigned
          integer 3 used as map key.  Its value specifies the signature
@@ -1785,7 +1785,7 @@ Table of Contents
 
    In the same diagram, (E) corresponds to the subscription of a
    Subscriber to the same topic, by means of a CoAP GET request with the
-   Observe option set to 0 (register) [RFC7641], as per
+   Observe Option set to 0 (register) [RFC7641], as per
    [I-D.ietf-core-coap-pubsub].  Finally, (F) corresponds to the Observe
    notification response from the Broker to the Subscriber, where the
    published topic data is conveyed as originally protected end-to-end
@@ -1817,10 +1817,10 @@ Table of Contents
   |                                   |                                |
   +---- 0.03 PUT ps/data/1bd0d6d ---->|                                |
   |                                   |                                |
-  |<------ 2.01 Created --------------+                                |
+  |<------ 2.04 Changed --------------+                                |
   |                                   |                                |
   |                                   |<-- 0.01 GET /ps/data/1bd0d6d --+
-  |                                   |    Observe:0                   |
+  |                                   |    Observe: 0                  |
   |                                   |                                |
   |                                   +------ 2.05 Content ----------->|
   |                                   |       Observe: 10001           |
@@ -1879,11 +1879,11 @@ Table of Contents
       represents the current Group ID (Gid) of the security group
       associated with the application group (topic).
 
-   *  The 'Partial IV' parameter, with value set to the current Sender
-      Sequence Number of the Publisher.  All leading bytes of value zero
-      SHALL be removed when encoding the Partial IV, except in the case
-      of Partial IV with value 0, which is encoded to the byte string
-      0x00.
+   *  The 'Partial IV' parameter, with value set to the binary
+      representation of the current Sender Sequence Number of the
+      Publisher.  All leading bytes of value zero SHALL be removed when
+      composing the Partial IV value, except in the case of Partial IV
+      with value 0, which results in the binary representation 0x00.
 
       The Publisher MUST initialize the Sender Sequence Number to 0 upon
       joining the security group and MUST reset it to 0 upon receiving a
@@ -1909,10 +1909,12 @@ Table of Contents
          group.
 
       -  The 'unprotected' field includes the 'kid' parameter, with
-         value the Publisher's Sender ID that the Publisher obtained
-         from the KDC when joining the security group, as the value of
-         the 'group_SenderId' parameter of the Join Response (see
-         Section 4.1.2).
+         value the Publisher's current Sender ID that the Publisher
+         obtained from the KDC, i.e., when joining the security group as
+         the value of the 'group_SenderId' parameter of the Join
+         Response (see Section 4.1.2) or when requesting a new Sender ID
+         as value of the 'group_SenderId' parameter of the Key Renewal
+         Response (see Section 4.2.2).
 
       -  The 'signature' field, with value the countersignature.
 
@@ -2235,7 +2237,7 @@ Table of Contents
    Building on the ACE framework [RFC9200] and the foundation provided
    in [RFC9594], this application profile enforces access control for
    Clients that interact with the interface at the KDC specified in this
-   document and with the interface at the Broker specified in
+   document and with part of the interface at the Broker specified in
    [I-D.ietf-core-coap-pubsub].
 
    In particular, the granularity of such access control takes into
@@ -2930,7 +2932,7 @@ B.1.  Version -05 to -06
       -  It is not possible anymore to delete a topic-data resource by
          sending a DELETE request to it.
 
-   *  Updated references.
+   *  Updated references and editorial fixes.
 
 B.2.  Version -04 to -05
 
