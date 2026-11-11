@@ -278,7 +278,7 @@ However, an anonymous Client is not allowed to access topic resources at the Bro
 
 As highlighted in {{associations}}, each Client maintains two different security associations pertaining to the Pub-Sub group communication.
 
-On the one hand, the Client has a pairwise security association with the Broker, which, as an ACE RS, verifies that the Client is authorised to perform data operations (i.e., publish, subscribe, read) on a certain set of topics (Security Association 1). As discussed above, this security association is set up with the help of the AS and using a transport profile of ACE, when the Client obtains the access token to upload at the Broker.
+On the one hand, the Client has a pairwise security association with the Broker, which, as an ACE RS, verifies that the Client is authorised to perform data operations (i.e., publish, subscribe, unsubscribe, read) on a certain set of topics (Security Association 1). As discussed above, this security association is set up with the help of the AS and using a transport profile of ACE, when the Client obtains the access token to upload at the Broker.
 
 On the other hand, separately for each topic, all the Publishers and Subscribers for that topic have a common, group security association, through which the published topic data sent through the Broker is protected end-to-end (Security Association 2). As discussed above, this security association is set up and maintained as the different Clients request the KDC to join the security group, upon which they obtain from the KDC the corresponding group keying material to use for protecting end-to-end and verifying the content of their Pub-Sub group communication.
 
@@ -467,7 +467,7 @@ More specifically, the following applies when, as defined in this document, a sc
 
       - Publish (2): This operation concerns the publication of data to the topic in question, performed by means of a PUT request sent by a Publisher Client to the corresponding topic-data resource at the Broker.
 
-      - Read (3): This operation concerns both: i) the subscription at the topic-data resource for the topic in question at the Broker, performed by means of a GET request with the CoAP Observe Option set to 0 and sent by a Subscriber Client; and ii) the simple reading of the latest data published to the topic in question, performed by means of a simple GET request sent to the same topic-data resource.
+      - Read (3): This operation concerns: i) the subscription at the topic-data resource for the topic in question at the Broker, performed by means of a GET request with the CoAP Observe Option set to 0 (register) and sent by a Subscriber Client; ii) the unsubscription at the topic-data resource for the topic in question at the Broker, performed by means of a GET request with the CoAP Observe Option set to 1 (deregister) and sent by a Subscriber Client; and iii) the simple reading of the latest data published to the topic in question, performed by means of a simple GET request sent to the same topic-data resource.
 
    * The set of N numeric identifiers is converted into the single value R, by taking two to the power of each numeric identifier X_1, X_2, ..., X_N, and then computing the inclusive OR of the binary representations of all the power values.
 
@@ -1359,6 +1359,8 @@ This section lists how this application profile of ACE addresses the requirement
     A Broker that hosts a topic resource always _hosts_ and _is in control of_ the topic-data resource corresponding to that topic. A topic-data resource can be _served_ from a different address than that of the corresponding topic resource
 
   * It is not possible anymore to delete a topic-data resource by sending a DELETE request to it.
+
+* Explicit mentioning of the unsubscribe operation at the topic-data resource. This is covered by the same permission "Read (3)" concerning the subscribe and read operations.
 
 * Updated references and editorial fixes.
 
