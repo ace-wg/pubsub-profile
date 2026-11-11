@@ -441,10 +441,10 @@ Table of Contents
    On the one hand, the Client has a pairwise security association with
    the Broker, which, as an ACE RS, verifies that the Client is
    authorised to perform data operations (i.e., publish, subscribe,
-   read) on a certain set of topics (Security Association 1).  As
-   discussed above, this security association is set up with the help of
-   the AS and using a transport profile of ACE, when the Client obtains
-   the access token to upload at the Broker.
+   unsubscribe, read) on a certain set of topics (Security Association
+   1).  As discussed above, this security association is set up with the
+   help of the AS and using a transport profile of ACE, when the Client
+   obtains the access token to upload at the Broker.
 
    On the other hand, separately for each topic, all the Publishers and
    Subscribers for that topic have a common, group security association,
@@ -785,13 +785,17 @@ Table of Contents
             request sent by a Publisher Client to the corresponding
             topic-data resource at the Broker.
 
-         o  Read (3): This operation concerns both: i) the subscription
-            at the topic-data resource for the topic in question at the
+         o  Read (3): This operation concerns: i) the subscription at
+            the topic-data resource for the topic in question at the
             Broker, performed by means of a GET request with the CoAP
-            Observe Option set to 0 and sent by a Subscriber Client; and
-            ii) the simple reading of the latest data published to the
-            topic in question, performed by means of a simple GET
-            request sent to the same topic-data resource.
+            Observe Option set to 0 (register) and sent by a Subscriber
+            Client; ii) the unsubscription at the topic-data resource
+            for the topic in question at the Broker, performed by means
+            of a GET request with the CoAP Observe Option set to 1
+            (deregister) and sent by a Subscriber Client; and iii) the
+            simple reading of the latest data published to the topic in
+            question, performed by means of a simple GET request sent to
+            the same topic-data resource.
 
       -  The set of N numeric identifiers is converted into the single
          value R, by taking two to the power of each numeric identifier
@@ -2931,6 +2935,10 @@ B.1.  Version -05 to -06
 
       -  It is not possible anymore to delete a topic-data resource by
          sending a DELETE request to it.
+
+   *  Explicit mentioning of the unsubscribe operation at the topic-data
+      resource.  This is covered by the same permission "Read (3)"
+      concerning the subscribe and read operations.
 
    *  Updated references and editorial fixes.
 
